@@ -1,0 +1,131 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1600 900" width="1600" height="900" role="img" aria-label="">
+  <title>Amanecer en el super dojo</title>
+  <defs>
+    <linearGradient id="sky" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#12131a"/>
+      <stop offset="0.55" stop-color="#191420"/>
+      <stop offset="1" stop-color="#241722"/>
+    </linearGradient>
+    <radialGradient id="sunGlow" cx="0.5" cy="0.5" r="0.5">
+      <stop offset="0" stop-color="#ff6a5c" stop-opacity="0.55"/>
+      <stop offset="0.45" stop-color="#e63b2e" stop-opacity="0.22"/>
+      <stop offset="1" stop-color="#e63b2e" stop-opacity="0"/>
+    </radialGradient>
+    <radialGradient id="sunDisc" cx="0.5" cy="0.45" r="0.5">
+      <stop offset="0" stop-color="#ffb08a" stop-opacity="0.5"/>
+      <stop offset="1" stop-color="#e63b2e" stop-opacity="0.12"/>
+    </radialGradient>
+    <linearGradient id="mistFar" x1="0" y1="0" x2="1" y2="0">
+      <stop offset="0" stop-color="#f7f3ec" stop-opacity="0"/>
+      <stop offset="0.5" stop-color="#f7f3ec" stop-opacity="0.09"/>
+      <stop offset="1" stop-color="#f7f3ec" stop-opacity="0"/>
+    </linearGradient>
+    <linearGradient id="ridge1" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#3b3350"/>
+      <stop offset="1" stop-color="#221d31"/>
+    </linearGradient>
+    <linearGradient id="ridge2" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#241f33"/>
+      <stop offset="1" stop-color="#171423"/>
+    </linearGradient>
+    <linearGradient id="ridge3" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#15131d"/>
+      <stop offset="1" stop-color="#0f0e15"/>
+    </linearGradient>
+    <linearGradient id="floorFade" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#12131a" stop-opacity="0"/>
+      <stop offset="1" stop-color="#12131a" stop-opacity="0.95"/>
+    </linearGradient>
+  </defs>
+
+  <!-- cielo -->
+  <rect width="1600" height="900" fill="url(#sky)"/>
+
+  <!-- sol naciente: resplandor + disco -->
+  <circle cx="1180" cy="360" r="430" fill="url(#sunGlow)"/>
+  <circle cx="1180" cy="360" r="188" fill="url(#sunDisc)"/>
+
+  <!-- enso: círculo de pincel abierto (la mente que se entrena, nunca "terminada") -->
+  <g fill="none" stroke="#f7f3ec" stroke-linecap="round" opacity="0.5">
+    <path d="M1345 250a205 205 0 1 1-292 44" stroke-width="15" opacity="0.75"/>
+    <path d="M1327 232a205 205 0 0 0-52-38" stroke-width="8" opacity="0.4"/>
+  </g>
+
+  <!-- brumas -->
+  <g>
+    <rect x="0" y="430" width="1600" height="26" fill="url(#mistFar)"/>
+    <rect x="0" y="500" width="1600" height="18" fill="url(#mistFar)" opacity="0.7"/>
+    <rect x="0" y="565" width="1600" height="30" fill="url(#mistFar)" opacity="0.55"/>
+  </g>
+
+  <!-- cordilleras: tres capas de tinta -->
+  <path fill="url(#ridge1)" opacity="0.55" d="M0 512c118-16 196-96 286-132 92-37 150 26 232 44 96 21 168-74 268-92 96-17 156 62 244 84 84 21 158-30 238-52 104-29 216 6 332-10v556H0z"/>
+  <path fill="url(#ridge2)" d="M0 600c130-40 212-118 316-140 96-20 168 60 268 74 92 13 156-66 254-72 104-6 168 88 268 104 88 14 190-42 294-62v396H0z"/>
+  <path fill="url(#ridge3)" d="M0 706c142-52 244-84 358-72 104 11 166 74 268 76 96 2 160-52 258-46 108 7 176 78 288 74 148-5 288-64 428-96v258H0z"/>
+
+  <!-- pagoda del dojo, en silueta sobre la ladera -->
+  <g fill="#0f0e15" opacity="0.92" transform="translate(392 470) scale(0.9)">
+    <path d="M-84 22h168l-22 16H-62z"/>
+    <rect x="-46" y="38" width="92" height="46" rx="3"/>
+    <path d="M-66 84h132l-18 14H-48z"/>
+    <rect x="-34" y="98" width="68" height="52" rx="3"/>
+    <path d="M-52 150h104l-14 12H-38z"/>
+    <rect x="-26" y="162" width="52" height="46" rx="3"/>
+    <rect x="-3" y="-16" width="6" height="40" rx="3"/>
+  </g>
+  <g fill="none" stroke="#e63b2e" opacity="0.5" transform="translate(392 470) scale(0.9)">
+    <rect x="-14" y="112" width="28" height="26" rx="2" fill="#e63b2e" opacity="0.45" stroke="none"/>
+  </g>
+
+  <!-- torii, puerta de entrada al entrenamiento -->
+  <g fill="#e63b2e" opacity="0.5" transform="translate(1408 560) scale(1.05)">
+    <path d="M-92 -96h184l-8 14H-84z"/>
+    <rect x="-78" y="-74" width="156" height="10" rx="2"/>
+    <rect x="-58" y="-64" width="14" height="150" rx="4"/>
+    <rect x="44" y="-64" width="14" height="150" rx="4"/>
+  </g>
+
+  <!-- bambú a los flancos -->
+  <g stroke-linecap="round" opacity="0.4">
+    <g stroke="#2e9e5b" fill="none">
+      <path d="M64 900V300" stroke-width="13"/>
+      <path d="M126 900V420" stroke-width="9" opacity="0.7"/>
+      <path d="M1540 900V340" stroke-width="12"/>
+      <path d="M1486 900V470" stroke-width="8" opacity="0.7"/>
+    </g>
+    <g stroke="#12131a" stroke-width="4" opacity="0.8">
+      <path d="M56 402h16M56 528h16M56 654h16M118 546h16M118 672h16M1532 442h16M1532 568h16M1532 694h16M1478 588h16"/>
+    </g>
+    <g fill="#2e9e5b" opacity="0.55">
+      <ellipse cx="106" cy="330" rx="46" ry="10" transform="rotate(-22 106 330)"/>
+      <ellipse cx="28" cy="372" rx="42" ry="9" transform="rotate(18 28 372)"/>
+      <ellipse cx="150" cy="452" rx="38" ry="8" transform="rotate(-14 150 452)"/>
+      <ellipse cx="1496" cy="368" rx="46" ry="10" transform="rotate(20 1496 368)"/>
+      <ellipse cx="1572" cy="412" rx="40" ry="9" transform="rotate(-16 1572 412)"/>
+      <ellipse cx="1446" cy="500" rx="36" ry="8" transform="rotate(12 1446 500)"/>
+    </g>
+  </g>
+
+  <!-- pensamientos que rondan el dojo: los "deberías" antes de entrenarlos -->
+  <g fill="none" stroke="#f7f3ec" opacity="0.13">
+    <path stroke-width="3" d="M902 168c0-26 24-44 54-44 10-22 40-32 64-20 22-14 56-6 66 16 30 2 50 24 46 48-4 26-32 40-62 36-16 16-46 18-66 4-24 12-56 4-68-16-20-2-34-12-34-24z"/>
+    <path stroke-width="3" d="M866 214c0-8 8-14 18-14s18 6 18 14-8 14-18 14-18-6-18-14z"/>
+    <path stroke-width="3" d="M836 244c0-6 6-10 12-10s12 4 12 10-6 10-12 10-12-4-12-10z"/>
+    <path stroke-width="3" opacity="0.7" d="M1218 148c0-20 20-34 44-34 8-18 32-26 52-16 18-12 46-4 54 14 24 2 40 18 38 38-4 20-26 32-50 28-14 12-38 14-54 4-20 10-46 2-56-14-16-2-28-10-28-20z"/>
+  </g>
+
+  <!-- pétalos que caen -->
+  <g fill="#ff6a5c" opacity="0.55">
+    <ellipse cx="330" cy="196" rx="7" ry="4" transform="rotate(28 330 196)"/>
+    <ellipse cx="520" cy="288" rx="6" ry="3.4" transform="rotate(-18 520 288)"/>
+    <ellipse cx="742" cy="150" rx="5" ry="3" transform="rotate(42 742 150)"/>
+    <ellipse cx="1042" cy="596" rx="7" ry="4" transform="rotate(-32 1042 596)"/>
+    <ellipse cx="1260" cy="660" rx="6" ry="3.4" transform="rotate(16 1260 660)"/>
+    <ellipse cx="238" cy="620" rx="6" ry="3.4" transform="rotate(-24 238 620)"/>
+    <ellipse cx="640" cy="700" rx="5" ry="3" transform="rotate(36 640 700)"/>
+    <ellipse cx="1420" cy="230" rx="5" ry="3" transform="rotate(-40 1420 230)"/>
+  </g>
+
+  <!-- suelo del dojo: funde con el fondo de la página -->
+  <rect x="0" y="640" width="1600" height="260" fill="url(#floorFade)"/>
+</svg>

@@ -1,0 +1,86 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 720 620" width="720" height="620" role="img" aria-label="">
+  <title>Los maestros de MenteFu en meditación (boceto provisional)</title>
+  <defs>
+    <radialGradient id="aura" cx="0.5" cy="0.55" r="0.5">
+      <stop offset="0" stop-color="#ffb08a" stop-opacity="0.35"/>
+      <stop offset="1" stop-color="#e63b2e" stop-opacity="0"/>
+    </radialGradient>
+    <linearGradient id="gi" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#f07c22"/>
+      <stop offset="1" stop-color="#d63424"/>
+    </linearGradient>
+    <linearGradient id="giB" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#f2913c"/>
+      <stop offset="1" stop-color="#e04a2c"/>
+    </linearGradient>
+  </defs>
+
+  <ellipse cx="360" cy="360" rx="330" ry="250" fill="url(#aura)"/>
+
+  <!-- ===== maestro (izquierda) ===== -->
+  <g>
+    <!-- piernas en loto -->
+    <path d="M148 520c0-42 46-70 108-70s108 28 108 70c0 16-14 24-38 24H186c-24 0-38-8-38-24z" fill="url(#gi)"/>
+    <path d="M186 520c22-14 60-20 70-20s48 6 70 20" fill="none" stroke="#a8291c" stroke-width="5" stroke-linecap="round" opacity="0.6"/>
+    <!-- torso -->
+    <path d="M196 466c0-70 26-124 60-124s60 54 60 124z" fill="url(#gi)"/>
+    <!-- solapa cruzada del gi -->
+    <path d="M256 346l-30 118M256 346l30 118" fill="none" stroke="#fffdf9" stroke-width="9" stroke-linecap="round" opacity="0.9"/>
+    <!-- cinturón negro -->
+    <rect x="200" y="440" width="112" height="26" rx="8" fill="#1a1a1f"/>
+    <path d="M244 466l-10 30M268 466l10 30" stroke="#1a1a1f" stroke-width="9" stroke-linecap="round"/>
+    <!-- brazos y manos en el regazo -->
+    <path d="M200 400c-24 22-30 56-14 74 12 14 46 16 70 4" fill="none" stroke="url(#gi)" stroke-width="34" stroke-linecap="round"/>
+    <path d="M312 400c24 22 30 56 14 74-12 14-46 16-70 4" fill="none" stroke="url(#gi)" stroke-width="34" stroke-linecap="round"/>
+    <ellipse cx="256" cy="486" rx="30" ry="17" fill="#f6c9a4"/>
+    <!-- cabeza -->
+    <circle cx="256" cy="266" r="86" fill="#f6c9a4"/>
+    <!-- pelo puntiagudo -->
+    <path d="M170 254c-4-56 38-100 86-100s90 44 86 100c-8-26-26-40-38-30-6-30-32-42-48-26-14-16-42-8-48 22-14-10-30 8-38 34z" fill="#17161c"/>
+    <path d="M176 214l-22-34 34 16 4-40 24 32 18-40 16 38 26-32 8 40 32-18-20 36" fill="#17161c"/>
+    <!-- cinta con el sello de la mente -->
+    <rect x="172" y="240" width="168" height="30" rx="10" fill="#fffdf9"/>
+    <path d="M340 250l40 6-38 18z" fill="#fffdf9" opacity="0.9"/>
+    <circle cx="256" cy="255" r="12" fill="none" stroke="#d63424" stroke-width="3.5"/>
+    <path d="M250 249c4-3 8-3 12 0M250 255c4 3 8 3 12 0M250 261c4-3 8-3 12 0" stroke="#d63424" stroke-width="2.5" fill="none" stroke-linecap="round"/>
+    <!-- ojos cerrados y sonrisa serena -->
+    <path d="M212 292c8-9 22-9 30 0M270 292c8-9 22-9 30 0" fill="none" stroke="#17161c" stroke-width="5.5" stroke-linecap="round"/>
+    <path d="M244 318c8 7 20 7 28 0" fill="none" stroke="#17161c" stroke-width="5" stroke-linecap="round"/>
+    <circle cx="200" cy="308" r="12" fill="#ff6a5c" opacity="0.25"/>
+    <circle cx="312" cy="308" r="12" fill="#ff6a5c" opacity="0.25"/>
+  </g>
+
+  <!-- ===== maestra (derecha) ===== -->
+  <g>
+    <path d="M368 520c0-42 46-70 108-70s108 28 108 70c0 16-14 24-38 24H406c-24 0-38-8-38-24z" fill="url(#giB)"/>
+    <path d="M406 520c22-14 60-20 70-20s48 6 70 20" fill="none" stroke="#a8291c" stroke-width="5" stroke-linecap="round" opacity="0.6"/>
+    <path d="M416 466c0-70 26-124 60-124s60 54 60 124z" fill="url(#giB)"/>
+    <path d="M476 346l-30 118M476 346l30 118" fill="none" stroke="#fffdf9" stroke-width="9" stroke-linecap="round" opacity="0.9"/>
+    <rect x="420" y="440" width="112" height="26" rx="8" fill="#1a1a1f"/>
+    <path d="M464 466l-10 30M488 466l10 30" stroke="#1a1a1f" stroke-width="9" stroke-linecap="round"/>
+    <path d="M420 400c-24 22-30 56-14 74 12 14 46 16 70 4" fill="none" stroke="url(#giB)" stroke-width="34" stroke-linecap="round"/>
+    <path d="M532 400c24 22 30 56 14 74-12 14-46 16-70 4" fill="none" stroke="url(#giB)" stroke-width="34" stroke-linecap="round"/>
+    <ellipse cx="476" cy="486" rx="30" ry="17" fill="#f6c9a4"/>
+    <circle cx="476" cy="266" r="86" fill="#f6c9a4"/>
+    <!-- pelo recogido con dos moños -->
+    <path d="M390 262c0-58 38-104 86-104s86 46 86 104c-10-30-26-46-40-40-10-26-34-34-46-20-12-14-36-6-46 20-14-6-30 10-40 40z" fill="#3a2418"/>
+    <circle cx="396" cy="182" r="34" fill="#3a2418"/>
+    <circle cx="556" cy="182" r="34" fill="#3a2418"/>
+    <path d="M368 196c10-18 26-24 34-22M584 196c-10-18-26-24-34-22" stroke="#d63424" stroke-width="7" fill="none" stroke-linecap="round"/>
+    <rect x="392" y="240" width="168" height="30" rx="10" fill="#fffdf9"/>
+    <path d="M392 250l-40 6 38 18z" fill="#fffdf9" opacity="0.9"/>
+    <circle cx="476" cy="255" r="12" fill="none" stroke="#d63424" stroke-width="3.5"/>
+    <path d="M470 249c4-3 8-3 12 0M470 255c4 3 8 3 12 0M470 261c4-3 8-3 12 0" stroke="#d63424" stroke-width="2.5" fill="none" stroke-linecap="round"/>
+    <path d="M432 292c8-9 22-9 30 0M490 292c8-9 22-9 30 0" fill="none" stroke="#17161c" stroke-width="5.5" stroke-linecap="round"/>
+    <path d="M464 318c8 7 20 7 28 0" fill="none" stroke="#17161c" stroke-width="5" stroke-linecap="round"/>
+    <circle cx="420" cy="308" r="12" fill="#ff6a5c" opacity="0.25"/>
+    <circle cx="532" cy="308" r="12" fill="#ff6a5c" opacity="0.25"/>
+  </g>
+
+  <!-- respiración: ondas de calma entre los dos -->
+  <g fill="none" stroke="#f7f3ec" opacity="0.28" stroke-linecap="round">
+    <path d="M330 200c24-18 46-18 70 0" stroke-width="4"/>
+    <path d="M340 168c20-14 38-14 58 0" stroke-width="3.5" opacity="0.8"/>
+    <path d="M350 138c14-10 26-10 40 0" stroke-width="3" opacity="0.6"/>
+  </g>
+</svg>
