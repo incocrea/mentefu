@@ -1,0 +1,237 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <script>document.documentElement.className += " js";</script>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>MenteFu — El super dojo de las artes mentales de defensa</title>
+  <meta name="description" content="Escuela de crecimiento emocional gamificada. Entrena artes mentales de defensa —empezando por CulpaFu—, gana XP, sube de cinturón y desbloquea logros mientras aprendes a defender tu mente.">
+  <link rel="canonical" href="https://incocrea.github.io/mentefu/">
+  <meta property="og:type" content="website">
+  <meta property="og:site_name" content="MenteFu">
+  <meta property="og:title" content="MenteFu — El super dojo de las artes mentales de defensa">
+  <meta property="og:description" content="Escuela de crecimiento emocional gamificada. Entrena artes mentales de defensa —empezando por CulpaFu—, gana XP, sube de cinturón y desbloquea logros mientras aprendes a defender tu mente.">
+  <meta property="og:url" content="https://incocrea.github.io/mentefu/">
+  <meta property="og:image" content="https://incocrea.github.io/mentefu/assets/img/og-mentefu.png">
+  <meta property="og:image:width" content="1200">
+  <meta property="og:image:height" content="630">
+  <meta property="og:locale" content="es_ES">
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="theme-color" content="#12131a">
+  <link rel="alternate" hreflang="es" href="https://incocrea.github.io/mentefu/">
+  <link rel="alternate" hreflang="en" href="https://incocrea.github.io/myselfu/">
+  <link rel="alternate" hreflang="x-default" href="https://incocrea.github.io/mentefu/">
+  <link rel="icon" type="image/svg+xml" href="assets/img/favicon.svg">
+  <link rel="icon" type="image/png" sizes="32x32" href="assets/img/favicon-32.png">
+  <link rel="apple-touch-icon" href="assets/img/apple-touch-icon.png">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,500;12..96,700;12..96,800&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="assets/css/styles.css">
+  <link rel="stylesheet" href="assets/css/game.css">
+<script>window.MF_CONFIG = {"lang": "es", "brand": "mentefu", "prefix": "", "supabaseUrl": "", "supabaseAnonKey": "", "gate": false, "xp": {"mission": 20, "quiz_first_try": 5, "practice": 10, "scroll": 10, "exam": 50, "tool": 15, "exam_pass": 0.75}, "ranks": [[0, "Novato"], [100, "Aprendiz"], [300, "Practicante"], [700, "Adepto"], [1500, "Maestro de sala"], [3000, "Gran Maestro"]], "belts": [{"n": 1, "key": "white", "color": "#f4f1ea", "name": "Blanco", "level": "Reconocimiento"}, {"n": 2, "key": "yellow", "color": "#f2c230", "name": "Amarillo", "level": "Conciencia"}, {"n": 3, "key": "orange", "color": "#f07c22", "name": "Naranja", "level": "Análisis"}, {"n": 4, "key": "green", "color": "#2e9e5b", "name": "Verde", "level": "Límites"}, {"n": 5, "key": "blue", "color": "#2f6fd8", "name": "Azul", "level": "Autonomía"}, {"n": 6, "key": "purple", "color": "#7b3fbf", "name": "Morado", "level": "Reparación"}, {"n": 7, "key": "brown", "color": "#7a4a2a", "name": "Marrón", "level": "Liberación"}, {"n": 8, "key": "black", "color": "#1a1a1f", "name": "Negro", "level": "Dominio"}], "profileUrl": "perfil/", "artsUrl": "artes/", "arts": [{"key": "culpafu", "name": "CulpaFu", "url": "culpafu/", "color": "#e63b2e", "icon": "🥋", "status": "active"}], "artStats": {"culpafu": {"missions": 24, "levels": 8}, "limitesfu": {"missions": 0, "levels": 0}, "miedofu": {"missions": 0, "levels": 0}, "verguenzafu": {"missions": 0, "levels": 0}}, "page": {"id": "home", "layout": "home", "art": null, "level": null}};</script>
+
+</head>
+<body class="layout-home" data-brand="mentefu">
+  <a class="skip-link" href="#content">Saltar al contenido</a>
+
+  <header class="header">
+    <div class="container header__inner">
+      <a class="brand" href="" aria-label="MenteFu">
+        <span class="brand__mark" aria-hidden="true"><svg viewBox="0 0 40 40" width="34" height="34" fill="none" aria-hidden="true"><path d="M31.5 9.5A15 15 0 1 0 35 20" stroke="currentColor" stroke-width="4.2" stroke-linecap="round"/><path d="M14 24.5l6-12 6 12" stroke="var(--c-accent)" stroke-width="3.6" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
+        <span class="brand__name">MENTEFU</span>
+      </a>
+      <button class="burger" aria-expanded="false" aria-controls="main-nav">
+        <span class="visually-hidden">Abrir menú</span>
+        <span class="burger__bar"></span>
+        <span class="burger__bar"></span>
+        <span class="burger__bar"></span>
+      </button>
+      <nav class="nav" id="main-nav" aria-label="Principal">
+        <ul class="nav__list">
+          <li><a class="nav__link" href="artes/">Artes</a></li>
+          <li><a class="nav__link" href="culpafu/">CulpaFu</a></li>
+          <li><a class="nav__link" href="investiga/">Investiga</a></li>
+          <li><a class="nav__link" href="perfil/">Perfil</a></li>
+          <li class="nav__lang"><a class="lang-switch" href="https://incocrea.github.io/myselfu/" title="MyselfU — English version" hreflang="en">EN</a></li>
+          <li class="nav__cta"><a class="btn btn--primary btn--block" href="artes/">Entrar al dojo</a></li>
+        </ul>
+      </nav>
+      <a class="hud" href="perfil/" data-hud-chip aria-label="Perfil">
+        <span class="hud__ring" data-hud-ring aria-hidden="true"><span class="hud__belt" data-hud-belt></span></span>
+        <span class="hud__meta"><span class="hud__rank" data-hud-rank>Perfil</span><span class="hud__xp"><b data-hud-xp>0</b> XP</span></span>
+      </a>
+      <a class="btn btn--primary header__cta" href="artes/">Entrar al dojo</a>
+    </div>
+  </header>
+
+  <main id="content">
+<section class="hero">
+  <div class="hero__glow" aria-hidden="true"></div>
+  <div class="hero__enso" aria-hidden="true"></div>
+  <div class="container hero__inner">
+    <p class="kicker">Super dojo de crecimiento emocional</p>
+    <h1 class="hero__title">El arte de <em>defender tu mente</em>.</h1>
+    <p class="hero__claim">Todos aprendimos a defender nuestro cuerpo, nuestras cosas y nuestras opiniones. Casi nadie nos enseñó a defender nuestra mente. MenteFu es una escuela de <strong>artes mentales de defensa</strong>: misiones cortas, cinturones, logros y un progreso que se queda contigo.</p>
+    <div class="hero__actions">
+      <a class="btn btn--primary btn--lg" href="culpafu/" data-continue="culpafu">Entrenar CulpaFu</a>
+      <a class="btn btn--ghost btn--lg" href="artes/">Ver todas las artes</a>
+    </div>
+    <p class="hero__note">Gratis. Educación emocional, no terapia. Tu avance se guarda en tu cuenta.</p>
+    <div class="hero__hud" data-hud hidden>
+      <span class="hud__rank" data-hud-rank></span>
+      <span class="hud__xp"><span data-hud-xp>0</span> XP</span>
+      <span class="hud__streak" data-hud-streak></span>
+    </div>
+  </div>
+</section>
+
+<section class="section section--white">
+  <div class="container">
+    <p class="kicker">Cómo se entrena aquí</p>
+    <h2 class="section__title">Como un juego. Con una diferencia: el jefe final eres tú.</h2>
+    <div class="grid grid--3 how">
+      <div class="how__step" data-reveal><span class="how__icon" aria-hidden="true">🗺️</span><h3>Elige un arte</h3><p>Cada arte mental entrena una defensa: la culpa, la vergüenza, el miedo, los límites. Empieza por la que más te pese.</p></div>
+      <div class="how__step" data-reveal><span class="how__icon" aria-hidden="true">⚡</span><h3>Completa misiones</h3><p>Tarjetas de un minuto, preguntas con feedback, microretos para la vida real. Cada misión da XP y sube tu rango.</p></div>
+      <div class="how__step" data-reveal><span class="how__icon" aria-hidden="true">🥋</span><h3>Gana cinturones</h3><p>Ocho niveles por arte, del blanco al negro. Aprueba el examen de cinturón y desbloquea logros. Nadie te los puede quitar.</p></div>
+    </div>
+  </div>
+</section>
+
+<section class="section section--paper-2">
+  <div class="container">
+    <p class="kicker">Las artes</p>
+    <h2 class="section__title">Artes mentales de defensa</h2>
+    <p class="section__lead">Cada arte es un curso completo con su propio dojo. CulpaFu ya está abierta; las demás se desbloquean a medida que la escuela crece.</p>
+
+
+<div class="grid grid--arts"><a class="art-card" href="culpafu/" style="--art:#e63b2e" data-art="culpafu" data-reveal><span class="art-card__icon" aria-hidden="true">🥋</span><span class="art-card__status art-card__status--active">Disponible</span><span class="art-card__name">CulpaFu</span><span class="art-card__text">El arte de defender tu mente de la culpa que tortura. Tu primera arte mental.</span><span class="art-card__belt" data-art-belt="culpafu"></span><span class="card__more" aria-hidden="true">→</span></a><div class="art-card art-card--soon" style="--art:#7b3fbf" data-reveal><span class="art-card__icon" aria-hidden="true">🎭</span><span class="art-card__status">Próximamente</span><span class="art-card__name">VergüenzaFu</span><span class="art-card__text">Cuando el juicio pasa de la conducta a la identidad. Segunda arte mental.</span></div><div class="art-card art-card--soon" style="--art:#2f6fd8" data-reveal><span class="art-card__icon" aria-hidden="true">🌊</span><span class="art-card__status">Próximamente</span><span class="art-card__name">MiedoFu</span><span class="art-card__text">Relacionarte con el miedo sin que tome las decisiones por ti. Tercera arte mental.</span></div><div class="art-card art-card--soon" style="--art:#2e9e5b" data-reveal><span class="art-card__icon" aria-hidden="true">🛡️</span><span class="art-card__status">Próximamente</span><span class="art-card__name">LímitesFu</span><span class="art-card__text">Decir no, sostenerlo y no cargar con lo que no es tuyo. Cuarta arte mental.</span></div></div>
+
+
+  </div>
+</section>
+
+<section class="section section--dark">
+  <div class="container">
+    <div class="grid grid--2" style="align-items:start;gap:3rem">
+      <div data-reveal>
+        <p class="kicker">Por qué «Fu»</p>
+        <h2 class="section__title">Tu mente también necesita entrenamiento.</h2>
+        <p class="section__lead">Aprender a comprender, entrenar y proteger la mente se parece mucho a entrenar un arte marcial: práctica, disciplina, equilibrio, saber cuándo no reaccionar. No enseñamos a pelear. Usamos ese lenguaje porque describe muy bien lo que hace falta.</p>
+        <p class="section__lead" style="margin-bottom:0">No se trata de luchar contra tus emociones. Se trata de aprender a relacionarte con ellas sin permitir que gobiernen automáticamente tus decisiones.</p>
+      </div>
+      <div data-reveal>
+        <p class="kicker">La filosofía marcial de MenteFu</p>
+        <p style="color:var(--c-text-on-dark-soft);margin:0 0 0.5rem">No es esto:</p>
+        <ol class="chain chain--inline chain--bad"><li>Ataque</li><li>Contraataque</li><li>Destrucción</li></ol>
+        <p style="color:var(--c-text-on-dark-soft);margin:1rem 0 0.5rem">Es esto:</p>
+        <ol class="chain chain--inline chain--good"><li>Observar</li><li>Centrar</li><li>Esquivar</li><li>Bloquear</li><li>Desviar</li><li>Desarmar</li><li>Reparar</li><li>Liberar</li></ol>
+        <blockquote style="border-color:var(--c-accent-soft);color:var(--c-text-on-dark);margin-top:1.75rem"><p>El objetivo no es ganar la pelea. Es que la pelea deje de controlarte.</p></blockquote>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="section">
+  <div class="container">
+    <p class="kicker">La primera arte</p>
+    <h2 class="section__title">CulpaFu: ¿cuánto de lo que haces nace de evitar sentirte culpable?</h2>
+    <p class="section__lead">Empezamos por la culpa no porque cause todo, sino porque cuando se vuelve crónica organiza buena parte del sufrimiento cotidiano: autorreproche, rumiación, decisiones tomadas por miedo y no por convicción.</p>
+    <div class="compare compare--good-bad">
+      <div>
+        <h3>Culpa que repara</h3>
+        <p>Reconoce un error, señala un daño, impulsa una reparación y enseña algo para la próxima vez.</p>
+        <p><strong>Reconocer → reparar → aprender → continuar.</strong></p>
+      </div>
+      <div>
+        <h3>Culpa que tortura</h3>
+        <p>Castiga, humilla, paraliza, convierte un error en identidad y te deja atrapado en el pasado.</p>
+        <p><strong>Acusación → castigo → autorreproche → rumiación → más culpa.</strong></p>
+      </div>
+    </div>
+    <p class="quote-big" style="font-size:clamp(1.3rem,2.8vw,1.9rem)">Responsabilidad sí. <em>Autocastigo no.</em></p>
+    <p><a class="btn btn--primary" href="culpafu/">Entrar al dojo de CulpaFu</a></p>
+  </div>
+</section>
+
+<section class="section section--dark">
+  <div class="container container--prose">
+    <p class="kicker">Manifiesto</p>
+    <div class="manifesto">
+      <p>Todos aprendimos a defender nuestro cuerpo. Algunos aprendimos a defender nuestras cosas. Aprendimos incluso a defender nuestras opiniones.</p>
+      <p>Pero rara vez nos enseñaron a defender nuestra propia mente.</p>
+      <p>Aprendimos normas. Aprendimos expectativas. Aprendimos «deberías». Aprendimos a sentirnos culpables. Y muchas veces terminamos convirtiéndonos en nuestros propios vigilantes.</p>
+      <p><strong>MenteFu existe para enseñarte otra posibilidad.</strong></p>
+    </div>
+    <p><a class="btn btn--ghost" href="manifiesto/">Leer el manifiesto completo</a></p>
+  </div>
+</section>
+
+<section class="cta-band">
+  <div class="container center">
+    <p class="kicker" style="color:rgba(255,253,249,0.85)">Primera misión</p>
+    <h2 class="section__title">No todo «deberías» merece entrar en tu cabeza.</h2>
+    <p class="section__lead" style="margin-inline:auto">Empieza por el cinturón blanco de CulpaFu: tres misiones de pocos minutos para aprender a reconocer la culpa cuando aparece.</p>
+    <a class="btn btn--primary btn--lg" href="culpafu/dojo/nivel-1-reconocimiento/">Empezar el nivel 1</a>
+  </div>
+</section>
+  </main>
+
+  <footer class="footer">
+    <div class="container">
+      <div class="footer__grid">
+        <div class="footer__about">
+          <a class="brand brand--footer" href="" aria-label="MenteFu">
+            <span class="brand__mark" aria-hidden="true"><svg viewBox="0 0 40 40" width="34" height="34" fill="none" aria-hidden="true"><path d="M31.5 9.5A15 15 0 1 0 35 20" stroke="currentColor" stroke-width="4.2" stroke-linecap="round"/><path d="M14 24.5l6-12 6 12" stroke="var(--c-accent)" stroke-width="3.6" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
+            <span class="brand__name">MENTEFU</span>
+          </a>
+          <p class="footer__tagline">El arte de defender tu mente.</p>
+          <p class="footer__blurb">Super dojo de crecimiento emocional. Artes mentales de defensa para entrenar, completar y dominar: empieza por CulpaFu.</p>
+        </div>
+        <div>
+          <h3 class="footer__title">La escuela</h3>
+          <ul class="footer__list">
+            <li><a href="artes/">Artes mentales</a></li>
+            <li><a href="culpafu/">CulpaFu</a></li>
+            <li><a href="investiga/">Investiga</a></li>
+            <li><a href="perfil/">Mi perfil</a></li>
+          </ul>
+        </div>
+        <div>
+          <h3 class="footer__title">MenteFu</h3>
+          <ul class="footer__list">
+            <li><a href="que-es-mentefu/">Qué es MenteFu</a></li>
+            <li><a href="manifiesto/">Manifiesto</a></li>
+            <li><a href="perfil/">Mi perfil</a></li>
+            <li><a href="contacto/">Contacto</a></li>
+            <li><a href="privacidad/">Privacidad</a></li>
+          </ul>
+        </div>
+        <div>
+          <h3 class="footer__title">Muy pronto</h3>
+          <ul class="footer__list">
+            <li><span class="muted">Tienda <small>(próximamente)</small></span></li>
+            <li><span class="muted">Terapia <small>(próximamente)</small></span></li>
+            <li><span class="muted">Podcast <small>(próximamente)</small></span></li>
+            <li><span class="muted">Cursos <small>(próximamente)</small></span></li>
+          </ul>
+        </div>
+      </div>
+      <div class="footer__notice">
+        <p>MenteFu es educación emocional, no terapia ni tratamiento. No diagnostica ni sustituye la atención de un profesional de la salud mental. Los cinturones y logros reconocen progreso personal; no son certificaciones profesionales. Si sientes un malestar intenso o piensas en hacerte daño, busca ayuda profesional o llama a los servicios de emergencia de tu país.</p>
+      </div>
+      <div class="footer__legal">
+        <p>© <span data-year>2026</span> MenteFu. Todos los derechos reservados.</p>
+        <p>Versión internacional en inglés: <a href="https://incocrea.github.io/myselfu/">MyselfU.com</a></p>
+      </div>
+    </div>
+  </footer>
+
+  <div class="toasts" data-toasts aria-live="polite"></div>
+  <script src="assets/js/main.js" defer></script>
+  <script src="assets/js/visuals.js" defer></script>
+  <script src="assets/js/storage.js" defer></script>
+  <script src="assets/js/sb.js" defer></script>
+  <script src="assets/js/progress.js" defer></script>
+</body>
+</html>

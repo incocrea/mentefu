@@ -1,0 +1,107 @@
+/* MenteFu / MyselfU — página de perfil: rango, XP, racha, cinturones por arte,
+   logros, certificados y cuenta. Requiere progress.js, auth.js. */
+(function () {
+  "use strict";
+  var host = document.querySelector("[data-profile]");
+  if (!host || !window.MF) return;
+  var cfg = window.MF_CONFIG || {};
+  var ES = cfg.lang === "es";
+  var T = ES ? {
+    student: "Alumno", xp: "XP", streak: "Racha", belts: "Cinturones", missions: "Misiones", toNext: "{n} XP para {rank}", max: "Rango máximo alcanzado",
+    arts: "Tus artes", achievements: "Logros", certs: "Certificados de cinturón", certNote: "Reconocimiento de progreso personal. No es una certificación profesional.",
+    account: "Cuenta", local: "Modo local: tu progreso vive solo en este navegador. Cuando la escuela conecte las cuentas, podrás registrarte para guardarlo en todos tus dispositivos.",
+    signedAs: "Conectado como", signOut: "Cerrar sesión", name: "Tu nombre (para los certificados)", save: "Guardar", saved: "Guardado.",
+    login: "Regístrate o inicia sesión para guardar tu progreso en todos tus dispositivos.", email: "Tu email", send: "Enviarme el enlace de acceso", sent: "Revisa tu correo: te hemos enviado un enlace para entrar.",
+    reset: "Reiniciar progreso local", resetConfirm: "¿Borrar todo tu progreso de este navegador? Si tienes cuenta, el progreso guardado en ella no se borra.",
+    noBelts: "Todavía no tienes cinturones. Aprueba el examen de un nivel para conseguir el primero.", belt: "Cinturón", art: "Arte", date: "Fecha", none: "Sin cinturón",
+  } : {
+    student: "Student", xp: "XP", streak: "Streak", belts: "Belts", missions: "Missions", toNext: "{n} XP to {rank}", max: "Top rank reached",
+    arts: "Your arts", achievements: "Achievements", certs: "Belt certificates", certNote: "Recognition of personal progress. Not a professional certification.",
+    account: "Account", local: "Local mode: your progress lives only in this browser. Once the school connects accounts you will be able to sign up to keep it on all your devices.",
+    signedAs: "Signed in as", signOut: "Sign out", name: "Your name (for certificates)", save: "Save", saved: "Saved.",
+    login: "Sign up or sign in to keep your progress on all your devices.", email: "Your email", send: "Send me my sign-in link", sent: "Check your inbox: we sent you a link to sign in.",
+    reset: "Reset local progress", resetConfirm: "Delete all your progress in this browser? If you have an account, the progress stored there is not deleted.",
+    noBelts: "No belts yet. Pass a level exam to earn your first one.", belt: "Belt", art: "Art", date: "Date", none: "No belt",
+  };
+  var ARTS = cfg.arts || [];
+
+  function esc(s) { return String(s).replace(/[&<>"]/g, function (c) { return { "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;" }[c]; }); }
+  function fmtDate(iso) { try { return new Date(iso).toLocaleDateString(ES ? "es" : "en", { year: "numeric", month: "long", day: "numeric" }); } catch (e) { return iso; } }
+
+  function render() {
+    var s = MF.state(), xp = MF.totalXP(), r = MF.rank(xp);
+    var beltsTotal = 0, missionsTotal = 0;
+    for (var k in s.arts) { beltsTotal += Object.keys(s.arts[k].belts || {}).length; missionsTotal += Object.keys(s.arts[k].missions || {}).length; }
+    var html = '<section class="profile__hero"><div class="profile__ring" style="--pct:' + r.pct + '"><span>' + r.pct + '%</span></div>'
+      + '<div><p class="kicker" style="color:var(--c-accent-soft)">' + T.student + (s.name ? " · " + esc(s.name) : "") + '</p><h2 class="profile__rank">' + esc(r.name) + '</h2><p class="profile__sub">' + (r.next ? T.toNext.replace("{n}", r.nextAt - xp).replace("{rank}", r.next) : T.max) + "</p></div>"
+      + '<div class="profile__stats"><span class="profile__stat"><b>' + xp + "</b>" + T.xp + '</span><span class="profile__stat"><b>' + (s.streak.days || 0) + "🔥</b>" + T.streak + '</span><span class="profile__stat"><b>' + beltsTotal + "</b>" + T.belts + '</span><span class="profile__stat"><b>' + missionsTotal + "</b>" + T.missions + "</span></div></section>";
+
+    /* artes */
+    html += '<section class="profile__section"><h2>' + T.arts + '</h2><div class="profile__arts">';
+    ARTS.forEach(function (a) {
+      var n = MF.beltOf(a.key), st = MF.art(a.key);
+      html += '<a class="profile__art" href="' + a.url + '" style="--art:' + a.color + '"><span style="font-size:1.6rem" aria-hidden="true">' + (a.icon || "🥋") + '</span><span><b>' + esc(a.name) + "</b><small>" + Object.keys(st.missions).length + " " + T.missions.toLowerCase() + " · " + MF.artXP(a.key) + " XP</small></span>" + MF.beltPill(n, true) + "</a>";
+    });
+    html += "</div></section>";
+
+    /* logros */
+    html += '<section class="profile__section"><h2>' + T.achievements + " (" + Object.keys(s.achievements).length + "/" + MF.achievements.length + ')</h2><ul class="badges">';
+    MF.achievements.forEach(function (a) {
+      var got = s.achievements[a.key];
+      var txt = ES ? a.es : a.en;
+      html += '<li class="badge' + (got ? "" : " badge--locked") + '" title="' + esc(txt[1]) + '"><span class="badge__icon" aria-hidden="true">' + a.icon + '</span><span class="badge__name">' + esc(txt[0]) + "</span><span>" + esc(txt[1]) + "</span></li>";
+    });
+    html += "</ul></section>";
+
+    /* certificados */
+    html += '<section class="profile__section"><h2>' + T.certs + "</h2>";
+    var certs = [];
+    ARTS.forEach(function (a) { var st = MF.art(a.key); for (var n in st.belts) certs.push({ art: a, n: parseInt(n, 10), at: st.belts[n] }); });
+    if (!certs.length) html += '<p class="muted">' + T.noBelts + "</p>";
+    else {
+      html += '<div class="certs">';
+      certs.sort(function (x, y) { return y.n - x.n; }).forEach(function (c) {
+        var b = MF.beltInfo(c.n);
+        html += '<div class="cert" style="--belt:' + b.color + '"><span class="cert__kicker">' + esc(cfg.brand === "mentefu" ? "MenteFu" : "MyselfU") + " · " + esc(c.art.name) + '</span><p class="cert__title">' + (ES ? "Cinturón " + b.name.toLowerCase() : b.name + " belt") + "</p>"
+          + "<p>" + (s.name ? esc(s.name) + " · " : "") + fmtDate(c.at) + "</p>" + MF.beltPill(c.n) + '<p class="cert__note">' + T.certNote + "</p></div>";
+      });
+      html += "</div>";
+    }
+    html += "</section>";
+
+    /* cuenta */
+    html += '<section class="profile__section"><h2>' + T.account + '</h2><div class="account" data-account></div>'
+      + '<p style="margin:1rem 0 0"><button class="btn btn--ghost btn--sm" type="button" data-reset>' + T.reset + "</button></p></section>";
+    host.innerHTML = html;
+    renderAccount(host.querySelector("[data-account]"));
+    host.querySelector("[data-reset]").addEventListener("click", function () { if (window.confirm(T.resetConfirm)) { MF.reset(); render(); } });
+  }
+
+  function nameForm() {
+    var s = MF.state();
+    return '<form class="account__row" data-name-form><label for="pf-name">' + T.name + '</label><input id="pf-name" class="input" type="text" maxlength="60" value="' + esc(s.name || "") + '"><button class="btn btn--ghost btn--sm" type="submit">' + T.save + '</button><span class="form__feedback" role="status"></span></form>';
+  }
+  function bindName(box) {
+    var f = box.querySelector("[data-name-form]");
+    if (!f) return;
+    f.addEventListener("submit", function (e) { e.preventDefault(); MF.state().name = f.querySelector("input").value.trim(); MF.save(); f.querySelector(".form__feedback").textContent = T.saved; });
+  }
+
+  function renderAccount(box) {
+    if (!window.SB || !SB.enabled()) { box.innerHTML = "<p class='muted'>" + T.local + "</p>" + nameForm(); bindName(box); return; }
+    MFAuth.user().then(function (u) {
+      if (u) {
+        box.innerHTML = '<div class="account__row"><span>' + T.signedAs + ' <span class="account__email">' + esc(u.email || "") + '</span></span><button class="btn btn--ghost btn--sm" type="button" data-signout>' + T.signOut + "</button></div>" + nameForm();
+        bindName(box);
+        box.querySelector("[data-signout]").addEventListener("click", function () { MFAuth.signOut().then(function () { renderAccount(box); }); });
+      } else {
+        box.innerHTML = "<p>" + T.login + '</p><form class="gate__form" data-auth-form novalidate><label class="visually-hidden" for="pf-email">' + T.email + '</label><div class="newsletter__row"><input id="pf-email" class="input" type="email" name="email" placeholder="' + T.email.toLowerCase() + '…" required autocomplete="email"><button class="btn btn--primary" type="submit">' + T.send + '</button></div><p class="form__feedback" role="status" aria-live="polite" data-sent-text="' + esc(T.sent) + '"></p></form>' + nameForm();
+        MFAuth.bindForm(box.querySelector("[data-auth-form]"));
+        bindName(box);
+      }
+    });
+  }
+
+  render();
+  MF.onChange(function () { /* re-render ligero al cambiar el estado desde otra parte */ });
+})();

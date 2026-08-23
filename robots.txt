@@ -1,0 +1,3 @@
+User-agent: *
+Allow: /
+Sitemap: https://incocrea.github.io/mentefu/sitemap.xml
