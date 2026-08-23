@@ -11,7 +11,8 @@
     arts: "Tus artes", achievements: "Logros", certs: "Certificados de cinturón", certNote: "Reconocimiento de progreso personal. No es una certificación profesional.",
     account: "Cuenta", local: "Modo local: tu progreso vive solo en este navegador. Cuando la escuela conecte las cuentas, podrás registrarte para guardarlo en todos tus dispositivos.",
     signedAs: "Conectado como", signOut: "Cerrar sesión", name: "Tu nombre (para los certificados)", save: "Guardar", saved: "Guardado.",
-    login: "Regístrate o inicia sesión para guardar tu progreso en todos tus dispositivos.", email: "Tu email", send: "Enviarme el enlace de acceso", sent: "Revisa tu correo: te hemos enviado un enlace para entrar.",
+    login: "Crea tu cuenta o inicia sesión para guardar tu progreso en todos tus dispositivos.",
+    phone: "Teléfono (opcional)", newPass: "Nueva contraseña (mínimo 8 caracteres)", changePass: "Cambiar contraseña", passChanged: "Contraseña actualizada.",
     reset: "Reiniciar progreso local", resetConfirm: "¿Borrar todo tu progreso de este navegador? Si tienes cuenta, el progreso guardado en ella no se borra.",
     noBelts: "Todavía no tienes cinturones. Aprueba el examen de un nivel para conseguir el primero.", belt: "Cinturón", art: "Arte", date: "Fecha", none: "Sin cinturón",
   } : {
@@ -19,7 +20,8 @@
     arts: "Your arts", achievements: "Achievements", certs: "Belt certificates", certNote: "Recognition of personal progress. Not a professional certification.",
     account: "Account", local: "Local mode: your progress lives only in this browser. Once the school connects accounts you will be able to sign up to keep it on all your devices.",
     signedAs: "Signed in as", signOut: "Sign out", name: "Your name (for certificates)", save: "Save", saved: "Saved.",
-    login: "Sign up or sign in to keep your progress on all your devices.", email: "Your email", send: "Send me my sign-in link", sent: "Check your inbox: we sent you a link to sign in.",
+    login: "Create your account or sign in to keep your progress on all your devices.",
+    phone: "Phone (optional)", newPass: "New password (at least 8 characters)", changePass: "Change password", passChanged: "Password updated.",
     reset: "Reset local progress", resetConfirm: "Delete all your progress in this browser? If you have an account, the progress stored there is not deleted.",
     noBelts: "No belts yet. Pass a level exam to earn your first one.", belt: "Belt", art: "Art", date: "Date", none: "No belt",
   };
@@ -77,27 +79,52 @@
     host.querySelector("[data-reset]").addEventListener("click", function () { if (window.confirm(T.resetConfirm)) { MF.reset(); render(); } });
   }
 
-  function nameForm() {
+  function nameForm(phone) {
     var s = MF.state();
-    return '<form class="account__row" data-name-form><label for="pf-name">' + T.name + '</label><input id="pf-name" class="input" type="text" maxlength="60" value="' + esc(s.name || "") + '"><button class="btn btn--ghost btn--sm" type="submit">' + T.save + '</button><span class="form__feedback" role="status"></span></form>';
+    return '<form class="account__row" data-name-form><label for="pf-name">' + T.name + '</label><input id="pf-name" class="input" type="text" maxlength="60" value="' + esc(s.name || "") + '">'
+      + '<label class="visually-hidden" for="pf-phone">' + T.phone + '</label><input id="pf-phone" class="input" type="tel" maxlength="24" placeholder="' + T.phone.toLowerCase() + '" value="' + esc(phone || "") + '">'
+      + '<button class="btn btn--ghost btn--sm" type="submit">' + T.save + '</button><span class="form__feedback" role="status"></span></form>';
   }
-  function bindName(box) {
+  function bindName(box, u) {
     var f = box.querySelector("[data-name-form]");
     if (!f) return;
-    f.addEventListener("submit", function (e) { e.preventDefault(); MF.state().name = f.querySelector("input").value.trim(); MF.save(); f.querySelector(".form__feedback").textContent = T.saved; });
+    f.addEventListener("submit", function (e) {
+      e.preventDefault();
+      var name = f.querySelector("#pf-name").value.trim();
+      var phone = f.querySelector("#pf-phone") ? f.querySelector("#pf-phone").value.trim() : "";
+      MF.state().name = name; MF.save();
+      if (u && window.SB && SB.enabled()) {
+        SB.upsert("profiles", { id: u.id, display_name: name, phone: phone }, "id").catch(function () {});
+        SB.updateUser({ data: { name: name, phone: phone } }).catch(function () {});
+      }
+      f.querySelector(".form__feedback").textContent = T.saved;
+    });
+  }
+  function passForm(box) {
+    var f = box.querySelector("[data-pass-form]");
+    if (!f) return;
+    f.addEventListener("submit", function (e) {
+      e.preventDefault();
+      var p = f.querySelector("input").value;
+      var out = f.querySelector(".form__feedback");
+      if (p.length < 8) { out.textContent = T.newPass; return; }
+      SB.updateUser({ password: p }).then(function () { out.textContent = T.passChanged; f.reset(); }).catch(function () { out.textContent = "…"; });
+    });
   }
 
   function renderAccount(box) {
-    if (!window.SB || !SB.enabled()) { box.innerHTML = "<p class='muted'>" + T.local + "</p>" + nameForm(); bindName(box); return; }
+    if (!window.SB || !SB.enabled()) { box.innerHTML = "<p class='muted'>" + T.local + "</p>" + nameForm(""); bindName(box, null); return; }
     MFAuth.user().then(function (u) {
       if (u) {
-        box.innerHTML = '<div class="account__row"><span>' + T.signedAs + ' <span class="account__email">' + esc(u.email || "") + '</span></span><button class="btn btn--ghost btn--sm" type="button" data-signout>' + T.signOut + "</button></div>" + nameForm();
-        bindName(box);
-        box.querySelector("[data-signout]").addEventListener("click", function () { MFAuth.signOut().then(function () { renderAccount(box); }); });
+        var meta = u.user_metadata || {};
+        box.innerHTML = '<div class="account__row"><span>' + T.signedAs + ' <span class="account__email">' + esc(u.email || "") + '</span></span><button class="btn btn--ghost btn--sm" type="button" data-signout>' + T.signOut + "</button></div>" + nameForm(meta.phone || "")
+          + '<form class="account__row" data-pass-form><label class="visually-hidden" for="pf-pass">' + T.newPass + '</label><input id="pf-pass" class="input" type="password" minlength="8" placeholder="' + T.newPass.toLowerCase() + '" autocomplete="new-password"><button class="btn btn--ghost btn--sm" type="submit">' + T.changePass + '</button><span class="form__feedback" role="status"></span></form>';
+        bindName(box, u); passForm(box);
+        box.querySelector("[data-signout]").addEventListener("click", function () { MFAuth.signOut().then(function () { box.__built = false; renderAccount(box); }); });
       } else {
-        box.innerHTML = "<p>" + T.login + '</p><form class="gate__form" data-auth-form novalidate><label class="visually-hidden" for="pf-email">' + T.email + '</label><div class="newsletter__row"><input id="pf-email" class="input" type="email" name="email" placeholder="' + T.email.toLowerCase() + '…" required autocomplete="email"><button class="btn btn--primary" type="submit">' + T.send + '</button></div><p class="form__feedback" role="status" aria-live="polite" data-sent-text="' + esc(T.sent) + '"></p></form>' + nameForm();
-        MFAuth.bindForm(box.querySelector("[data-auth-form]"));
-        bindName(box);
+        box.innerHTML = "<p>" + T.login + '</p><div data-auth-ui></div>' + nameForm("");
+        MFAuth.renderAuthUI(box.querySelector("[data-auth-ui]"), function () { window.location.reload(); });
+        bindName(box, null);
       }
     });
   }

@@ -86,9 +86,30 @@
     });
   }
 
-  function signInWithEmail(email) {
+  function signUp(email, password, data) {
     var redirect = window.location.href.split("#")[0];
-    return request("/auth/v1/otp", { method: "POST", auth: false, body: { email: email, create_user: true, options: { email_redirect_to: redirect } }, headers: { "X-Redirect-To": redirect } });
+    return request("/auth/v1/signup?redirect_to=" + encodeURIComponent(redirect), { method: "POST", auth: false, body: { email: email, password: password, data: data || {} } });
+  }
+
+  function signInWithPassword(email, password) {
+    return request("/auth/v1/token?grant_type=password", { method: "POST", auth: false, body: { email: email, password: password } })
+      .then(function (d) {
+        var s = { access_token: d.access_token, refresh_token: d.refresh_token, expires_at: Math.floor(Date.now() / 1000) + (d.expires_in || 3600), user: d.user };
+        saveSession(s);
+        return s;
+      });
+  }
+
+  function resetPassword(email) {
+    var redirect = window.location.href.split("#")[0];
+    return request("/auth/v1/recover?redirect_to=" + encodeURIComponent(redirect), { method: "POST", auth: false, body: { email: email } });
+  }
+
+  function updateUser(attrs) {
+    return request("/auth/v1/user", { method: "PUT", body: attrs }).then(function (u) {
+      if (session) { session.user = u; saveSession(session); }
+      return u;
+    });
   }
 
   function signOut() {
@@ -109,5 +130,5 @@
     return request("/rest/v1/" + table, { method: "POST", body: rows, headers: { "Prefer": "return=minimal" } });
   }
 
-  window.SB = { enabled: enabled, getSession: getSession, getUser: getUser, signInWithEmail: signInWithEmail, signOut: signOut, select: select, upsert: upsert, insert: insert };
+  window.SB = { enabled: enabled, getSession: getSession, getUser: getUser, signUp: signUp, signInWithPassword: signInWithPassword, resetPassword: resetPassword, updateUser: updateUser, signOut: signOut, select: select, upsert: upsert, insert: insert };
 })();

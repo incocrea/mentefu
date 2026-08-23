@@ -230,3 +230,24 @@ a.art-card:hover { transform: translateY(-4px); box-shadow: var(--shadow); }
 
 /* Móvil: el HUD de cabecera muestra solo el anillo (la regla va al final para ganar en cascada) */
 @media (max-width: 59.98rem) { .hud__meta { display: none; } .hud { padding-right: 0.3rem; } }
+
+/* ---------- Formulario de cuenta (auth.js) ---------- */
+.auth { max-width: 24rem; margin-inline: auto; text-align: left; }
+.auth__tabs { display: flex; gap: 0.4rem; margin-bottom: 1rem; justify-content: center; }
+.auth__tab { flex: 1; padding: 0.55rem 1rem; border-radius: 999px; border: 1px solid var(--c-line-dark); background: transparent; color: inherit; font-family: var(--f-display); font-weight: 700; cursor: pointer; }
+.auth__tab.is-active { background: var(--c-accent); border-color: var(--c-accent); color: var(--c-accent-ink); }
+.auth__form { display: grid; gap: 0.6rem; }
+.auth__form .form__note { text-align: center; margin-top: 0.25rem; }
+.auth__form .form__note a { color: inherit; }
+.auth__form .form__feedback { text-align: center; }
+.profile__section .auth { margin-inline: 0; }
+.profile__section .auth__tab { border-color: var(--c-line-light); }
+
+/* ---------- Correcciones de espaciado y anchos ---------- */
+/* aire bajo el subnav / cabecera en las páginas que no lo tenían */
+.layout-art main > .container, .layout-profile main > .container, .layout-mission main > .container { padding-block: clamp(2.5rem, 6vw, 4.5rem); }
+/* las tarjetas de arte no truncan el nombre y aprovechan el ancho */
+.art-card__name { font-size: clamp(1.2rem, 1rem + 1vw, 1.5rem); overflow-wrap: anywhere; }
+.grid--arts { grid-template-columns: repeat(auto-fit, minmax(14rem, 1fr)); }
+@media (min-width: 40rem) { .grid--arts { grid-template-columns: repeat(auto-fit, minmax(15rem, 1fr)); } }
+@media (min-width: 60rem) { .grid--arts { grid-template-columns: repeat(4, 1fr); } }
