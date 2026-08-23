@@ -1,0 +1,237 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <script>document.documentElement.className += " js";</script>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>MyselfU — The super dojo of mental defense arts</title>
+  <meta name="description" content="A gamified emotional growth school. Train mental defense arts — starting with GuiltFu — earn XP, move up the belts and unlock achievements while you learn to defend your mind.">
+  <link rel="canonical" href="https://www.mentefu.com/en/">
+  <meta property="og:type" content="website">
+  <meta property="og:site_name" content="MyselfU">
+  <meta property="og:title" content="MyselfU — The super dojo of mental defense arts">
+  <meta property="og:description" content="A gamified emotional growth school. Train mental defense arts — starting with GuiltFu — earn XP, move up the belts and unlock achievements while you learn to defend your mind.">
+  <meta property="og:url" content="https://www.mentefu.com/en/">
+  <meta property="og:image" content="https://www.mentefu.com/assets/img/og-myselfu.png">
+  <meta property="og:image:width" content="1200">
+  <meta property="og:image:height" content="630">
+  <meta property="og:locale" content="en_US">
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="theme-color" content="#12131a">
+  <link rel="alternate" hreflang="en" href="https://www.mentefu.com/en/">
+  <link rel="alternate" hreflang="es" href="https://www.mentefu.com/">
+  <link rel="alternate" hreflang="x-default" href="https://www.mentefu.com/">
+  <link rel="icon" type="image/svg+xml" href="../assets/img/favicon.svg">
+  <link rel="icon" type="image/png" sizes="32x32" href="../assets/img/favicon-32.png">
+  <link rel="apple-touch-icon" href="../assets/img/apple-touch-icon.png">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,500;12..96,700;12..96,800&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="../assets/css/styles.css">
+  <link rel="stylesheet" href="../assets/css/game.css">
+<script>window.MF_CONFIG = {"lang": "en", "brand": "mentefu", "prefix": "", "supabaseUrl": "", "supabaseAnonKey": "", "gate": false, "xp": {"mission": 20, "quiz_first_try": 5, "practice": 10, "scroll": 10, "exam": 50, "tool": 15, "exam_pass": 0.75}, "ranks": [[0, "Novice"], [100, "Apprentice"], [300, "Practitioner"], [700, "Adept"], [1500, "Hall Master"], [3000, "Grand Master"]], "belts": [{"n": 1, "key": "white", "color": "#f4f1ea", "name": "White", "level": "Recognition"}, {"n": 2, "key": "yellow", "color": "#f2c230", "name": "Yellow", "level": "Awareness"}, {"n": 3, "key": "orange", "color": "#f07c22", "name": "Orange", "level": "Analysis"}, {"n": 4, "key": "green", "color": "#2e9e5b", "name": "Green", "level": "Boundaries"}, {"n": 5, "key": "blue", "color": "#2f6fd8", "name": "Blue", "level": "Autonomy"}, {"n": 6, "key": "purple", "color": "#7b3fbf", "name": "Purple", "level": "Repair"}, {"n": 7, "key": "brown", "color": "#7a4a2a", "name": "Brown", "level": "Release"}, {"n": 8, "key": "black", "color": "#1a1a1f", "name": "Black", "level": "Mastery"}], "profileUrl": "profile/", "artsUrl": "arts/", "arts": [{"key": "culpafu", "name": "GuiltFu", "url": "guiltfu/", "color": "#e63b2e", "icon": "🥋", "status": "active"}], "artStats": {"limitesfu": {"missions": 0, "levels": 0}, "miedofu": {"missions": 0, "levels": 0}, "culpafu": {"missions": 24, "levels": 8}, "verguenzafu": {"missions": 0, "levels": 0}}, "page": {"id": "home", "layout": "home", "art": null, "level": null}};</script>
+
+</head>
+<body class="layout-home" data-brand="mentefu">
+  <a class="skip-link" href="#content">Skip to content</a>
+
+  <header class="header">
+    <div class="container header__inner">
+      <a class="brand" href="" aria-label="MyselfU">
+        <span class="brand__mark" aria-hidden="true"><svg viewBox="0 0 40 40" width="34" height="34" fill="none" aria-hidden="true"><path d="M31.5 9.5A15 15 0 1 0 35 20" stroke="currentColor" stroke-width="4.2" stroke-linecap="round"/><path d="M14 24.5l6-12 6 12" stroke="var(--c-accent)" stroke-width="3.6" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
+        <span class="brand__name">MYSELFU</span>
+      </a>
+      <button class="burger" aria-expanded="false" aria-controls="main-nav">
+        <span class="visually-hidden">Open menu</span>
+        <span class="burger__bar"></span>
+        <span class="burger__bar"></span>
+        <span class="burger__bar"></span>
+      </button>
+      <nav class="nav" id="main-nav" aria-label="Main">
+        <ul class="nav__list">
+          <li><a class="nav__link" href="arts/">Arts</a></li>
+          <li><a class="nav__link" href="guiltfu/">GuiltFu</a></li>
+          <li><a class="nav__link" href="research/">Research</a></li>
+          <li><a class="nav__link" href="profile/">Profile</a></li>
+          <li class="nav__lang"><a class="lang-switch" href="../" title="MenteFu — versión en español" hreflang="es">ES</a></li>
+          <li class="nav__cta"><a class="btn btn--primary btn--block" href="arts/">Enter the dojo</a></li>
+        </ul>
+      </nav>
+      <a class="hud" href="profile/" data-hud-chip aria-label="Profile">
+        <span class="hud__ring" data-hud-ring aria-hidden="true"><span class="hud__belt" data-hud-belt></span></span>
+        <span class="hud__meta"><span class="hud__rank" data-hud-rank>Profile</span><span class="hud__xp"><b data-hud-xp>0</b> XP</span></span>
+      </a>
+      <a class="btn btn--primary header__cta" href="arts/">Enter the dojo</a>
+    </div>
+  </header>
+
+  <main id="content">
+<section class="hero">
+  <div class="hero__glow" aria-hidden="true"></div>
+  <div class="hero__enso" aria-hidden="true"></div>
+  <div class="container hero__inner">
+    <p class="kicker">A super dojo for emotional growth</p>
+    <h1 class="hero__title">Learn yourself.<br>Train your mind. <em>Live freely.</em></h1>
+    <p class="hero__claim">We all learned to defend our body, our stuff and our opinions. Almost nobody taught us to defend our mind. MyselfU is a school of <strong>mental defense arts</strong>: short missions, belts, achievements and progress that stays with you.</p>
+    <div class="hero__actions">
+      <a class="btn btn--primary btn--lg" href="guiltfu/" data-continue="culpafu">Train GuiltFu</a>
+      <a class="btn btn--ghost btn--lg" href="arts/">See all the arts</a>
+    </div>
+    <p class="hero__note">Free. Emotional education, not therapy. Your progress is saved to your account.</p>
+    <div class="hero__hud" data-hud hidden>
+      <span class="hud__rank" data-hud-rank></span>
+      <span class="hud__xp"><span data-hud-xp>0</span> XP</span>
+      <span class="hud__streak" data-hud-streak></span>
+    </div>
+  </div>
+</section>
+
+<section class="section section--white">
+  <div class="container">
+    <p class="kicker">How training works here</p>
+    <h2 class="section__title">Like a game. With one difference: the final boss is you.</h2>
+    <div class="grid grid--3 how">
+      <div class="how__step" data-reveal><span class="how__icon" aria-hidden="true">🗺️</span><h3>Pick an art</h3><p>Each mental art trains a different defense: guilt, shame, fear, boundaries. Start with the one that weighs on you most.</p></div>
+      <div class="how__step" data-reveal><span class="how__icon" aria-hidden="true">⚡</span><h3>Complete missions</h3><p>One-minute cards, questions with feedback, micro-challenges for real life. Every mission earns XP and raises your rank.</p></div>
+      <div class="how__step" data-reveal><span class="how__icon" aria-hidden="true">🥋</span><h3>Earn belts</h3><p>Eight levels per art, from white to black. Pass the belt exam and unlock achievements. Nobody can take them from you.</p></div>
+    </div>
+  </div>
+</section>
+
+<section class="section section--paper-2">
+  <div class="container">
+    <p class="kicker">The arts</p>
+    <h2 class="section__title">Mental defense arts</h2>
+    <p class="section__lead">Each art is a complete course with its own dojo. GuiltFu is open now; the others unlock as the school grows.</p>
+
+
+<div class="grid grid--arts"><a class="art-card" href="guiltfu/" style="--art:#e63b2e" data-art="culpafu" data-reveal><span class="art-card__icon" aria-hidden="true">🥋</span><span class="art-card__status art-card__status--active">Available</span><span class="art-card__name">GuiltFu</span><span class="art-card__text">The art of defending your mind from guilt that tortures. Your first mental art.</span><span class="art-card__belt" data-art-belt="culpafu"></span><span class="card__more" aria-hidden="true">→</span></a><div class="art-card art-card--soon" style="--art:#7b3fbf" data-reveal><span class="art-card__icon" aria-hidden="true">🎭</span><span class="art-card__status">Coming soon</span><span class="art-card__name">ShameFu</span><span class="art-card__text">When the judgment moves from behavior to identity. Second mental art.</span></div><div class="art-card art-card--soon" style="--art:#2f6fd8" data-reveal><span class="art-card__icon" aria-hidden="true">🌊</span><span class="art-card__status">Coming soon</span><span class="art-card__name">FearFu</span><span class="art-card__text">Relating to fear without letting it decide for you. Third mental art.</span></div><div class="art-card art-card--soon" style="--art:#2e9e5b" data-reveal><span class="art-card__icon" aria-hidden="true">🛡️</span><span class="art-card__status">Coming soon</span><span class="art-card__name">BoundariesFu</span><span class="art-card__text">Saying no, holding it, and not carrying what is not yours. Fourth mental art.</span></div></div>
+
+
+  </div>
+</section>
+
+<section class="section section--dark">
+  <div class="container">
+    <div class="grid grid--2" style="align-items:start;gap:3rem">
+      <div data-reveal>
+        <p class="kicker">Why the martial language</p>
+        <h2 class="section__title">Your mind needs training too.</h2>
+        <p class="section__lead">Learning to understand, train and protect your mind looks a lot like training a martial art: practice, discipline, balance, knowing when not to react. We do not teach anyone to fight. We borrow the language because it describes what is needed remarkably well.</p>
+        <p class="section__lead" style="margin-bottom:0">This is not about fighting your emotions. It is about learning to relate to them without letting them run your decisions on autopilot.</p>
+      </div>
+      <div data-reveal>
+        <p class="kicker">The MyselfU way</p>
+        <p style="color:var(--c-text-on-dark-soft);margin:0 0 0.5rem">Not this:</p>
+        <ol class="chain chain--inline chain--bad"><li>Attack</li><li>Counter-attack</li><li>Destruction</li></ol>
+        <p style="color:var(--c-text-on-dark-soft);margin:1rem 0 0.5rem">This:</p>
+        <ol class="chain chain--inline chain--good"><li>Observe</li><li>Center</li><li>Dodge</li><li>Block</li><li>Deflect</li><li>Disarm</li><li>Repair</li><li>Release</li></ol>
+        <blockquote style="border-color:var(--c-accent-soft);color:var(--c-text-on-dark);margin-top:1.75rem"><p>The goal is not to win the fight. It is for the fight to stop controlling you.</p></blockquote>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="section">
+  <div class="container">
+    <p class="kicker">The first art</p>
+    <h2 class="section__title">GuiltFu: how much of what you do comes from avoiding guilt?</h2>
+    <p class="section__lead">We start with guilt not because it causes everything, but because when it turns chronic it organizes a surprising share of everyday suffering: self-reproach, rumination, decisions made out of fear rather than conviction.</p>
+    <div class="compare compare--good-bad">
+      <div>
+        <h3>Guilt that repairs</h3>
+        <p>It recognizes a mistake, points to a harm, pushes you to repair it and teaches you something for next time.</p>
+        <p><strong>Recognize → repair → learn → move on.</strong></p>
+      </div>
+      <div>
+        <h3>Guilt that tortures</h3>
+        <p>It punishes, humiliates, paralyzes, turns a mistake into an identity and keeps you stuck in the past.</p>
+        <p><strong>Accusation → punishment → self-reproach → rumination → more guilt.</strong></p>
+      </div>
+    </div>
+    <p class="quote-big" style="font-size:clamp(1.3rem,2.8vw,1.9rem)">Responsibility, yes. <em>Self-punishment, no.</em></p>
+    <p><a class="btn btn--primary" href="guiltfu/">Enter the GuiltFu dojo</a></p>
+  </div>
+</section>
+
+<section class="section section--dark">
+  <div class="container container--prose">
+    <p class="kicker">Manifesto</p>
+    <div class="manifesto">
+      <p>We all learned to defend our body. Some of us learned to defend our things. We even learned to defend our opinions.</p>
+      <p>But we were rarely taught to defend our own mind.</p>
+      <p>We learned rules. We learned expectations. We learned “should”. We learned to feel guilty. And very often we ended up becoming our own guards.</p>
+      <p><strong>MyselfU exists to show you another possibility.</strong></p>
+    </div>
+    <p><a class="btn btn--ghost" href="manifesto/">Read the full manifesto</a></p>
+  </div>
+</section>
+
+<section class="cta-band">
+  <div class="container center">
+    <p class="kicker" style="color:rgba(255,253,249,0.85)">First mission</p>
+    <h2 class="section__title">Not every “should” deserves a place in your head.</h2>
+    <p class="section__lead" style="margin-inline:auto">Start with the GuiltFu white belt: three missions of a few minutes each to learn to recognize guilt when it shows up.</p>
+    <a class="btn btn--primary btn--lg" href="guiltfu/dojo/level-1-recognition/">Start level 1</a>
+  </div>
+</section>
+  </main>
+
+  <footer class="footer">
+    <div class="container">
+      <div class="footer__grid">
+        <div class="footer__about">
+          <a class="brand brand--footer" href="" aria-label="MyselfU">
+            <span class="brand__mark" aria-hidden="true"><svg viewBox="0 0 40 40" width="34" height="34" fill="none" aria-hidden="true"><path d="M31.5 9.5A15 15 0 1 0 35 20" stroke="currentColor" stroke-width="4.2" stroke-linecap="round"/><path d="M14 24.5l6-12 6 12" stroke="var(--c-accent)" stroke-width="3.6" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
+            <span class="brand__name">MYSELFU</span>
+          </a>
+          <p class="footer__tagline">Train your mind. Defend your peace.</p>
+          <p class="footer__blurb">A super dojo for emotional growth. Mental defense arts to train, complete and master — start with GuiltFu.</p>
+        </div>
+        <div>
+          <h3 class="footer__title">The school</h3>
+          <ul class="footer__list">
+            <li><a href="arts/">Mental arts</a></li>
+            <li><a href="guiltfu/">GuiltFu</a></li>
+            <li><a href="research/">Research</a></li>
+            <li><a href="profile/">My profile</a></li>
+          </ul>
+        </div>
+        <div>
+          <h3 class="footer__title">MyselfU</h3>
+          <ul class="footer__list">
+            <li><a href="what-is-myselfu/">What MyselfU is</a></li>
+            <li><a href="manifesto/">Manifesto</a></li>
+            <li><a href="profile/">My profile</a></li>
+            <li><a href="contact/">Contact</a></li>
+            <li><a href="privacy/">Privacy</a></li>
+          </ul>
+        </div>
+        <div>
+          <h3 class="footer__title">Coming soon</h3>
+          <ul class="footer__list">
+            <li><span class="muted">Shop <small>(coming soon)</small></span></li>
+            <li><span class="muted">Therapy <small>(coming soon)</small></span></li>
+            <li><span class="muted">Podcast <small>(coming soon)</small></span></li>
+            <li><span class="muted">Courses <small>(coming soon)</small></span></li>
+          </ul>
+        </div>
+      </div>
+      <div class="footer__notice">
+        <p>MyselfU is emotional education, not therapy or treatment. It does not diagnose and does not replace the care of a mental health professional. Belts and achievements recognize personal progress; they are not professional certifications. If you feel intense distress or think about harming yourself, seek professional help or call your local emergency services.</p>
+      </div>
+      <div class="footer__legal">
+        <p>© <span data-year>2026</span> MyselfU. All rights reserved.</p>
+        <p>Versión en español: <a href="../">MenteFu</a></p>
+      </div>
+    </div>
+  </footer>
+
+  <div class="toasts" data-toasts aria-live="polite"></div>
+  <script src="../assets/js/main.js" defer></script>
+  <script src="../assets/js/visuals.js" defer></script>
+  <script src="../assets/js/storage.js" defer></script>
+  <script src="../assets/js/sb.js" defer></script>
+  <script src="../assets/js/progress.js" defer></script>
+</body>
+</html>
