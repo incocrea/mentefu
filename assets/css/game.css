@@ -335,3 +335,25 @@ a.art-card:hover { transform: translateY(-4px); box-shadow: var(--shadow); }
   from { transform: scale(1.02) translate3d(0, 0, 0); }
   to   { transform: scale(1.06) translate3d(-1.2%, -1%, 0); }
 }
+
+/* ---------- Escena en la cabecera de página (docs/05) ---------- */
+.page-head--scene { position: relative; overflow: hidden; isolation: isolate; }
+.page-head--scene > .container { position: relative; z-index: 1; }
+/* la cabecera es baja y el texto ocupa todo el ancho: fondo más tenue y velo parejo */
+.page-head--scene .hero__scene { --hero-bg-opacity: 0.5; }
+.page-head--scene .hero__bg { object-position: 68% 30%; }
+.page-head--scene .hero__veil {
+  background:
+    linear-gradient(90deg, rgba(18,19,26,0.93) 0%, rgba(18,19,26,0.86) 45%, rgba(18,19,26,0.66) 100%),
+    radial-gradient(100% 120% at 82% 10%, color-mix(in srgb, var(--hero-tint) 20%, transparent), transparent 62%),
+    linear-gradient(0deg, var(--c-ink-bg) 0%, rgba(18,19,26,0) 46%);
+}
+.page-head--scene .hero__masters { height: min(80%, 15rem); max-width: 34%; }
+@media (max-width: 60rem) {
+  .page-head--scene .hero__veil {
+    background:
+      linear-gradient(180deg, rgba(18,19,26,0.9) 0%, rgba(18,19,26,0.86) 60%, rgba(18,19,26,0.8) 100%),
+      radial-gradient(120% 90% at 78% 8%, color-mix(in srgb, var(--hero-tint) 16%, transparent), transparent 60%);
+  }
+  .page-head--scene .hero__masters { display: none; }
+}
