@@ -254,3 +254,16 @@ a.art-card:hover { transform: translateY(-4px); box-shadow: var(--shadow); }
 
 /* kickers dentro de cajas oscuras: usar el acento para fondo oscuro (contraste AA) */
 .dojo-progress .kicker, .gate .kicker, .art-card .kicker, .cert .kicker { color: var(--c-accent-soft); }
+
+/* ---------- Formularios: colores explícitos (nunca heredar del contenedor) ---------- */
+/* Los campos son claros en todos los contextos: texto tinta y placeholder gris AA,
+   aunque el formulario viva dentro de una caja oscura (gate, perfil, misiones). */
+.input, .auth__form .input, .tool-step textarea, .quiz textarea, .mcard textarea, .newsletter .input {
+  color: var(--c-text); background: var(--c-white); border-color: rgba(26, 27, 34, 0.2);
+}
+.input::placeholder, textarea::placeholder { color: var(--c-text-soft); opacity: 1; }
+.input:focus-visible, textarea:focus-visible { outline: 3px solid var(--c-accent-btn); outline-offset: 1px; }
+/* textos auxiliares dentro del gate (caja oscura): tonos claros */
+.gate .form__note { color: var(--c-text-on-dark-soft); }
+.gate .form__feedback { color: var(--c-text-on-dark); }
+.gate .auth__tab { border-color: var(--c-line-dark); }
