@@ -26,7 +26,8 @@
   --c-text-on-dark: #f3efe8;    /* texto sobre oscuro */
   --c-text-on-dark-soft: #b9b6ae; /* secundario sobre oscuro (8:1) */
   --c-accent: #e63b2e;          /* bermellón de marca (sello, cinturón) */
-  --c-accent-strong: #c9281c;   /* hover CTA */
+  --c-accent-btn: #d63424;      /* fondos de botón/píldora: blanco encima da 4.6:1 (AA) */
+  --c-accent-strong: #c9281c;   /* hover CTA (blanco encima: 5.5:1) */
   --c-accent-soft: #ff6a5c;     /* acento para texto sobre oscuro (6.4:1) */
   --c-accent-text: #b8241a;     /* acento para texto sobre claro (5.9:1) */
   --c-accent-ink: #fffdf9;      /* texto sobre acento (4.6:1) */
@@ -100,7 +101,7 @@ button { font: inherit; }
 
 .skip-link {
   position: absolute; left: -999px; top: 0; z-index: 200;
-  background: var(--c-accent); color: var(--c-accent-ink);
+  background: var(--c-accent-btn); color: var(--c-accent-ink);
   padding: 0.6rem 1rem; font-weight: 700; text-decoration: none;
 }
 .skip-link:focus { left: 0.5rem; top: 0.5rem; }
@@ -148,7 +149,7 @@ button { font: inherit; }
   line-height: 1.2;
 }
 .btn:hover { transform: translateY(-1px); }
-.btn--primary { background: var(--c-accent); color: var(--c-accent-ink); }
+.btn--primary { background: var(--c-accent-btn); color: var(--c-accent-ink); }
 .btn--primary:hover { background: var(--c-accent-strong); }
 .btn--ghost { background: transparent; color: inherit; border-color: currentColor; }
 .btn--ghost:hover { background: rgba(255, 255, 255, 0.08); }
@@ -267,6 +268,10 @@ button { font: inherit; }
 .prose li + li { margin-top: 0.35rem; }
 .prose a { color: var(--c-accent-text); text-decoration-thickness: 1.5px; text-underline-offset: 0.18em; }
 .prose a:hover { color: var(--c-accent-strong); }
+/* los botones dentro de prosa NO heredan el estilo de enlace (les rompía el contraste) */
+.prose a.btn { text-decoration: none; }
+.prose a.btn--primary, .prose a.btn--primary:hover { color: var(--c-accent-ink); }
+.prose a.btn--ghost, .prose a.btn--ghost:hover { color: inherit; }
 .prose strong { font-weight: 700; }
 .prose hr { border: 0; border-top: 1px solid var(--c-line-light); margin: 2.5rem 0; }
 .prose blockquote {
@@ -480,7 +485,7 @@ a.belt__link:hover { transform: translateY(-2px); box-shadow: var(--shadow); }
 .pager__next { text-align: right; align-items: flex-end; }
 
 /* ---------- Bandas CTA ---------- */
-.cta-band { background: var(--c-accent); color: var(--c-accent-ink); padding-block: clamp(3rem, 7vw, 5rem); }
+.cta-band { background: var(--c-accent-strong); color: var(--c-accent-ink); padding-block: clamp(3rem, 7vw, 5rem); }
 .cta-band .section__title { color: inherit; }
 .cta-band .btn--primary { background: var(--c-ink-bg); color: var(--c-text-on-dark); }
 .cta-band .btn--primary:hover { background: #000; }

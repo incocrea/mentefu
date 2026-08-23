@@ -41,7 +41,7 @@
 .subnav__inner::-webkit-scrollbar { display: none; }
 .subnav__link { flex: 0 0 auto; padding: 0.45rem 0.8rem; border-radius: 999px; text-decoration: none; font-family: var(--f-display); font-weight: 700; font-size: 0.9rem; color: var(--c-text-on-dark-soft); }
 .subnav__link:hover { color: var(--c-text-on-dark); }
-.subnav__link[aria-current="page"] { background: var(--c-accent); color: var(--c-accent-ink); }
+.subnav__link[aria-current="page"] { background: var(--c-accent-btn); color: var(--c-accent-ink); }
 .subnav__link--home { color: var(--c-text-on-dark); }
 
 /* ---------- Cómo funciona (portada) ---------- */
@@ -235,7 +235,7 @@ a.art-card:hover { transform: translateY(-4px); box-shadow: var(--shadow); }
 .auth { max-width: 24rem; margin-inline: auto; text-align: left; }
 .auth__tabs { display: flex; gap: 0.4rem; margin-bottom: 1rem; justify-content: center; }
 .auth__tab { flex: 1; padding: 0.55rem 1rem; border-radius: 999px; border: 1px solid var(--c-line-dark); background: transparent; color: inherit; font-family: var(--f-display); font-weight: 700; cursor: pointer; }
-.auth__tab.is-active { background: var(--c-accent); border-color: var(--c-accent); color: var(--c-accent-ink); }
+.auth__tab.is-active { background: var(--c-accent-btn); border-color: var(--c-accent-btn); color: var(--c-accent-ink); }
 .auth__form { display: grid; gap: 0.6rem; }
 .auth__form .form__note { text-align: center; margin-top: 0.25rem; }
 .auth__form .form__note a { color: inherit; }
@@ -251,3 +251,6 @@ a.art-card:hover { transform: translateY(-4px); box-shadow: var(--shadow); }
 .grid--arts { grid-template-columns: repeat(auto-fit, minmax(14rem, 1fr)); }
 @media (min-width: 40rem) { .grid--arts { grid-template-columns: repeat(auto-fit, minmax(15rem, 1fr)); } }
 @media (min-width: 60rem) { .grid--arts { grid-template-columns: repeat(4, 1fr); } }
+
+/* kickers dentro de cajas oscuras: usar el acento para fondo oscuro (contraste AA) */
+.dojo-progress .kicker, .gate .kicker, .art-card .kicker, .cert .kicker { color: var(--c-accent-soft); }
