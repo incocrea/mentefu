@@ -36,73 +36,73 @@
   "size": "1024x1024"
  },
  "avatar-1": {
-  "at": "2026-08-24T10:28:39",
+  "at": "2026-08-24T12:20:24",
   "model": "gpt-image-1",
   "out": "game/avatar-1.png",
-  "prompt": "portrait bust of one chibi martial-arts student wearing an orange-vermilion karate gi with a black belt and a white headband with a small vermilion brain emblem on the forehead, a boy with spiky black hair and light skin, friendly expression with open eyes, centered, front view",
+  "prompt": "MenteFu's official mascot, always drawn exactly the same. MODEL SHEET, do not redesign: one single kawaii shonen-anime character, alone, never two. Its head IS a big soft pale pink brain with gently rounded folds and a visible central groove, wider than tall, taking about half of the total height. The brain is PALE PINK (soft rosy pink, never orange, never peach, always clearly lighter and pinker than the orange gi) — no hair, no ears, no human skull shape, no nose, genderless with no gender cues. A white headband with a small knot and short tails on the right side crosses the lower part of the brain. Below it, a small chibi body with short arms and legs and small bare feet, wearing a martial-arts gi in orange-vermilion with a dark brown belt and a white headband tied at the side. Both eyes are always large, round and identical to each other in size and shape. Same proportions, same pale pink brain colour, same orange-vermilion gi and same brown belt in every image: ONLY the pose and the facial expression change. Portrait bust only, head and shoulders, centered, front view. calm friendly smile, eyes open",
   "quality": "medium",
   "reference": true,
   "size": "1024x1024"
  },
  "avatar-2": {
-  "at": "2026-08-24T10:29:49",
+  "at": "2026-08-24T12:21:48",
   "model": "gpt-image-1",
   "out": "game/avatar-2.png",
-  "prompt": "portrait bust of one chibi martial-arts student wearing an orange-vermilion karate gi with a black belt and a white headband with a small vermilion brain emblem on the forehead, a girl with dark brown hair in two buns with red ribbons and light skin, friendly expression with open eyes, centered, front view",
+  "prompt": "MenteFu's official mascot, always drawn exactly the same. MODEL SHEET, do not redesign: one single kawaii shonen-anime character, alone, never two. Its head IS a big soft pale pink brain with gently rounded folds and a visible central groove, wider than tall, taking about half of the total height. The brain is PALE PINK (soft rosy pink, never orange, never peach, always clearly lighter and pinker than the orange gi) — no hair, no ears, no human skull shape, no nose, genderless with no gender cues. A white headband with a small knot and short tails on the right side crosses the lower part of the brain. Below it, a small chibi body with short arms and legs and small bare feet, wearing a martial-arts gi in orange-vermilion with a dark brown belt and a white headband tied at the side. Both eyes are always large, round and identical to each other in size and shape. Same proportions, same pale pink brain colour, same orange-vermilion gi and same brown belt in every image: ONLY the pose and the facial expression change. Portrait bust only, head and shoulders, centered, front view. happy wide smile with eyes closed in two arcs",
   "quality": "medium",
   "reference": true,
   "size": "1024x1024"
  },
  "avatar-3": {
-  "at": "2026-08-24T10:31:05",
+  "at": "2026-08-24T12:23:20",
   "model": "gpt-image-1",
   "out": "game/avatar-3.png",
-  "prompt": "portrait bust of one chibi martial-arts student wearing an orange-vermilion karate gi with a black belt and a white headband with a small vermilion brain emblem on the forehead, a girl with long straight black hair and light olive skin, friendly expression with open eyes, centered, front view",
+  "prompt": "MenteFu's official mascot, always drawn exactly the same. MODEL SHEET, do not redesign: one single kawaii shonen-anime character, alone, never two. Its head IS a big soft pale pink brain with gently rounded folds and a visible central groove, wider than tall, taking about half of the total height. The brain is PALE PINK (soft rosy pink, never orange, never peach, always clearly lighter and pinker than the orange gi) — no hair, no ears, no human skull shape, no nose, genderless with no gender cues. A white headband with a small knot and short tails on the right side crosses the lower part of the brain. Below it, a small chibi body with short arms and legs and small bare feet, wearing a martial-arts gi in orange-vermilion with a dark brown belt and a white headband tied at the side. Both eyes are always large, round and identical to each other in size and shape. Same proportions, same pale pink brain colour, same orange-vermilion gi and same brown belt in every image: ONLY the pose and the facial expression change. Portrait bust only, head and shoulders, centered, front view. determined expression with slightly raised eyebrows",
   "quality": "medium",
   "reference": true,
   "size": "1024x1024"
  },
  "avatar-4": {
-  "at": "2026-08-24T10:32:17",
+  "at": "2026-08-24T12:24:59",
   "model": "gpt-image-1",
   "out": "game/avatar-4.png",
-  "prompt": "portrait bust of one chibi martial-arts student wearing an orange-vermilion karate gi with a black belt and a white headband with a small vermilion brain emblem on the forehead, a boy with a short afro and deep brown skin, friendly expression with open eyes, centered, front view",
+  "prompt": "MenteFu's official mascot, always drawn exactly the same. MODEL SHEET, do not redesign: one single kawaii shonen-anime character, alone, never two. Its head IS a big soft pale pink brain with gently rounded folds and a visible central groove, wider than tall, taking about half of the total height. The brain is PALE PINK (soft rosy pink, never orange, never peach, always clearly lighter and pinker than the orange gi) — no hair, no ears, no human skull shape, no nose, genderless with no gender cues. A white headband with a small knot and short tails on the right side crosses the lower part of the brain. Below it, a small chibi body with short arms and legs and small bare feet, wearing a martial-arts gi in orange-vermilion with a dark brown belt and a white headband tied at the side. Both eyes are always large, round and identical to each other in size and shape. Same proportions, same pale pink brain colour, same orange-vermilion gi and same brown belt in every image: ONLY the pose and the facial expression change. Portrait bust only, head and shoulders, centered, front view. playful wink with one eye closed",
   "quality": "medium",
   "reference": true,
   "size": "1024x1024"
  },
  "avatar-5": {
-  "at": "2026-08-24T10:33:27",
+  "at": "2026-08-24T12:26:12",
   "model": "gpt-image-1",
   "out": "game/avatar-5.png",
-  "prompt": "portrait bust of one chibi martial-arts student wearing an orange-vermilion karate gi with a black belt and a white headband with a small vermilion brain emblem on the forehead, a person with short white hair, round glasses and medium tan skin, friendly expression with open eyes, centered, front view",
+  "prompt": "MenteFu's official mascot, always drawn exactly the same. MODEL SHEET, do not redesign: one single kawaii shonen-anime character, alone, never two. Its head IS a big soft pale pink brain with gently rounded folds and a visible central groove, wider than tall, taking about half of the total height. The brain is PALE PINK (soft rosy pink, never orange, never peach, always clearly lighter and pinker than the orange gi) — no hair, no ears, no human skull shape, no nose, genderless with no gender cues. A white headband with a small knot and short tails on the right side crosses the lower part of the brain. Below it, a small chibi body with short arms and legs and small bare feet, wearing a martial-arts gi in orange-vermilion with a dark brown belt and a white headband tied at the side. Both eyes are always large, round and identical to each other in size and shape. Same proportions, same pale pink brain colour, same orange-vermilion gi and same brown belt in every image: ONLY the pose and the facial expression change. Portrait bust only, head and shoulders, centered, front view. serene meditation face with both eyes closed",
   "quality": "medium",
   "reference": true,
   "size": "1024x1024"
  },
  "avatar-6": {
-  "at": "2026-08-24T11:11:17",
+  "at": "2026-08-24T12:27:34",
   "model": "gpt-image-1",
   "out": "game/avatar-6.png",
-  "prompt": "portrait bust of a girl with box braids gathered in a high ponytail and dark brown skin. The student wears an orange-vermilion karate gi with a black belt and a white headband with a small vermilion brain emblem on the forehead. Friendly expression with open eyes, centered, front view. The skin tone described above is essential and must be clearly visible",
+  "prompt": "MenteFu's official mascot, always drawn exactly the same. MODEL SHEET, do not redesign: one single kawaii shonen-anime character, alone, never two. Its head IS a big soft pale pink brain with gently rounded folds and a visible central groove, wider than tall, taking about half of the total height. The brain is PALE PINK (soft rosy pink, never orange, never peach, always clearly lighter and pinker than the orange gi) — no hair, no ears, no human skull shape, no nose, genderless with no gender cues. A white headband with a small knot and short tails on the right side crosses the lower part of the brain. Below it, a small chibi body with short arms and legs and small bare feet, wearing a martial-arts gi in orange-vermilion with a dark brown belt and a white headband tied at the side. Both eyes are always large, round and identical to each other in size and shape. Same proportions, same pale pink brain colour, same orange-vermilion gi and same brown belt in every image: ONLY the pose and the facial expression change. Portrait bust only, head and shoulders, centered, front view. surprised curious expression with wide open eyes",
   "quality": "medium",
   "reference": true,
   "size": "1024x1024"
  },
  "avatar-7": {
-  "at": "2026-08-24T11:12:55",
+  "at": "2026-08-24T12:29:26",
   "model": "gpt-image-1",
   "out": "game/avatar-7.png",
-  "prompt": "portrait bust of a boy with short curly black hair, freckles and warm brown skin. The student wears an orange-vermilion karate gi with a black belt and a white headband with a small vermilion brain emblem on the forehead. Friendly expression with open eyes, centered, front view. The skin tone described above is essential and must be clearly visible",
+  "prompt": "MenteFu's official mascot, always drawn exactly the same. MODEL SHEET, do not redesign: one single kawaii shonen-anime character, alone, never two. Its head IS a big soft pale pink brain with gently rounded folds and a visible central groove, wider than tall, taking about half of the total height. The brain is PALE PINK (soft rosy pink, never orange, never peach, always clearly lighter and pinker than the orange gi) — no hair, no ears, no human skull shape, no nose, genderless with no gender cues. A white headband with a small knot and short tails on the right side crosses the lower part of the brain. Below it, a small chibi body with short arms and legs and small bare feet, wearing a martial-arts gi in orange-vermilion with a dark brown belt and a white headband tied at the side. Both eyes are always large, round and identical to each other in size and shape. Same proportions, same pale pink brain colour, same orange-vermilion gi and same brown belt in every image: ONLY the pose and the facial expression change. Portrait bust only, head and shoulders, centered, front view. proud smile wearing a small golden laurel on the headband",
   "quality": "medium",
   "reference": true,
   "size": "1024x1024"
  },
  "avatar-8": {
-  "at": "2026-08-24T11:32:54",
+  "at": "2026-08-24T12:30:50",
   "model": "gpt-image-1",
   "out": "game/avatar-8.png",
-  "prompt": "portrait bust of a person with a shaved head, a serene smile and medium brown skin. The student wears an orange-vermilion karate gi with a black belt and a white headband with a small vermilion brain emblem on the forehead. Friendly expression with open eyes, centered, front view. The skin tone described above is essential and must be clearly visible",
+  "prompt": "MenteFu's official mascot, always drawn exactly the same. MODEL SHEET, do not redesign: one single kawaii shonen-anime character, alone, never two. Its head IS a big soft pale pink brain with gently rounded folds and a visible central groove, wider than tall, taking about half of the total height. The brain is PALE PINK (soft rosy pink, never orange, never peach, always clearly lighter and pinker than the orange gi) — no hair, no ears, no human skull shape, no nose, genderless with no gender cues. A white headband with a small knot and short tails on the right side crosses the lower part of the brain. Below it, a small chibi body with short arms and legs and small bare feet, wearing a martial-arts gi in orange-vermilion with a dark brown belt and a white headband tied at the side. Both eyes are always large, round and identical to each other in size and shape. Same proportions, same pale pink brain colour, same orange-vermilion gi and same brown belt in every image: ONLY the pose and the facial expression change. Portrait bust only, head and shoulders, centered, front view. sleepy relaxed smile with half-closed eyes",
   "quality": "medium",
   "reference": true,
   "size": "1024x1024"
@@ -341,56 +341,164 @@
   "reference": true,
   "size": "1536x1024"
  },
+ "home-logros": {
+  "at": "2026-08-24T11:52:49",
+  "model": "gpt-image-1",
+  "out": "game/home-logros.png",
+  "prompt": "a folded black belt with a medal resting on top, centered emblem icon, plain object with no face, no eyes, no mouth, not a character, bold silhouette, readable at small size",
+  "quality": "medium",
+  "reference": true,
+  "size": "1024x1024"
+ },
+ "home-misiones": {
+  "at": "2026-08-24T11:51:55",
+  "model": "gpt-image-1",
+  "out": "game/home-misiones.png",
+  "prompt": "a small stack of quest cards with a lightning bolt on the top card, centered emblem icon, plain object with no face, no eyes, no mouth, not a character, bold silhouette, readable at small size",
+  "quality": "medium",
+  "reference": true,
+  "size": "1024x1024"
+ },
+ "home-pergaminos": {
+  "at": "2026-08-24T11:52:25",
+  "model": "gpt-image-1",
+  "out": "game/home-pergaminos.png",
+  "prompt": "an open scroll with a ribbon bookmark and a soft glow, centered emblem icon, plain object with no face, no eyes, no mouth, not a character, bold silhouette, readable at small size",
+  "quality": "medium",
+  "reference": true,
+  "size": "1024x1024"
+ },
+ "mascota-1": {
+  "at": "2026-08-24T11:54:31",
+  "model": "gpt-image-1",
+  "out": "mascota/propuesta-1.png",
+  "prompt": "a cute kawaii shonen-anime brain character mascot: the head IS a brain with soft rounded folds, no hair, no human face shape, genderless and without any gender cues. It wears a martial-arts gi in orange-vermilion with a black belt and a white headband. Big expressive anime eyes, friendly confident expression, standing with small arms and legs, full gi with trousers, doing a respectful martial-arts bow greeting with one fist against the open palm, cheerful. Single character alone, full body, front view",
+  "quality": "medium",
+  "reference": true,
+  "size": "1024x1024"
+ },
+ "mascota-2": {
+  "at": "2026-08-24T11:55:13",
+  "model": "gpt-image-1",
+  "out": "mascota/propuesta-2.png",
+  "prompt": "a cute kawaii shonen-anime brain character mascot: the head IS a brain with soft rounded folds, no hair, no human face shape, genderless and without any gender cues. It wears a martial-arts gi in orange-vermilion with a black belt and a white headband. Big expressive anime eyes, friendly confident expression, in a firm fighting guard stance with both fists up, determined shonen expression, dynamic pose, short sturdy body in a full gi. Single character alone, full body, front view",
+  "quality": "medium",
+  "reference": true,
+  "size": "1024x1024"
+ },
+ "mascota-3": {
+  "at": "2026-08-24T11:55:51",
+  "model": "gpt-image-1",
+  "out": "mascota/propuesta-3.png",
+  "prompt": "a cute kawaii shonen-anime brain character mascot: the head IS a brain with soft rounded folds, no hair, no human face shape, genderless and without any gender cues. It wears a martial-arts gi in orange-vermilion with a black belt and a white headband. Big expressive anime eyes, friendly confident expression, floating and meditating cross-legged with no legs visible, small hands together, calm closed eyes, soft glowing aura around it. Single character alone, full body, front view",
+  "quality": "medium",
+  "reference": true,
+  "size": "1024x1024"
+ },
+ "mascota-4": {
+  "at": "2026-08-24T11:57:20",
+  "model": "gpt-image-1",
+  "out": "mascota/propuesta-4.png",
+  "prompt": "a cute kawaii shonen-anime brain character mascot: the head IS a brain with soft rounded folds, no hair, no human face shape, genderless and without any gender cues. It wears a martial-arts gi in orange-vermilion with a black belt and a white headband. Big expressive anime eyes, friendly confident expression, the brain folds shaped like a samurai kabuto helmet, wearing a gi with shoulder armour pieces, serious noble expression, arms crossed. Single character alone, full body, front view",
+  "quality": "medium",
+  "reference": true,
+  "size": "1024x1024"
+ },
+ "mascota-5": {
+  "at": "2026-08-24T11:57:46",
+  "model": "gpt-image-1",
+  "out": "mascota/propuesta-5.png",
+  "prompt": "a cute kawaii shonen-anime brain character mascot: the head IS a brain with soft rounded folds, no hair, no human face shape, genderless and without any gender cues. It wears a martial-arts gi in orange-vermilion with a black belt and a white headband. Big expressive anime eyes, friendly confident expression, extremely chibi and round like a soft mochi, tiny stubby arms and legs, huge sparkling eyes, waving happily, very simple shapes. Single character alone, full body, front view",
+  "quality": "medium",
+  "reference": true,
+  "size": "1024x1024"
+ },
+ "mascota-6": {
+  "at": "2026-08-24T11:58:18",
+  "model": "gpt-image-1",
+  "out": "mascota/propuesta-6.png",
+  "prompt": "a cute kawaii shonen-anime brain character mascot: the head IS a brain with soft rounded folds, no hair, no human face shape, genderless and without any gender cues. It wears a martial-arts gi in orange-vermilion with a black belt and a white headband. Big expressive anime eyes, friendly confident expression, ninja style with a long flowing scarf and a headband with tails, one hand raised in a ninja hand sign, energetic mid-action pose. Single character alone, full body, front view",
+  "quality": "medium",
+  "reference": true,
+  "size": "1024x1024"
+ },
+ "mascota-7": {
+  "at": "2026-08-24T11:58:56",
+  "model": "gpt-image-1",
+  "out": "mascota/propuesta-7.png",
+  "prompt": "a cute kawaii shonen-anime brain character mascot: the head IS a brain with soft rounded folds, no hair, no human face shape, genderless and without any gender cues. It wears a martial-arts gi in orange-vermilion with a black belt and a white headband. Big expressive anime eyes, friendly confident expression, performing a karate kata: one arm extended in a straight punch, legs in a low stance, focused expression, motion lines. Single character alone, full body, front view",
+  "quality": "medium",
+  "reference": true,
+  "size": "1024x1024"
+ },
+ "mascota-8": {
+  "at": "2026-08-24T11:59:30",
+  "model": "gpt-image-1",
+  "out": "mascota/propuesta-8.png",
+  "prompt": "a cute kawaii shonen-anime brain character mascot: the head IS a brain with soft rounded folds, no hair, no human face shape, genderless and without any gender cues. It wears a martial-arts gi in orange-vermilion with a black belt and a white headband. Big expressive anime eyes, friendly confident expression, the spinal cord hangs from the back of the brain like a long ponytail tied with a red ribbon, playful wink, one thumb up. Single character alone, full body, front view",
+  "quality": "medium",
+  "reference": true,
+  "size": "1024x1024"
+ },
+ "mascota-9": {
+  "at": "2026-08-24T12:00:05",
+  "model": "gpt-image-1",
+  "out": "mascota/propuesta-9.png",
+  "prompt": "a cute kawaii shonen-anime brain character mascot: the head IS a brain with soft rounded folds, no hair, no human face shape, genderless and without any gender cues. It wears a martial-arts gi in orange-vermilion with a black belt and a white headband. Big expressive anime eyes, friendly confident expression, wearing an open gi jacket over a rounded body like a sports team mascot, big goofy smile, both arms raised in celebration. Single character alone, full body, front view",
+  "quality": "medium",
+  "reference": true,
+  "size": "1024x1024"
+ },
  "masters-artes": {
-  "at": "2026-08-24T10:43:05",
+  "at": "2026-08-24T12:17:20",
   "model": "gpt-image-1",
   "out": "heroes/masters-artes.png",
-  "prompt": "Two chibi martial-arts students, exactly the same two characters in every image: a boy with spiky black hair and light skin, and a girl with dark brown hair in two buns tied with red ribbons and light skin; both wear an orange-vermilion karate gi with a black belt and a white headband with a small vermilion brain emblem on the forehead, both standing side by side presenting with an open welcoming hand gesture, confident friendly smiles, full body, front view",
+  "prompt": "MenteFu's official mascot, always drawn exactly the same. MODEL SHEET, do not redesign: one single kawaii shonen-anime character, alone, never two. Its head IS a big soft pale pink brain with gently rounded folds and a visible central groove, wider than tall, taking about half of the total height. The brain is PALE PINK (soft rosy pink, never orange, never peach, always clearly lighter and pinker than the orange gi) — no hair, no ears, no human skull shape, no nose, genderless with no gender cues. A white headband with a small knot and short tails on the right side crosses the lower part of the brain. Below it, a small chibi body with short arms and legs and small bare feet, wearing a martial-arts gi in orange-vermilion with a dark brown belt and a white headband tied at the side. Both eyes are always large, round and identical to each other in size and shape. Same proportions, same pale pink brain colour, same orange-vermilion gi and same brown belt in every image: ONLY the pose and the facial expression change, standing and presenting with one open welcoming hand to the side, confident friendly smile, inviting the viewer in. Full body, front view",
   "quality": "medium",
   "reference": true,
   "size": "1024x1536"
  },
  "masters-culpafu": {
-  "at": "2026-08-24T10:43:46",
+  "at": "2026-08-24T12:15:21",
   "model": "gpt-image-1",
   "out": "heroes/masters-culpafu.png",
-  "prompt": "Two chibi martial-arts students, exactly the same two characters in every image: a boy with spiky black hair and light skin, and a girl with dark brown hair in two buns tied with red ribbons and light skin; both wear an orange-vermilion karate gi with a black belt and a white headband with a small vermilion brain emblem on the forehead, standing in a calm defensive guard stance, one open palm raised forward stopping an incoming shadow, composed and unafraid, full body, front view",
+  "prompt": "MenteFu's official mascot, always drawn exactly the same. MODEL SHEET, do not redesign: one single kawaii shonen-anime character, alone, never two. Its head IS a big soft pale pink brain with gently rounded folds and a visible central groove, wider than tall, taking about half of the total height. The brain is PALE PINK (soft rosy pink, never orange, never peach, always clearly lighter and pinker than the orange gi) — no hair, no ears, no human skull shape, no nose, genderless with no gender cues. A white headband with a small knot and short tails on the right side crosses the lower part of the brain. Below it, a small chibi body with short arms and legs and small bare feet, wearing a martial-arts gi in orange-vermilion with a dark brown belt and a white headband tied at the side. Both eyes are always large, round and identical to each other in size and shape. Same proportions, same pale pink brain colour, same orange-vermilion gi and same brown belt in every image: ONLY the pose and the facial expression change, standing in a calm defensive guard, one open palm raised forward as a gentle stop, composed and unafraid. Full body, front view",
   "quality": "medium",
   "reference": true,
   "size": "1024x1536"
  },
  "masters-dojo": {
-  "at": "2026-08-24T10:45:13",
+  "at": "2026-08-24T12:17:53",
   "model": "gpt-image-1",
   "out": "heroes/masters-dojo.png",
-  "prompt": "Two chibi martial-arts students, exactly the same two characters in every image: a boy with spiky black hair and light skin, and a girl with dark brown hair in two buns tied with red ribbons and light skin; both wear an orange-vermilion karate gi with a black belt and a white headband with a small vermilion brain emblem on the forehead, walking uphill together looking towards the summit, determined and cheerful, full body, three-quarter view",
+  "prompt": "MenteFu's official mascot, always drawn exactly the same. MODEL SHEET, do not redesign: one single kawaii shonen-anime character, alone, never two. Its head IS a big soft pale pink brain with gently rounded folds and a visible central groove, wider than tall, taking about half of the total height. The brain is PALE PINK (soft rosy pink, never orange, never peach, always clearly lighter and pinker than the orange gi) — no hair, no ears, no human skull shape, no nose, genderless with no gender cues. A white headband with a small knot and short tails on the right side crosses the lower part of the brain. Below it, a small chibi body with short arms and legs and small bare feet, wearing a martial-arts gi in orange-vermilion with a dark brown belt and a white headband tied at the side. Both eyes are always large, round and identical to each other in size and shape. Same proportions, same pale pink brain colour, same orange-vermilion gi and same brown belt in every image: ONLY the pose and the facial expression change, walking uphill with a small determined smile, looking upward towards the summit. Full body, front view",
   "quality": "medium",
   "reference": true,
   "size": "1024x1536"
  },
  "masters-home": {
-  "at": "2026-08-24T10:54:12",
+  "at": "2026-08-24T12:16:37",
   "model": "gpt-image-1",
   "out": "heroes/masters-home.png",
-  "prompt": "Two chibi martial-arts students, exactly the same two characters in every image: a boy with spiky black hair and light skin, and a girl with dark brown hair in two buns tied with red ribbons and light skin; both wear an orange-vermilion karate gi with a black belt and a white headband with a small vermilion brain emblem on the forehead, both sitting in lotus meditation side by side, eyes closed, serene smiles, hands resting in their laps, full body, front view",
+  "prompt": "MenteFu's official mascot, always drawn exactly the same. MODEL SHEET, do not redesign: one single kawaii shonen-anime character, alone, never two. Its head IS a big soft pale pink brain with gently rounded folds and a visible central groove, wider than tall, taking about half of the total height. The brain is PALE PINK (soft rosy pink, never orange, never peach, always clearly lighter and pinker than the orange gi) — no hair, no ears, no human skull shape, no nose, genderless with no gender cues. A white headband with a small knot and short tails on the right side crosses the lower part of the brain. Below it, a small chibi body with short arms and legs and small bare feet, wearing a martial-arts gi in orange-vermilion with a dark brown belt and a white headband tied at the side. Both eyes are always large, round and identical to each other in size and shape. Same proportions, same pale pink brain colour, same orange-vermilion gi and same brown belt in every image: ONLY the pose and the facial expression change, sitting cross-legged in calm meditation, hands resting together in its lap, eyes closed with a serene smile. Full body, front view",
   "quality": "medium",
   "reference": true,
   "size": "1024x1536"
  },
  "masters-investiga": {
-  "at": "2026-08-24T10:36:51",
+  "at": "2026-08-24T12:18:31",
   "model": "gpt-image-1",
   "out": "heroes/masters-investiga.png",
-  "prompt": "Two chibi martial-arts students, exactly the same two characters in every image: a boy with spiky black hair and light skin, and a girl with dark brown hair in two buns tied with red ribbons and light skin; both wear an orange-vermilion karate gi with a black belt and a white headband with a small vermilion brain emblem on the forehead, sitting on the floor reading an unrolled scroll together, curious expressions, full body, front view",
+  "prompt": "MenteFu's official mascot, always drawn exactly the same. MODEL SHEET, do not redesign: one single kawaii shonen-anime character, alone, never two. Its head IS a big soft pale pink brain with gently rounded folds and a visible central groove, wider than tall, taking about half of the total height. The brain is PALE PINK (soft rosy pink, never orange, never peach, always clearly lighter and pinker than the orange gi) — no hair, no ears, no human skull shape, no nose, genderless with no gender cues. A white headband with a small knot and short tails on the right side crosses the lower part of the brain. Below it, a small chibi body with short arms and legs and small bare feet, wearing a martial-arts gi in orange-vermilion with a dark brown belt and a white headband tied at the side. Both eyes are always large, round and identical to each other in size and shape. Same proportions, same pale pink brain colour, same orange-vermilion gi and same brown belt in every image: ONLY the pose and the facial expression change, sitting and reading an unrolled scroll held in both hands, curious focused expression. Full body, front view",
   "quality": "medium",
   "reference": true,
   "size": "1024x1536"
  },
  "masters-perfil": {
-  "at": "2026-08-24T10:27:18",
+  "at": "2026-08-24T12:19:00",
   "model": "gpt-image-1",
   "out": "heroes/masters-perfil.png",
-  "prompt": "Two chibi martial-arts students, exactly the same two characters in every image: a boy with spiky black hair and light skin, and a girl with dark brown hair in two buns tied with red ribbons and light skin; both wear an orange-vermilion karate gi with a black belt and a white headband with a small vermilion brain emblem on the forehead, proudly tying their black belts, standing tall with warm smiles, full body, front view",
+  "prompt": "MenteFu's official mascot, always drawn exactly the same. MODEL SHEET, do not redesign: one single kawaii shonen-anime character, alone, never two. Its head IS a big soft pale pink brain with gently rounded folds and a visible central groove, wider than tall, taking about half of the total height. The brain is PALE PINK (soft rosy pink, never orange, never peach, always clearly lighter and pinker than the orange gi) — no hair, no ears, no human skull shape, no nose, genderless with no gender cues. A white headband with a small knot and short tails on the right side crosses the lower part of the brain. Below it, a small chibi body with short arms and legs and small bare feet, wearing a martial-arts gi in orange-vermilion with a dark brown belt and a white headband tied at the side. Both eyes are always large, round and identical to each other in size and shape. Same proportions, same pale pink brain colour, same orange-vermilion gi and same brown belt in every image: ONLY the pose and the facial expression change, standing proudly while tightening its belt with both hands, warm confident smile. Full body, front view",
   "quality": "medium",
   "reference": true,
   "size": "1024x1536"
