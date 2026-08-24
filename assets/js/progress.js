@@ -44,7 +44,7 @@
   ];
 
   /* ---------- Estado ---------- */
-  function fresh() { return { v: 1, arts: {}, achievements: {}, streak: { days: 0, last: "" }, reflections: {}, flags: {}, last: {}, name: "", updated: "" }; }
+  function fresh() { return { v: 1, arts: {}, achievements: {}, streak: { days: 0, last: "" }, reflections: {}, flags: {}, last: {}, name: "", avatar: "", updated: "" }; }
   var state = MFStore.get("progress", null);
   if (!state || state.v !== 1) state = fresh();
   ["arts", "achievements", "reflections", "flags", "last"].forEach(function (k) { if (!state[k]) state[k] = {}; });
@@ -246,6 +246,7 @@
       for (var lk in (s.last || {})) m.last[lk] = s.last[lk] || m.last[lk];
       if ((s.streak || {}).last > (m.streak.last || "") || ((s.streak || {}).last === m.streak.last && (s.streak || {}).days > m.streak.days)) m.streak = Object.assign({}, s.streak);
       if (s.name && !m.name) m.name = s.name;
+      if (s.avatar && !m.avatar) m.avatar = s.avatar;
     });
     state = m;
     MFStore.set("progress", state);
@@ -285,17 +286,31 @@
     setTimeout(function () { box.remove(); }, 4200);
   }
 
+  /* Ilustraciones de gamificación: si el archivo existe se usa; si no, el emoji.
+     `art` lo inyecta el generador en MF_CONFIG (assets/img/game/*.webp). */
+  var ART = cfg.gameArt || {};
+  function artImg(kind, key, cls, alt) {
+    var f = ART[kind + "-" + key];
+    return f ? '<img class="' + cls + '" src="' + (cfg.assets || "") + f + '" alt="' + (alt || "") + '" loading="lazy" decoding="async">' : "";
+  }
+
   function beltPill(n, withWord) {
     var b = beltInfo(n);
     if (!b) return '<span class="belt-pill"><span class="belt-pill__swatch" style="--belt:#3a3c4a"></span>' + T.noBelt + '</span>';
     var label = ES ? (withWord ? "Cinturón " : "") + b.name.toLowerCase() : b.name + (withWord ? " belt" : "");
-    return '<span class="belt-pill"><span class="belt-pill__swatch" style="--belt:' + b.color + '"></span>' + label + '</span>';
+    var img = artImg("belt", b.key, "belt-pill__art");
+    return '<span class="belt-pill">' + (img || '<span class="belt-pill__swatch" style="--belt:' + b.color + '"></span>') + label + '</span>';
   }
 
   function paint() {
     var xp = totalXP(), r = rank(xp);
     var pageArt = cfg.page && cfg.page.art;
     var hb = beltInfo(pageArt ? beltOf(pageArt) : topBelt());
+    var av = state.avatar && ART["avatar-" + state.avatar];
+    document.querySelectorAll("[data-hud-avatar]").forEach(function (el) {
+      el.innerHTML = av ? '<img src="' + (cfg.assets || "") + av + '" alt="">' : "";
+      el.hidden = !av;
+    });
     document.querySelectorAll("[data-hud-chip]").forEach(function (chip) {
       chip.classList.add("is-ready");
       var ring = chip.querySelector("[data-hud-ring]"); if (ring) ring.style.setProperty("--pct", r.pct);
@@ -388,6 +403,11 @@
     state: function () { return state; }, save: save, art: art, totalXP: totalXP, artXP: artXP, rank: rank, beltOf: beltOf, beltInfo: beltInfo, topBelt: topBelt,
     completeMission: completeMission, completeExam: completeExam, scrollRead: scrollRead, toolUsed: toolUsed, reflect: reflect, remember: remember,
     track: track, flushEvents: flushEvents, merge: merge, toast: toast, confetti: confetti, beltPill: beltPill, paint: paint,
+    artImg: artImg,
+    avatars: function () {
+      return Object.keys(ART).filter(function (k) { return k.indexOf("avatar-") === 0; })
+        .map(function (k) { return { key: k.slice(7), src: (cfg.assets || "") + ART[k] }; });
+    },
     achievements: ACHIEVEMENTS, onChange: function (fn) { listeners.push(fn); }, T: T, XP: XP, sync: null,
     reset: function () { state = fresh(); MFStore.set("progress", state); paint(); },
   };

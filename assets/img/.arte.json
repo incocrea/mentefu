@@ -1,0 +1,398 @@
+{
+ "art-culpafu": {
+  "at": "2026-08-24T10:05:33",
+  "model": "gpt-image-1",
+  "out": "game/art-culpafu.png",
+  "prompt": "a folded gi jacket with a vermilion seal, symbol of guilt training, centered emblem icon, bold silhouette",
+  "quality": "medium",
+  "reference": false,
+  "size": "1024x1024"
+ },
+ "art-limitesfu": {
+  "at": "2026-08-24T10:06:48",
+  "model": "gpt-image-1",
+  "out": "game/art-limitesfu.png",
+  "prompt": "a green shield with a firm open hand inside, centered emblem icon, bold silhouette",
+  "quality": "medium",
+  "reference": false,
+  "size": "1024x1024"
+ },
+ "art-miedofu": {
+  "at": "2026-08-24T10:06:20",
+  "model": "gpt-image-1",
+  "out": "game/art-miedofu.png",
+  "prompt": "a calm blue wave curling like a shield, centered emblem icon, bold silhouette",
+  "quality": "medium",
+  "reference": false,
+  "size": "1024x1024"
+ },
+ "art-verguenzafu": {
+  "at": "2026-08-24T10:05:59",
+  "model": "gpt-image-1",
+  "out": "game/art-verguenzafu.png",
+  "prompt": "a theatre mask half smiling half sad in purple tones, centered emblem icon, bold silhouette",
+  "quality": "medium",
+  "reference": false,
+  "size": "1024x1024"
+ },
+ "avatar-1": {
+  "at": "2026-08-24T10:07:12",
+  "model": "gpt-image-1",
+  "out": "game/avatar-1.png",
+  "prompt": "portrait bust of a chibi martial-arts student wearing an orange-vermilion gi and a white headband with a small brain emblem, boy with spiky black hair, friendly expression, centered, front view",
+  "quality": "medium",
+  "reference": false,
+  "size": "1024x1024"
+ },
+ "avatar-2": {
+  "at": "2026-08-24T10:07:43",
+  "model": "gpt-image-1",
+  "out": "game/avatar-2.png",
+  "prompt": "portrait bust of a chibi martial-arts student wearing an orange-vermilion gi and a white headband with a small brain emblem, girl with dark brown hair in two buns with red ribbons, friendly expression, centered, front view",
+  "quality": "medium",
+  "reference": false,
+  "size": "1024x1024"
+ },
+ "avatar-3": {
+  "at": "2026-08-24T10:08:13",
+  "model": "gpt-image-1",
+  "out": "game/avatar-3.png",
+  "prompt": "portrait bust of a chibi martial-arts student wearing an orange-vermilion gi and a white headband with a small brain emblem, girl with long straight black hair and a headband, friendly expression, centered, front view",
+  "quality": "medium",
+  "reference": false,
+  "size": "1024x1024"
+ },
+ "avatar-4": {
+  "at": "2026-08-24T10:08:37",
+  "model": "gpt-image-1",
+  "out": "game/avatar-4.png",
+  "prompt": "portrait bust of a chibi martial-arts student wearing an orange-vermilion gi and a white headband with a small brain emblem, boy with short curly hair and freckles, friendly expression, centered, front view",
+  "quality": "medium",
+  "reference": false,
+  "size": "1024x1024"
+ },
+ "avatar-5": {
+  "at": "2026-08-24T10:09:10",
+  "model": "gpt-image-1",
+  "out": "game/avatar-5.png",
+  "prompt": "portrait bust of a chibi martial-arts student wearing an orange-vermilion gi and a white headband with a small brain emblem, person with short white hair and round glasses, friendly expression, centered, front view",
+  "quality": "medium",
+  "reference": false,
+  "size": "1024x1024"
+ },
+ "avatar-6": {
+  "at": "2026-08-24T10:09:32",
+  "model": "gpt-image-1",
+  "out": "game/avatar-6.png",
+  "prompt": "portrait bust of a chibi martial-arts student wearing an orange-vermilion gi and a white headband with a small brain emblem, girl with a high ponytail and a small scar on the cheek, friendly expression, centered, front view",
+  "quality": "medium",
+  "reference": false,
+  "size": "1024x1024"
+ },
+ "avatar-7": {
+  "at": "2026-08-24T10:09:55",
+  "model": "gpt-image-1",
+  "out": "game/avatar-7.png",
+  "prompt": "portrait bust of a chibi martial-arts student wearing an orange-vermilion gi and a white headband with a small brain emblem, boy with braided hair, friendly expression, centered, front view",
+  "quality": "medium",
+  "reference": false,
+  "size": "1024x1024"
+ },
+ "avatar-8": {
+  "at": "2026-08-24T10:10:29",
+  "model": "gpt-image-1",
+  "out": "game/avatar-8.png",
+  "prompt": "portrait bust of a chibi martial-arts student wearing an orange-vermilion gi and a white headband with a small brain emblem, person with a shaved head and a serene smile, friendly expression, centered, front view",
+  "quality": "medium",
+  "reference": false,
+  "size": "1024x1024"
+ },
+ "badge-belt-black": {
+  "at": "2026-08-24T10:03:00",
+  "model": "gpt-image-1",
+  "out": "game/badge-belt-black.png",
+  "prompt": "a circular achievement badge medal: a black belt tied in a knot with a subtle golden rim, centered emblem, bold silhouette, readable at small size",
+  "quality": "medium",
+  "reference": false,
+  "size": "1024x1024"
+ },
+ "badge-belt-green": {
+  "at": "2026-08-24T10:02:36",
+  "model": "gpt-image-1",
+  "out": "game/badge-belt-green.png",
+  "prompt": "a circular achievement badge medal: a green belt tied in a knot, centered emblem, bold silhouette, readable at small size",
+  "quality": "medium",
+  "reference": false,
+  "size": "1024x1024"
+ },
+ "badge-belt-white": {
+  "at": "2026-08-24T10:01:38",
+  "model": "gpt-image-1",
+  "out": "game/badge-belt-white.png",
+  "prompt": "a circular achievement badge medal: a white belt tied in a knot, centered emblem, bold silhouette, readable at small size",
+  "quality": "medium",
+  "reference": false,
+  "size": "1024x1024"
+ },
+ "badge-belt-yellow": {
+  "at": "2026-08-24T10:02:08",
+  "model": "gpt-image-1",
+  "out": "game/badge-belt-yellow.png",
+  "prompt": "a circular achievement badge medal: a yellow belt tied in a knot, centered emblem, bold silhouette, readable at small size",
+  "quality": "medium",
+  "reference": false,
+  "size": "1024x1024"
+ },
+ "badge-early-bird": {
+  "at": "2026-08-24T10:04:39",
+  "model": "gpt-image-1",
+  "out": "game/badge-early-bird.png",
+  "prompt": "a circular achievement badge medal: a sunrise over a mountain with a small bird, centered emblem, bold silhouette, readable at small size",
+  "quality": "medium",
+  "reference": false,
+  "size": "1024x1024"
+ },
+ "badge-first-mission": {
+  "at": "2026-08-24T09:59:33",
+  "model": "gpt-image-1",
+  "out": "game/badge-first-mission.png",
+  "prompt": "a circular achievement badge medal: a target with an arrow in the bullseye, centered emblem, bold silhouette, readable at small size",
+  "quality": "medium",
+  "reference": false,
+  "size": "1024x1024"
+ },
+ "badge-first-scroll": {
+  "at": "2026-08-24T10:00:24",
+  "model": "gpt-image-1",
+  "out": "game/badge-first-scroll.png",
+  "prompt": "a circular achievement badge medal: an open scroll with a soft glow, centered emblem, bold silhouette, readable at small size",
+  "quality": "medium",
+  "reference": false,
+  "size": "1024x1024"
+ },
+ "badge-first-tool": {
+  "at": "2026-08-24T10:00:52",
+  "model": "gpt-image-1",
+  "out": "game/badge-first-tool.png",
+  "prompt": "a circular achievement badge medal: a small toolbox with a brush and a compass, centered emblem, bold silhouette, readable at small size",
+  "quality": "medium",
+  "reference": false,
+  "size": "1024x1024"
+ },
+ "badge-missions-10": {
+  "at": "2026-08-24T09:59:56",
+  "model": "gpt-image-1",
+  "out": "game/badge-missions-10.png",
+  "prompt": "a circular achievement badge medal: a lightning bolt over ten small marks, centered emblem, bold silhouette, readable at small size",
+  "quality": "medium",
+  "reference": false,
+  "size": "1024x1024"
+ },
+ "badge-night-owl": {
+  "at": "2026-08-24T10:05:08",
+  "model": "gpt-image-1",
+  "out": "game/badge-night-owl.png",
+  "prompt": "a circular achievement badge medal: a crescent moon with a small owl, centered emblem, bold silhouette, readable at small size",
+  "quality": "medium",
+  "reference": false,
+  "size": "1024x1024"
+ },
+ "badge-perfect-exam": {
+  "at": "2026-08-24T10:03:24",
+  "model": "gpt-image-1",
+  "out": "game/badge-perfect-exam.png",
+  "prompt": "a circular achievement badge medal: a scroll stamped with a perfect red seal, centered emblem, bold silhouette, readable at small size",
+  "quality": "medium",
+  "reference": false,
+  "size": "1024x1024"
+ },
+ "badge-streak-3": {
+  "at": "2026-08-24T10:03:52",
+  "model": "gpt-image-1",
+  "out": "game/badge-streak-3.png",
+  "prompt": "a circular achievement badge medal: a small flame with three sparks, centered emblem, bold silhouette, readable at small size",
+  "quality": "medium",
+  "reference": false,
+  "size": "1024x1024"
+ },
+ "badge-streak-7": {
+  "at": "2026-08-24T10:04:16",
+  "model": "gpt-image-1",
+  "out": "game/badge-streak-7.png",
+  "prompt": "a circular achievement badge medal: a strong flame with seven sparks, centered emblem, bold silhouette, readable at small size",
+  "quality": "medium",
+  "reference": false,
+  "size": "1024x1024"
+ },
+ "belt-black": {
+  "at": "2026-08-24T09:59:07",
+  "model": "gpt-image-1",
+  "out": "game/belt-black.png",
+  "prompt": "a single folded martial arts belt in black, neatly rolled, centered icon, simple and readable at small size, subtle shading",
+  "quality": "medium",
+  "reference": false,
+  "size": "1024x1024"
+ },
+ "belt-blue": {
+  "at": "2026-08-24T09:57:37",
+  "model": "gpt-image-1",
+  "out": "game/belt-blue.png",
+  "prompt": "a single folded martial arts belt in blue, neatly rolled, centered icon, simple and readable at small size, subtle shading",
+  "quality": "medium",
+  "reference": false,
+  "size": "1024x1024"
+ },
+ "belt-brown": {
+  "at": "2026-08-24T09:58:38",
+  "model": "gpt-image-1",
+  "out": "game/belt-brown.png",
+  "prompt": "a single folded martial arts belt in brown, neatly rolled, centered icon, simple and readable at small size, subtle shading",
+  "quality": "medium",
+  "reference": false,
+  "size": "1024x1024"
+ },
+ "belt-green": {
+  "at": "2026-08-24T09:57:12",
+  "model": "gpt-image-1",
+  "out": "game/belt-green.png",
+  "prompt": "a single folded martial arts belt in green, neatly rolled, centered icon, simple and readable at small size, subtle shading",
+  "quality": "medium",
+  "reference": false,
+  "size": "1024x1024"
+ },
+ "belt-orange": {
+  "at": "2026-08-24T09:56:50",
+  "model": "gpt-image-1",
+  "out": "game/belt-orange.png",
+  "prompt": "a single folded martial arts belt in orange, neatly rolled, centered icon, simple and readable at small size, subtle shading",
+  "quality": "medium",
+  "reference": false,
+  "size": "1024x1024"
+ },
+ "belt-purple": {
+  "at": "2026-08-24T09:58:11",
+  "model": "gpt-image-1",
+  "out": "game/belt-purple.png",
+  "prompt": "a single folded martial arts belt in purple, neatly rolled, centered icon, simple and readable at small size, subtle shading",
+  "quality": "medium",
+  "reference": false,
+  "size": "1024x1024"
+ },
+ "belt-white": {
+  "at": "2026-08-24T09:55:46",
+  "model": "gpt-image-1",
+  "out": "game/belt-white.png",
+  "prompt": "a single folded martial arts belt in white, neatly rolled, centered icon, simple and readable at small size, subtle shading",
+  "quality": "medium",
+  "reference": false,
+  "size": "1024x1024"
+ },
+ "belt-yellow": {
+  "at": "2026-08-24T09:56:15",
+  "model": "gpt-image-1",
+  "out": "game/belt-yellow.png",
+  "prompt": "a single folded martial arts belt in golden yellow, neatly rolled, centered icon, simple and readable at small size, subtle shading",
+  "quality": "medium",
+  "reference": false,
+  "size": "1024x1024"
+ },
+ "bg-artes": {
+  "at": "2026-08-24T09:50:54",
+  "model": "gpt-image-1",
+  "out": "heroes/artes-bg.png",
+  "prompt": "wide atmospheric background illustration, no characters, dark ink background so light text can sit on top, main visual weight on the right half, empty and calm on the left: the weapon hall of a japanese dojo at dusk, four tall banners hanging in vermilion, purple, blue and green, wooden beams, paper lanterns, floating dust motes",
+  "quality": "medium",
+  "reference": false,
+  "size": "1536x1024"
+ },
+ "bg-culpafu": {
+  "at": "2026-08-24T09:51:15",
+  "model": "gpt-image-1",
+  "out": "heroes/culpafu-bg.png",
+  "prompt": "wide atmospheric background illustration, no characters, dark ink background so light text can sit on top, main visual weight on the right half, empty and calm on the left: a misty night courtyard with whispering ghost-like shadows drifting in, a single warm paper lantern cutting through the fog, stone path, bamboo",
+  "quality": "medium",
+  "reference": false,
+  "size": "1536x1024"
+ },
+ "bg-dojo": {
+  "at": "2026-08-24T09:51:41",
+  "model": "gpt-image-1",
+  "out": "heroes/dojo-niveles-bg.png",
+  "prompt": "wide atmospheric background illustration, no characters, dark ink background so light text can sit on top, main visual weight on the right half, empty and calm on the left: a stone stairway climbing a misty mountain, eight small lanterns marking the way up, pine trees, distant summit glowing at sunrise",
+  "quality": "medium",
+  "reference": false,
+  "size": "1536x1024"
+ },
+ "bg-investiga": {
+  "at": "2026-08-24T09:52:05",
+  "model": "gpt-image-1",
+  "out": "heroes/investiga-bg.png",
+  "prompt": "wide atmospheric background illustration, no characters, dark ink background so light text can sit on top, main visual weight on the right half, empty and calm on the left: an old library of scrolls inside a dojo, tall wooden shelves, open scrolls, candles and warm light, calm study atmosphere",
+  "quality": "medium",
+  "reference": false,
+  "size": "1536x1024"
+ },
+ "bg-perfil": {
+  "at": "2026-08-24T09:52:29",
+  "model": "gpt-image-1",
+  "out": "heroes/perfil-bg.png",
+  "prompt": "wide atmospheric background illustration, no characters, dark ink background so light text can sit on top, main visual weight on the right half, empty and calm on the left: a wall of achievements in a dojo, eight coloured belts hanging in a row from white to black, small medals and a training log on a low table",
+  "quality": "medium",
+  "reference": false,
+  "size": "1536x1024"
+ },
+ "masters-artes": {
+  "at": "2026-08-24T09:53:02",
+  "model": "gpt-image-1",
+  "out": "heroes/masters-artes.png",
+  "prompt": "Two chibi martial-arts students: a boy with spiky black hair and a girl with dark brown hair in two buns tied with red ribbons; both wear an orange-vermilion gi with a black belt and a white headband with a small brain emblem on the forehead, both standing side by side presenting with an open welcoming hand gesture, confident friendly smiles, full body, front view",
+  "quality": "medium",
+  "reference": false,
+  "size": "1024x1536"
+ },
+ "masters-culpafu": {
+  "at": "2026-08-24T09:53:36",
+  "model": "gpt-image-1",
+  "out": "heroes/masters-culpafu.png",
+  "prompt": "Two chibi martial-arts students: a boy with spiky black hair and a girl with dark brown hair in two buns tied with red ribbons; both wear an orange-vermilion gi with a black belt and a white headband with a small brain emblem on the forehead, standing in a calm defensive guard stance, one open palm raised forward stopping an incoming shadow, composed and unafraid, full body, front view",
+  "quality": "medium",
+  "reference": false,
+  "size": "1024x1536"
+ },
+ "masters-dojo": {
+  "at": "2026-08-24T09:54:07",
+  "model": "gpt-image-1",
+  "out": "heroes/masters-dojo.png",
+  "prompt": "Two chibi martial-arts students: a boy with spiky black hair and a girl with dark brown hair in two buns tied with red ribbons; both wear an orange-vermilion gi with a black belt and a white headband with a small brain emblem on the forehead, walking uphill together looking towards the summit, determined and cheerful, full body, three-quarter view",
+  "quality": "medium",
+  "reference": false,
+  "size": "1024x1536"
+ },
+ "masters-home": {
+  "at": "2026-08-24T09:47:56",
+  "model": "gpt-image-1",
+  "out": "heroes/masters-home.png",
+  "prompt": "Two chibi martial-arts students: a boy with spiky black hair and a girl with dark brown hair in two buns tied with red ribbons; both wear an orange-vermilion gi with a black belt and a white headband with a small brain emblem on the forehead, both sitting in lotus meditation side by side, eyes closed, serene smiles, hands resting in their laps, full body, front view",
+  "quality": "medium",
+  "reference": false,
+  "size": "1024x1536"
+ },
+ "masters-investiga": {
+  "at": "2026-08-24T09:54:41",
+  "model": "gpt-image-1",
+  "out": "heroes/masters-investiga.png",
+  "prompt": "Two chibi martial-arts students: a boy with spiky black hair and a girl with dark brown hair in two buns tied with red ribbons; both wear an orange-vermilion gi with a black belt and a white headband with a small brain emblem on the forehead, sitting on the floor reading an unrolled scroll together, curious expressions, full body, front view",
+  "quality": "medium",
+  "reference": false,
+  "size": "1024x1536"
+ },
+ "masters-perfil": {
+  "at": "2026-08-24T09:55:25",
+  "model": "gpt-image-1",
+  "out": "heroes/masters-perfil.png",
+  "prompt": "Two chibi martial-arts students: a boy with spiky black hair and a girl with dark brown hair in two buns tied with red ribbons; both wear an orange-vermilion gi with a black belt and a white headband with a small brain emblem on the forehead, proudly tying their black belts, standing tall with warm smiles, full body, front view",
+  "quality": "medium",
+  "reference": false,
+  "size": "1024x1536"
+ }
+}

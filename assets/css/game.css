@@ -357,3 +357,20 @@ a.art-card:hover { transform: translateY(-4px); box-shadow: var(--shadow); }
   }
   .page-head--scene .hero__masters { display: none; }
 }
+
+/* Ilustraciones de gamificación (assets/img/game) cuando ya están generadas */
+.badge__art { width: 100%; height: 100%; object-fit: contain; }
+.badge__icon:has(.badge__art) { background: transparent; box-shadow: none; }
+.badge--locked .badge__icon:has(.badge__art) { box-shadow: none; }
+.belt-pill__art { width: 1.6rem; height: 1.6rem; object-fit: contain; flex: 0 0 auto; }
+.profile__art-icon { width: 2.4rem; height: 2.4rem; object-fit: contain; }
+
+/* ---------- Selector de avatar de estudiante ---------- */
+.avatars { list-style: none; margin: 1rem 0 0; padding: 0; display: grid; grid-template-columns: repeat(auto-fill, minmax(5.5rem, 1fr)); gap: 0.75rem; }
+.avatar { width: 100%; aspect-ratio: 1; padding: 0.35rem; border-radius: 50%; border: 3px solid var(--c-line-light); background: var(--c-paper); cursor: pointer; transition: border-color 0.15s, transform 0.15s; }
+.avatar:hover { transform: translateY(-2px); border-color: var(--c-accent); }
+.avatar.is-selected { border-color: var(--c-accent-btn); box-shadow: 0 0 0 3px rgba(230,59,46,0.2); }
+.avatar img { width: 100%; height: 100%; object-fit: contain; }
+/* avatar en el chip de la cabecera */
+.hud__avatar { position: absolute; inset: 4px; border-radius: 50%; overflow: hidden; z-index: 2; }
+.hud__avatar img { width: 100%; height: 100%; object-fit: cover; }
