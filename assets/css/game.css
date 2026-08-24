@@ -341,7 +341,7 @@ a.art-card:hover { transform: translateY(-4px); box-shadow: var(--shadow); }
 .page-head--scene > .container { position: relative; z-index: 1; }
 /* la cabecera es baja y el texto ocupa todo el ancho: fondo más tenue y velo parejo */
 .page-head--scene .hero__scene { --hero-bg-opacity: 0.5; }
-.page-head--scene .hero__bg { object-position: 68% 30%; }
+.page-head--scene .hero__bg { object-position: center; }
 .page-head--scene .hero__veil {
   background:
     linear-gradient(90deg, rgba(18,19,26,0.93) 0%, rgba(18,19,26,0.86) 45%, rgba(18,19,26,0.66) 100%),
