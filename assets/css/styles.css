@@ -40,7 +40,10 @@
   --belt-brown: #7a4a2a; --belt-black: #1a1a1f;
 
   /* Tipografía */
-  --f-display: "Bricolage Grotesque", "Segoe UI", system-ui, sans-serif;
+  /* Titulares: Outfit (elección del titular 2026-08-24, sustituye a Bricolage
+     Grotesque). Geométrica de base circular: rima con el sello y con la mascota,
+     y a tamaño de hero deja que el bermellón lleve la voz. */
+  --f-display: "Outfit", "Segoe UI", system-ui, sans-serif;
   --f-body: "Inter", "Segoe UI", system-ui, sans-serif;
   --fs-hero: clamp(2.5rem, 7.5vw, 5.25rem);
   --fs-h1: clamp(2rem, 5.5vw, 3.5rem);
@@ -136,8 +139,12 @@ button { font: inherit; }
 .section--dark .section__lead { color: var(--c-text-on-dark-soft); }
 
 .grid { display: grid; gap: 1.25rem; }
-@media (min-width: 40rem) { .grid--2, .grid--cards, .grid--sections { grid-template-columns: repeat(2, 1fr); } }
-@media (min-width: 60rem) { .grid--3, .grid--cards, .grid--sections { grid-template-columns: repeat(3, 1fr); } }
+/* auto-fit, no auto-fill ni un número fijo de columnas: las pistas vacías se
+   colapsan y las tarjetas VISIBLES se reparten todo el ancho. Con columnas
+   fijas, tres tarjetas en una rejilla de cuatro dejaban un hueco a la derecha
+   (pasaba en cuanto la sesión ocultaba una). */
+@media (min-width: 40rem) { .grid--2, .grid--cards, .grid--sections { grid-template-columns: repeat(auto-fit, minmax(15rem, 1fr)); } }
+@media (min-width: 60rem) { .grid--3, .grid--cards, .grid--sections { grid-template-columns: repeat(auto-fit, minmax(16rem, 1fr)); } }
 
 /* ---------- Botones ---------- */
 .btn {

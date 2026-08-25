@@ -1,9 +1,36 @@
 {
  "art-culpafu": {
-  "at": "2026-08-24T11:05:16",
+  "at": "2026-08-24T21:13:56",
   "model": "gpt-image-1",
   "out": "game/art-culpafu.png",
-  "prompt": "a folded gi jacket with a vermilion seal, symbol of guilt training, centered emblem icon, plain object with no face, no eyes, no mouth, not a character, bold silhouette",
+  "prompt": "A orange-vermilion object, coloured almost entirely in orange-vermilion: a folded martial-arts gi jacket with a cream belt and a small seal on the chest. Centered emblem icon, plain object with no face, no eyes, no mouth, not a character, absolutely no face anywhere, not even on ornaments. Bold silhouette, the whole object fully inside the frame with generous margin on every side, surrounded by a clean, even, pure white die-cut sticker border of constant width. The dominant colour must be orange-vermilion — do NOT make it orange or vermilion unless orange-vermilion says so",
+  "quality": "medium",
+  "reference": true,
+  "size": "1024x1024"
+ },
+ "art-lovefu": {
+  "at": "2026-08-24T21:15:16",
+  "model": "gpt-image-1",
+  "out": "game/art-lovefu.png",
+  "prompt": "A deep rose pink object, coloured almost entirely in deep rose pink: two hearts side by side, one slightly ahead of the other. Centered emblem icon, plain object with no face, no eyes, no mouth, not a character, absolutely no face anywhere, not even on ornaments. Bold silhouette, the whole object fully inside the frame with generous margin on every side, surrounded by a clean, even, pure white die-cut sticker border of constant width. The dominant colour must be deep rose pink — do NOT make it orange or vermilion unless deep rose pink says so",
+  "quality": "medium",
+  "reference": true,
+  "size": "1024x1024"
+ },
+ "art-manipufu": {
+  "at": "2026-08-24T21:15:37",
+  "model": "gpt-image-1",
+  "out": "game/art-manipufu.png",
+  "prompt": "A teal green object, coloured almost entirely in teal green: a fishing hook with its line cut clean. Centered emblem icon, plain object with no face, no eyes, no mouth, not a character, absolutely no face anywhere, not even on ornaments. Bold silhouette, the whole object fully inside the frame with generous margin on every side, surrounded by a clean, even, pure white die-cut sticker border of constant width. The dominant colour must be teal green — do NOT make it orange or vermilion unless teal green says so",
+  "quality": "medium",
+  "reference": true,
+  "size": "1024x1024"
+ },
+ "art-narcifu": {
+  "at": "2026-08-24T21:14:55",
+  "model": "gpt-image-1",
+  "out": "game/art-narcifu.png",
+  "prompt": "A violet purple object, coloured almost entirely in violet purple: an ornate hand mirror with a crack across the glass. Centered emblem icon, plain object with no face, no eyes, no mouth, not a character, absolutely no face anywhere, not even on ornaments. Bold silhouette, the whole object fully inside the frame with generous margin on every side, surrounded by a clean, even, pure white die-cut sticker border of constant width. The dominant colour must be violet purple — do NOT make it orange or vermilion unless violet purple says so",
   "quality": "medium",
   "reference": true,
   "size": "1024x1024"
