@@ -485,7 +485,7 @@ a.art-card:hover { transform: translateY(-4px); box-shadow: var(--shadow); }
 
 
 /* ============================================================
-   PERGAMINOS — un solo componente (.scroll-roll) para dos usos:
+   PERGAMINOS — un solo marco (border-image de 9 zonas) para dos usos:
    la tarjeta del listado ({SECTION_LIST} → card_html) y el lector
    desplegado (reader.js). Todo en CSS: escala, no pesa y no añade
    ni una petición. Los rollos son decorativos: aria-hidden y
@@ -503,89 +503,67 @@ a.art-card:hover { transform: translateY(-4px); box-shadow: var(--shadow); }
   --roll-cap: 0.6rem;                   /* medio ancho del tope de madera */
 }
 
-/* ---------- El rollo (pieza compartida) ---------- */
-.scroll-roll {
-  position: relative; z-index: 2; display: block; flex: 0 0 auto;
-  height: var(--roll-h); border-radius: 999px; pointer-events: none;
-  /* papel enrollado: luz arriba, sombra abajo = cilindro */
-  background: linear-gradient(180deg, #fffdf9 0%, var(--scroll-paper-2) 46%, var(--scroll-shade) 82%, #cfc0a6 100%);
-  box-shadow: inset 0 0 0 1.5px var(--scroll-line), 0 2px 0 -1px rgba(122, 74, 42, 0.25);
+/* ---------- El marco (pieza compartida) ----------
+   Un solo SVG de 9 zonas (assets/img/game/marco-pergamino.svg): las cuatro
+   esquinas —los rollos— NUNCA se deforman y las bandas de papel se repiten las
+   veces que hagan falta. Por eso la tarjeta puede medir lo que sea sin que el
+   dibujo se estire, que era el problema de los rollos anteriores. */
+.marco-pergamino {
+  border: 14px solid transparent;
+  border-image: url("../img/game/marco-pergamino.svg") 32 round;
+  border-radius: 0;                       /* el marco define la forma */
+  background-color: var(--scroll-paper);
+  background-clip: padding-box;
 }
-/* la espiral: la vuelta que da el papel sobre sí mismo */
-.scroll-roll::before {
-  content: ""; position: absolute; left: 7%; right: 7%; top: 34%;
-  border-top: 1.5px solid var(--scroll-line-soft); border-radius: 999px;
-}
-/* los DOS topes de madera con un solo elemento: dos radiales, uno a cada extremo */
-.scroll-roll::after {
-  content: ""; position: absolute; top: 50%; transform: translateY(-50%);
-  left: calc(var(--roll-cap) * -1); right: calc(var(--roll-cap) * -1);
-  height: calc(var(--roll-h) * 1.32);
-  background:
-    radial-gradient(closest-side, var(--scroll-rod) 58%, var(--scroll-rod-dark) 59%, transparent 100%) left center / calc(var(--roll-cap) * 2) 100% no-repeat,
-    radial-gradient(closest-side, var(--scroll-rod) 58%, var(--scroll-rod-dark) 59%, transparent 100%) right center / calc(var(--roll-cap) * 2) 100% no-repeat;
-}
-/* variante ilustrada: si algún día arte.py genera assets/img/game/scroll-roll.webp */
-.scroll-roll--art { background: var(--roll-img) center / 100% 100% no-repeat; box-shadow: none; }
-.scroll-roll--art::before, .scroll-roll--art::after { display: none; }
+@media (min-width: 48rem) { .marco-pergamino, .card--scroll { border-width: 18px; } }
 
 /* ---------- Tarjeta de pergamino (build.py → card_html) ---------- */
 .card--scroll {
-  --roll-h: 0.85rem; --roll-cap: 0.5rem;
-  gap: 0.45rem; padding: 0.55rem 0 0.6rem;
-  background: var(--scroll-paper); border-color: var(--scroll-line-soft);
+  padding: 0; gap: 0;
+  border: 16px solid transparent;
+  border-image: url("../img/game/marco-pergamino.svg") 32 round;
+  border-radius: 0;
+  background-color: var(--scroll-paper);
+  background-clip: padding-box;
+  overflow: visible;                      /* el marco vive en el borde */
 }
-/* .card lleva overflow:hidden: el rollo se mete hacia dentro para que los topes quepan */
-.card--scroll .scroll-roll { margin-inline: 0.85rem; }
 .card__sheet {
   position: relative; z-index: 1; flex: 1 1 auto;
   display: flex; flex-direction: column; gap: 0.4rem;
-  padding: 0.9rem 1.3rem 0.95rem;
+  padding: 0.85rem 1rem 0.9rem;
   /* fibra del papel a alfa muy baja: textura sin coste de legibilidad */
   background-image: repeating-linear-gradient(90deg, rgba(122, 74, 42, 0.028) 0 1px, transparent 1px 4px);
-  /* el papel se curva al entrar en los rollos */
-  box-shadow: inset 0 12px 14px -14px rgba(122, 74, 42, 0.55), inset 0 -12px 14px -14px rgba(122, 74, 42, 0.55);
 }
-/* el hover base pone border-color:transparent y se comía el contorno: lo devolvemos */
-.card--scroll.card--link:hover { border-color: var(--scroll-line); box-shadow: 0 14px 30px rgba(122, 74, 42, 0.22); }
-/* el cinturón deja de ser franja lateral (cruzaría los rollos) y pasa a ser la cinta que ata el pergamino */
+/* el hover base cambia el color del borde, que aquí ya no pinta nada */
+.card--scroll.card--link:hover { border-color: transparent; box-shadow: 0 14px 30px rgba(122, 74, 42, 0.22); }
+/* el cinturón, como cinta que ata el pergamino por arriba */
+/* el cinturón, como cinta que asoma por debajo de la banda superior */
 .card--scroll .card__belt {
-  left: 1.7rem; top: 0; bottom: auto; z-index: 3;
-  width: 0.5rem; height: calc(var(--roll-h) + 1.35rem);
-  border-radius: 0 0 4px 4px; box-shadow: inset 0 0 0 1px rgba(0, 0, 0, 0.25);
+  left: 1.5rem; top: 0; bottom: auto; z-index: 3;
+  width: 0.45rem; height: 1.5rem;
+  border-radius: 0 0 4px 4px; box-shadow: inset 0 0 0 1px rgba(0, 0, 0, 0.22);
 }
-/* el estado pasa a ser sello de lacre: cerrado (bermellón) hasta que se lee (verde con ✓) */
-.card--scroll .card__state {
-  opacity: 1; z-index: 3; top: auto; bottom: 0.8rem; right: 1.2rem;
-  width: 1.7rem; height: 1.7rem; font-size: 0.8rem;
-  background: var(--c-accent-btn);            /* glifo #fffdf9 encima: 4.6:1 (AA) */
-  border: 2px solid rgba(122, 74, 42, 0.45);
-  box-shadow: 0 1px 0 rgba(122, 74, 42, 0.35), inset 0 -2px 4px rgba(0, 0, 0, 0.18);
-}
-.card--scroll .card__state::before { content: "✦"; color: var(--c-accent-ink); }
-.card--scroll.is-done .card__state { background: var(--belt-green); }
-.card--scroll.is-done .card__state::before { content: "✓"; }   /* misma especificidad que la regla base: gana por ir después */
-.card--scroll .card__more { padding-right: 2.4rem; }           /* la flecha no se mete debajo del sello */
+.card--scroll .card__more { padding-right: 2.2rem; }
 
 /* ---------- Lector: el pergamino desplegado (reader.js) ---------- */
 /* la sala baja un tono: sin esto la hoja crema sería invisible sobre --c-paper */
 .layout-article main, .layout-story main { background: var(--c-paper-2); }
 
-.scrollframe { --roll-h: 1.35rem; --roll-cap: 0.75rem; position: relative; display: grid; }
-.scrollframe .scroll-roll { margin-inline: -0.35rem; }   /* asoman por fuera de la hoja */
+.scrollframe { position: relative; display: grid; }
 .scrollframe__sheet {
   position: relative; z-index: 1;
-  padding: clamp(1.4rem, 5vw, 2.6rem) clamp(1.1rem, 4.5vw, 2.4rem);
+  border: 18px solid transparent;
+  border-image: url("../img/game/marco-pergamino.svg") 32 round;
+  border-radius: 0;
+  padding: clamp(1.2rem, 4vw, 2.2rem) clamp(0.9rem, 3.5vw, 2rem);
   background-color: var(--scroll-paper);
+  background-clip: padding-box;
   background-image:
     repeating-linear-gradient(90deg, rgba(122, 74, 42, 0.025) 0 1px, transparent 1px 4px),
     radial-gradient(120% 45% at 50% 0%, rgba(255, 255, 255, 0.85), transparent 70%);
-  border-inline: 1.5px solid var(--scroll-line-soft);
-  box-shadow:
-    inset 0 16px 20px -18px rgba(122, 74, 42, 0.65),
-    inset 0 -16px 20px -18px rgba(122, 74, 42, 0.65),
-    0 18px 40px rgba(122, 74, 42, 0.16);
+  filter: drop-shadow(0 14px 26px rgba(122, 74, 42, 0.18));
 }
+@media (min-width: 48rem) { .scrollframe__sheet { border-width: 24px; } }
 /* el texto largo manda: medida corta, interlineado alto y tinta plena sobre papel (≈15:1) */
 .scrollframe .reader__page { max-width: 36rem; margin-inline: auto; font-size: 1.075rem; line-height: 1.75; }
 .scrollframe .reader__page > h2:first-child { margin-top: 0; }   /* cada parte empieza por su H2 */

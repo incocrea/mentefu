@@ -31,7 +31,6 @@
     /* El pergamino desplegado: rollo, hoja y rollo. Los rollos son decorativos
        (CSS puro, sin peticiones) y nunca llevan texto encima. */
     var wrap = el('<div class="reader scrollframe">' +
-      '<span class="scroll-roll" aria-hidden="true"></span>' +
       '<div class="scrollframe__sheet">' +
         '<div class="reader__top"><div class="mission__bar"><div class="mission__fill"></div></div>' +
         '<span class="mission__count"></span></div>' +
@@ -42,7 +41,6 @@
         '</div>' +
         '<div class="scrollframe__seal" aria-hidden="true">' + T.seal + '</div>' +
       '</div>' +
-      '<span class="scroll-roll" aria-hidden="true"></span>' +
     '</div>');
     body.appendChild(wrap);
     if (already) wrap.classList.add("is-read");   /* ya leído: el sello ya está estampado */

@@ -1,0 +1,48 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="96" height="96" viewBox="0 0 96 96">
+  <!-- Marco de pergamino de MenteFu para border-image (9-slice), con el estilo
+       kawaii de la marca: contorno grueso redondeado, papel crema, canto
+       ondulado y rollos en espiral en las cuatro esquinas.
+
+       Se corta en 32: las CUATRO ESQUINAS no se deforman jamás y las bandas
+       centrales se repiten las veces que haga falta, así la tarjeta puede medir
+       lo que sea. La onda del canto tiene periodo 32 —una onda entera por tramo
+       repetible— para que al repetirse no aparezca costura. Las cuatro bandas
+       son la misma pieza girada sobre el centro: simetría exacta.
+       Dibujo vectorial propio: no pesa, escala y no gasta API. -->
+  <defs>
+    <linearGradient id="mf-papel" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#fffdf9"/>
+      <stop offset=".45" stop-color="#f8f1e5"/>
+      <stop offset="1" stop-color="#e7d9c0"/>
+    </linearGradient>
+    <radialGradient id="mf-rollo" cx=".36" cy=".3" r=".85">
+      <stop offset="0" stop-color="#fffdf9"/>
+      <stop offset=".5" stop-color="#f8f2e6"/>
+      <stop offset="1" stop-color="#e3d4b9"/>
+    </radialGradient>
+
+    <!-- Banda de papel: canto exterior ondulado, canto interior recto -->
+    <path id="mf-banda"
+          d="M0 3.4 q8 -4.4 16 0 q8 4.4 16 0 q8 -4.4 16 0 q8 4.4 16 0 q8 -4.4 16 0 q8 4.4 16 0 L96 29 L0 29 Z"/>
+    <!-- Rollo de esquina: el papel enrollado de frente. La espiral es de verdad
+         (Arquímedes, dos vueltas): con arcos sueltos el rollo parecía una «©». -->
+    <g id="mf-rollo-esquina">
+      <circle r="13.6" fill="url(#mf-rollo)" stroke="#7a4a2a" stroke-width="2.3"/>
+      <path fill="none" stroke="#c08e5e" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"
+            d="M0.00 -1.60L0.38 -1.71L0.80 -1.73L1.24 -1.64L1.68 -1.43L2.08 -1.10L2.42 -0.67L2.66 -0.14L2.78 0.46L2.75 1.10L2.58 1.75L2.25 2.37L1.76 2.93L1.14 3.39L0.40 3.70L-0.42 3.85L-1.29 3.82L-2.15 3.58L-2.98 3.14L-3.71 2.52L-4.31 1.72L-4.72 0.77L-4.93 -0.27L-4.90 -1.36L-4.63 -2.46L-4.11 -3.49L-3.36 -4.41L-2.39 -5.17L-1.26 -5.71L-0.00 -6.00L1.32 -6.01L2.65 -5.72L3.91 -5.14L5.04 -4.28L5.97 -3.17L6.66 -1.85L7.05 -0.38L7.12 1.17L6.84 2.73L6.22 4.22L5.27 5.57L4.03 6.70L2.55 7.56L0.88 8.08L-0.89 8.23L-2.69 7.99L-4.42 7.35L-6.00 6.34L-7.35 4.98L-8.39 3.34L-9.07 1.49L-9.32 -0.51L-9.14 -2.54L-8.52 -4.52L-7.46 -6.34L-6.02 -7.92L-4.24 -9.16L-2.20 -10.01L-0.00 -10.40"/>
+      <ellipse cx="-5.4" cy="-6.2" rx="3.5" ry="2.3" fill="#fffdf9" opacity=".8" transform="rotate(-34 -5.4 -6.2)"/>
+    </g>
+  </defs>
+
+  <g stroke="#7a4a2a" stroke-width="2.3" stroke-linejoin="round">
+    <use href="#mf-banda" fill="url(#mf-papel)"/>
+    <use href="#mf-banda" fill="url(#mf-papel)" transform="rotate(90 48 48)"/>
+    <use href="#mf-banda" fill="url(#mf-papel)" transform="rotate(180 48 48)"/>
+    <use href="#mf-banda" fill="url(#mf-papel)" transform="rotate(-90 48 48)"/>
+  </g>
+
+  <use href="#mf-rollo-esquina" x="16" y="16"/>
+  <use href="#mf-rollo-esquina" x="80" y="16"/>
+  <use href="#mf-rollo-esquina" x="16" y="80"/>
+  <use href="#mf-rollo-esquina" x="80" y="80"/>
+</svg>
