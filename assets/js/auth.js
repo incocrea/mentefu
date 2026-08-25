@@ -11,8 +11,10 @@
     loadErr: "No se pudo cargar el contenido. Recarga la página.",
     tabLogin: "Entrar", tabSignup: "Crear cuenta",
     name: "Tu nombre", email: "Email", country: "País", phone: "Teléfono (opcional)", pass: "Contraseña", passNew: "Contraseña (mínimo 8 caracteres)",
-    terms: 'Acepto los <a href="{terms}" target="_blank" rel="noopener">términos y condiciones</a> y el tratamiento de mis datos para el uso de la plataforma.',
+    terms: 'Acepto los <a href="{terms}" data-terms>términos y condiciones</a> y el tratamiento de mis datos para el uso de la plataforma.',
     badTerms: "Para crear la cuenta necesitas aceptar los términos y condiciones.", badCountry: "Dinos tu país.",
+    termsTitle: "Términos y condiciones", termsClose: "Cerrar", termsLoading: "Abriendo…",
+    termsErr: "No se pudieron cargar aquí. Ábrelos en una pestaña nueva.", termsAccept: "Entendido",
     login: "Entrar al dojo", signup: "Crear mi cuenta gratis", forgot: "¿Olvidaste tu contraseña?",
     working: "Un momento…", badEmail: "Revisa el email: no parece válido.", badPass: "La contraseña necesita al menos 8 caracteres.", badName: "Dinos tu nombre (aparecerá en tus certificados).",
     signupOk: "✅ Cuenta creada. Si tu escuela pide confirmación por correo te habrá llegado un enlace: púlsalo y vuelve a entrar con tu email y contraseña. Si el enlace dice que ya no vale, no pasa nada —algunos filtros de correo lo abren antes que tú y eso ya confirma la cuenta—: entra igualmente con tu contraseña.",
@@ -26,8 +28,10 @@
     loadErr: "Could not load the content. Reload the page.",
     tabLogin: "Sign in", tabSignup: "Create account",
     name: "Your name", email: "Email", country: "Country", phone: "Phone (optional)", pass: "Password", passNew: "Password (at least 8 characters)",
-    terms: 'I accept the <a href="{terms}" target="_blank" rel="noopener">terms and conditions</a> and the processing of my data for the use of the platform.',
+    terms: 'I accept the <a href="{terms}" data-terms>terms and conditions</a> and the processing of my data for the use of the platform.',
     badTerms: "You need to accept the terms and conditions to create the account.", badCountry: "Tell us your country.",
+    termsTitle: "Terms and conditions", termsClose: "Close", termsLoading: "Opening…",
+    termsErr: "They could not be loaded here. Open them in a new tab.", termsAccept: "Got it",
     login: "Enter the dojo", signup: "Create my free account", forgot: "Forgot your password?",
     working: "One moment…", badEmail: "Check the email: it does not look valid.", badPass: "The password needs at least 8 characters.", badName: "Tell us your name (it appears on your certificates).",
     signupOk: "✅ Account created. If your school requires email confirmation you will have received a link: click it and come back to sign in with your email and password. If the link says it is no longer valid, do not worry —some mail filters open it before you do, and that already confirms the account—: sign in with your password anyway.",
@@ -96,6 +100,65 @@
     });
   }
 
+  /* ---------- Términos y condiciones: modal ----------
+     Los términos solo se leen desde el registro, que es donde se aceptan; no
+     cuelgan del pie ni de ninguna otra página. El texto vive en su propia
+     página (fuente única y respaldo sin JavaScript: el enlace navega si esto
+     falla) y aquí se trae y se muestra sin sacar al alumno del formulario. */
+  var TERMS_URL = (cfg.prefix || "") + (ES ? "terminos/" : "terms/");
+  var termsHTML = null;
+
+  function abrirTerminos() {
+    var previo = document.activeElement;
+    var caja = el('<div class="modal" role="dialog" aria-modal="true" aria-label="' + T.termsTitle + '">' +
+      '<div class="modal__panel">' +
+        '<header class="modal__head"><h2 class="modal__title">' + T.termsTitle + '</h2>' +
+        '<button class="modal__close" type="button" aria-label="' + T.termsClose + '">&times;</button></header>' +
+        '<div class="modal__body"><p class="muted">' + T.termsLoading + '</p></div>' +
+        '<footer class="modal__foot"><button class="btn btn--primary btn--sm" type="button" data-ok>' + T.termsAccept + '</button></footer>' +
+      '</div></div>');
+    document.body.appendChild(caja);
+    document.documentElement.style.overflow = "hidden";
+
+    function cerrar() {
+      caja.remove();
+      document.documentElement.style.overflow = "";
+      document.removeEventListener("keydown", tecla);
+      if (previo && previo.focus) previo.focus();
+    }
+    function tecla(e) { if (e.key === "Escape") cerrar(); }
+    document.addEventListener("keydown", tecla);
+    caja.addEventListener("click", function (e) { if (e.target === caja) cerrar(); });
+    caja.querySelector(".modal__close").addEventListener("click", cerrar);
+    caja.querySelector("[data-ok]").addEventListener("click", cerrar);
+    caja.querySelector(".modal__close").focus();
+
+    var cuerpo = caja.querySelector(".modal__body");
+    function pintar(html) { cuerpo.innerHTML = html; cuerpo.scrollTop = 0; }
+    if (termsHTML) return pintar(termsHTML);
+    fetch(TERMS_URL, { credentials: "same-origin" })
+      .then(function (r) { return r.text(); })
+      .then(function (txt) {
+        var doc = new DOMParser().parseFromString(txt, "text/html");
+        var prosa = doc.querySelector(".prose");
+        if (!prosa) throw new Error("sin cuerpo");
+        /* los enlaces internos del documento saldrían del modal: se neutralizan */
+        prosa.querySelectorAll("a[href]").forEach(function (a) { a.setAttribute("target", "_blank"); a.setAttribute("rel", "noopener"); });
+        termsHTML = prosa.innerHTML;
+        pintar(termsHTML);
+      })
+      .catch(function () {
+        pintar('<p>' + T.termsErr + ' <a href="' + TERMS_URL + '" target="_blank" rel="noopener">' + T.termsTitle + '</a></p>');
+      });
+  }
+
+  document.addEventListener("click", function (e) {
+    var a = e.target.closest && e.target.closest("a[data-terms]");
+    if (!a || !window.fetch || !window.DOMParser) return;   /* sin soporte, que navegue */
+    e.preventDefault();
+    abrirTerminos();
+  });
+
   /* ---------- formulario de cuenta (login / registro) ---------- */
   function el(html) { var d = document.createElement("div"); d.innerHTML = html.trim(); return d.firstChild; }
 
@@ -119,7 +182,7 @@
       '<label class="visually-hidden" for="au-sc">' + T.country + '</label><input id="au-sc" class="input" type="text" name="country" placeholder="' + T.country.toLowerCase() + '" autocomplete="country-name" maxlength="56" required>' +
       '<label class="visually-hidden" for="au-st">' + T.phone + '</label><input id="au-st" class="input" type="tel" name="phone" placeholder="' + T.phone.toLowerCase() + '" autocomplete="tel" maxlength="24">' +
       '<label class="visually-hidden" for="au-sp">' + T.passNew + '</label><input id="au-sp" class="input" type="password" name="password" placeholder="' + T.passNew.toLowerCase() + '" autocomplete="new-password" minlength="8" required>' +
-      '<label class="auth__terms"><input type="checkbox" name="terms" required> <span>' + T.terms.replace("{terms}", (cfg.prefix || "") + (cfg.lang === "es" ? "terminos/" : "terms/")) + "</span></label>" +
+      '<label class="auth__terms"><input type="checkbox" name="terms" required> <span>' + T.terms.replace("{terms}", TERMS_URL) + "</span></label>" +
       '<button class="btn btn--primary btn--block" type="submit">' + T.signup + "</button>" +
       '<p class="form__feedback" role="status" aria-live="polite"></p></form></div>');
     host.appendChild(ui);
