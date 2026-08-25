@@ -220,7 +220,7 @@
       if (!a || a.getAttribute("href").charAt(0) === "#") return;
       try {
         sessionStorage.setItem("mf.origen", JSON.stringify({
-          url: window.location.pathname, card: i, title: data.title || document.title
+          url: window.location.pathname, card: i, title: data.title || document.title, tipo: "mision"
         }));
       } catch (err) { /* nada */ }
     });

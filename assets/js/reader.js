@@ -65,6 +65,15 @@
         MF.scrollRead(data.art, data.id, data.xp);
         already = true; next.disabled = true; next.textContent = T.read.replace("{n}", data.xp);
         wrap.classList.add("is-read");            /* estampa el sello de lacre */
+        /* pergamino completado: XP dado y de vuelta a la tarjeta de origen sin
+           que el alumno tenga que orientarse (el sello y el toast respiran antes) */
+        try {
+          var vuelta = JSON.parse(sessionStorage.getItem("mf.origen") || "null");
+          if (vuelta && vuelta.url && vuelta.url !== window.location.pathname) {
+            sessionStorage.setItem("mf.origen.volver", "1");
+            setTimeout(function () { window.location.href = vuelta.url; }, 1400);
+          }
+        } catch (err) { /* nada */ }
       }
     });
     show();
@@ -92,6 +101,17 @@
     var box = el('<div class="prose"></div>');
     box.innerHTML = data.html || "";
     body.appendChild(box);
+    /* salir del nivel por un enlace (pergamino, herramienta) guarda el punto
+       de partida: la pastilla «Volver al nivel» acompañará hasta el regreso */
+    box.addEventListener("click", function (e) {
+      var a = e.target.closest && e.target.closest("a[href]");
+      if (!a || a.getAttribute("href").charAt(0) === "#") return;
+      try {
+        sessionStorage.setItem("mf.origen", JSON.stringify({
+          url: window.location.pathname, title: data.title || document.title, tipo: "nivel"
+        }));
+      } catch (err) { /* nada */ }
+    });
     if (window.MFVisuals) MFVisuals.scan(box);
     if (window.MF) MF.paint();
   }

@@ -516,11 +516,18 @@
   (function () {
     var o = null;
     try { o = JSON.parse(sessionStorage.getItem("mf.origen") || "null"); } catch (e) { /* nada */ }
+    if (o && o.url === window.location.pathname && o.tipo === "nivel") {
+      /* de vuelta en el nivel: viaje completado, el ancla se suelta */
+      try { sessionStorage.removeItem("mf.origen"); sessionStorage.removeItem("mf.origen.volver"); } catch (e) { /* nada */ }
+      return;
+    }
     if (!o || !o.url || o.url === window.location.pathname) return;
     var btn = document.createElement("button");
     btn.type = "button";
     btn.className = "back-origin";
-    btn.innerHTML = '<span aria-hidden="true">↩</span> ' + (ES ? "Volver a la misión" : "Back to the mission");
+    var etiqueta = o.tipo === "nivel" ? (ES ? "Volver al nivel" : "Back to the level")
+                                      : (ES ? "Volver a la misión" : "Back to the mission");
+    btn.innerHTML = '<span aria-hidden="true">↩</span> ' + etiqueta;
     btn.title = o.title || "";
     btn.addEventListener("click", function () {
       try { sessionStorage.setItem("mf.origen.volver", "1"); } catch (e) { /* nada */ }
