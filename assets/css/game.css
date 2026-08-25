@@ -883,3 +883,42 @@ select.input option { color: var(--c-text); background: var(--c-white); }
   .arbol__adornos { grid-template-columns: repeat(auto-fit, minmax(3.8rem, 1fr)); }
 }
 @media (prefers-reduced-motion: reduce) { .adorno-tip, .adorno { transition: none; } }
+
+
+/* ------------------------------------------------------------------ */
+/* Panel de administración (super admin; admin.js + supabase/admin.sql) */
+/* ------------------------------------------------------------------ */
+html:not([data-admin-on]) [data-admin-link] { display: none; }
+.admin__title { display: flex; align-items: baseline; gap: 0.6rem; }
+.admin__count { font-size: 0.85rem; font-weight: 700; color: var(--c-accent-text); background: var(--c-paper-2); border: 1px solid var(--c-line-light); border-radius: 999px; padding: 0.1rem 0.6rem; }
+.admin__scroll { overflow-x: auto; }
+.admin-table { width: 100%; border-collapse: collapse; font-size: 0.92rem; }
+.admin-table th { text-align: left; font-family: var(--f-display); font-size: 0.72rem; letter-spacing: 0.08em; text-transform: uppercase; color: var(--c-text-soft); padding: 0.5rem 0.75rem; border-bottom: 2px solid var(--c-line-light); white-space: nowrap; }
+.admin-table td { padding: 0.6rem 0.75rem; border-bottom: 1px solid var(--c-line-light); vertical-align: middle; }
+.admin-table__email { font-variant-ligatures: none; white-space: nowrap; }
+.admin-table__actions { display: flex; flex-wrap: nowrap; gap: 0.3rem; }
+/* acciones como iconos con tooltip (decisión 2026-08-25) */
+.icon-btn { position: relative; width: 2.15rem; height: 2.15rem; border-radius: 50%; border: 1px solid var(--c-line-light); background: var(--c-paper); color: var(--c-text); display: grid; place-items: center; cursor: pointer; transition: border-color 0.15s ease, color 0.15s ease, background 0.15s ease; }
+.icon-btn svg { width: 1.15rem; height: 1.15rem; }
+.icon-btn:hover, .icon-btn:focus-visible { border-color: var(--c-accent-text); color: var(--c-accent-text); }
+.icon-btn--danger:hover, .icon-btn--danger:focus-visible { background: var(--c-accent-btn); border-color: var(--c-accent-btn); color: var(--c-accent-ink); }
+.icon-btn::after { content: attr(data-tip); position: absolute; bottom: calc(100% + 0.45rem); left: 50%; transform: translateX(-50%); background: var(--c-ink-bg); color: var(--c-text-on-dark); font-family: var(--f-display); font-size: 0.72rem; font-weight: 700; letter-spacing: 0.02em; padding: 0.3rem 0.6rem; border-radius: 0.5rem; white-space: nowrap; display: none; z-index: 30; pointer-events: none; }
+.icon-btn:hover::after, .icon-btn:focus-visible::after { display: block; animation: tip-in 0.15s ease; }
+.admin-table td:last-child .icon-btn:last-child::after { left: auto; right: 0; transform: none; }
+.admin-table td:last-child .icon-btn:last-child:hover::after, .admin-table td:last-child .icon-btn:last-child:focus-visible::after { animation: none; }
+.modal__panel--admin { width: min(30rem, 100%); }
+.modal__actions { display: flex; gap: 0.6rem; margin-top: 1.1rem; flex-wrap: wrap; }
+.admin__passrow { display: flex; gap: 0.5rem; align-items: center; }
+.admin__passrow .input { flex: 1; }
+.modal__body .form__label { display: block; margin: 0 0 0.8rem; font-weight: 600; }
+.modal__body .form__label .input, .modal__body .form__label select { margin-top: 0.3rem; width: 100%; }
+@media (max-width: 52rem) {
+  /* móvil: cada alumno es una tarjeta apilada, no una fila que desborda */
+  .admin-table thead { display: none; }
+  .admin-table, .admin-table tbody, .admin-table tr, .admin-table td { display: block; width: 100%; }
+  .admin-table tr { border: 1px solid var(--c-line-light); border-radius: var(--radius); padding: 0.6rem 0.75rem; margin-bottom: 0.75rem; background: var(--c-paper-2); }
+  .admin-table td { border: 0; padding: 0.2rem 0; }
+  .admin-table__email { white-space: normal; overflow-wrap: anywhere; }
+  .admin-table td[data-th]::before { content: attr(data-th) ": "; font-weight: 700; color: var(--c-text-soft); }
+  .admin-table__actions { padding-top: 0.5rem; }
+}

@@ -167,6 +167,9 @@
   function insert(table, rows) {
     return request("/rest/v1/" + table, { method: "POST", body: rows, headers: { "Prefer": "return=minimal" } });
   }
+  function rpc(fn, args) {
+    return request("/rest/v1/rpc/" + fn, { method: "POST", body: args || {} });
+  }
 
-  window.SB = { enabled: enabled, getSession: getSession, hasSession: hasSession, takeAuthError: takeAuthError, getUser: getUser, signUp: signUp, signInWithPassword: signInWithPassword, resetPassword: resetPassword, updateUser: updateUser, signOut: signOut, select: select, upsert: upsert, insert: insert };
+  window.SB = { enabled: enabled, getSession: getSession, hasSession: hasSession, takeAuthError: takeAuthError, getUser: getUser, signUp: signUp, signInWithPassword: signInWithPassword, resetPassword: resetPassword, updateUser: updateUser, signOut: signOut, select: select, upsert: upsert, insert: insert, rpc: rpc };
 })();

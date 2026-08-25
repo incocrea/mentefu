@@ -13,7 +13,6 @@
     signedAs: "Conectado como", signOut: "Cerrar sesión", name: "Tu nombre (para los certificados)", save: "Guardar", saved: "Guardado.",
     login: "Crea tu cuenta o inicia sesión para guardar tu progreso en todos tus dispositivos.",
     phone: "Teléfono (opcional)", newPass: "Nueva contraseña (mínimo 8 caracteres)", changePass: "Cambiar contraseña", passChanged: "Contraseña actualizada.",
-    reset: "Reiniciar progreso local", resetConfirm: "¿Borrar todo tu progreso de este navegador? Si tienes cuenta, el progreso guardado en ella no se borra.",
     noBelts: "Todavía no tienes cinturones. Aprueba el examen de un nivel para conseguir el primero.", belt: "Cinturón", art: "Arte", date: "Fecha", none: "Sin cinturón",
     checking: "Comprobando tu sesión…", outKicker: "Tu dojo", outTitle: "Entra a tu perfil",
     outText: "Aquí viven tu rango, tus cinturones, tus logros y tus certificados. Crea tu cuenta gratis o entra para verlos.",
@@ -26,7 +25,6 @@
     signedAs: "Signed in as", signOut: "Sign out", name: "Your name (for certificates)", save: "Save", saved: "Saved.",
     login: "Create your account or sign in to keep your progress on all your devices.",
     phone: "Phone (optional)", newPass: "New password (at least 8 characters)", changePass: "Change password", passChanged: "Password updated.",
-    reset: "Reset local progress", resetConfirm: "Delete all your progress in this browser? If you have an account, the progress stored there is not deleted.",
     noBelts: "No belts yet. Pass a level exam to earn your first one.", belt: "Belt", art: "Art", date: "Date", none: "No belt",
     checking: "Checking your session…", outKicker: "Your dojo", outTitle: "Sign in to your profile",
     outText: "Your rank, belts, achievements and certificates live here. Create your free account or sign in to see them.",
@@ -117,15 +115,15 @@
     html += "</section>";
 
     /* cuenta */
-    html += '<section class="profile__section"><h2>' + T.account + '</h2><div class="account" data-account></div>'
-      + '<p style="margin:1rem 0 0"><button class="btn btn--ghost btn--sm" type="button" data-reset>' + T.reset + "</button></p></section>";
+    /* sin botón de reinicio: reiniciar el avance es potestad del panel de
+       administración (decisión 2026-08-25) */
+    html += '<section class="profile__section"><h2>' + T.account + '</h2><div class="account" data-account></div></section>';
     host.innerHTML = html;
     renderAccount(host.querySelector("[data-account]"));
     if (window.MFArbol) {
       MFArbol.montar(host.querySelector("[data-arbol]"), host.querySelector("[data-arbol-cofre]"));
       MFArbol.mini();
     }
-    host.querySelector("[data-reset]").addEventListener("click", function () { if (window.confirm(T.resetConfirm)) { MF.reset(); render(); } });
   }
 
   function nameForm(phone) {

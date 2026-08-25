@@ -65,26 +65,53 @@
 
   /* ---------- sincronización del progreso y perfil ---------- */
   var pulled = false;
+  /* Reinicio forzado por el admin: si profiles.reset_at es más nuevo que lo
+     último que vio ESTE navegador, se vacía el estado local y se ignora el
+     remoto de esta carga — el alumno queda a cero, como recién llegado. */
+  function aplicarReinicio(row) {
+    if (!window.MF || !row || !row.reset_at) return false;
+    var visto = (MF.state().flags || {}).resetSeen || "";
+    if (row.reset_at <= visto) return false;
+    MF.forget();
+    MF.state().flags.resetSeen = row.reset_at;
+    MF.save();          /* persiste el cero y lo empuja: pisa cualquier resto */
+    return true;
+  }
   function pull() {
     if (pulled || !window.SB || !SB.enabled() || !window.MF) return Promise.resolve();
     return user().then(function (u) {
       if (!u) return;
       pulled = true;
-      return SB.select("user_progress", "select=data&user_id=eq." + u.id).then(function (rows) {
-        var remote = rows && rows[0] && rows[0].data;
-        if (remote) MF.merge(remote);
-        return syncProfile(u);
-      }).then(function () { MF.paint(); return push(); }).catch(function () { /* sin red: seguimos en local */ });
+      return SB.select("profiles", "select=display_name,phone,country,reset_at&id=eq." + u.id).catch(function () {
+        /* la columna reset_at puede no existir aún (admin.sql sin aplicar) */
+        return SB.select("profiles", "select=display_name,phone,country&id=eq." + u.id).catch(function () { return "fallo"; });
+      }).then(function (prows) {
+        /* «fallo» ≠ «sin fila»: si la consulta no llegó, ni tocamos el perfil
+           ni evaluamos reinicios — reintentaremos en la próxima carga */
+        var consultado = prows !== "fallo";
+        var perfil = (consultado && prows && prows[0]) || null;
+        aplicarReinicio(perfil);
+        return SB.select("user_progress", "select=data&user_id=eq." + u.id).then(function (rows) {
+          var remote = rows && rows[0] && rows[0].data;
+          /* el remoto solo cuenta si ya «vio» el último reinicio del admin:
+             un blob re-subido por una pestaña vieja se ignora (y el push de
+             abajo lo pisa con el estado en cero) */
+          var valido = remote && (!perfil || !perfil.reset_at
+            || (((remote.flags || {}).resetSeen || "") >= perfil.reset_at));
+          if (valido) MF.merge(remote);
+          return syncProfile(u, perfil, consultado);
+        }).then(function () { MF.paint(); return push(); });
+      }).catch(function () { /* sin red: seguimos en local */ });
     });
   }
-  function syncProfile(u) {
+  function syncProfile(u, row, consultado) {
     var meta = u.user_metadata || {};
-    return SB.select("profiles", "select=display_name,phone,country&id=eq." + u.id).then(function (rows) {
-      var row = rows && rows[0];
-      var name = (row && row.display_name) || meta.name || "";
-      if (name && window.MF && !MF.state().name) { MF.state().name = name; }
-      if (!row) return SB.upsert("profiles", { id: u.id, display_name: meta.name || "", phone: meta.phone || "", country: meta.country || "" }, "id");
-    }).catch(function () { /* la tabla puede no tener aún la columna phone */ });
+    var name = (row && row.display_name) || meta.name || "";
+    if (name && window.MF && !MF.state().name) { MF.state().name = name; }
+    /* crear el perfil SOLO si la consulta funcionó y de verdad no hay fila:
+       upsertear a ciegas tras un fallo de red pisaría ediciones del admin */
+    if (consultado && !row) return SB.upsert("profiles", { id: u.id, display_name: meta.name || "", phone: meta.phone || "", country: meta.country || "" }, "id").catch(function () { /* nada */ });
+    return Promise.resolve();
   }
   function push() {
     if (!window.SB || !SB.enabled() || !window.MF) return Promise.resolve();
@@ -263,6 +290,7 @@
       busy(login, true); say(login, T.working);
       SB.signInWithPassword(email, pass).then(function () {
         olvidarUsuario();
+        try { sessionStorage.removeItem("mf.admin"); } catch (err) { /* nada */ }
         if (window.MF && MF.setSession) MF.setSession("in");
         if (window.MF) MF.track("signin", { item: "auth" });
         say(login, "✅");
@@ -290,7 +318,7 @@
       SB.signUp(email, pass, { name: name, phone: phone, country: country, terms_accepted_at: new Date().toISOString() }).then(function (d) {
         if (window.MF) { MF.state().name = MF.state().name || name; MF.save(); MF.track("signup", { item: "auth" }); }
         /* si la confirmación de email está desactivada, GoTrue ya devuelve sesión */
-        if (d && d.access_token) { olvidarUsuario(); if (MF.setSession) MF.setSession("in"); window.location.reload(); return; }
+        if (d && d.access_token) { olvidarUsuario(); try { sessionStorage.removeItem("mf.admin"); } catch (err) { /* nada */ } if (MF.setSession) MF.setSession("in"); window.location.reload(); return; }
         say(signup, T.signupOk);
       }).catch(function (err) {
         var m = (err && err.message) || "";
@@ -363,6 +391,7 @@
   if (window.SB && SB.enabled()) pull();
 
   window.MFAuth = { user: user, pull: pull, push: push, loadContent: loadContent, renderAuthUI: renderAuthUI, T: T,
+    countryCodes: COUNTRY_CODES, countryFirst: COUNTRY_FIRST,
     signOut: function () {
       /* Primero se asegura el progreso en la cuenta (por si el último push
          falló), luego se cierra y se olvida el expediente local: en un equipo
@@ -372,6 +401,7 @@
         .then(function () { return SB.signOut(); })
         .then(function () {
           olvidarUsuario();
+          try { sessionStorage.removeItem("mf.admin"); } catch (err) { /* nada */ }
           if (window.MF && MF.forget) MF.forget();
           if (window.MF && MF.setSession) MF.setSession("out");
         });
