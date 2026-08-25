@@ -747,8 +747,28 @@ select.input option { color: var(--c-text); background: var(--c-white); }
    ============================================================ */
 
 /* --- tarjeta del perfil: anillo | identidad | mini-árbol; stats abajo --- */
-.profile__hero--filas { display: grid; grid-template-columns: auto 1fr; gap: 1.25rem 1.5rem; align-items: center; }
-.profile__hero--filas .profile__stats { grid-column: 1 / -1; margin: 0; }
+/* Tarjeta del resumen compacta (decisión 2026-08-25): en escritorio todo en
+   UNA fila —anillo · identidad · stats a la derecha— para no dejar media
+   tarjeta vacía; en móvil, dos líneas resumidas. */
+.profile__hero--filas { display: grid; grid-template-columns: auto 1fr auto; gap: 1rem 1.5rem; align-items: center; }
+/* el perfil vive dentro de .prose: sus márgenes de h2/p estiraban la tarjeta */
+.profile__hero .profile__id > * { margin: 0; }
+.profile__hero .profile__id .kicker { margin-bottom: 0.35rem; }
+.profile__hero .profile__id .profile__sub { margin-top: 0.2rem; }
+.profile__hero--filas .profile__stats { margin: 0; justify-content: flex-end; gap: 1.75rem; }
+@media (max-width: 40rem) {
+  .profile__hero--filas { grid-template-columns: auto 1fr; gap: 0.6rem 0.9rem; }
+  .profile__hero--filas .profile__ring { width: 3.4rem; height: 3.4rem; }
+  .profile__hero--filas .profile__ring::after { inset: 4px; }
+  .profile__hero--filas .profile__ring span { font-size: 0.8rem; }
+  .profile__hero--filas .kicker { display: none; }           /* línea 1: anillo + rango */
+  .profile__hero--filas .profile__rank { font-size: 1.25rem; }
+  .profile__hero--filas .profile__sub { font-size: 0.78rem; }
+  .profile__hero--filas .profile__stats {                     /* línea 2: stats en fila */
+    grid-column: 1 / -1; justify-content: space-between; gap: 0.5rem 1rem; }
+  .profile__hero--filas .profile__stat { font-size: 0.62rem; letter-spacing: 0.06em; }
+  .profile__hero--filas .profile__stat b { font-size: 1.05rem; }
+}
 
 /* --- árbol vivo en la cabecera del perfil (sustituye a la mascota) --- */
 .hero__arbol { position: absolute; top: 50%; transform: translateY(-50%);
