@@ -17,6 +17,7 @@
     achievement: "Logro desbloqueado", beltAwarded: "¡Nuevo cinturón!", streak: "{n} días de racha", streak1: "1 día de racha",
     levelsDone: "Cinturones: {k}/8", nextLevel: "Siguiente: nivel {n}", allDone: "Cinturón negro conseguido. Sigue entrenando.",
     examLocked: "Completa todas las misiones del nivel para desbloquear el examen.",
+    levelLocked: "El dojo se recorre en orden: consigue el cinturón anterior para abrir este nivel.",
     rankUp: "¡Subes de rango!", toRank: "{n} XP para {rank}", maxRank: "Rango máximo",
     noAccount: "Sin cuenta", signIn: "Entra o crea tu cuenta para empezar a sumar XP", checking: "Comprobando tu sesión…",
   } : {
@@ -24,6 +25,7 @@
     achievement: "Achievement unlocked", beltAwarded: "New belt!", streak: "{n}-day streak", streak1: "1-day streak",
     levelsDone: "Belts: {k}/8", nextLevel: "Next: level {n}", allDone: "Black belt earned. Keep training.",
     examLocked: "Complete every mission in the level to unlock the exam.",
+    levelLocked: "The dojo is walked in order: earn the previous belt to open this level.",
     rankUp: "Rank up!", toRank: "{n} XP to {rank}", maxRank: "Top rank",
     noAccount: "No account", signIn: "Sign in or create your account to start earning XP", checking: "Checking your session…",
   };
@@ -343,6 +345,18 @@
     if (sessionState === "out" && cfg.profileUrl) window.location.href = cfg.profileUrl;
   });
 
+  /* El dojo se recorre en orden: los enlaces de niveles bloqueados avisan en
+     vez de navegar. El candado de verdad lo pone auth.js al abrir la página. */
+  document.addEventListener("click", function (e) {
+    if (!e.target.closest) return;
+    var nodo = e.target.closest(".belt.is-locked, .pmap__node.is-locked");
+    if (!nodo) return;
+    var a = e.target.closest("a");
+    if (!a) return;
+    e.preventDefault();
+    toast("xp", T.levelLocked, "", "🔒");
+  });
+
   function paint() {
     promoverEnlaces();
     var xp = totalXP(), r = rank(xp);
@@ -410,6 +424,7 @@
         var n = parseInt(li.getAttribute("data-belt"), 10);
         li.classList.toggle("is-done", !!a.belts[n]);
         li.classList.toggle("is-current", n === cur);
+        li.classList.toggle("is-locked", n > cur);
       });
     });
     document.querySelectorAll("[data-pmap]").forEach(function (svg) {

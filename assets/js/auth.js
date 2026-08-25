@@ -15,6 +15,9 @@
     badTerms: "Para crear la cuenta necesitas aceptar los términos y condiciones.", badCountry: "Dinos tu país.",
     termsTitle: "Términos y condiciones", termsClose: "Cerrar", termsLoading: "Abriendo…",
     termsErr: "No se pudieron cargar aquí. Ábrelos en una pestaña nueva.", termsAccept: "Entendido",
+    lockedKicker: "Cinturón pendiente", lockedTitle: "Este nivel todavía está cerrado",
+    lockedText: "El dojo se recorre en orden: cada nivel se abre al conseguir el cinturón del anterior. Tu entrenamiento continúa donde lo dejaste.",
+    lockedCta: "Volver al dojo",
     login: "Entrar al dojo", signup: "Crear mi cuenta gratis", forgot: "¿Olvidaste tu contraseña?",
     working: "Un momento…", badEmail: "Revisa el email: no parece válido.", badPass: "La contraseña necesita al menos 8 caracteres.", badName: "Dinos tu nombre (aparecerá en tus certificados).",
     signupOk: "✅ Cuenta creada. Si tu escuela pide confirmación por correo te habrá llegado un enlace: púlsalo y vuelve a entrar con tu email y contraseña. Si el enlace dice que ya no vale, no pasa nada —algunos filtros de correo lo abren antes que tú y eso ya confirma la cuenta—: entra igualmente con tu contraseña.",
@@ -32,6 +35,9 @@
     badTerms: "You need to accept the terms and conditions to create the account.", badCountry: "Tell us your country.",
     termsTitle: "Terms and conditions", termsClose: "Close", termsLoading: "Opening…",
     termsErr: "They could not be loaded here. Open them in a new tab.", termsAccept: "Got it",
+    lockedKicker: "Belt pending", lockedTitle: "This level is still closed",
+    lockedText: "The dojo is walked in order: each level opens when you earn the previous level's belt. Your training continues where you left it.",
+    lockedCta: "Back to the dojo",
     login: "Enter the dojo", signup: "Create my free account", forgot: "Forgot your password?",
     working: "One moment…", badEmail: "Check the email: it does not look valid.", badPass: "The password needs at least 8 characters.", badName: "Tell us your name (it appears on your certificates).",
     signupOk: "✅ Account created. If your school requires email confirmation you will have received a link: click it and come back to sign in with your email and password. If the link says it is no longer valid, do not worry —some mail filters open it before you do, and that already confirms the account—: sign in with your password anyway.",
@@ -305,7 +311,29 @@
     var id = host.getAttribute("data-content-id");
     var box = host.querySelector("[data-gate-box]");
     var body = host.querySelector("[data-gated-body]");
+
+    /* Progresión en orden (decisión del titular 2026-08-25): el contenido del
+       nivel N solo se abre con el cinturón N-1 en ese arte. Aplica igual con
+       cuentas o en modo local: es regla del juego, no del transporte. Los
+       niveles ya superados siguen abiertos (están hechos para repetirse). */
+    function nivelBloqueado() {
+      if (!window.MF) return false;
+      var nivel = parseInt(host.getAttribute("data-level") || "", 10);
+      var arte = host.getAttribute("data-art");
+      if (!nivel || !arte) return false;
+      return nivel > MF.beltOf(arte) + 1;
+    }
+    function candado() {
+      if (box) box.hidden = true;
+      var dojo = window.location.pathname.split("/dojo/")[0] + "/dojo/";
+      body.innerHTML = '<div class="gate"><div class="gate__art" aria-hidden="true">🔒</div>' +
+        '<p class="kicker">' + T.lockedKicker + '</p><h2 class="gate__title">' + T.lockedTitle + '</h2>' +
+        '<p class="gate__text">' + T.lockedText + '</p>' +
+        '<p><a class="btn btn--primary" href="' + dojo + '">' + T.lockedCta + "</a></p></div>";
+    }
+
     function deliver() {
+      if (nivelBloqueado()) return candado();
       body.innerHTML = '<p class="gated__loading">' + T.loading + "</p>";
       loadContent(id, host).then(function (data) {
         body.innerHTML = "";

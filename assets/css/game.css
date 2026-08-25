@@ -727,3 +727,9 @@ select.input { appearance: none; -webkit-appearance: none; cursor: pointer;
   background-repeat: no-repeat; background-position: right 0.9rem center; padding-right: 2.4rem; }
 select.input:invalid { color: rgba(185, 182, 174, 0.75); }   /* placeholder mientras no eliges */
 select.input option { color: var(--c-text); background: var(--c-white); }
+
+/* --- progresión en orden: niveles bloqueados en la escalera --- */
+.belt.is-locked { opacity: 0.55; }
+.belt.is-locked .belt__link { cursor: not-allowed; }
+.belt.is-locked .belt__status::before { content: "🔒"; font-size: 0.85em; }
+.gate .gate__art { font-size: 1.8rem; }
