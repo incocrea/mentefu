@@ -159,6 +159,41 @@
     abrirTerminos();
   });
 
+  /* ---------- países del registro ----------
+     Un desplegable con TODOS los países (ISO 3166-1), con los nombres en el
+     idioma del sitio vía Intl.DisplayNames: así no mantenemos dos listas de
+     ~250 nombres y el orden alfabético sale bien en cada idioma. Se guarda el
+     CÓDIGO ISO, no el nombre: si guardáramos el nombre, un mismo país quedaría
+     como «España» o «Spain» según el idioma en que se registró el alumno.
+     Primero van Colombia, Estados Unidos y México (decisión del titular). */
+  var COUNTRY_CODES = ("AD AE AF AG AI AL AM AO AQ AR AS AT AU AW AX AZ BA BB BD BE BF BG BH BI BJ BL BM BN BO BQ BR BS BT BV BW BY BZ " +
+    "CA CC CD CF CG CH CI CK CL CM CN CO CR CU CV CW CX CY CZ DE DJ DK DM DO DZ EC EE EG EH ER ES ET FI FJ FK FM FO FR " +
+    "GA GB GD GE GF GG GH GI GL GM GN GP GQ GR GS GT GU GW GY HK HM HN HR HT HU ID IE IL IM IN IO IQ IR IS IT JE JM JO JP " +
+    "KE KG KH KI KM KN KP KR KW KY KZ LA LB LC LI LK LR LS LT LU LV LY MA MC MD ME MF MG MH MK ML MM MN MO MP MQ MR MS MT MU MV MW MX MY MZ " +
+    "NA NC NE NF NG NI NL NO NP NR NU NZ OM PA PE PF PG PH PK PL PM PN PR PS PT PW PY QA RE RO RS RU RW " +
+    "SA SB SC SD SE SG SH SI SJ SK SL SM SN SO SR SS ST SV SX SY SZ TC TD TF TG TH TJ TK TL TM TN TO TR TT TV TW TZ " +
+    "UA UG UM US UY UZ VA VC VE VG VI VN VU WF WS YE YT ZA ZM ZW").split(" ");
+  var COUNTRY_FIRST = ["CO", "US", "MX"];
+
+  function countryField() {
+    var attrs = 'id="au-sc" class="input" name="country" required';
+    if (!(window.Intl && Intl.DisplayNames)) {
+      /* navegador viejo: texto libre, como antes */
+      return '<input ' + attrs + ' type="text" placeholder="' + T.country.toLowerCase() + '" autocomplete="country-name" maxlength="56">';
+    }
+    var nombres = new Intl.DisplayNames([cfg.lang || "es"], { type: "region" });
+    var lista = COUNTRY_CODES.filter(function (c) { return COUNTRY_FIRST.indexOf(c) === -1; })
+      .map(function (c) { var n; try { n = nombres.of(c); } catch (e) { n = c; } return { c: c, n: n || c }; })
+      .sort(function (a, b) { return a.n.localeCompare(b.n, cfg.lang || "es"); });
+    var out = '<select ' + attrs + ' autocomplete="country">' +
+      '<option value="" disabled selected>' + T.country + '</option>' +
+      COUNTRY_FIRST.map(function (c) { return '<option value="' + c + '">' + (nombres.of(c) || c) + "</option>"; }).join("") +
+      '<option value="" disabled>──────────</option>' +
+      lista.map(function (x) { return '<option value="' + x.c + '">' + x.n + "</option>"; }).join("") +
+      "</select>";
+    return out;
+  }
+
   /* ---------- formulario de cuenta (login / registro) ---------- */
   function el(html) { var d = document.createElement("div"); d.innerHTML = html.trim(); return d.firstChild; }
 
@@ -179,7 +214,7 @@
       '<form class="auth__form" data-mode="signup" hidden novalidate>' +
       '<label class="visually-hidden" for="au-sn">' + T.name + '</label><input id="au-sn" class="input" type="text" name="name" placeholder="' + T.name.toLowerCase() + '" autocomplete="name" maxlength="60" required>' +
       '<label class="visually-hidden" for="au-se">' + T.email + '</label><input id="au-se" class="input" type="email" name="email" placeholder="' + T.email.toLowerCase() + '" autocomplete="email" required>' +
-      '<label class="visually-hidden" for="au-sc">' + T.country + '</label><input id="au-sc" class="input" type="text" name="country" placeholder="' + T.country.toLowerCase() + '" autocomplete="country-name" maxlength="56" required>' +
+      '<label class="visually-hidden" for="au-sc">' + T.country + '</label>' + countryField() +
       '<label class="visually-hidden" for="au-st">' + T.phone + '</label><input id="au-st" class="input" type="tel" name="phone" placeholder="' + T.phone.toLowerCase() + '" autocomplete="tel" maxlength="24">' +
       '<label class="visually-hidden" for="au-sp">' + T.passNew + '</label><input id="au-sp" class="input" type="password" name="password" placeholder="' + T.passNew.toLowerCase() + '" autocomplete="new-password" minlength="8" required>' +
       '<label class="auth__terms"><input type="checkbox" name="terms" required> <span>' + T.terms.replace("{terms}", TERMS_URL) + "</span></label>" +

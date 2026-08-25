@@ -720,3 +720,10 @@ html[data-session="local"] [data-guest] { display: none; }
 .modal__body .callout { background: var(--c-ink-panel); border-radius: var(--radius); padding: 0.9rem 1.1rem; }
 .modal__foot { padding: 0.9rem clamp(1.1rem, 4vw, 1.9rem); border-top: 1px solid var(--c-line-dark); text-align: right; }
 @media (prefers-reduced-motion: reduce) { .modal, .modal__panel { animation: none; } }
+
+/* --- desplegable de país del registro: mismo traje que los .input --- */
+select.input { appearance: none; -webkit-appearance: none; cursor: pointer;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8'%3E%3Cpath d='M1 1l5 5 5-5' fill='none' stroke='%23b9b6ae' stroke-width='2' stroke-linecap='round'/%3E%3C/svg%3E");
+  background-repeat: no-repeat; background-position: right 0.9rem center; padding-right: 2.4rem; }
+select.input:invalid { color: rgba(185, 182, 174, 0.75); }   /* placeholder mientras no eliges */
+select.input option { color: var(--c-text); background: var(--c-white); }
