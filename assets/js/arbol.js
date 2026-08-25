@@ -13,14 +13,14 @@
 
   var T = ES ? {
     titulo: "Tu Árbol Cerebro", lema: "Tu mente crece con cada logro.",
-    ayuda: "Toca un adorno del cofre y luego toca el árbol donde quieras colgarlo. Arrástralo para moverlo; doble toque para devolverlo al cofre.",
+    ayuda: "Toca un adorno para colgarlo o quitarlo del árbol. Arrástralo sobre el árbol para moverlo: recordará su sitio.",
     cofre: "Cofre de adornos", set: "Set CulpaFu",
     bloqueado: "Se desbloquea con: {c}", colocado: "Ya está en tu árbol",
     trofeo: "Trofeo de curso · Legendario", cinturon: "Adorno de cinturón",
     colocando: "Toca el árbol para colgarlo…", etapa: "Etapa {n} de {m}",
   } : {
     titulo: "Your Brain Tree", lema: "Your mind grows with every achievement.",
-    ayuda: "Tap an ornament in the chest, then tap the tree where you want to hang it. Drag to move it; double-tap to send it back to the chest.",
+    ayuda: "Tap an ornament to hang it or remove it. Drag it on the tree to move it: it remembers its spot.",
     cofre: "Ornament chest", set: "GuiltFu set",
     bloqueado: "Unlocks with: {c}", colocado: "Already on your tree",
     trofeo: "Course trophy · Legendary", cinturon: "Belt ornament",
@@ -75,8 +75,9 @@
   /* ---------- estado ---------- */
   function estadoArbol() {
     var s = MF.state();
-    if (!s.tree) { s.tree = { p: [] }; }
+    if (!s.tree) { s.tree = { p: [], mem: {} }; }
     if (!s.tree.p) s.tree.p = [];
+    if (!s.tree.mem) s.tree.mem = {};   /* última posición de cada adorno */
     return s.tree;
   }
   function desbloqueado(a) {
@@ -141,43 +142,35 @@
         var id = b.getAttribute("data-adorno");
         var a = CATALOGO.filter(function (c) { return c.id === id; })[0];
         if (!desbloqueado(a)) return;              /* bloqueado: el tooltip ya explica */
-        if (puesto(id)) return;                     /* ya está en el árbol */
-        seleccionar(id, lienzo, cofre);
+        if (puesto(id)) quitar(id, lienzo, cofre); /* conmutador: quitar recordando el sitio */
+        else colocar(id, lienzo, cofre);           /* volver a su último sitio, o a uno al azar */
       });
     });
   }
 
   /* ---------- colocar, arrastrar, devolver ---------- */
-  var pendiente = null;   /* id elegido en el cofre, esperando el toque en el árbol */
-
-  function seleccionar(id, lienzo, cofre) {
-    pendiente = id;
-    lienzo.classList.add("arbol__lienzo--colocando");
-    var aviso = lienzo.querySelector(".arbol__aviso") || el('<span class="arbol__aviso"></span>');
-    aviso.textContent = T.colocando;
-    lienzo.appendChild(aviso);
-  }
-
-  function soltarEn(lienzo, cofre, cx, cy) {
-    var r = lienzo.getBoundingClientRect();
-    var x = Math.max(2, Math.min(98, ((cx - r.left) / r.width) * 100));
-    var y = Math.max(2, Math.min(98, ((cy - r.top) / r.height) * 100));
-    estadoArbol().p.push({ id: pendiente, x: Math.round(x * 10) / 10, y: Math.round(y * 10) / 10 });
-    pendiente = null;
-    lienzo.classList.remove("arbol__lienzo--colocando");
+  function repintar(lienzo, cofre) {
     MF.save();
     pintarLienzo(lienzo, true);
     pintarCofre(cofre, lienzo);
     sincronizarMinis();
+  }
+
+  function colocar(id, lienzo, cofre) {
+    var t = estadoArbol();
+    /* su último sitio recordado; sin memoria, un punto al azar en la copa */
+    var pos = t.mem[id] || { x: Math.round((22 + Math.random() * 56) * 10) / 10,
+                             y: Math.round((14 + Math.random() * 52) * 10) / 10 };
+    t.p.push({ id: id, x: pos.x, y: pos.y });
+    repintar(lienzo, cofre);
   }
 
   function quitar(id, lienzo, cofre) {
     var t = estadoArbol();
+    var fila = t.p.filter(function (x) { return x.id === id; })[0];
+    if (fila) t.mem[id] = { x: fila.x, y: fila.y };   /* recuerda dónde estaba */
     t.p = t.p.filter(function (x) { return x.id !== id; });
-    MF.save();
-    pintarLienzo(lienzo, true);
-    pintarCofre(cofre, lienzo);
-    sincronizarMinis();
+    repintar(lienzo, cofre);
   }
 
   function armarArrastre(lienzo) {
@@ -207,6 +200,7 @@
         if (fila) {
           fila.x = Math.round(parseFloat(d.img.style.left) * 10) / 10;
           fila.y = Math.round(parseFloat(d.img.style.top) * 10) / 10;
+          t.mem[d.id] = { x: fila.x, y: fila.y };
           MF.save();
           sincronizarMinis();
         }
@@ -216,10 +210,6 @@
     lienzo.addEventListener("dblclick", function (e) {
       var img = e.target.closest && e.target.closest(".arbol__adorno");
       if (img) quitar(img.getAttribute("data-id"), lienzo, cofre);
-    });
-    lienzo.addEventListener("click", function (e) {
-      if (!pendiente) return;
-      soltarEn(lienzo, cofre, e.clientX, e.clientY);
     });
   }
 

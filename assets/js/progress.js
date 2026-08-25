@@ -257,7 +257,7 @@
          del estado actualizado más recientemente; si está vacía, la otra. */
       var tp = (s.tree && s.tree.p) || [];
       if (tp.length && (!m.tree.p.length || (s.updated || "") >= (m.tree.updated || ""))) {
-        m.tree = { p: tp.slice(), updated: s.updated || "" };
+        m.tree = { p: tp.slice(), mem: Object.assign({}, (s.tree && s.tree.mem) || {}), updated: s.updated || "" };
       }
       if (s.avatar && !m.avatar) m.avatar = s.avatar;
     });
