@@ -299,13 +299,30 @@ a.art-card:hover { transform: translateY(-4px); box-shadow: var(--shadow); }
 }
 /* los maestros SÍ van opacos: son el foco */
 .hero__masters {
-  position: absolute; right: clamp(-2rem, 1vw, 3rem); bottom: 0;
+  position: absolute; bottom: 0;
+  /* borde derecho de la caja de contenido, no del viewport: cuando la pantalla
+     es más ancha que --container, el hueco sobrante se reparte a ambos lados
+     igual que hace .container, y la mascota queda haciendo balanza con el
+     texto en vez de aislada en la esquina */
+  /* …y en pantallas aún más anchas se adentra un poco más, en proporción al
+     espacio sobrante (18 % del excedente, hasta 7rem): en vez de pegarse a la
+     esquina, acompaña al texto y el hero queda en balanza. En pantallas justas
+     el excedente es 0 y no roba nada. */
+  right: calc(max(1.25rem, (100vw - var(--container)) / 2) + clamp(0rem, (100vw - var(--container)) * 0.18, 7rem));
   height: min(74%, 25rem); width: auto; max-width: 42%;
   object-fit: contain; object-position: bottom right;
   opacity: 1;
   filter: drop-shadow(0 18px 34px rgba(0, 0, 0, 0.55));
 }
 .hero__masters--sketch { opacity: 0.75; }   /* silueta provisional hasta tener la lámina */
+
+/* En la portada (hero alto) la mascota no cuelga del borde inferior: se centra
+   en vertical frente al texto. La lámina medita levitando, así que flotar es su
+   estado natural; pegada abajo parecía escurrirse de la pantalla. */
+@media (min-width: 60rem) {
+  .hero .hero__masters,
+  .page-head--scene .hero__masters { bottom: auto; top: 50%; transform: translateY(-50%); }
+}
 
 /* con escena, el hero reserva sitio para los personajes y sube el mínimo de alto */
 .hero:has(.hero__scene) { min-height: min(42rem, 88vh); display: flex; align-items: center; }

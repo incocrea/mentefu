@@ -534,3 +534,9 @@ html.js [data-reveal].is-in { opacity: 1; transform: none; }
 /* ---------- Listado de sección ---------- */
 .layout-section .prose { max-width: none; }
 .layout-section .prose > p:first-of-type { max-width: var(--prose); font-size: 1.15rem; color: var(--c-text-soft); }
+
+/* Matiz de los titulares de sección: el <em> no es cursiva, es el resalte de
+   marca (mismo gesto que el hero). Sobre claro usa el acento legible; sobre
+   tinta, el acento suave. */
+.section__title em { font-style: normal; color: var(--c-accent-text); }
+.section--dark .section__title em, .cta-band .section__title em { color: var(--c-accent-soft); }
