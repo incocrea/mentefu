@@ -134,8 +134,7 @@
         tooltipHTML(a, abierto) + "</button>";
     }).join("");
     cofre.innerHTML = '<p class="arbol__cofre-titulo">' + T.cofre + " · " + T.set + "</p>" +
-      '<div class="arbol__adornos">' + filas + "</div>" +
-      '<p class="arbol__ayuda muted">' + T.ayuda + "</p>";
+      '<div class="arbol__adornos">' + filas + "</div>";
 
     cofre.querySelectorAll("[data-adorno]").forEach(function (b) {
       b.addEventListener("click", function () {

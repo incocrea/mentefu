@@ -9,7 +9,7 @@
   var T = ES ? {
     student: "Alumno", xp: "XP", streak: "Racha", belts: "Cinturones", missions: "Misiones", toNext: "{n} XP para {rank}", max: "Rango máximo alcanzado",
     arts: "Tus artes", achievements: "Logros", certs: "Certificados de cinturón", certNote: "Reconocimiento de progreso personal. No es una certificación profesional.",
-    account: "Cuenta", arbolTitulo: "Tu Árbol Cerebro", arbolLema: "Tu mente crece con cada logro.", avatarTitle: "Tu avatar de estudiante", avatarHelp: "Elige la cara con la que entrenas. Puedes cambiarla cuando quieras.", local: "Modo local: tu progreso vive solo en este navegador. Cuando la escuela conecte las cuentas, podrás registrarte para guardarlo en todos tus dispositivos.",
+    account: "Cuenta", arbolTitulo: "Árbol de progreso", arbolLema: "Tu mente crece con cada logro: ¡decórala con los accesorios que desbloqueas! Puedes ponerlos, quitarlos y moverlos para personalizar tu árbol de progreso.", avatarTitle: "Tu avatar de estudiante", avatarHelp: "Elige la cara con la que entrenas. Puedes cambiarla cuando quieras.", local: "Modo local: tu progreso vive solo en este navegador. Cuando la escuela conecte las cuentas, podrás registrarte para guardarlo en todos tus dispositivos.",
     signedAs: "Conectado como", signOut: "Cerrar sesión", name: "Tu nombre (para los certificados)", save: "Guardar", saved: "Guardado.",
     login: "Crea tu cuenta o inicia sesión para guardar tu progreso en todos tus dispositivos.",
     phone: "Teléfono (opcional)", newPass: "Nueva contraseña (mínimo 8 caracteres)", changePass: "Cambiar contraseña", passChanged: "Contraseña actualizada.",
@@ -22,7 +22,7 @@
   } : {
     student: "Student", xp: "XP", streak: "Streak", belts: "Belts", missions: "Missions", toNext: "{n} XP to {rank}", max: "Top rank reached",
     arts: "Your arts", achievements: "Achievements", certs: "Belt certificates", certNote: "Recognition of personal progress. Not a professional certification.",
-    account: "Account", arbolTitulo: "Your Brain Tree", arbolLema: "Your mind grows with every achievement.", avatarTitle: "Your student avatar", avatarHelp: "Pick the face you train with. You can change it whenever you want.", local: "Local mode: your progress lives only in this browser. Once the school connects accounts you will be able to sign up to keep it on all your devices.",
+    account: "Account", arbolTitulo: "Progress tree", arbolLema: "Your mind grows with every achievement: decorate it with the accessories you unlock! You can place them, remove them and move them to personalize your progress tree.", avatarTitle: "Your student avatar", avatarHelp: "Pick the face you train with. You can change it whenever you want.", local: "Local mode: your progress lives only in this browser. Once the school connects accounts you will be able to sign up to keep it on all your devices.",
     signedAs: "Signed in as", signOut: "Sign out", name: "Your name (for certificates)", save: "Save", saved: "Saved.",
     login: "Create your account or sign in to keep your progress on all your devices.",
     phone: "Phone (optional)", newPass: "New password (at least 8 characters)", changePass: "Change password", passChanged: "Password updated.",
@@ -76,8 +76,8 @@
 
     /* Árbol Cerebro: el avatar-planta que crece con el rango y se decora con
        los trofeos de los entrenamientos (arbol.js) */
-    html += '<section class="profile__section profile__section--arbol"><h2>' + T.arbolTitulo + '</h2>'
-          + '<p class="muted">' + T.arbolLema + '</p>'
+    html += '<section class="profile__section profile__section--arbol"><h2 class="visually-hidden">' + T.arbolTitulo + '</h2>'
+          + '<p class="arbol__leyenda">' + T.arbolLema + '</p>'
           + '<div class="arbol"><div class="arbol__lienzo" data-arbol></div><div class="arbol__cofre" data-arbol-cofre></div></div></section>';
 
     /* artes */

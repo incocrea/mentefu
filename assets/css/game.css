@@ -767,6 +767,9 @@ select.input option { color: var(--c-text); background: var(--c-white); }
   .page-head--scene:has(.hero__arbol) .page-head__title { margin-inline-end: calc(var(--mascot-h) + 1.5rem); }
 }
 
+/* la leyenda única de la sección del árbol */
+.arbol__leyenda { font-family: var(--f-display); font-weight: 700; font-size: 1.05rem; line-height: 1.5; max-width: 46rem; margin: 0; }
+
 /* --- sección del árbol: lienzo + cofre --- */
 .arbol { display: grid; gap: 1.5rem; margin-top: 1rem; }
 @media (min-width: 60rem) { .arbol { grid-template-columns: minmax(20rem, 26rem) 1fr; align-items: start; } }

@@ -341,7 +341,9 @@ button { font: inherit; }
 }
 .chain--bad li { background: #3a1c19; }
 .chain--good li { background: #163a2a; }
-.chain--inline { flex-direction: row; flex-wrap: wrap; gap: 0.5rem 0.35rem; }
+/* centrados en todos los anchos (decisión 2026-08-25): la fila de chips es un
+   adorno de sección, no un párrafo, y descolgada a la izquierda quedaba coja */
+.chain--inline { flex-direction: row; flex-wrap: wrap; gap: 0.5rem 0.35rem; justify-content: center; }
 .chain--inline li + li { margin: 0; padding-left: 1rem; }
 .chain--inline li + li::before { content: "→"; position: static; margin-right: 0.6rem; color: var(--c-accent-soft); }
 .chain--inline li { display: inline-flex; align-items: center; }
