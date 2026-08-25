@@ -747,12 +747,25 @@ select.input option { color: var(--c-text); background: var(--c-white); }
    ============================================================ */
 
 /* --- tarjeta del perfil: anillo | identidad | mini-árbol; stats abajo --- */
-.profile__hero--arbol { display: grid; grid-template-columns: auto 1fr auto; gap: 1.25rem 1.5rem; align-items: center; }
-.profile__hero--arbol .profile__stats { grid-column: 1 / -1; margin: 0; }
-.profile__mini { position: relative; width: clamp(7rem, 14vw, 10rem); aspect-ratio: 1; }
-.profile__mini .arbol__etapa { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: contain; }
-.profile__mini .arbol__adorno { position: absolute; width: 16%; transform: translate(-50%, -50%); pointer-events: none; }
-@media (max-width: 40rem) { .profile__mini { display: none; } }   /* en móvil, el árbol grande está justo debajo */
+.profile__hero--filas { display: grid; grid-template-columns: auto 1fr; gap: 1.25rem 1.5rem; align-items: center; }
+.profile__hero--filas .profile__stats { grid-column: 1 / -1; margin: 0; }
+
+/* --- árbol vivo en la cabecera del perfil (sustituye a la mascota) --- */
+.hero__arbol { position: absolute; top: 50%; transform: translateY(-50%);
+  right: calc(max(1.25rem, (100vw - var(--container)) / 2) + clamp(0rem, (100vw - var(--container)) * 0.18, 7rem));
+  width: clamp(11rem, 17vw, 15rem); aspect-ratio: 1;
+  filter: drop-shadow(0 14px 28px rgba(0, 0, 0, 0.5)); }
+.hero__arbol .arbol__etapa { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: contain; }
+.hero__arbol .arbol__adorno { position: absolute; width: 15%; transform: translate(-50%, -50%); pointer-events: none; }
+@media (max-width: 60rem) {
+  /* en móvil, con más protagonismo que la mascota que había antes */
+  .page-head--scene:has(.hero__arbol) { --mascot-h: clamp(7.5rem, 30vw, 10rem); }
+  .hero__arbol { top: var(--mascot-top, 1rem); transform: none; right: var(--mascot-inset, 0.75rem);
+    width: var(--mascot-h); }
+  .page-head--scene:has(.hero__arbol) .crumbs,
+  .page-head--scene:has(.hero__arbol) .kicker,
+  .page-head--scene:has(.hero__arbol) .page-head__title { margin-inline-end: calc(var(--mascot-h) + 1.5rem); }
+}
 
 /* --- sección del árbol: lienzo + cofre --- */
 .arbol { display: grid; gap: 1.5rem; margin-top: 1rem; }

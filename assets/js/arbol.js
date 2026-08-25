@@ -219,6 +219,17 @@
   }
 
   /* ---------- API ---------- */
+  /* En la cabecera del perfil, el árbol vivo ocupa el sitio de la mascota:
+     responde a la etapa y a los adornos igual que el lienzo grande. */
+  (function () {
+    if (!cfg.page || cfg.page.layout !== "profile") return;
+    var escena = document.querySelector(".page-head--scene .hero__scene");
+    if (!escena) return;
+    var caja = el('<div class="hero__arbol" data-arbol-mini aria-hidden="true"></div>');
+    escena.appendChild(caja);
+    pintarLienzo(caja, false);
+  })();
+
   window.MFArbol = {
     T: T,
     etapa: etapaActual,
