@@ -8,33 +8,6 @@
   "reference": true,
   "size": "1024x1024"
  },
- "art-limitesfu": {
-  "at": "2026-08-24T11:31:18",
-  "model": "gpt-image-1",
-  "out": "game/art-limitesfu.png",
-  "prompt": "a green shield with a firm open hand inside, centered emblem icon, plain object with no face, no eyes, no mouth, not a character, bold silhouette",
-  "quality": "medium",
-  "reference": true,
-  "size": "1024x1024"
- },
- "art-miedofu": {
-  "at": "2026-08-24T11:30:54",
-  "model": "gpt-image-1",
-  "out": "game/art-miedofu.png",
-  "prompt": "a calm blue wave curling like a shield, centered emblem icon, plain object with no face, no eyes, no mouth, not a character, bold silhouette",
-  "quality": "medium",
-  "reference": true,
-  "size": "1024x1024"
- },
- "art-verguenzafu": {
-  "at": "2026-08-24T11:30:18",
-  "model": "gpt-image-1",
-  "out": "game/art-verguenzafu.png",
-  "prompt": "a theatre mask half smiling half sad in purple tones, centered emblem icon, plain object with no face, no eyes, no mouth, not a character, bold silhouette",
-  "quality": "medium",
-  "reference": true,
-  "size": "1024x1024"
- },
  "avatar-1": {
   "at": "2026-08-24T12:20:24",
   "model": "gpt-image-1",
@@ -502,5 +475,23 @@
   "quality": "medium",
   "reference": true,
   "size": "1024x1536"
+ },
+ "scroll-bottom": {
+  "at": "2026-08-24T12:49:33",
+  "model": "gpt-image-1",
+  "out": "game/scroll-bottom.png",
+  "prompt": "the bottom wooden roller bar of an ancient paper scroll seen from the front, horizontal, rolled parchment wrapping around a wooden rod with a decorative cap at each end, warm cream paper and brown wood, straight flat top edge so paper can continue above it, plain object with no face, no eyes, no mouth, not a character, wide horizontal composition",
+  "quality": "medium",
+  "reference": true,
+  "size": "1536x1024"
+ },
+ "scroll-top": {
+  "at": "2026-08-24T12:48:51",
+  "model": "gpt-image-1",
+  "out": "game/scroll-top.png",
+  "prompt": "the top wooden roller bar of an ancient paper scroll seen from the front, horizontal, rolled parchment wrapping around a wooden rod with a decorative cap at each end, warm cream paper and brown wood, straight flat bottom edge so paper can continue below it, plain object with no face, no eyes, no mouth, not a character, wide horizontal composition",
+  "quality": "medium",
+  "reference": true,
+  "size": "1536x1024"
  }
 }

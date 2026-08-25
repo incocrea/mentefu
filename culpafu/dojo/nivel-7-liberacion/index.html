@@ -1,16 +1,26 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
-  <script>document.documentElement.className += " js";</script>
+  <script>
+  document.documentElement.className += " js";
+  /* Estado de sesión ANTES del primer pintado, para que el CSS del escaparate
+     ([data-students]/[data-guest]) no parpadee. Solo pinta: la verdad la pone
+     progress.js (misma clave de almacenamiento) y auth.js la confirma. */
+  try {
+    var mfs = "" === "local" ? "local"
+      : (JSON.parse(localStorage.getItem("mentefu.sb.session") || "null") ? "in" : "out");
+    document.documentElement.setAttribute("data-session", mfs);
+  } catch (e) { document.documentElement.setAttribute("data-session", "out"); }
+  </script>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>Nivel 7 — Liberación — MenteFu</title>
-  <meta name="description" content="Cinturón marrón. Dejar de castigarte cuando la reparación ya fue realizada: cerrar el expediente de un error antiguo, detener la rumiación y tener una frase de cierre para cuando vuelva.">
+  <meta name="description" content="Regístrate gratis con tu email para abrir las misiones y guardar tu progreso, cinturones y logros en todos tus dispositivos.">
   <link rel="canonical" href="https://www.mentefu.com/culpafu/dojo/nivel-7-liberacion/">
   <meta property="og:type" content="article">
   <meta property="og:site_name" content="MenteFu">
   <meta property="og:title" content="Nivel 7 — Liberación — MenteFu">
-  <meta property="og:description" content="Cinturón marrón. Dejar de castigarte cuando la reparación ya fue realizada: cerrar el expediente de un error antiguo, detener la rumiación y tener una frase de cierre para cuando vuelva.">
+  <meta property="og:description" content="Regístrate gratis con tu email para abrir las misiones y guardar tu progreso, cinturones y logros en todos tus dispositivos.">
   <meta property="og:url" content="https://www.mentefu.com/culpafu/dojo/nivel-7-liberacion/">
   <meta property="og:image" content="https://www.mentefu.com/assets/img/og-mentefu.png">
   <meta property="og:image:width" content="1200">
@@ -21,15 +31,16 @@
   <link rel="alternate" hreflang="es" href="https://www.mentefu.com/culpafu/dojo/nivel-7-liberacion/">
   <link rel="alternate" hreflang="en" href="https://www.mentefu.com/en/guiltfu/dojo/level-7-release/">
   <link rel="alternate" hreflang="x-default" href="https://www.mentefu.com/culpafu/dojo/nivel-7-liberacion/">
+  <meta name="robots" content="noindex">
   <link rel="icon" type="image/svg+xml" href="../../../assets/img/favicon.svg">
   <link rel="icon" type="image/png" sizes="32x32" href="../../../assets/img/favicon-32.png">
   <link rel="apple-touch-icon" href="../../../assets/img/apple-touch-icon.png">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,500;12..96,700;12..96,800&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="../../../assets/css/styles.css?v=3c6f1dbd">
-  <link rel="stylesheet" href="../../../assets/css/game.css?v=8554e6de">
-<script>window.MF_CONFIG = {"lang": "es", "brand": "mentefu", "prefix": "../../../", "supabaseUrl": "https://qlalxlsnmvqrsfwxstbu.supabase.co", "supabaseAnonKey": "sb_publishable_pzcyZyaWUmB4TIHnYW4qVQ_fFg8FrKM", "gate": true, "xp": {"mission": 20, "quiz_first_try": 5, "practice": 10, "scroll": 10, "exam": 50, "tool": 15, "exam_pass": 0.75}, "ranks": [[0, "Novato"], [100, "Aprendiz"], [300, "Practicante"], [700, "Adepto"], [1500, "Maestro de sala"], [3000, "Gran Maestro"]], "belts": [{"n": 1, "key": "white", "color": "#f4f1ea", "name": "Blanco", "level": "Reconocimiento"}, {"n": 2, "key": "yellow", "color": "#f2c230", "name": "Amarillo", "level": "Conciencia"}, {"n": 3, "key": "orange", "color": "#f07c22", "name": "Naranja", "level": "Análisis"}, {"n": 4, "key": "green", "color": "#2e9e5b", "name": "Verde", "level": "Límites"}, {"n": 5, "key": "blue", "color": "#2f6fd8", "name": "Azul", "level": "Autonomía"}, {"n": 6, "key": "purple", "color": "#7b3fbf", "name": "Morado", "level": "Reparación"}, {"n": 7, "key": "brown", "color": "#7a4a2a", "name": "Marrón", "level": "Liberación"}, {"n": 8, "key": "black", "color": "#1a1a1f", "name": "Negro", "level": "Dominio"}], "profileUrl": "../../../perfil/", "artsUrl": "../../../artes/", "assets": "../../../", "gameArt": {"art-culpafu": "assets/img/game/art-culpafu.webp", "art-limitesfu": "assets/img/game/art-limitesfu.webp", "art-miedofu": "assets/img/game/art-miedofu.webp", "art-verguenzafu": "assets/img/game/art-verguenzafu.webp", "avatar-1": "assets/img/game/avatar-1.webp", "avatar-2": "assets/img/game/avatar-2.webp", "avatar-3": "assets/img/game/avatar-3.webp", "avatar-4": "assets/img/game/avatar-4.webp", "avatar-5": "assets/img/game/avatar-5.webp", "avatar-6": "assets/img/game/avatar-6.webp", "avatar-7": "assets/img/game/avatar-7.webp", "avatar-8": "assets/img/game/avatar-8.webp", "badge-belt-black": "assets/img/game/badge-belt-black.webp", "badge-belt-green": "assets/img/game/badge-belt-green.webp", "badge-belt-white": "assets/img/game/badge-belt-white.webp", "badge-belt-yellow": "assets/img/game/badge-belt-yellow.webp", "badge-early-bird": "assets/img/game/badge-early-bird.webp", "badge-first-mission": "assets/img/game/badge-first-mission.webp", "badge-first-scroll": "assets/img/game/badge-first-scroll.webp", "badge-first-tool": "assets/img/game/badge-first-tool.webp", "badge-missions-10": "assets/img/game/badge-missions-10.webp", "badge-night-owl": "assets/img/game/badge-night-owl.webp", "badge-perfect-exam": "assets/img/game/badge-perfect-exam.webp", "badge-streak-3": "assets/img/game/badge-streak-3.webp", "badge-streak-7": "assets/img/game/badge-streak-7.webp", "belt-black": "assets/img/game/belt-black.webp", "belt-blue": "assets/img/game/belt-blue.webp", "belt-brown": "assets/img/game/belt-brown.webp", "belt-green": "assets/img/game/belt-green.webp", "belt-orange": "assets/img/game/belt-orange.webp", "belt-purple": "assets/img/game/belt-purple.webp", "belt-white": "assets/img/game/belt-white.webp", "belt-yellow": "assets/img/game/belt-yellow.webp", "home-logros": "assets/img/game/home-logros.webp", "home-misiones": "assets/img/game/home-misiones.webp", "home-pergaminos": "assets/img/game/home-pergaminos.webp"}, "arts": [{"key": "culpafu", "name": "CulpaFu", "url": "../../../culpafu/", "color": "#e63b2e", "icon": "🥋", "status": "active"}], "artStats": {"culpafu": {"missions": 24, "levels": 8}, "limitesfu": {"missions": 0, "levels": 0}, "miedofu": {"missions": 0, "levels": 0}, "verguenzafu": {"missions": 0, "levels": 0}}, "page": {"id": "culpafu-level-7", "layout": "level", "art": "culpafu", "level": 7}};</script>
+  <link rel="stylesheet" href="../../../assets/css/styles.css?v=a4705958">
+  <link rel="stylesheet" href="../../../assets/css/game.css?v=975ea005">
+<script>window.MF_CONFIG = {"lang": "es", "brand": "mentefu", "prefix": "../../../", "supabaseUrl": "https://qlalxlsnmvqrsfwxstbu.supabase.co", "supabaseAnonKey": "sb_publishable_pzcyZyaWUmB4TIHnYW4qVQ_fFg8FrKM", "gate": true, "xp": {"mission": 20, "quiz_first_try": 5, "practice": 10, "scroll": 10, "exam": 50, "tool": 15, "exam_pass": 0.75}, "ranks": [[0, "Novato"], [100, "Aprendiz"], [300, "Practicante"], [700, "Adepto"], [1500, "Maestro de sala"], [3000, "Gran Maestro"]], "belts": [{"n": 1, "key": "white", "color": "#f4f1ea", "name": "Blanco", "level": "Reconocimiento"}, {"n": 2, "key": "yellow", "color": "#f2c230", "name": "Amarillo", "level": "Conciencia"}, {"n": 3, "key": "orange", "color": "#f07c22", "name": "Naranja", "level": "Análisis"}, {"n": 4, "key": "green", "color": "#2e9e5b", "name": "Verde", "level": "Límites"}, {"n": 5, "key": "blue", "color": "#2f6fd8", "name": "Azul", "level": "Autonomía"}, {"n": 6, "key": "purple", "color": "#7b3fbf", "name": "Morado", "level": "Reparación"}, {"n": 7, "key": "brown", "color": "#7a4a2a", "name": "Marrón", "level": "Liberación"}, {"n": 8, "key": "black", "color": "#1a1a1f", "name": "Negro", "level": "Dominio"}], "profileUrl": "../../../perfil/", "artsUrl": "../../../artes/", "assets": "../../../", "gameArt": {"art-culpafu": "assets/img/game/art-culpafu.webp", "avatar-1": "assets/img/game/avatar-1.webp", "avatar-2": "assets/img/game/avatar-2.webp", "avatar-3": "assets/img/game/avatar-3.webp", "avatar-4": "assets/img/game/avatar-4.webp", "avatar-5": "assets/img/game/avatar-5.webp", "avatar-6": "assets/img/game/avatar-6.webp", "avatar-7": "assets/img/game/avatar-7.webp", "avatar-8": "assets/img/game/avatar-8.webp", "badge-belt-black": "assets/img/game/badge-belt-black.webp", "badge-belt-green": "assets/img/game/badge-belt-green.webp", "badge-belt-white": "assets/img/game/badge-belt-white.webp", "badge-belt-yellow": "assets/img/game/badge-belt-yellow.webp", "badge-early-bird": "assets/img/game/badge-early-bird.webp", "badge-first-mission": "assets/img/game/badge-first-mission.webp", "badge-first-scroll": "assets/img/game/badge-first-scroll.webp", "badge-first-tool": "assets/img/game/badge-first-tool.webp", "badge-missions-10": "assets/img/game/badge-missions-10.webp", "badge-night-owl": "assets/img/game/badge-night-owl.webp", "badge-perfect-exam": "assets/img/game/badge-perfect-exam.webp", "badge-streak-3": "assets/img/game/badge-streak-3.webp", "badge-streak-7": "assets/img/game/badge-streak-7.webp", "belt-black": "assets/img/game/belt-black.webp", "belt-blue": "assets/img/game/belt-blue.webp", "belt-brown": "assets/img/game/belt-brown.webp", "belt-green": "assets/img/game/belt-green.webp", "belt-orange": "assets/img/game/belt-orange.webp", "belt-purple": "assets/img/game/belt-purple.webp", "belt-white": "assets/img/game/belt-white.webp", "belt-yellow": "assets/img/game/belt-yellow.webp", "home-logros": "assets/img/game/home-logros.webp", "home-misiones": "assets/img/game/home-misiones.webp", "home-pergaminos": "assets/img/game/home-pergaminos.webp"}, "arts": [{"key": "culpafu", "name": "CulpaFu", "url": "../../../culpafu/", "color": "#e63b2e", "icon": "🥋", "status": "active"}], "artStats": {"culpafu": {"missions": 24, "levels": 8}, "lovefu": {"missions": 0, "levels": 0}, "manipufu": {"missions": 0, "levels": 0}, "narcifu": {"missions": 0, "levels": 0}}, "page": {"id": "culpafu-level-7", "layout": "level", "art": "culpafu", "level": 7}};</script>
 
 </head>
 <body class="layout-level" data-brand="mentefu">
@@ -51,13 +62,13 @@
         <ul class="nav__list">
           <li><a class="nav__link" href="../../../artes/">Artes</a></li>
           <li><a class="nav__link" href="../../../culpafu/" aria-current="page">CulpaFu</a></li>
-          <li><a class="nav__link" href="../../../investiga/">Investiga</a></li>
+          <li data-students><a class="nav__link" href="../../../investiga/">Investiga</a></li>
           <li><a class="nav__link" href="../../../perfil/">Perfil</a></li>
-          <li class="nav__lang"><a class="lang-switch" href="../../../en/guiltfu/dojo/level-7-release/" title="MyselfU — English version" hreflang="en">EN</a></li>
+          <li class="nav__lang"><a class="lang-switch" href="../../../en/guiltfu/dojo/level-7-release/" title="MindFu — English version" hreflang="en">EN</a></li>
           <li class="nav__cta"><a class="btn btn--primary btn--block" href="../../../artes/">Entrar al dojo</a></li>
         </ul>
       </nav>
-      <a class="hud" href="../../../perfil/" data-hud-chip aria-label="Perfil">
+      <a class="hud" href="../../../perfil/" data-hud-chip data-label="Perfil" aria-label="Perfil">
         <span class="hud__ring" data-hud-ring aria-hidden="true"><span class="hud__belt" data-hud-belt></span><span class="hud__avatar" data-hud-avatar hidden></span></span>
         <span class="hud__meta"><span class="hud__rank" data-hud-rank>Perfil</span><span class="hud__xp"><b data-hud-xp>0</b> XP</span></span>
       </a>
@@ -75,43 +86,9 @@
     
     <p class="page-head__meta"><span class="belt-chip" style="--belt:#7a4a2a"><span class="belt-chip__swatch" aria-hidden="true"></span>Cinturón marrón</span></p>
   </div>
-</section><nav class="subnav" aria-label="CulpaFu"><div class="container subnav__inner"><a class="subnav__link subnav__link--home" href="../../../culpafu/">CulpaFu</a><a class="subnav__link" href="../../../culpafu/dojo/" aria-current="page">Dojo</a><a class="subnav__link" href="../../../culpafu/aprende/">Aprende</a><a class="subnav__link" href="../../../culpafu/detecta/">Detecta</a><a class="subnav__link" href="../../../culpafu/entrena/">Entrena</a><a class="subnav__link" href="../../../culpafu/defiendete/">Defiéndete</a><a class="subnav__link" href="../../../culpafu/historias/">Historias</a></div></nav>
-<div class="container">
-<div class="prose">
-<h2 id="la-idea-de-este-nivel">La idea de este nivel</h2>
-<p>Hay una culpa que no se va ni reparando. Ya pediste perdón, ya arreglaste lo que se podía arreglar, ya aprendiste la lección, y sin embargo a las tres de la mañana vuelve: «debí…», «si hubiera…», «por qué hice…». Eso no es conciencia moral; es rumiación. Y la rumiación tiene una característica que la delata: no produce nada. No repara, no aprende, no decide. Solo repite.</p>
-<p>El último principio de combate es la <strong>liberación</strong>: deja de castigarte cuando la reparación ya fue realizada. Fíjate en la condición: <em>cuando ya fue realizada</em>. No es una amnistía general; es justicia. En cualquier sistema razonable, una falta tiene una pena proporcional y, cumplida la pena, el asunto se cierra. Tu culpador interior, en cambio, suele funcionar como un tribunal que dicta sentencia, la ejecuta y al día siguiente vuelve a juzgar el mismo caso. Durante años. Este nivel consiste en cerrar el expediente.</p>
-<p>No es fácil, y por eso es cinturón marrón. Aprender del pasado no significa vivir en él, pero castigarse da una extraña sensación de estar haciendo algo: como si sufrir por un error fuera una forma de honrarlo. No lo es. Lo que honra un error es repararlo y no repetirlo; lo demás es ruido que, además, te quita energía para lo que sí importa.</p>
-<h2 id="misiones-de-este-nivel">Misiones de este nivel</h2>
-<p>Cada misión son unos minutos de tarjetas, preguntas y microretos. Complétalas en orden y termina con el examen de cinturón.</p>
-<div class="dojo-progress" data-dojo-progress data-art="culpafu"><p class="kicker">Tu progreso</p><div class="dojo-progress__bar"><div class="dojo-progress__fill"></div></div><p class="dojo-progress__text"></p></div>
-
-<ol class="missions" data-missions><li class="mission-card" data-mission="culpafu-7-1" data-art="culpafu" data-level="7"><a class="mission-card__link" href="../../../culpafu/dojo/nivel-7-liberacion/mision-1-la-sentencia-cumplida/"><span class="mission-card__num" aria-hidden="true">1</span><span class="mission-card__body"><span class="mission-card__kicker">Misión · +20 XP</span><span class="mission-card__title">La sentencia cumplida</span><span class="mission-card__text">No se repite la condena después de cumplirla. Escribe el expediente y ciérralo.</span></span><span class="mission-card__state" data-state aria-hidden="true"></span></a></li><li class="mission-card" data-mission="culpafu-7-2" data-art="culpafu" data-level="7"><a class="mission-card__link" href="../../../culpafu/dojo/nivel-7-liberacion/mision-2-detener-la-rumiacion/"><span class="mission-card__num" aria-hidden="true">2</span><span class="mission-card__body"><span class="mission-card__kicker">Misión · +20 XP</span><span class="mission-card__title">Detener la rumiación</span><span class="mission-card__text">Repasar lo que pasó parece reflexión. A la vuelta cuarenta, ya es otra cosa.</span></span><span class="mission-card__state" data-state aria-hidden="true"></span></a></li><li class="mission-card" data-mission="culpafu-7-3" data-art="culpafu" data-level="7"><a class="mission-card__link" href="../../../culpafu/dojo/nivel-7-liberacion/mision-3-permitirte-estar-bien/"><span class="mission-card__num" aria-hidden="true">3</span><span class="mission-card__body"><span class="mission-card__kicker">Misión · +20 XP</span><span class="mission-card__title">Permitirte estar bien</span><span class="mission-card__text">Nadie sale perjudicado porque descanses. Una culpa sin víctima es una culpa que perdió su trabajo.</span></span><span class="mission-card__state" data-state aria-hidden="true"></span></a></li><li class="mission-card mission-card--exam" data-mission="culpafu-7-exam" data-art="culpafu" data-level="7" data-exam><a class="mission-card__link" href="../../../culpafu/dojo/nivel-7-liberacion/examen-cinturon-marron/"><span class="mission-card__num" aria-hidden="true">★</span><span class="mission-card__body"><span class="mission-card__kicker">Examen de cinturón · +50 XP</span><span class="mission-card__title">Examen del cinturón marrón</span><span class="mission-card__text">Seis preguntas. Si ya sabes cerrar un expediente, el cinturón es tuyo.</span></span><span class="mission-card__state" data-state aria-hidden="true"></span></a></li></ol>
-
-<h2 id="pergaminos-de-apoyo">Pergaminos de apoyo</h2>
-<ol>
-<li><a href="../../../culpafu/aprende/culpa-y-rumiacion/">Culpa y rumiación</a> — por qué la mente vuelve una y otra vez y qué gana con ello.</li>
-<li><a href="../../../culpafu/entrena/reparar-sin-castigarse/">Reparar sin castigarse</a> — la herramienta para cerrar lo que ya está reparado.</li>
-<li><a href="../../../culpafu/historias/no-puedo-descansar/">No puedo descansar</a> — una historia sobre la culpa que no permite parar.</li>
-</ol>
-<h2 id="el-ejercicio">El ejercicio</h2>
-<p>Elige un error antiguo que siga volviendo. Uno que ya hayas reparado, o que ya no se pueda reparar porque pasó el tiempo, la persona no está o la situación no existe. Escribe su <strong>sentencia cumplida</strong>, en tres partes, como un documento oficial:</p>
-<ol>
-<li><strong>Qué pasó.</strong> Hechos, sin adjetivos. Lo que hiciste o dejaste de hacer, y a quién afectó.</li>
-<li><strong>Qué reparaste.</strong> Lo que hiciste después: la disculpa, el gesto, el cambio. Si no pudiste reparar nada porque ya no era posible, escríbelo también; es parte de la sentencia.</li>
-<li><strong>Qué aprendiste.</strong> Lo que ahora haces distinto por culpa de —o gracias a— aquello.</li>
-</ol>
-<p>Debajo, una línea más: la <strong>frase de cierre</strong>. Corta, tuya, para decirla cuando vuelva la rumiación. Algo como «esto ya está juzgado», «ya pagué por esto», «lo reparé, lo aprendí, sigo». No tiene que sonar bonita; tiene que sonar definitiva. La rumiación volverá, porque es un hábito, y los hábitos no se van por decreto. Pero cada vez que vuelva tendrás un documento que leer en lugar de un juicio que repetir.</p>
-<p>Si al escribir esto notas que el autorreproche es muy intenso, que lleva mucho tiempo o que se extiende a casi todo lo que haces, aquí termina lo que este Dojo puede ofrecerte y empieza lo que sí puede ofrecerte un profesional de la salud mental. Pedir esa ayuda no es un fracaso del entrenamiento; es el movimiento correcto.</p>
-<h2 id="la-pregunta-para-llevarte">La pregunta para llevarte</h2>
-<div class="callout callout--question">
-<span class="callout__label">Pregunta del nivel</span>
-<p>Si ya reparé, ¿para qué sigo castigándome?</p>
-</div>
-
-<h2 id="cuando-pasar-al-siguiente-nivel">Cuándo pasar al siguiente nivel</h2>
-<p>Cuando tengas al menos una sentencia cumplida escrita y hayas usado la frase de cierre de verdad, en una de esas noches, y hayas comprobado que ayuda aunque sea un poco. Cuando la rumiación siga apareciendo pero ya no te arrastre entera: la ves, la nombras, le lees el expediente. Marca el nivel cuando lo sientas así, no cuando termines de leer.</p>
-</div>
+</section><nav class="subnav" aria-label="CulpaFu"><div class="container subnav__inner"><a class="subnav__link subnav__link--home" href="../../../culpafu/">CulpaFu</a><a class="subnav__link" data-students href="../../../culpafu/dojo/" aria-current="page">Dojo</a><a class="subnav__link" data-students href="../../../culpafu/aprende/">Aprende</a><a class="subnav__link" data-students href="../../../culpafu/detecta/">Detecta</a><a class="subnav__link" data-students href="../../../culpafu/entrena/">Entrena</a><a class="subnav__link" data-students href="../../../culpafu/defiendete/">Defiéndete</a><a class="subnav__link" data-students href="../../../culpafu/historias/">Historias</a></div></nav>
+<div class="container container--prose">
+<div class="gated" data-gate data-content-id="es:culpafu-level-7" data-kind="page" data-art="culpafu" data-level="7"><div class="gate" data-gate-box hidden><div class="gate__art" aria-hidden="true"><svg viewBox="0 0 40 40" width="34" height="34" fill="none" aria-hidden="true"><path d="M31.5 9.5A15 15 0 1 0 35 20" stroke="currentColor" stroke-width="4.2" stroke-linecap="round"/><path d="M14 24.5l6-12 6 12" stroke="var(--c-accent)" stroke-width="3.6" stroke-linecap="round" stroke-linejoin="round"/></svg></div><p class="kicker">Arte</p><h2 class="gate__title">Esta sala es solo para alumnos</h2><p class="gate__text">Regístrate gratis con tu email para abrir las misiones y guardar tu progreso, cinturones y logros en todos tus dispositivos.</p><div data-auth-ui></div><p class="form__note">Solo pedimos nombre, email y contraseña (el teléfono es opcional). Al entrar, el progreso de este navegador se fusiona con tu cuenta.</p></div><div class="gated__body" data-gated-body aria-live="polite"></div></div>
 
 </div>
   </main>
@@ -132,7 +109,7 @@
           <ul class="footer__list">
             <li><a href="../../../artes/">Artes mentales</a></li>
             <li><a href="../../../culpafu/">CulpaFu</a></li>
-            <li><a href="../../../investiga/">Investiga</a></li>
+            <li data-students><a href="../../../investiga/">Investiga</a></li>
             <li><a href="../../../perfil/">Mi perfil</a></li>
           </ul>
         </div>
@@ -144,6 +121,7 @@
             <li><a href="../../../perfil/">Mi perfil</a></li>
             <li><a href="../../../contacto/">Contacto</a></li>
             <li><a href="../../../privacidad/">Privacidad</a></li>
+            <li><a href="../../../terminos/">Términos</a></li>
           </ul>
         </div>
         <div>
@@ -161,16 +139,18 @@
       </div>
       <div class="footer__legal">
         <p>© <span data-year>2026</span> MenteFu. Todos los derechos reservados.</p>
-        <p>English version: <a href="../../../en/">MyselfU</a></p>
+        <p>English version: <a href="../../../en/">MindFu</a></p>
       </div>
     </div>
   </footer>
 
   <div class="toasts" data-toasts aria-live="polite"></div>
-  <script src="../../../assets/js/main.js?v=16c6a8ec" defer></script>
-  <script src="../../../assets/js/visuals.js?v=2b42e873" defer></script>
-  <script src="../../../assets/js/storage.js?v=c762f026" defer></script>
-  <script src="../../../assets/js/sb.js?v=95c4b17b" defer></script>
-  <script src="../../../assets/js/progress.js?v=4fede502" defer></script>
+  <script src="../../../assets/js/main.js?v=c6453e4f" defer></script>
+  <script src="../../../assets/js/visuals.js?v=0c4cc172" defer></script>
+  <script src="../../../assets/js/storage.js?v=9bdcdfc9" defer></script>
+  <script src="../../../assets/js/sb.js?v=146222b7" defer></script>
+  <script src="../../../assets/js/progress.js?v=7ee3f52b" defer></script>
+  <script src="../../../assets/js/auth.js?v=62c2d5d8" defer></script>
+  <script src="../../../assets/js/reader.js?v=724744a9" defer></script>
 </body>
 </html>

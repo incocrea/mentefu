@@ -1,4 +1,4 @@
-/* MenteFu / MyselfU — cuenta clásica (email + contraseña), gate de contenido y
+/* MenteFu / MindFu — cuenta clásica (email + contraseña), gate de contenido y
    sincronización (docs/04). Registro con nombre, email, teléfono (opcional) y
    contraseña; el email confirma la cuenta. Sin Supabase configurado (modo local)
    el contenido viene embebido y no hay cuentas. Expone window.MFAuth. */
@@ -10,10 +10,14 @@
     loading: "Abriendo la sala…", local: "Modo local: sin cuenta conectada, el progreso se guarda solo en este navegador.",
     loadErr: "No se pudo cargar el contenido. Recarga la página.",
     tabLogin: "Entrar", tabSignup: "Crear cuenta",
-    name: "Tu nombre", email: "Email", phone: "Teléfono (opcional)", pass: "Contraseña", passNew: "Contraseña (mínimo 8 caracteres)",
+    name: "Tu nombre", email: "Email", country: "País", phone: "Teléfono (opcional)", pass: "Contraseña", passNew: "Contraseña (mínimo 8 caracteres)",
+    terms: 'Acepto los <a href="{terms}" target="_blank" rel="noopener">términos y condiciones</a> y el tratamiento de mis datos para el uso de la plataforma.',
+    badTerms: "Para crear la cuenta necesitas aceptar los términos y condiciones.", badCountry: "Dinos tu país.",
     login: "Entrar al dojo", signup: "Crear mi cuenta gratis", forgot: "¿Olvidaste tu contraseña?",
     working: "Un momento…", badEmail: "Revisa el email: no parece válido.", badPass: "La contraseña necesita al menos 8 caracteres.", badName: "Dinos tu nombre (aparecerá en tus certificados).",
-    signupOk: "✅ Cuenta creada. Revisa tu correo y pulsa el enlace de confirmación; después vuelve aquí y entra con tu email y contraseña.",
+    signupOk: "✅ Cuenta creada. Si tu escuela pide confirmación por correo te habrá llegado un enlace: púlsalo y vuelve a entrar con tu email y contraseña. Si el enlace dice que ya no vale, no pasa nada —algunos filtros de correo lo abren antes que tú y eso ya confirma la cuenta—: entra igualmente con tu contraseña.",
+    linkUsed: "Ese enlace de confirmación ya se había usado (algunos filtros de correo los abren antes que tú). Si acabas de crear la cuenta, ya está confirmada: entra aquí con tu email y contraseña.",
+    linkErr: "El enlace del correo no ha funcionado. Entra con tu email y contraseña, o usa «¿Olvidaste tu contraseña?».",
     loginErr: "Email o contraseña incorrectos, o cuenta sin confirmar. Revisa tu correo o usa «¿Olvidaste tu contraseña?».",
     exists: "Ese email ya tiene cuenta: usa la pestaña «Entrar» o recupera la contraseña.",
     recoverOk: "Te hemos enviado un correo para restablecer la contraseña.", genericErr: "No se pudo completar. Inténtalo de nuevo en un momento.",
@@ -21,10 +25,14 @@
     loading: "Opening the room…", local: "Local mode: no account connected, progress is stored only in this browser.",
     loadErr: "Could not load the content. Reload the page.",
     tabLogin: "Sign in", tabSignup: "Create account",
-    name: "Your name", email: "Email", phone: "Phone (optional)", pass: "Password", passNew: "Password (at least 8 characters)",
+    name: "Your name", email: "Email", country: "Country", phone: "Phone (optional)", pass: "Password", passNew: "Password (at least 8 characters)",
+    terms: 'I accept the <a href="{terms}" target="_blank" rel="noopener">terms and conditions</a> and the processing of my data for the use of the platform.',
+    badTerms: "You need to accept the terms and conditions to create the account.", badCountry: "Tell us your country.",
     login: "Enter the dojo", signup: "Create my free account", forgot: "Forgot your password?",
     working: "One moment…", badEmail: "Check the email: it does not look valid.", badPass: "The password needs at least 8 characters.", badName: "Tell us your name (it appears on your certificates).",
-    signupOk: "✅ Account created. Check your inbox and click the confirmation link; then come back and sign in with your email and password.",
+    signupOk: "✅ Account created. If your school requires email confirmation you will have received a link: click it and come back to sign in with your email and password. If the link says it is no longer valid, do not worry —some mail filters open it before you do, and that already confirms the account—: sign in with your password anyway.",
+    linkUsed: "That confirmation link had already been used (some mail filters open them before you do). If you just created the account, it is already confirmed: sign in here with your email and password.",
+    linkErr: "The link from the email did not work. Sign in with your email and password, or use “Forgot your password?”.",
     loginErr: "Wrong email or password, or unconfirmed account. Check your inbox or use “Forgot your password?”.",
     exists: "That email already has an account: use the “Sign in” tab or reset the password.",
     recoverOk: "We sent you an email to reset your password.", genericErr: "Could not complete. Please try again in a moment.",
@@ -32,9 +40,18 @@
 
   var userPromise = null;
   function user() {
-    if (!userPromise) userPromise = (window.SB && SB.enabled()) ? SB.getUser().catch(function () { return null; }) : Promise.resolve(null);
+    if (!userPromise) {
+      userPromise = (window.SB && SB.enabled()) ? SB.getUser().catch(function () { return null; }) : Promise.resolve(null);
+      /* El estado que progress.js dedujo del navegador es una apuesta; ésta es
+         la respuesta del servidor. Si la sesión caducó o se revocó, aquí se
+         corrige y la cabecera y el perfil se repintan solos. */
+      userPromise.then(function (u) {
+        if (window.MF && MF.setSession) MF.setSession(!SB || !SB.enabled() ? "local" : (u ? "in" : "out"));
+      });
+    }
     return userPromise;
   }
+  function olvidarUsuario() { userPromise = null; pulled = false; }
 
   /* ---------- sincronización del progreso y perfil ---------- */
   var pulled = false;
@@ -52,11 +69,11 @@
   }
   function syncProfile(u) {
     var meta = u.user_metadata || {};
-    return SB.select("profiles", "select=display_name,phone&id=eq." + u.id).then(function (rows) {
+    return SB.select("profiles", "select=display_name,phone,country&id=eq." + u.id).then(function (rows) {
       var row = rows && rows[0];
       var name = (row && row.display_name) || meta.name || "";
       if (name && window.MF && !MF.state().name) { MF.state().name = name; }
-      if (!row) return SB.upsert("profiles", { id: u.id, display_name: meta.name || "", phone: meta.phone || "" }, "id");
+      if (!row) return SB.upsert("profiles", { id: u.id, display_name: meta.name || "", phone: meta.phone || "", country: meta.country || "" }, "id");
     }).catch(function () { /* la tabla puede no tener aún la columna phone */ });
   }
   function push() {
@@ -99,8 +116,10 @@
       '<form class="auth__form" data-mode="signup" hidden novalidate>' +
       '<label class="visually-hidden" for="au-sn">' + T.name + '</label><input id="au-sn" class="input" type="text" name="name" placeholder="' + T.name.toLowerCase() + '" autocomplete="name" maxlength="60" required>' +
       '<label class="visually-hidden" for="au-se">' + T.email + '</label><input id="au-se" class="input" type="email" name="email" placeholder="' + T.email.toLowerCase() + '" autocomplete="email" required>' +
+      '<label class="visually-hidden" for="au-sc">' + T.country + '</label><input id="au-sc" class="input" type="text" name="country" placeholder="' + T.country.toLowerCase() + '" autocomplete="country-name" maxlength="56" required>' +
       '<label class="visually-hidden" for="au-st">' + T.phone + '</label><input id="au-st" class="input" type="tel" name="phone" placeholder="' + T.phone.toLowerCase() + '" autocomplete="tel" maxlength="24">' +
       '<label class="visually-hidden" for="au-sp">' + T.passNew + '</label><input id="au-sp" class="input" type="password" name="password" placeholder="' + T.passNew.toLowerCase() + '" autocomplete="new-password" minlength="8" required>' +
+      '<label class="auth__terms"><input type="checkbox" name="terms" required> <span>' + T.terms.replace("{terms}", (cfg.prefix || "") + (cfg.lang === "es" ? "terminos/" : "terms/")) + "</span></label>" +
       '<button class="btn btn--primary btn--block" type="submit">' + T.signup + "</button>" +
       '<p class="form__feedback" role="status" aria-live="polite"></p></form></div>');
     host.appendChild(ui);
@@ -117,6 +136,17 @@
     var login = ui.querySelector('[data-mode="login"]');
     var signup = ui.querySelector('[data-mode="signup"]');
 
+    /* Si venimos de un enlace de correo que ya no valía, GoTrue nos devuelve el
+       motivo en el hash y hasta ahora se perdía en silencio: el alumno se
+       quedaba mirando un formulario sin saber qué había fallado. */
+    function contarEnlace(err) {
+      if (!err) return;
+      login.querySelector(".form__feedback").textContent =
+        /expired|invalid|used/i.test(err.code + " " + err.message) ? T.linkUsed : T.linkErr;
+    }
+    contarEnlace(window.SB && SB.takeAuthError && SB.takeAuthError());
+    document.addEventListener("mf:autherror", function (e) { contarEnlace(e.detail); });
+
     function busy(form, on) { form.querySelector("button[type=submit]").disabled = on; }
     function say(form, msg) { form.querySelector(".form__feedback").textContent = msg; }
     function okEmail(v) { return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(v); }
@@ -128,7 +158,8 @@
       if (!pass) return say(login, T.badPass);
       busy(login, true); say(login, T.working);
       SB.signInWithPassword(email, pass).then(function () {
-        userPromise = null; pulled = false;
+        olvidarUsuario();
+        if (window.MF && MF.setSession) MF.setSession("in");
         if (window.MF) MF.track("signin", { item: "auth" });
         say(login, "✅");
         if (onSignedIn) onSignedIn(); else window.location.reload();
@@ -144,14 +175,18 @@
     signup.addEventListener("submit", function (e) {
       e.preventDefault();
       var name = signup.name.value.trim(), email = signup.email.value.trim(), phone = signup.phone.value.trim(), pass = signup.password.value;
+      var country = signup.country.value.trim();
       if (!name) return say(signup, T.badName);
       if (!okEmail(email)) return say(signup, T.badEmail);
+      if (!country) return say(signup, T.badCountry);
       if (pass.length < 8) return say(signup, T.badPass);
+      if (!signup.terms.checked) return say(signup, T.badTerms);
       busy(signup, true); say(signup, T.working);
-      SB.signUp(email, pass, { name: name, phone: phone }).then(function (d) {
+      /* terms_accepted_at: constancia de la aceptación (Ley 1581/2012) */
+      SB.signUp(email, pass, { name: name, phone: phone, country: country, terms_accepted_at: new Date().toISOString() }).then(function (d) {
         if (window.MF) { MF.state().name = MF.state().name || name; MF.save(); MF.track("signup", { item: "auth" }); }
         /* si la confirmación de email está desactivada, GoTrue ya devuelve sesión */
-        if (d && d.access_token) { userPromise = null; pulled = false; window.location.reload(); return; }
+        if (d && d.access_token) { olvidarUsuario(); if (MF.setSession) MF.setSession("in"); window.location.reload(); return; }
         say(signup, T.signupOk);
       }).catch(function (err) {
         var m = (err && err.message) || "";
@@ -190,14 +225,29 @@
     }
     user().then(function (u) {
       if (u) { pull(); whenReady(deliver); }
-      else if (box) { box.hidden = false; renderAuthUI(box.querySelector("[data-auth-ui]"), function () { box.hidden = true; userPromise = null; user().then(function () { pull(); deliver(); }); }); }
+      else if (box) { box.hidden = false; renderAuthUI(box.querySelector("[data-auth-ui]"), function () { box.hidden = true; olvidarUsuario(); user().then(function () { pull(); deliver(); }); }); }
     });
   }
+
+  if (window.MF && MF.setSession && !(window.SB && SB.enabled())) MF.setSession("local");
+  else if (window.SB && SB.enabled()) user();   /* resuelve el estado en toda página que cargue auth.js */
 
   document.querySelectorAll("[data-gate]").forEach(openGate);
   document.querySelectorAll("[data-auth-ui]:not([data-gate-box] [data-auth-ui])").forEach(function (h) { renderAuthUI(h); });
   if (window.SB && SB.enabled()) pull();
 
   window.MFAuth = { user: user, pull: pull, push: push, loadContent: loadContent, renderAuthUI: renderAuthUI, T: T,
-    signOut: function () { return SB.signOut().then(function () { userPromise = null; pulled = false; }); } };
+    signOut: function () {
+      /* Primero se asegura el progreso en la cuenta (por si el último push
+         falló), luego se cierra y se olvida el expediente local: en un equipo
+         compartido el siguiente visitante no debe ver los cinturones del
+         anterior. */
+      return push().catch(function () { /* sin red: el progreso ya viajó antes */ })
+        .then(function () { return SB.signOut(); })
+        .then(function () {
+          olvidarUsuario();
+          if (window.MF && MF.forget) MF.forget();
+          if (window.MF && MF.setSession) MF.setSession("out");
+        });
+    } };
 })();

@@ -1,4 +1,4 @@
-/* MenteFu / MyselfU — reproductor de misiones (tarjetas gamificadas, docs/04 §2).
+/* MenteFu / MindFu — reproductor de misiones (tarjetas gamificadas, docs/04 §2).
    Espera el evento mf:content (auth.js) con {cards, xp, kind, art, level, next…}
    y renderiza una tarjeta cada vez con barra de progreso, quiz con feedback,
    reflexiones guardadas, microretos y pantalla final con XP y cinturón. */
@@ -8,7 +8,7 @@
   var ES = cfg.lang === "es";
   var XP = (window.MF && MF.XP) || {};
   var T = ES ? {
-    next: "Siguiente", finish: "Terminar", card: "Tarjeta {i} de {n}", quiz: "Pregunta", choice: "Explora", reflect: "Reflexiona", practice: "Microreto", scroll: "Pergamino", text: "",
+    next: "Siguiente", prev: "Anterior", finish: "Terminar", card: "Tarjeta {i} de {n}", quiz: "Pregunta", choice: "Explora", reflect: "Reflexiona", practice: "Microreto", scroll: "Pergamino", text: "",
     correct: "¡Correcto!", wrong: "No exactamente", bonus: "+{n} XP por acertar a la primera", retry: "Prueba otra vez",
     done: "Hecho", later: "Lo haré luego", doneMsg: "+{n} XP por el microreto", open: "Abrir pergamino", scrollMeta: "Lectura de apoyo · +{n} XP al terminarlo",
     missionDone: "Misión completada", examDone: "Examen terminado", earned: "XP ganados", alreadyDone: "Ya habías completado esta misión: repasar no suma XP, pero siempre suma.",
@@ -16,7 +16,7 @@
     nextMission: "Siguiente: {t}", backLevel: "Volver al nivel", toProfile: "Ver mi perfil", unlocked: "Logros desbloqueados",
     placeholder: "Escribe aquí…", saved: "Se guarda automáticamente.",
   } : {
-    next: "Next", finish: "Finish", card: "Card {i} of {n}", quiz: "Question", choice: "Explore", reflect: "Reflect", practice: "Micro-challenge", scroll: "Scroll", text: "",
+    next: "Next", prev: "Previous", finish: "Finish", card: "Card {i} of {n}", quiz: "Question", choice: "Explore", reflect: "Reflect", practice: "Micro-challenge", scroll: "Scroll", text: "",
     correct: "Correct!", wrong: "Not quite", bonus: "+{n} XP for a first-try hit", retry: "Try again",
     done: "Done", later: "I’ll do it later", doneMsg: "+{n} XP for the micro-challenge", open: "Open scroll", scrollMeta: "Supporting read · +{n} XP when finished",
     missionDone: "Mission completed", examDone: "Exam finished", earned: "XP earned", alreadyDone: "You had already completed this mission: reviewing does not add XP, but it always adds.",
@@ -41,12 +41,20 @@
     var already = a && !isExam && !!a.missions[data.id];
     cards.forEach(function (c) { if (c.type === "quiz") quizTotal++; });
 
-    var wrap = el('<div class="mission"><div class="mission__top"><div class="mission__bar"><div class="mission__fill"></div></div><span class="mission__count"></span></div><div class="mission__stage"></div><div class="mission__actions"><span></span><button class="btn btn--primary" type="button" data-next>' + T.next + '</button></div></div>');
+    var wrap = el('<div class="mission"><div class="mission__top"><div class="mission__bar"><div class="mission__fill"></div></div><span class="mission__count"></span></div><div class="mission__stage"></div><div class="mission__actions"><button class="btn btn--ghost" type="button" data-prev hidden>' + T.prev + '</button><button class="btn btn--primary" type="button" data-next>' + T.next + '</button></div></div>');
     body.appendChild(wrap);
-    var fill = wrap.querySelector(".mission__fill"), count = wrap.querySelector(".mission__count"), stage = wrap.querySelector(".mission__stage"), nextBtn = wrap.querySelector("[data-next]");
+    var fill = wrap.querySelector(".mission__fill"), count = wrap.querySelector(".mission__count"), stage = wrap.querySelector(".mission__stage"), nextBtn = wrap.querySelector("[data-next]"), prevBtn = wrap.querySelector("[data-prev]");
+    /* hasta dónde ha llegado ya: al volver atrás, las tarjetas superadas no
+       vuelven a exigir su respuesta */
+    var reached = 0;
 
-    function setNext(enabled) { nextBtn.disabled = !enabled; }
-    function progress() { fill.style.width = Math.round(((i) / n) * 100) + "%"; count.textContent = T.card.replace("{i}", Math.min(i + 1, n)).replace("{n}", n); nextBtn.textContent = i >= n - 1 ? T.finish : T.next; }
+    function setNext(enabled) { nextBtn.disabled = !enabled && i >= reached; }
+    function progress() {
+      fill.style.width = Math.round(((i) / n) * 100) + "%";
+      count.textContent = T.card.replace("{i}", Math.min(i + 1, n)).replace("{n}", n);
+      nextBtn.textContent = i >= n - 1 ? T.finish : T.next;
+      prevBtn.hidden = i <= 0;
+    }
 
     function renderCard(c) {
       stage.innerHTML = "";
@@ -154,20 +162,89 @@
       html += "</article>";
       stage.appendChild(el(html));
       var rt = stage.querySelector("[data-retake]");
-      if (rt) rt.addEventListener("click", function () { i = 0; quizCorrect = 0; wrap.querySelector(".mission__actions").hidden = false; renderCard(cards[0]); });
+      if (rt) rt.addEventListener("click", function () { i = 0; reached = 0; quizCorrect = 0; wrap.querySelector(".mission__actions").hidden = false; renderCard(cards[0]); });
       wrap.scrollIntoView({ behavior: "smooth", block: "start" });
     }
 
-    nextBtn.addEventListener("click", function () {
+    function slide(dir) {
+      var card = stage.firstChild;
+      if (card && !window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
+        stage.classList.remove("is-slide-left", "is-slide-right");
+        void stage.offsetWidth;   /* reinicia la animación */
+        stage.classList.add(dir < 0 ? "is-slide-right" : "is-slide-left");
+      }
+    }
+    function goNext() {
       if (nextBtn.disabled) return;
       i++;
-      if (i >= n) finish(); else renderCard(cards[i]);
-    });
+      reached = Math.max(reached, i);
+      if (i >= n) finish(); else { renderCard(cards[i]); slide(1); }
+    }
+    function goPrev() {
+      if (i <= 0 || !stage.querySelector(".mcard")) return;
+      /* en la pantalla final ya no se retrocede: la misión está entregada */
+      if (i >= n) return;
+      i--;
+      renderCard(cards[i]);
+      if (i < reached) setNext(true);
+      slide(-1);
+    }
+    nextBtn.addEventListener("click", goNext);
+    prevBtn.addEventListener("click", goPrev);
     document.addEventListener("keydown", function (e) {
-      if (e.key === "ArrowRight" && !nextBtn.disabled && !/TEXTAREA|INPUT/.test((document.activeElement || {}).tagName || "")) nextBtn.click();
+      if (/TEXTAREA|INPUT/.test((document.activeElement || {}).tagName || "")) return;
+      if (e.key === "ArrowRight") { if (!nextBtn.disabled) goNext(); }
+      else if (e.key === "ArrowLeft") goPrev();
     });
+
+    /* Swipe: izquierda avanza (si la tarjeta lo permite), derecha retrocede.
+       Solo gestos claramente horizontales, para no pelearse con el scroll. */
+    var sw = null;
+    stage.addEventListener("pointerdown", function (e) {
+      if (e.pointerType === "mouse") return;
+      sw = { x: e.clientX, y: e.clientY };
+    });
+    stage.addEventListener("pointerup", function (e) {
+      if (!sw) return;
+      var dx = e.clientX - sw.x, dy = e.clientY - sw.y;
+      sw = null;
+      if (Math.abs(dx) < 48 || Math.abs(dx) < Math.abs(dy) * 1.5) return;
+      if (dx < 0) { if (!nextBtn.disabled) goNext(); } else goPrev();
+    });
+    stage.addEventListener("pointercancel", function () { sw = null; });
+    /* Si un enlace de la tarjeta te lleva a un pergamino, se guarda el punto
+       exacto (misión + tarjeta): el pergamino mostrará «Volver a la misión»
+       (progress.js) y al volver se reabre justo aquí. */
+    stage.addEventListener("click", function (e) {
+      var a = e.target.closest && e.target.closest("a[href]");
+      if (!a || a.getAttribute("href").charAt(0) === "#") return;
+      try {
+        sessionStorage.setItem("mf.origen", JSON.stringify({
+          url: window.location.pathname, card: i, title: data.title || document.title
+        }));
+      } catch (err) { /* nada */ }
+    });
+
+    /* ¿Volvemos de un pergamino? Reabrir en la tarjeta de origen. */
+    var reanudar = -1;
+    try {
+      var o = JSON.parse(sessionStorage.getItem("mf.origen") || "null");
+      if (o && o.url !== window.location.pathname) {
+        /* abriste otra misión: el punto de retorno anterior ya no aplica */
+        sessionStorage.removeItem("mf.origen");
+        sessionStorage.removeItem("mf.origen.volver");
+        o = null;
+      }
+      if (o && o.url === window.location.pathname && sessionStorage.getItem("mf.origen.volver")) {
+        reanudar = Math.min(o.card | 0, n - 1);
+        sessionStorage.removeItem("mf.origen");
+        sessionStorage.removeItem("mf.origen.volver");
+      }
+    } catch (err) { /* nada */ }
+
     if (window.MF) MF.track("mission_start", { item: data.id, art: data.art });
-    if (n) renderCard(cards[0]); else finish();
+    if (reanudar > 0) { i = reanudar; reached = reanudar; renderCard(cards[i]); setNext(true); }
+    else if (n) renderCard(cards[0]); else finish();
   }
 
   document.querySelectorAll("[data-gate][data-kind='mission'], [data-gate][data-kind='exam']").forEach(function (host) {

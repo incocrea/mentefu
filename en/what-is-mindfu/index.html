@@ -1,24 +1,34 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <script>document.documentElement.className += " js";</script>
+  <script>
+  document.documentElement.className += " js";
+  /* Estado de sesión ANTES del primer pintado, para que el CSS del escaparate
+     ([data-students]/[data-guest]) no parpadee. Solo pinta: la verdad la pone
+     progress.js (misma clave de almacenamiento) y auth.js la confirma. */
+  try {
+    var mfs = "" === "local" ? "local"
+      : (JSON.parse(localStorage.getItem("mentefu.sb.session") || "null") ? "in" : "out");
+    document.documentElement.setAttribute("data-session", mfs);
+  } catch (e) { document.documentElement.setAttribute("data-session", "out"); }
+  </script>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>What MyselfU is (and is not) — MyselfU</title>
-  <meta name="description" content="MyselfU is an emotional education school that borrows the language of martial arts as a metaphor. It is not therapy, not a martial arts school and not a doctrine.">
-  <link rel="canonical" href="https://www.mentefu.com/en/what-is-myselfu/">
+  <title>What MindFu is (and is not) — MindFu</title>
+  <meta name="description" content="MindFu is an emotional education school that borrows the language of martial arts as a metaphor. It is not therapy, not a martial arts school and not a doctrine.">
+  <link rel="canonical" href="https://www.mentefu.com/en/what-is-mindfu/">
   <meta property="og:type" content="article">
-  <meta property="og:site_name" content="MyselfU">
-  <meta property="og:title" content="What MyselfU is (and is not) — MyselfU">
-  <meta property="og:description" content="MyselfU is an emotional education school that borrows the language of martial arts as a metaphor. It is not therapy, not a martial arts school and not a doctrine.">
-  <meta property="og:url" content="https://www.mentefu.com/en/what-is-myselfu/">
-  <meta property="og:image" content="https://www.mentefu.com/assets/img/og-myselfu.png">
+  <meta property="og:site_name" content="MindFu">
+  <meta property="og:title" content="What MindFu is (and is not) — MindFu">
+  <meta property="og:description" content="MindFu is an emotional education school that borrows the language of martial arts as a metaphor. It is not therapy, not a martial arts school and not a doctrine.">
+  <meta property="og:url" content="https://www.mentefu.com/en/what-is-mindfu/">
+  <meta property="og:image" content="https://www.mentefu.com/assets/img/og-mindfu.png">
   <meta property="og:image:width" content="1200">
   <meta property="og:image:height" content="630">
   <meta property="og:locale" content="en_US">
   <meta name="twitter:card" content="summary_large_image">
   <meta name="theme-color" content="#12131a">
-  <link rel="alternate" hreflang="en" href="https://www.mentefu.com/en/what-is-myselfu/">
+  <link rel="alternate" hreflang="en" href="https://www.mentefu.com/en/what-is-mindfu/">
   <link rel="alternate" hreflang="es" href="https://www.mentefu.com/que-es-mentefu/">
   <link rel="alternate" hreflang="x-default" href="https://www.mentefu.com/que-es-mentefu/">
   <link rel="icon" type="image/svg+xml" href="../../assets/img/favicon.svg">
@@ -27,9 +37,9 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,500;12..96,700;12..96,800&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="../../assets/css/styles.css?v=3c6f1dbd">
-  <link rel="stylesheet" href="../../assets/css/game.css?v=8554e6de">
-<script>window.MF_CONFIG = {"lang": "en", "brand": "mentefu", "prefix": "../", "supabaseUrl": "https://qlalxlsnmvqrsfwxstbu.supabase.co", "supabaseAnonKey": "sb_publishable_pzcyZyaWUmB4TIHnYW4qVQ_fFg8FrKM", "gate": true, "xp": {"mission": 20, "quiz_first_try": 5, "practice": 10, "scroll": 10, "exam": 50, "tool": 15, "exam_pass": 0.75}, "ranks": [[0, "Novice"], [100, "Apprentice"], [300, "Practitioner"], [700, "Adept"], [1500, "Hall Master"], [3000, "Grand Master"]], "belts": [{"n": 1, "key": "white", "color": "#f4f1ea", "name": "White", "level": "Recognition"}, {"n": 2, "key": "yellow", "color": "#f2c230", "name": "Yellow", "level": "Awareness"}, {"n": 3, "key": "orange", "color": "#f07c22", "name": "Orange", "level": "Analysis"}, {"n": 4, "key": "green", "color": "#2e9e5b", "name": "Green", "level": "Boundaries"}, {"n": 5, "key": "blue", "color": "#2f6fd8", "name": "Blue", "level": "Autonomy"}, {"n": 6, "key": "purple", "color": "#7b3fbf", "name": "Purple", "level": "Repair"}, {"n": 7, "key": "brown", "color": "#7a4a2a", "name": "Brown", "level": "Release"}, {"n": 8, "key": "black", "color": "#1a1a1f", "name": "Black", "level": "Mastery"}], "profileUrl": "../profile/", "artsUrl": "../arts/", "assets": "../../", "gameArt": {"art-culpafu": "assets/img/game/art-culpafu.webp", "art-limitesfu": "assets/img/game/art-limitesfu.webp", "art-miedofu": "assets/img/game/art-miedofu.webp", "art-verguenzafu": "assets/img/game/art-verguenzafu.webp", "avatar-1": "assets/img/game/avatar-1.webp", "avatar-2": "assets/img/game/avatar-2.webp", "avatar-3": "assets/img/game/avatar-3.webp", "avatar-4": "assets/img/game/avatar-4.webp", "avatar-5": "assets/img/game/avatar-5.webp", "avatar-6": "assets/img/game/avatar-6.webp", "avatar-7": "assets/img/game/avatar-7.webp", "avatar-8": "assets/img/game/avatar-8.webp", "badge-belt-black": "assets/img/game/badge-belt-black.webp", "badge-belt-green": "assets/img/game/badge-belt-green.webp", "badge-belt-white": "assets/img/game/badge-belt-white.webp", "badge-belt-yellow": "assets/img/game/badge-belt-yellow.webp", "badge-early-bird": "assets/img/game/badge-early-bird.webp", "badge-first-mission": "assets/img/game/badge-first-mission.webp", "badge-first-scroll": "assets/img/game/badge-first-scroll.webp", "badge-first-tool": "assets/img/game/badge-first-tool.webp", "badge-missions-10": "assets/img/game/badge-missions-10.webp", "badge-night-owl": "assets/img/game/badge-night-owl.webp", "badge-perfect-exam": "assets/img/game/badge-perfect-exam.webp", "badge-streak-3": "assets/img/game/badge-streak-3.webp", "badge-streak-7": "assets/img/game/badge-streak-7.webp", "belt-black": "assets/img/game/belt-black.webp", "belt-blue": "assets/img/game/belt-blue.webp", "belt-brown": "assets/img/game/belt-brown.webp", "belt-green": "assets/img/game/belt-green.webp", "belt-orange": "assets/img/game/belt-orange.webp", "belt-purple": "assets/img/game/belt-purple.webp", "belt-white": "assets/img/game/belt-white.webp", "belt-yellow": "assets/img/game/belt-yellow.webp", "home-logros": "assets/img/game/home-logros.webp", "home-misiones": "assets/img/game/home-misiones.webp", "home-pergaminos": "assets/img/game/home-pergaminos.webp"}, "arts": [{"key": "culpafu", "name": "GuiltFu", "url": "../guiltfu/", "color": "#e63b2e", "icon": "🥋", "status": "active"}], "artStats": {"limitesfu": {"missions": 0, "levels": 0}, "miedofu": {"missions": 0, "levels": 0}, "culpafu": {"missions": 24, "levels": 8}, "verguenzafu": {"missions": 0, "levels": 0}}, "page": {"id": "about", "layout": "page", "art": null, "level": null}};</script>
+  <link rel="stylesheet" href="../../assets/css/styles.css?v=a4705958">
+  <link rel="stylesheet" href="../../assets/css/game.css?v=975ea005">
+<script>window.MF_CONFIG = {"lang": "en", "brand": "mentefu", "prefix": "../", "supabaseUrl": "https://qlalxlsnmvqrsfwxstbu.supabase.co", "supabaseAnonKey": "sb_publishable_pzcyZyaWUmB4TIHnYW4qVQ_fFg8FrKM", "gate": true, "xp": {"mission": 20, "quiz_first_try": 5, "practice": 10, "scroll": 10, "exam": 50, "tool": 15, "exam_pass": 0.75}, "ranks": [[0, "Novice"], [100, "Apprentice"], [300, "Practitioner"], [700, "Adept"], [1500, "Hall Master"], [3000, "Grand Master"]], "belts": [{"n": 1, "key": "white", "color": "#f4f1ea", "name": "White", "level": "Recognition"}, {"n": 2, "key": "yellow", "color": "#f2c230", "name": "Yellow", "level": "Awareness"}, {"n": 3, "key": "orange", "color": "#f07c22", "name": "Orange", "level": "Analysis"}, {"n": 4, "key": "green", "color": "#2e9e5b", "name": "Green", "level": "Boundaries"}, {"n": 5, "key": "blue", "color": "#2f6fd8", "name": "Blue", "level": "Autonomy"}, {"n": 6, "key": "purple", "color": "#7b3fbf", "name": "Purple", "level": "Repair"}, {"n": 7, "key": "brown", "color": "#7a4a2a", "name": "Brown", "level": "Release"}, {"n": 8, "key": "black", "color": "#1a1a1f", "name": "Black", "level": "Mastery"}], "profileUrl": "../profile/", "artsUrl": "../arts/", "assets": "../../", "gameArt": {"art-culpafu": "assets/img/game/art-culpafu.webp", "avatar-1": "assets/img/game/avatar-1.webp", "avatar-2": "assets/img/game/avatar-2.webp", "avatar-3": "assets/img/game/avatar-3.webp", "avatar-4": "assets/img/game/avatar-4.webp", "avatar-5": "assets/img/game/avatar-5.webp", "avatar-6": "assets/img/game/avatar-6.webp", "avatar-7": "assets/img/game/avatar-7.webp", "avatar-8": "assets/img/game/avatar-8.webp", "badge-belt-black": "assets/img/game/badge-belt-black.webp", "badge-belt-green": "assets/img/game/badge-belt-green.webp", "badge-belt-white": "assets/img/game/badge-belt-white.webp", "badge-belt-yellow": "assets/img/game/badge-belt-yellow.webp", "badge-early-bird": "assets/img/game/badge-early-bird.webp", "badge-first-mission": "assets/img/game/badge-first-mission.webp", "badge-first-scroll": "assets/img/game/badge-first-scroll.webp", "badge-first-tool": "assets/img/game/badge-first-tool.webp", "badge-missions-10": "assets/img/game/badge-missions-10.webp", "badge-night-owl": "assets/img/game/badge-night-owl.webp", "badge-perfect-exam": "assets/img/game/badge-perfect-exam.webp", "badge-streak-3": "assets/img/game/badge-streak-3.webp", "badge-streak-7": "assets/img/game/badge-streak-7.webp", "belt-black": "assets/img/game/belt-black.webp", "belt-blue": "assets/img/game/belt-blue.webp", "belt-brown": "assets/img/game/belt-brown.webp", "belt-green": "assets/img/game/belt-green.webp", "belt-orange": "assets/img/game/belt-orange.webp", "belt-purple": "assets/img/game/belt-purple.webp", "belt-white": "assets/img/game/belt-white.webp", "belt-yellow": "assets/img/game/belt-yellow.webp", "home-logros": "assets/img/game/home-logros.webp", "home-misiones": "assets/img/game/home-misiones.webp", "home-pergaminos": "assets/img/game/home-pergaminos.webp"}, "arts": [{"key": "culpafu", "name": "GuiltFu", "url": "../guiltfu/", "color": "#e63b2e", "icon": "🥋", "status": "active"}], "artStats": {"culpafu": {"missions": 24, "levels": 8}, "lovefu": {"missions": 0, "levels": 0}, "manipufu": {"missions": 0, "levels": 0}, "narcifu": {"missions": 0, "levels": 0}}, "page": {"id": "about", "layout": "page", "art": null, "level": null}};</script>
 
 </head>
 <body class="layout-page" data-brand="mentefu">
@@ -37,9 +47,9 @@
 
   <header class="header">
     <div class="container header__inner">
-      <a class="brand" href="../" aria-label="MyselfU">
+      <a class="brand" href="../" aria-label="MindFu">
         <span class="brand__mark" aria-hidden="true"><svg viewBox="0 0 40 40" width="34" height="34" fill="none" aria-hidden="true"><path d="M31.5 9.5A15 15 0 1 0 35 20" stroke="currentColor" stroke-width="4.2" stroke-linecap="round"/><path d="M14 24.5l6-12 6 12" stroke="var(--c-accent)" stroke-width="3.6" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
-        <span class="brand__name">MYSELFU</span>
+        <span class="brand__name">MINDFU</span>
       </a>
       <button class="burger" aria-expanded="false" aria-controls="main-nav">
         <span class="visually-hidden">Open menu</span>
@@ -51,13 +61,13 @@
         <ul class="nav__list">
           <li><a class="nav__link" href="../arts/">Arts</a></li>
           <li><a class="nav__link" href="../guiltfu/">GuiltFu</a></li>
-          <li><a class="nav__link" href="../research/">Research</a></li>
+          <li data-students><a class="nav__link" data-href="../research/">Research</a></li>
           <li><a class="nav__link" href="../profile/">Profile</a></li>
           <li class="nav__lang"><a class="lang-switch" href="../../que-es-mentefu/" title="MenteFu — versión en español" hreflang="es">ES</a></li>
           <li class="nav__cta"><a class="btn btn--primary btn--block" href="../arts/">Enter the dojo</a></li>
         </ul>
       </nav>
-      <a class="hud" href="../profile/" data-hud-chip aria-label="Profile">
+      <a class="hud" href="../profile/" data-hud-chip data-label="Profile" aria-label="Profile">
         <span class="hud__ring" data-hud-ring aria-hidden="true"><span class="hud__belt" data-hud-belt></span><span class="hud__avatar" data-hud-avatar hidden></span></span>
         <span class="hud__meta"><span class="hud__rank" data-hud-rank>Profile</span><span class="hud__xp"><b data-hud-xp>0</b> XP</span></span>
       </a>
@@ -71,7 +81,7 @@
   <div class="container">
     <nav class="crumbs" aria-label="Breadcrumb"><a href="../">Home</a></nav>
     <p class="kicker">The school</p>
-    <h1 class="page-head__title">What MyselfU is (and is not)</h1>
+    <h1 class="page-head__title">What MindFu is (and is not)</h1>
     <p class="page-head__lead">An honest account of what we do, what we do not do, and why we talk about belts when nobody is going to hit anyone.</p>
     <p class="page-head__meta"></p>
   </div>
@@ -79,16 +89,16 @@
 <div class="container container--prose">
 <div class="prose">
 <h2 id="in-one-sentence">In one sentence</h2>
-<p>MyselfU is a <strong>mental training school</strong>: emotional education for learning to recognize guilt, question the rules you never examined, and get your ability to choose back. It is a <strong>super dojo</strong>: each mental art (GuiltFu is the first) is a course with eight belts, short missions, exams and achievements. All content is free; to train you need a student account (name, email and password).</p>
-<h2 id="why-myselfu">Why “MyselfU”</h2>
-<p>The name is <strong>Myself + You</strong> — and a nod to <em>learning about yourself</em>. It has a Spanish-language sister brand, <a href="../../">MenteFu</a> (<em>Mente + Kung Fu</em>), and both share the same idea: the language of martial arts carries associations that describe what caring for your mind takes remarkably well — discipline, practice, balance, focus, patience, knowing when not to react.</p>
+<p>MindFu is a <strong>mental training school</strong>: emotional education for learning to recognize guilt, question the rules you never examined, and get your ability to choose back. It is a <strong>super dojo</strong>: each mental art (GuiltFu is the first) is a course with eight belts, short missions, exams and achievements. All content is free; to train you need a student account (name, email and password).</p>
+<h2 id="why-mindfu">Why “MindFu”</h2>
+<p>The name is <strong>Mind + Kung Fu</strong> — the art of training your mind. It has a Spanish-language sister brand, <a href="../../">MenteFu</a> (<em>Mente + Kung Fu</em>), and both share the same idea: the language of martial arts carries associations that describe what caring for your mind takes remarkably well — discipline, practice, balance, focus, patience, knowing when not to react.</p>
 <p>We use that language as an <strong>educational metaphor</strong>. We do not teach physical combat, we are no substitute for a real martial arts school, and we are not a traditional discipline of any kind. The belts in the <a href="../guiltfu/dojo/">Dojo</a> represent personal progress, not a certification of anything.</p>
 <div class="callout callout--question">
 <span class="callout__label">The core idea</span>
 <p>Your mind needs training too. And victory is not about defeating anyone: it is about getting your ability to choose back.</p>
 </div>
 
-<h2 id="what-myselfu-is">What MyselfU IS</h2>
+<h2 id="what-mindfu-is">What MindFu IS</h2>
 <ul>
 <li>Emotional education and self-knowledge.</li>
 <li>Critical thinking applied to the rules that govern you.</li>
@@ -96,10 +106,10 @@
 <li>An invitation to responsibility <em>without</em> self-punishment.</li>
 <li>A place to learn to set boundaries and to repair when it is called for.</li>
 </ul>
-<h2 id="what-myselfu-is-not">What MyselfU is NOT</h2>
+<h2 id="what-mindfu-is-not">What MindFu is NOT</h2>
 <div class="callout callout--warn">
 <span class="callout__label">Please read this</span>
-<p><strong>MyselfU is not therapy, not diagnosis and not medical treatment.</strong> It does not replace the care of a mental health professional. If you feel intense or persistent distress, or you think about harming yourself, seek professional help or call your local emergency services. Everything here is meant to accompany you, not to replace anyone.</p>
+<p><strong>MindFu is not therapy, not diagnosis and not medical treatment.</strong> It does not replace the care of a mental health professional. If you feel intense or persistent distress, or you think about harming yourself, seek professional help or call your local emergency services. Everything here is meant to accompany you, not to replace anyone.</p>
 </div>
 
 <p>It is also not:</p>
@@ -144,8 +154,8 @@
 <p>We lean on sources we cite in <a href="../research/">Research</a>: above all on Norberto Levy’s work on guilt that tortures versus guilt that repairs, and on the psychology of moral emotions, the social psychology of influence and the philosophy of responsibility. When we mention studies on martial arts and self-regulation, we do so proportionately: there are interesting signals, not proof that “training cures” anything.</p>
 <h2 id="your-privacy">Your privacy</h2>
 <p>You sign in with your email and a password. Your progress (XP, belts, achievements, reflections) is stored in your account so you find it on any device, and we log your activity in the school only to understand what works and improve it. No advertising trackers. More in <a href="../privacy/">Privacy</a>.</p>
-<h2 id="myselfu-and-mentefu">MyselfU and MenteFu</h2>
-<p>MyselfU has a Spanish-language sister brand, <strong><a href="../../">MenteFu</a></strong>: same philosophy, same journey, not a literal translation. If you know someone who needs this in Spanish, now you know where to send them.</p>
+<h2 id="mindfu-and-mentefu">MindFu and MenteFu</h2>
+<p>MindFu has a Spanish-language sister brand, <strong><a href="../../">MenteFu</a></strong>: same philosophy, same journey, not a literal translation. If you know someone who needs this in Spanish, now you know where to send them.</p>
 </div>
 <nav class="pager" aria-label="In this section"><a class="pager__prev" href="../privacy/"><span>Previous</span>Privacy</a><span></span></nav>
 </div>
@@ -155,9 +165,9 @@
     <div class="container">
       <div class="footer__grid">
         <div class="footer__about">
-          <a class="brand brand--footer" href="../" aria-label="MyselfU">
+          <a class="brand brand--footer" href="../" aria-label="MindFu">
             <span class="brand__mark" aria-hidden="true"><svg viewBox="0 0 40 40" width="34" height="34" fill="none" aria-hidden="true"><path d="M31.5 9.5A15 15 0 1 0 35 20" stroke="currentColor" stroke-width="4.2" stroke-linecap="round"/><path d="M14 24.5l6-12 6 12" stroke="var(--c-accent)" stroke-width="3.6" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
-            <span class="brand__name">MYSELFU</span>
+            <span class="brand__name">MINDFU</span>
           </a>
           <p class="footer__tagline">Train your mind. Defend your peace.</p>
           <p class="footer__blurb">A super dojo for emotional growth. Mental defense arts to train, complete and master — start with GuiltFu.</p>
@@ -167,18 +177,19 @@
           <ul class="footer__list">
             <li><a href="../arts/">Mental arts</a></li>
             <li><a href="../guiltfu/">GuiltFu</a></li>
-            <li><a href="../research/">Research</a></li>
+            <li data-students><a data-href="../research/">Research</a></li>
             <li><a href="../profile/">My profile</a></li>
           </ul>
         </div>
         <div>
-          <h3 class="footer__title">MyselfU</h3>
+          <h3 class="footer__title">MindFu</h3>
           <ul class="footer__list">
-            <li><a href="../what-is-myselfu/">What MyselfU is</a></li>
+            <li><a href="../what-is-mindfu/">What MindFu is</a></li>
             <li><a href="../manifesto/">Manifesto</a></li>
             <li><a href="../profile/">My profile</a></li>
             <li><a href="../contact/">Contact</a></li>
             <li><a href="../privacy/">Privacy</a></li>
+            <li><a href="../terms/">Terms</a></li>
           </ul>
         </div>
         <div>
@@ -192,20 +203,21 @@
         </div>
       </div>
       <div class="footer__notice">
-        <p>MyselfU is emotional education, not therapy or treatment. It does not diagnose and does not replace the care of a mental health professional. Belts and achievements recognize personal progress; they are not professional certifications. If you feel intense distress or think about harming yourself, seek professional help or call your local emergency services.</p>
+        <p>MindFu is emotional education, not therapy or treatment. It does not diagnose and does not replace the care of a mental health professional. Belts and achievements recognize personal progress; they are not professional certifications. If you feel intense distress or think about harming yourself, seek professional help or call your local emergency services.</p>
       </div>
       <div class="footer__legal">
-        <p>© <span data-year>2026</span> MyselfU. All rights reserved.</p>
+        <p>© <span data-year>2026</span> MindFu. All rights reserved.</p>
         <p>Versión en español: <a href="../../">MenteFu</a></p>
       </div>
     </div>
   </footer>
 
   <div class="toasts" data-toasts aria-live="polite"></div>
-  <script src="../../assets/js/main.js?v=16c6a8ec" defer></script>
-  <script src="../../assets/js/visuals.js?v=2b42e873" defer></script>
-  <script src="../../assets/js/storage.js?v=c762f026" defer></script>
-  <script src="../../assets/js/sb.js?v=95c4b17b" defer></script>
-  <script src="../../assets/js/progress.js?v=4fede502" defer></script>
+  <script src="../../assets/js/main.js?v=c6453e4f" defer></script>
+  <script src="../../assets/js/visuals.js?v=0c4cc172" defer></script>
+  <script src="../../assets/js/storage.js?v=9bdcdfc9" defer></script>
+  <script src="../../assets/js/sb.js?v=146222b7" defer></script>
+  <script src="../../assets/js/progress.js?v=7ee3f52b" defer></script>
+  <script src="../../assets/js/auth.js?v=62c2d5d8" defer></script>
 </body>
 </html>

@@ -1,4 +1,4 @@
-/* MenteFu / MyselfU — motor de progreso y gamificación (docs/04).
+/* MenteFu / MindFu — motor de progreso y gamificación (docs/04).
    Estado offline-first en localStorage (MFStore "progress"); con sesión de
    Supabase se fusiona y sincroniza (auth.js). Expone window.MF.
    Requiere storage.js y sb.js (MF_CONFIG lo inyecta el generador). */
@@ -14,16 +14,18 @@
 
   var T = ES ? {
     noBelt: "Sin cinturón todavía", belt: "Cinturón", xpGained: "+{n} XP", missionDone: "Misión completada",
-    achievement: "Logro desbloqueado", beltAwarded: "¡Nuevo cinturón!", streak: "{n} días de racha",
+    achievement: "Logro desbloqueado", beltAwarded: "¡Nuevo cinturón!", streak: "{n} días de racha", streak1: "1 día de racha",
     levelsDone: "Cinturones: {k}/8", nextLevel: "Siguiente: nivel {n}", allDone: "Cinturón negro conseguido. Sigue entrenando.",
     examLocked: "Completa todas las misiones del nivel para desbloquear el examen.",
     rankUp: "¡Subes de rango!", toRank: "{n} XP para {rank}", maxRank: "Rango máximo",
+    noAccount: "Sin cuenta", signIn: "Entra o crea tu cuenta para empezar a sumar XP", checking: "Comprobando tu sesión…",
   } : {
     noBelt: "No belt yet", belt: "Belt", xpGained: "+{n} XP", missionDone: "Mission completed",
-    achievement: "Achievement unlocked", beltAwarded: "New belt!", streak: "{n}-day streak",
+    achievement: "Achievement unlocked", beltAwarded: "New belt!", streak: "{n}-day streak", streak1: "1-day streak",
     levelsDone: "Belts: {k}/8", nextLevel: "Next: level {n}", allDone: "Black belt earned. Keep training.",
     examLocked: "Complete every mission in the level to unlock the exam.",
     rankUp: "Rank up!", toRank: "{n} XP to {rank}", maxRank: "Top rank",
+    noAccount: "No account", signIn: "Sign in or create your account to start earning XP", checking: "Checking your session…",
   };
 
   /* ---------- Logros ---------- */
@@ -302,30 +304,104 @@
     return '<span class="belt-pill">' + (img || '<span class="belt-pill__swatch" style="--belt:' + b.color + '"></span>') + label + '</span>';
   }
 
+  /* ---------- Estado de sesión ----------
+     Tres estados y ni uno más:
+       "local" — el sitio no tiene cuentas configuradas (sin Supabase).
+       "in"    — hay sesión guardada en este navegador.
+       "out"   — no hay ninguna.
+     Arranca de forma síncrona con SB.hasSession() para que la cabecera no
+     mienta ni parpadee en el primer pintado; auth.js lo confirma después
+     contra el servidor (setSession) y corrige si la sesión ya no vale. */
+  var sessionState = (window.SB && SB.enabled()) ? (SB.hasSession() ? "in" : "out") : "local";
+  function markSession() { document.documentElement.setAttribute("data-session", sessionState); }
+  markSession();
+  function setSession(v) {
+    if (v === sessionState) return;
+    sessionState = v; markSession(); paint();
+    listeners.forEach(function (fn) { try { fn(state); } catch (e) { /* nada */ } });
+  }
+
+  /* El generador emite los enlaces a la zona de alumnos SIN href en las páginas
+     públicas (build.py, href_attr): así el escaparate no enumera el dojo. Aquí
+     se los devolvemos a quien tiene sesión. Es comodidad, no seguridad: quien
+     mire el código fuente ve el destino igual. Lo que de verdad cierra es que
+     el contenido no está en el HTML, sino en Supabase bajo RLS. */
+  function promoverEnlaces() {
+    if (sessionState === "out") return;
+    document.querySelectorAll("a[data-href]").forEach(function (a) {
+      a.setAttribute("href", a.getAttribute("data-href"));
+      a.removeAttribute("data-href");
+    });
+  }
+
+  /* Sin sesión, tocar un enlace dormido lleva a la puerta de entrada
+     en vez de no hacer nada. */
+  document.addEventListener("click", function (e) {
+    var a = e.target.closest && e.target.closest("a[data-href]");
+    if (!a) return;
+    e.preventDefault();
+    if (sessionState === "out" && cfg.profileUrl) window.location.href = cfg.profileUrl;
+  });
+
   function paint() {
+    promoverEnlaces();
     var xp = totalXP(), r = rank(xp);
     var pageArt = cfg.page && cfg.page.art;
     var hb = beltInfo(pageArt ? beltOf(pageArt) : topBelt());
-    var av = state.avatar && ART["avatar-" + state.avatar];
+    var av = sessionState !== "out" && state.avatar && ART["avatar-" + state.avatar];
     document.querySelectorAll("[data-hud-avatar]").forEach(function (el) {
       el.innerHTML = av ? '<img src="' + (cfg.assets || "") + av + '" alt="">' : "";
       el.hidden = !av;
     });
+    var dentro = sessionState !== "out";
     document.querySelectorAll("[data-hud-chip]").forEach(function (chip) {
       chip.classList.add("is-ready");
-      var ring = chip.querySelector("[data-hud-ring]"); if (ring) ring.style.setProperty("--pct", r.pct);
-      var belt = chip.querySelector("[data-hud-belt]"); if (belt) belt.style.setProperty("--belt", hb ? hb.color : "#3a3c4a");
-      var rk = chip.querySelector("[data-hud-rank]"); if (rk) rk.textContent = r.name;
+      /* Sin cuenta no hay rango que enseñar: el chip pasa a ser una invitación
+         a entrar. Era imposible saber de un vistazo si había sesión abierta. */
+      chip.classList.toggle("hud--out", !dentro);
+      var ring = chip.querySelector("[data-hud-ring]"); if (ring) ring.style.setProperty("--pct", dentro ? r.pct : 0);
+      var belt = chip.querySelector("[data-hud-belt]"); if (belt) belt.style.setProperty("--belt", dentro && hb ? hb.color : "#3a3c4a");
+      var rk = chip.querySelector("[data-hud-rank]"); if (rk) rk.textContent = dentro ? r.name : T.noAccount;
       var x = chip.querySelector("[data-hud-xp]"); if (x) x.textContent = xp;
-      chip.title = r.next ? T.toRank.replace("{n}", r.nextAt - xp).replace("{rank}", r.next) : T.maxRank;
+      var meta = chip.querySelector(".hud__xp"); if (meta) meta.hidden = !dentro;
+      chip.title = dentro ? (r.next ? T.toRank.replace("{n}", r.nextAt - xp).replace("{rank}", r.next) : T.maxRank) : T.signIn;
+      if (!dentro) chip.setAttribute("aria-label", T.noAccount + ": " + T.signIn);
+      else if (chip.dataset.label) chip.setAttribute("aria-label", chip.dataset.label);
     });
     document.querySelectorAll("[data-hud]").forEach(function (h) {
-      h.hidden = xp === 0;
+      h.hidden = xp === 0 || !dentro;
       var rk = h.querySelector("[data-hud-rank]"); if (rk) rk.textContent = r.name;
       var x = h.querySelector("[data-hud-xp]"); if (x) x.textContent = xp;
-      var st = h.querySelector("[data-hud-streak]"); if (st) st.textContent = state.streak.days > 0 ? "🔥 " + T.streak.replace("{n}", state.streak.days) : "";
+      var st = h.querySelector("[data-hud-streak]");
+      if (st) st.textContent = state.streak.days > 0 ? "🔥 " + (state.streak.days === 1 ? T.streak1 : T.streak.replace("{n}", state.streak.days)) : "";
     });
-    /* cinturones (lista y mapa) */
+    /* A partir de aquí todo es expediente del alumno. Sin cuenta no hay nada que
+       enseñar: el dojo llegaba a marcar cinturones conseguidos —los del último
+       que usara el navegador— a alguien que no se había registrado. Se limpia
+       lo que hubiera quedado pintado y se sale. */
+    if (!dentro) {
+      document.querySelectorAll(".belt, .pmap__node, .mission-card, .card[data-item]").forEach(function (el) {
+        el.classList.remove("is-done", "is-current", "is-locked", "is-next");
+      });
+      document.querySelectorAll("[data-pmap]").forEach(function (svg) { svg.style.setProperty("--done", 0); });
+      document.querySelectorAll("[data-dojo-progress]").forEach(function (box) {
+        var fill = box.querySelector(".dojo-progress__fill"); if (fill) fill.style.width = "0%";
+        var text = box.querySelector(".dojo-progress__text"); if (text) text.textContent = "";
+      });
+      document.querySelectorAll("[data-art-xp]").forEach(function (el) { el.textContent = "0"; });
+      return;
+    }
+
+    /* cinturones (lista y mapa): sin cuenta no hay expediente que enseñar */
+    if (!dentro) {
+      document.querySelectorAll("[data-belts] .belt, [data-pmap] .pmap__node").forEach(function (el) {
+        el.classList.remove("is-done", "is-current", "is-locked");
+      });
+      document.querySelectorAll("[data-pmap]").forEach(function (svg) { svg.style.setProperty("--done", 0); });
+      document.querySelectorAll("[data-dojo-progress]").forEach(function (el) { el.hidden = true; });
+      return;
+    }
+    document.querySelectorAll("[data-dojo-progress]").forEach(function (b) { b.hidden = false; });
     document.querySelectorAll("[data-belts]").forEach(function (list) {
       var a = art(list.getAttribute("data-belts"));
       var cur = 0;
@@ -408,10 +484,35 @@
       return Object.keys(ART).filter(function (k) { return k.indexOf("avatar-") === 0; })
         .map(function (k) { return { key: k.slice(7), src: (cfg.assets || "") + ART[k] }; });
     },
+    session: function () { return sessionState; }, setSession: setSession,
     achievements: ACHIEVEMENTS, onChange: function (fn) { listeners.push(fn); }, T: T, XP: XP, sync: null,
     reset: function () { state = fresh(); MFStore.set("progress", state); paint(); },
+    /* Al cerrar sesión el navegador seguía exhibiendo los cinturones del alumno
+       anterior. Esto lo borra de verdad, no solo de la pantalla. */
+    forget: function () { state = fresh(); MFStore.remove("progress"); paint(); },
   };
   if (cfg.page && cfg.page.art && (cfg.page.layout === "mission" || cfg.page.layout === "level")) remember(cfg.page.art, window.location.pathname);
+
+  /* ---------- Volver a la tarjeta de origen ----------
+     Si saliste de una misión por un enlace (a un pergamino, por ejemplo),
+     mission.js dejó guardado el punto exacto. Mientras ese punto exista y no
+     estés en la propia misión, esta pastilla flotante te devuelve a la tarjeta
+     en la que ibas, navegues lo que navegues por el camino. */
+  (function () {
+    var o = null;
+    try { o = JSON.parse(sessionStorage.getItem("mf.origen") || "null"); } catch (e) { /* nada */ }
+    if (!o || !o.url || o.url === window.location.pathname) return;
+    var btn = document.createElement("button");
+    btn.type = "button";
+    btn.className = "back-origin";
+    btn.innerHTML = '<span aria-hidden="true">↩</span> ' + (ES ? "Volver a la misión" : "Back to the mission");
+    btn.title = o.title || "";
+    btn.addEventListener("click", function () {
+      try { sessionStorage.setItem("mf.origen.volver", "1"); } catch (e) { /* nada */ }
+      window.location.href = o.url;
+    });
+    document.body.appendChild(btn);
+  })();
   paint();
   flushEvents();
 })();

@@ -1,4 +1,4 @@
-/* MenteFu / MyselfU — interacciones básicas (menú, acordeones, año) */
+/* MenteFu / MindFu — interacciones básicas (menú, acordeones, año) */
 (function () {
   "use strict";
 

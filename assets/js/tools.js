@@ -1,4 +1,4 @@
-/* MenteFu / MyselfU — herramientas interactivas (respuestas solo en el navegador).
+/* MenteFu / MindFu — herramientas interactivas (respuestas solo en el navegador).
    Expone MFTools.init(root) para contenido inyectado tras el gate (reader.js).
    - .tool-steps[data-tool]   pasos tipo acordeón con textarea (Pausa Fu)
    - form.quiz[data-quiz]     cuestionario de reflexión con resumen final

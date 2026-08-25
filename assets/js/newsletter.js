@@ -1,4 +1,4 @@
-/* MenteFu / MyselfU — alta en la newsletter.
+/* MenteFu / MindFu — alta en la newsletter.
    El endpoint lo define NEWSLETTER_ENDPOINT en tools/build.py (action del form).
    Vacío = modo demo: no se envía nada y se avisa. */
 (function () {

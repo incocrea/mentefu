@@ -1,4 +1,4 @@
-/* MenteFu / MyselfU — acceso seguro a localStorage con prefijo de marca.
+/* MenteFu / MindFu — acceso seguro a localStorage con prefijo de marca.
    Todo el progreso del usuario vive SOLO en su navegador. */
 (function () {
   "use strict";

@@ -1,4 +1,4 @@
-/* MenteFu / MyselfU — página de perfil: rango, XP, racha, cinturones por arte,
+/* MenteFu / MindFu — página de perfil: rango, XP, racha, cinturones por arte,
    logros, certificados y cuenta. Requiere progress.js, auth.js. */
 (function () {
   "use strict";
@@ -15,6 +15,10 @@
     phone: "Teléfono (opcional)", newPass: "Nueva contraseña (mínimo 8 caracteres)", changePass: "Cambiar contraseña", passChanged: "Contraseña actualizada.",
     reset: "Reiniciar progreso local", resetConfirm: "¿Borrar todo tu progreso de este navegador? Si tienes cuenta, el progreso guardado en ella no se borra.",
     noBelts: "Todavía no tienes cinturones. Aprueba el examen de un nivel para conseguir el primero.", belt: "Cinturón", art: "Arte", date: "Fecha", none: "Sin cinturón",
+    checking: "Comprobando tu sesión…", outKicker: "Tu dojo", outTitle: "Entra a tu perfil",
+    outText: "Aquí viven tu rango, tus cinturones, tus logros y tus certificados. Crea tu cuenta gratis o entra para verlos.",
+    perks: ["Tu progreso te sigue a cualquier dispositivo", "Cinturones y certificados a tu nombre", "Misiones y pergaminos abiertos", "Racha, logros y XP"],
+    outLocal: "Ya llevas {n} XP entrenando en este navegador: al entrar se suman a tu cuenta.",
   } : {
     student: "Student", xp: "XP", streak: "Streak", belts: "Belts", missions: "Missions", toNext: "{n} XP to {rank}", max: "Top rank reached",
     arts: "Your arts", achievements: "Achievements", certs: "Belt certificates", certNote: "Recognition of personal progress. Not a professional certification.",
@@ -24,13 +28,45 @@
     phone: "Phone (optional)", newPass: "New password (at least 8 characters)", changePass: "Change password", passChanged: "Password updated.",
     reset: "Reset local progress", resetConfirm: "Delete all your progress in this browser? If you have an account, the progress stored there is not deleted.",
     noBelts: "No belts yet. Pass a level exam to earn your first one.", belt: "Belt", art: "Art", date: "Date", none: "No belt",
+    checking: "Checking your session…", outKicker: "Your dojo", outTitle: "Sign in to your profile",
+    outText: "Your rank, belts, achievements and certificates live here. Create your free account or sign in to see them.",
+    perks: ["Your progress follows you to any device", "Belts and certificates in your name", "Missions and scrolls unlocked", "Streak, achievements and XP"],
+    outLocal: "You already have {n} XP from training in this browser: signing in adds them to your account.",
   };
   var ARTS = cfg.arts || [];
 
   function esc(s) { return String(s).replace(/[&<>"]/g, function (c) { return { "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;" }[c]; }); }
   function fmtDate(iso) { try { return new Date(iso).toLocaleDateString(ES ? "es" : "en", { year: "numeric", month: "long", day: "numeric" }); } catch (e) { return iso; } }
 
+  /* Una vista O la otra, nunca las dos: con sesión, el perfil completo; sin
+     ella, sólo la caja de entrada. Mostrar las dos a la vez era justo lo que
+     hacía imposible saber si estabas dentro. */
+  var pintado = null;
   function render() {
+    pintado = MF.session();
+    if (pintado === "out") return renderOut();
+    return renderIn();
+  }
+
+  function renderOut() {
+    var xp = MF.totalXP();
+    var mascota = MF.artImg("avatar", "1", "gate__mascot");
+    var perks = T.perks.map(function (t) { return "<li>" + esc(t) + "</li>"; }).join("");
+    host.innerHTML = '<section class="gate gate--profile">'
+      + (mascota ? '<div class="gate__art gate__art--mascot" aria-hidden="true">' + mascota + "</div>" : "")
+      + '<p class="kicker">' + T.outKicker + '</p><h2 class="gate__title">' + T.outTitle + '</h2>'
+      + '<p class="gate__text">' + T.outText + '</p>'
+      + '<ul class="gate__perks">' + perks + "</ul>"
+      + '<div data-auth-ui></div>'
+      + (xp > 0 ? '<p class="form__note">' + T.outLocal.replace("{n}", xp) + "</p>" : "")
+      + "</section>";
+    MFAuth.renderAuthUI(host.querySelector("[data-auth-ui]"), function () {
+      /* al entrar traemos el progreso de la cuenta antes de pintar el perfil */
+      MFAuth.pull().then(render, render);
+    });
+  }
+
+  function renderIn() {
     var s = MF.state(), xp = MF.totalXP(), r = MF.rank(xp);
     var beltsTotal = 0, missionsTotal = 0;
     for (var k in s.arts) { beltsTotal += Object.keys(s.arts[k].belts || {}).length; missionsTotal += Object.keys(s.arts[k].missions || {}).length; }
@@ -78,7 +114,7 @@
       html += '<div class="certs">';
       certs.sort(function (x, y) { return y.n - x.n; }).forEach(function (c) {
         var b = MF.beltInfo(c.n);
-        html += '<div class="cert" style="--belt:' + b.color + '"><span class="cert__kicker">' + esc(cfg.brand === "mentefu" ? "MenteFu" : "MyselfU") + " · " + esc(c.art.name) + '</span><p class="cert__title">' + (ES ? "Cinturón " + b.name.toLowerCase() : b.name + " belt") + "</p>"
+        html += '<div class="cert" style="--belt:' + b.color + '"><span class="cert__kicker">' + esc(ES ? "MenteFu" : "MindFu") + " · " + esc(c.art.name) + '</span><p class="cert__title">' + (ES ? "Cinturón " + b.name.toLowerCase() : b.name + " belt") + "</p>"
           + "<p>" + (s.name ? esc(s.name) + " · " : "") + fmtDate(c.at) + "</p>" + MF.beltPill(c.n) + '<p class="cert__note">' + T.certNote + "</p></div>";
       });
       html += "</div>";
@@ -139,21 +175,20 @@
 
   function renderAccount(box) {
     if (!window.SB || !SB.enabled()) { box.innerHTML = "<p class='muted'>" + T.local + "</p>" + nameForm(""); bindName(box, null); return; }
+    /* Aquí sólo se llega con sesión (render() ya separó los dos casos); si aun
+       así el servidor dice que no hay usuario, se corrige y se repinta. */
     MFAuth.user().then(function (u) {
-      if (u) {
-        var meta = u.user_metadata || {};
-        box.innerHTML = '<div class="account__row"><span>' + T.signedAs + ' <span class="account__email">' + esc(u.email || "") + '</span></span><button class="btn btn--ghost btn--sm" type="button" data-signout>' + T.signOut + "</button></div>" + nameForm(meta.phone || "")
-          + '<form class="account__row" data-pass-form><label class="visually-hidden" for="pf-pass">' + T.newPass + '</label><input id="pf-pass" class="input" type="password" minlength="8" placeholder="' + T.newPass.toLowerCase() + '" autocomplete="new-password"><button class="btn btn--ghost btn--sm" type="submit">' + T.changePass + '</button><span class="form__feedback" role="status"></span></form>';
-        bindName(box, u); passForm(box);
-        box.querySelector("[data-signout]").addEventListener("click", function () { MFAuth.signOut().then(function () { box.__built = false; renderAccount(box); }); });
-      } else {
-        box.innerHTML = "<p>" + T.login + '</p><div data-auth-ui></div>' + nameForm("");
-        MFAuth.renderAuthUI(box.querySelector("[data-auth-ui]"), function () { window.location.reload(); });
-        bindName(box, null);
-      }
+      if (!u) return render();
+      var meta = u.user_metadata || {};
+      box.innerHTML = '<div class="account__row"><span>' + T.signedAs + ' <span class="account__email">' + esc(u.email || "") + '</span></span><button class="btn btn--ghost btn--sm" type="button" data-signout>' + T.signOut + "</button></div>" + nameForm(meta.phone || "")
+        + '<form class="account__row" data-pass-form><label class="visually-hidden" for="pf-pass">' + T.newPass + '</label><input id="pf-pass" class="input" type="password" minlength="8" placeholder="' + T.newPass.toLowerCase() + '" autocomplete="new-password"><button class="btn btn--ghost btn--sm" type="submit">' + T.changePass + '</button><span class="form__feedback" role="status"></span></form>';
+      bindName(box, u); passForm(box);
+      box.querySelector("[data-signout]").addEventListener("click", function () { MFAuth.signOut().then(render); });
     });
   }
 
   render();
-  MF.onChange(function () { /* re-render ligero al cambiar el estado desde otra parte */ });
+  /* auth.js confirma la sesión contra el servidor después del primer pintado:
+     si el veredicto cambia, se cambia de vista (y sólo entonces). */
+  MF.onChange(function () { if (MF.session() !== pintado) render(); });
 })();

@@ -1,5 +1,5 @@
 /* ============================================================
-   MenteFu / MyselfU — capa de juego (docs/04): HUD, mapa de
+   MenteFu / MindFu — capa de juego (docs/04): HUD, mapa de
    cinturones, misiones, gate, perfil, logros. Carga tras styles.css.
    ============================================================ */
 
@@ -175,7 +175,7 @@ a.art-card:hover { transform: translateY(-4px); box-shadow: var(--shadow); }
 
 /* ---------- Gate (registro) ---------- */
 .gate { text-align: center; padding: clamp(1.5rem, 5vw, 3rem); border-radius: var(--radius-lg); background: var(--c-ink-bg); color: var(--c-text-on-dark); border: 1px solid var(--c-line-dark); max-width: 36rem; margin: 1rem auto 2rem; }
-.gate__art { display: inline-grid; place-content: center; width: 4rem; height: 4rem; border-radius: 50%; background: var(--c-ink-panel-2); margin-bottom: 0.75rem; }
+.gate__art { display: grid; place-content: center; width: 4rem; height: 4rem; border-radius: 50%; background: var(--c-ink-panel-2); margin: 0 auto 0.75rem; }
 .gate__art svg { width: 2.4rem; height: 2.4rem; }
 .gate__title { font-family: var(--f-display); font-size: var(--fs-h2); font-weight: 800; line-height: 1.1; margin: 0 0 0.75rem; }
 .gate__text { color: var(--c-text-on-dark-soft); margin: 0 0 1.25rem; }
@@ -314,15 +314,13 @@ a.art-card:hover { transform: translateY(-4px); box-shadow: var(--shadow); }
 @media (max-width: 60rem) {
   /* móvil y tableta: los maestros pasan detrás, a la derecha, sin robar el texto */
   .hero:has(.hero__masters) .hero__inner > * { max-width: none; }
-  .hero__masters { height: min(46%, 15rem); max-width: 58%; opacity: 0.92; right: -1.5rem; }
-  .hero__masters--sketch { opacity: 0.5; }
   .hero__veil {
     background:
       linear-gradient(180deg, var(--c-ink-bg) 6%, rgba(18,19,26,0.82) 46%, rgba(18,19,26,0.62) 100%),
       radial-gradient(120% 70% at 70% 20%, color-mix(in srgb, var(--hero-tint) 22%, transparent), transparent 60%),
       linear-gradient(0deg, var(--c-ink-bg) 4%, rgba(18,19,26,0) 40%);
   }
-  .hero:has(.hero__scene) { min-height: 0; padding-bottom: clamp(9rem, 34vw, 14rem); }
+  .hero:has(.hero__scene) { min-height: 0; }   /* ya no hace falta hueco abajo: la mascota sube */
   .hero__scene { --hero-bg-opacity: 0.92; }   /* el velo vertical es más denso: compensamos */
 }
 /* navegadores sin :has(): el hero conserva su fondo liso y la escena no estorba */
@@ -355,7 +353,6 @@ a.art-card:hover { transform: translateY(-4px); box-shadow: var(--shadow); }
       linear-gradient(180deg, rgba(18,19,26,0.9) 0%, rgba(18,19,26,0.86) 60%, rgba(18,19,26,0.8) 100%),
       radial-gradient(120% 90% at 78% 8%, color-mix(in srgb, var(--hero-tint) 16%, transparent), transparent 60%);
   }
-  .page-head--scene .hero__masters { display: none; }
 }
 
 /* Ilustraciones de gamificación (assets/img/game) cuando ya están generadas */
@@ -380,3 +377,288 @@ a.art-card:hover { transform: translateY(-4px); box-shadow: var(--shadow); }
 .how__icon--art { width: 7.5rem; height: 7.5rem; border-radius: 0; background: transparent; margin: 0 auto 1rem; display: grid; place-content: center; }
 .how__icon--art img { width: 100%; height: 100%; object-fit: contain; }
 .how__step:not(:has(.how__icon--art)) .how__icon { margin-inline: auto; }
+
+
+/* ============================================================
+   MÓVIL Y TABLETA (≤60rem): LA MASCOTA SE QUEDA A LA VISTA
+   Antes se ocultaba en las cabeceras y en el home bajaba al pie
+   obligando a reservar hasta 14rem de hueco. Ahora las dos
+   interfaces comparten patrón: figura pequeña arriba a la derecha.
+
+   El hueco se reserva SOLO en las líneas que comparten altura con
+   ella (miga, rótulo y título). Acolchar el contenedor entero
+   estrechaba también la entradilla, que empieza muy por debajo.
+   El `:has()` es imprescindible: hay 152 cabeceras con escena del
+   dojo pero SIN mascota, y esas no deben reservar nada.
+   ============================================================ */
+@media (max-width: 60rem) {
+  .hero,
+  .page-head--scene {
+    --mascot-h: clamp(5rem, 17vw, 7rem);
+    --mascot-top: clamp(1rem, 3.5vw, 2rem);
+    --mascot-inset: clamp(0.5rem, 2.5vw, 1.25rem);
+    --mascot-w: calc(var(--mascot-h) * 0.8);          /* las láminas son verticales (~0,76) */
+    --mascot-gutter: calc(var(--mascot-w) + var(--mascot-inset) + 0.75rem);
+  }
+  /* el hero del home es más alto y su título arranca más abajo: cabe mayor */
+  .hero { --mascot-h: clamp(6rem, 20vw, 8.5rem); --mascot-top: clamp(1.5rem, 5vw, 3rem); }
+
+  .hero .hero__masters,
+  .page-head--scene .hero__masters {
+    display: block;
+    top: var(--mascot-top); right: var(--mascot-inset); bottom: auto; left: auto;
+    height: var(--mascot-h); width: auto; max-width: var(--mascot-w);
+    object-position: top right;
+    opacity: 1;
+    filter: drop-shadow(0 6px 14px rgba(0, 0, 0, 0.5));   /* a escala del tamaño nuevo */
+  }
+  .hero .hero__masters--sketch,
+  .page-head--scene .hero__masters--sketch { opacity: 0.75; }
+
+  .page-head--scene:has(.hero__masters) .crumbs,
+  .page-head--scene:has(.hero__masters) .kicker,
+  .page-head--scene:has(.hero__masters) .page-head__title,
+  .hero:has(.hero__masters) .kicker,
+  .hero:has(.hero__masters) .hero__title { margin-inline-end: var(--mascot-gutter); }
+}
+
+/* Sin :has() no se puede saber si la cabecera trae mascota y el canal no se
+   reserva: antes que arriesgar texto encima de la figura, no se pinta. */
+@supports not selector(:has(*)) {
+  @media (max-width: 60rem) {
+    .hero .hero__masters,
+    .page-head--scene .hero__masters { display: none; }
+  }
+}
+
+
+/* ============================================================
+   PERGAMINOS — un solo componente (.scroll-roll) para dos usos:
+   la tarjeta del listado ({SECTION_LIST} → card_html) y el lector
+   desplegado (reader.js). Todo en CSS: escala, no pesa y no añade
+   ni una petición. Los rollos son decorativos: aria-hidden y
+   pointer-events:none, y NUNCA hay texto encima de ellos.
+   ============================================================ */
+:root {
+  --scroll-paper: #fffdf9;              /* la hoja: más clara que la sala para que "flote" */
+  --scroll-paper-2: #efe9de;            /* papel del rollo */
+  --scroll-shade: #ddd0b9;              /* sombra del papel al enrollarse */
+  --scroll-line: #7a4a2a;               /* contorno marrón ilustrado (= --belt-brown) */
+  --scroll-line-soft: rgba(122, 74, 42, 0.3);
+  --scroll-rod: #a9743f;                /* madera del rodillo */
+  --scroll-rod-dark: #5d3a20;
+  --roll-h: 1rem;                       /* alto del rollo (lo ajusta cada uso) */
+  --roll-cap: 0.6rem;                   /* medio ancho del tope de madera */
+}
+
+/* ---------- El rollo (pieza compartida) ---------- */
+.scroll-roll {
+  position: relative; z-index: 2; display: block; flex: 0 0 auto;
+  height: var(--roll-h); border-radius: 999px; pointer-events: none;
+  /* papel enrollado: luz arriba, sombra abajo = cilindro */
+  background: linear-gradient(180deg, #fffdf9 0%, var(--scroll-paper-2) 46%, var(--scroll-shade) 82%, #cfc0a6 100%);
+  box-shadow: inset 0 0 0 1.5px var(--scroll-line), 0 2px 0 -1px rgba(122, 74, 42, 0.25);
+}
+/* la espiral: la vuelta que da el papel sobre sí mismo */
+.scroll-roll::before {
+  content: ""; position: absolute; left: 7%; right: 7%; top: 34%;
+  border-top: 1.5px solid var(--scroll-line-soft); border-radius: 999px;
+}
+/* los DOS topes de madera con un solo elemento: dos radiales, uno a cada extremo */
+.scroll-roll::after {
+  content: ""; position: absolute; top: 50%; transform: translateY(-50%);
+  left: calc(var(--roll-cap) * -1); right: calc(var(--roll-cap) * -1);
+  height: calc(var(--roll-h) * 1.32);
+  background:
+    radial-gradient(closest-side, var(--scroll-rod) 58%, var(--scroll-rod-dark) 59%, transparent 100%) left center / calc(var(--roll-cap) * 2) 100% no-repeat,
+    radial-gradient(closest-side, var(--scroll-rod) 58%, var(--scroll-rod-dark) 59%, transparent 100%) right center / calc(var(--roll-cap) * 2) 100% no-repeat;
+}
+/* variante ilustrada: si algún día arte.py genera assets/img/game/scroll-roll.webp */
+.scroll-roll--art { background: var(--roll-img) center / 100% 100% no-repeat; box-shadow: none; }
+.scroll-roll--art::before, .scroll-roll--art::after { display: none; }
+
+/* ---------- Tarjeta de pergamino (build.py → card_html) ---------- */
+.card--scroll {
+  --roll-h: 0.85rem; --roll-cap: 0.5rem;
+  gap: 0.45rem; padding: 0.55rem 0 0.6rem;
+  background: var(--scroll-paper); border-color: var(--scroll-line-soft);
+}
+/* .card lleva overflow:hidden: el rollo se mete hacia dentro para que los topes quepan */
+.card--scroll .scroll-roll { margin-inline: 0.85rem; }
+.card__sheet {
+  position: relative; z-index: 1; flex: 1 1 auto;
+  display: flex; flex-direction: column; gap: 0.4rem;
+  padding: 0.9rem 1.3rem 0.95rem;
+  /* fibra del papel a alfa muy baja: textura sin coste de legibilidad */
+  background-image: repeating-linear-gradient(90deg, rgba(122, 74, 42, 0.028) 0 1px, transparent 1px 4px);
+  /* el papel se curva al entrar en los rollos */
+  box-shadow: inset 0 12px 14px -14px rgba(122, 74, 42, 0.55), inset 0 -12px 14px -14px rgba(122, 74, 42, 0.55);
+}
+/* el hover base pone border-color:transparent y se comía el contorno: lo devolvemos */
+.card--scroll.card--link:hover { border-color: var(--scroll-line); box-shadow: 0 14px 30px rgba(122, 74, 42, 0.22); }
+/* el cinturón deja de ser franja lateral (cruzaría los rollos) y pasa a ser la cinta que ata el pergamino */
+.card--scroll .card__belt {
+  left: 1.7rem; top: 0; bottom: auto; z-index: 3;
+  width: 0.5rem; height: calc(var(--roll-h) + 1.35rem);
+  border-radius: 0 0 4px 4px; box-shadow: inset 0 0 0 1px rgba(0, 0, 0, 0.25);
+}
+/* el estado pasa a ser sello de lacre: cerrado (bermellón) hasta que se lee (verde con ✓) */
+.card--scroll .card__state {
+  opacity: 1; z-index: 3; top: auto; bottom: 0.8rem; right: 1.2rem;
+  width: 1.7rem; height: 1.7rem; font-size: 0.8rem;
+  background: var(--c-accent-btn);            /* glifo #fffdf9 encima: 4.6:1 (AA) */
+  border: 2px solid rgba(122, 74, 42, 0.45);
+  box-shadow: 0 1px 0 rgba(122, 74, 42, 0.35), inset 0 -2px 4px rgba(0, 0, 0, 0.18);
+}
+.card--scroll .card__state::before { content: "✦"; color: var(--c-accent-ink); }
+.card--scroll.is-done .card__state { background: var(--belt-green); }
+.card--scroll.is-done .card__state::before { content: "✓"; }   /* misma especificidad que la regla base: gana por ir después */
+.card--scroll .card__more { padding-right: 2.4rem; }           /* la flecha no se mete debajo del sello */
+
+/* ---------- Lector: el pergamino desplegado (reader.js) ---------- */
+/* la sala baja un tono: sin esto la hoja crema sería invisible sobre --c-paper */
+.layout-article main, .layout-story main { background: var(--c-paper-2); }
+
+.scrollframe { --roll-h: 1.35rem; --roll-cap: 0.75rem; position: relative; display: grid; }
+.scrollframe .scroll-roll { margin-inline: -0.35rem; }   /* asoman por fuera de la hoja */
+.scrollframe__sheet {
+  position: relative; z-index: 1;
+  padding: clamp(1.4rem, 5vw, 2.6rem) clamp(1.1rem, 4.5vw, 2.4rem);
+  background-color: var(--scroll-paper);
+  background-image:
+    repeating-linear-gradient(90deg, rgba(122, 74, 42, 0.025) 0 1px, transparent 1px 4px),
+    radial-gradient(120% 45% at 50% 0%, rgba(255, 255, 255, 0.85), transparent 70%);
+  border-inline: 1.5px solid var(--scroll-line-soft);
+  box-shadow:
+    inset 0 16px 20px -18px rgba(122, 74, 42, 0.65),
+    inset 0 -16px 20px -18px rgba(122, 74, 42, 0.65),
+    0 18px 40px rgba(122, 74, 42, 0.16);
+}
+/* el texto largo manda: medida corta, interlineado alto y tinta plena sobre papel (≈15:1) */
+.scrollframe .reader__page { max-width: 36rem; margin-inline: auto; font-size: 1.075rem; line-height: 1.75; }
+.scrollframe .reader__page > h2:first-child { margin-top: 0; }   /* cada parte empieza por su H2 */
+.scrollframe .reader__top { margin: 0 0 1.5rem; padding-bottom: 0.9rem; border-bottom: 1px dashed var(--scroll-line-soft); }
+.scrollframe .mission__bar { background: rgba(122, 74, 42, 0.14); height: 0.5rem; }
+.scrollframe .reader__nav { margin-top: 2rem; padding-top: 1.2rem; border-top: 1px dashed var(--scroll-line-soft); align-items: center; }
+.scrollframe .reader__nav .btn--ghost { border-color: var(--scroll-line-soft); color: var(--c-text); }
+
+/* sello estampado al terminar la lectura (reader.js añade .is-read) */
+.scrollframe__seal {
+  display: none; place-content: center; text-align: center;
+  width: 5rem; height: 5rem; margin: 1.75rem auto 0; border-radius: 50%;
+  background: radial-gradient(circle at 35% 30%, #f4574a, var(--c-accent-btn) 55%, #a81d13 100%);
+  color: var(--c-accent-ink); font-family: var(--f-display); font-weight: 800;
+  font-size: 0.72rem; letter-spacing: 0.12em; text-transform: uppercase;
+  border: 2px solid rgba(122, 74, 42, 0.4);
+  box-shadow: inset 0 -3px 6px rgba(0, 0, 0, 0.3), 0 4px 10px rgba(122, 74, 42, 0.35);
+}
+.scrollframe.is-read .scrollframe__seal { display: grid; }
+
+@media (prefers-reduced-motion: no-preference) {
+  /* el pergamino se desenrolla al abrirlo; clip-path no toca el layout */
+  .scrollframe__sheet { animation: unroll 0.55s cubic-bezier(0.2, 0.8, 0.3, 1) both; }
+  .scrollframe.is-read .scrollframe__seal { animation: seal-stamp 0.45s cubic-bezier(0.2, 1.4, 0.4, 1) both; }
+}
+@keyframes unroll { from { clip-path: inset(0 0 100% 0); opacity: 0.25; } to { clip-path: inset(0 0 0 0); opacity: 1; } }
+@keyframes seal-stamp { from { transform: scale(2.2) rotate(-12deg); opacity: 0; } to { transform: none; opacity: 1; } }
+
+/* ---------- Chips de la cabecera (build.py ya los emite y no tenían CSS) ---------- */
+.xp-chip, .page-head__read {
+  display: inline-flex; align-items: center; gap: 0.35rem;
+  padding: 0.26rem 0.7rem; border-radius: 999px;
+  border: 1px solid var(--c-line-dark);
+  font-family: var(--f-display); font-weight: 700; font-size: 0.78rem; letter-spacing: 0.06em;
+  color: var(--c-text-on-dark);                       /* 13:1 sobre la tinta */
+}
+.xp-chip { border-color: var(--c-accent-soft); color: var(--c-accent-soft); }   /* 6.4:1 sobre tinta */
+.page-head__read::before { content: "⏳"; }
+
+/* ============================================================
+   ESTADO DE SESIÓN VISIBLE
+   ------------------------------------------------------------
+   Antes el chip de la cabecera enseñaba rango y XP siempre, con
+   cuenta o sin ella, y el perfil pintaba a la vez la ficha y el
+   formulario de entrada: no había forma de saber si estabas
+   dentro. Ahora el chip tiene dos aspectos y el perfil, dos
+   vistas excluyentes (progress.js / profile.js).
+   ============================================================ */
+
+/* --- cabecera sin cuenta: anillo vacío de trazo discontinuo --- */
+.hud--out { border-style: dashed; }
+.hud--out .hud__ring { background: none; box-shadow: inset 0 0 0 2px var(--c-line-dark); }
+.hud--out .hud__ring::after { inset: 2px; background: transparent; }
+.hud--out .hud__belt { width: 0.85rem; height: 0.85rem; border-radius: 50%; background: none; box-shadow: inset 0 0 0 2px var(--c-text-on-dark-soft); opacity: 0.7; }
+.hud--out .hud__rank { color: var(--c-text-on-dark-soft); font-weight: 600; }
+.hud--out:hover { border-color: var(--c-accent-soft); border-style: solid; }
+.hud--out:hover .hud__rank { color: var(--c-accent-soft); }
+
+/* --- perfil sin cuenta: sólo la caja de entrada --- */
+.gate--profile { margin-top: 0; }
+.gate__art--mascot { width: 6.5rem; height: 6.5rem; background: var(--c-ink-panel-2); overflow: hidden; }
+.gate__mascot { width: 100%; height: 100%; object-fit: cover; object-position: center top; }
+.gate__perks { list-style: none; margin: 0 auto 1.5rem; padding: 0; display: grid; gap: 0.5rem; max-width: 24rem; text-align: left; }
+.gate__perks li { position: relative; padding-left: 1.6rem; color: var(--c-text-on-dark-soft); font-size: 0.95rem; }
+.gate__perks li::before { content: ""; position: absolute; left: 0; top: 0.45em; width: 0.7rem; height: 0.35rem; border-left: 2px solid var(--c-accent-soft); border-bottom: 2px solid var(--c-accent-soft); transform: rotate(-45deg); }
+
+/* ============================================================
+   ESCAPARATE Y ZONA DE ALUMNOS
+   ------------------------------------------------------------
+   En las páginas públicas, el generador emite los enlaces a la
+   zona de alumnos sin href (data-href); progress.js los promueve
+   a href cuando hay sesión. Sin ella, que no parezcan botones:
+   son el temario del dojo, no una invitación a hacer clic.
+   Nada de esto es seguridad — el cierre real es que el contenido
+   vive en Supabase — pero evita el timo de un enlace muerto.
+   ============================================================ */
+a[data-href] { cursor: default; }
+a[data-href] .card__more { display: none; }
+html[data-session="out"] a[data-href].card:hover,
+html[data-session="out"] a[data-href].card--section:hover { transform: none; border-color: var(--c-line-light); box-shadow: none; }
+
+/* el mapa del camino sin sesión: sin manita ni halo de "esto se pulsa" */
+html[data-session="out"] .pmap a[data-href] { pointer-events: none; }
+html[data-session="out"] .pmap__halo { opacity: 0; }
+
+/* candado discreto en las tarjetas del catálogo para quien no ha entrado */
+html[data-session="out"] .card--gated::after,
+html[data-session="out"] a[data-href].card--section::after {
+  content: "🔒"; position: absolute; top: 0.6rem; right: 0.7rem; font-size: 0.85rem; opacity: 0.55;
+}
+html[data-session="out"] .card--scroll::after { top: 1.35rem; }
+
+/* el bloque "Tu progreso" es expediente: sin cuenta no existe */
+html[data-session="out"] [data-dojo-progress] { display: none; }
+
+/* --- lo que es de alumnos, solo con sesión; lo de captación, solo sin ella ---
+   «local» (sin cuentas configuradas) se comporta como «in»: todo visible.
+   Sin JS no hay atributo data-session y no se oculta nada: la zona cerrada
+   exige JS de todos modos y el escaparate entero sigue legible. */
+html[data-session="out"] [data-students] { display: none; }
+html[data-session="in"] [data-guest],
+html[data-session="local"] [data-guest] { display: none; }
+
+/* --- registro: casilla de términos y condiciones --- */
+.auth__terms { display: flex; gap: 0.55rem; align-items: flex-start; margin: 0.75rem 0; font-size: 0.85rem; line-height: 1.45; color: inherit; cursor: pointer; }
+.auth__terms input { margin-top: 0.2rem; width: 1rem; height: 1rem; accent-color: var(--c-accent); flex: 0 0 auto; }
+.auth__terms a { color: inherit; text-decoration: underline; }
+.gate .auth__terms { color: var(--c-text-on-dark-soft); }
+
+/* --- misiones: navegación hacia atrás y deslizamiento --- */
+/* el botón «anterior» oculto conserva su sitio para que «siguiente» no salte */
+.mission__actions [data-prev][hidden] { display: inline-flex; visibility: hidden; }
+.mission__stage { touch-action: pan-y; }
+@keyframes mcard-left { from { transform: translateX(2.5rem); opacity: 0; } to { transform: none; opacity: 1; } }
+@keyframes mcard-right { from { transform: translateX(-2.5rem); opacity: 0; } to { transform: none; opacity: 1; } }
+.mission__stage.is-slide-left > .mcard { animation: mcard-left 0.28s ease; }
+.mission__stage.is-slide-right > .mcard { animation: mcard-right 0.28s ease; }
+@media (prefers-reduced-motion: reduce) {
+  .mission__stage.is-slide-left > .mcard, .mission__stage.is-slide-right > .mcard { animation: none; }
+}
+
+/* --- pastilla flotante «volver a la misión» --- */
+.back-origin { position: fixed; left: 1rem; bottom: 1rem; z-index: 60; display: inline-flex; align-items: center; gap: 0.5rem;
+  padding: 0.6rem 1.1rem; border-radius: 999px; border: 1px solid var(--c-accent); background: var(--c-ink-bg); color: var(--c-text-on-dark);
+  font-family: var(--f-display); font-weight: 700; font-size: 0.85rem; cursor: pointer; box-shadow: 0 8px 24px rgba(0,0,0,0.45); }
+.back-origin:hover { background: var(--c-accent); color: #fff; }
+.back-origin span { font-size: 1rem; }
+@media (max-width: 40rem) { .back-origin { left: 0.75rem; bottom: 0.75rem; } }

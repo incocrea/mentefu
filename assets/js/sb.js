@@ -1,4 +1,4 @@
-/* MenteFu / MyselfU — cliente mínimo de Supabase sin dependencias (docs/04 §4).
+/* MenteFu / MindFu — cliente mínimo de Supabase sin dependencias (docs/04 §4).
    Cubre lo que el sitio usa: magic link (GoTrue), sesión con refresco,
    lectura/escritura de tablas (PostgREST) con RLS. Si MF_CONFIG no trae
    supabaseUrl, todo devuelve null y el sitio funciona en modo local. */
@@ -46,16 +46,43 @@
   }
 
   /* ---------- Auth ---------- */
+  var authError = null;
+
+  function limpiarHash() {
+    try { history.replaceState(null, "", window.location.pathname + window.location.search); } catch (e) { /* nada */ }
+  }
+
   function parseHash() {
-    /* Tras el magic link, GoTrue redirige con #access_token=…&refresh_token=…&expires_in=… */
+    /* Al volver de un enlace de correo, GoTrue redirige con
+       #access_token=…&refresh_token=…&expires_in=…  si todo fue bien, o con
+       #error=…&error_code=…&error_description=…  si el enlace ya no vale. */
     var h = window.location.hash;
-    if (!h || h.indexOf("access_token=") === -1) return null;
+    if (!h || h.length < 2) return null;
     var p = new URLSearchParams(h.substring(1));
+    if (p.get("error") || p.get("error_code")) {
+      authError = { code: p.get("error_code") || p.get("error") || "", message: (p.get("error_description") || "").replace(/\+/g, " ") };
+      limpiarHash();
+      try { document.dispatchEvent(new CustomEvent("mf:autherror", { detail: authError })); } catch (e) { /* nada */ }
+      return null;
+    }
+    if (!p.get("access_token")) return null;
     var s = { access_token: p.get("access_token"), refresh_token: p.get("refresh_token"), expires_at: Math.floor(Date.now() / 1000) + parseInt(p.get("expires_in") || "3600", 10) };
     saveSession(s);
-    try { history.replaceState(null, "", window.location.pathname + window.location.search); } catch (e) { /* nada */ }
+    limpiarHash();
     return s;
   }
+
+  /* El hash se lee UNA vez al cargar el script, antes de que nadie pregunte:
+     así el resultado no depende de quién llegue primero (getSession, hasSession
+     o el formulario), que era justo lo que hacía que el aviso se perdiera. */
+  parseHash();
+  /* …y otra vez si el navegador aplica el fragmento después de cargar los
+     scripts (pasa en algunos paneles embebidos). */
+  window.addEventListener("hashchange", parseHash);
+
+  /* Devuelve el error del enlace una sola vez (y lo consume). Vuelve a mirar el
+     hash por si el navegador lo aplicó después de cargar el script. */
+  function takeAuthError() { parseHash(); var e = authError; authError = null; return e; }
 
   function refresh() {
     var s = loadSession();
@@ -76,6 +103,17 @@
     if (!s) return Promise.resolve(null);
     if (s.expires_at && s.expires_at - 60 < Date.now() / 1000) return refresh();
     return Promise.resolve(s);
+  }
+
+  /* ¿Hay sesión guardada? Respuesta SÍNCRONA y sin red, para que la cabecera
+     pueda decir «con cuenta» o «sin cuenta» en el primer pintado y no parpadee.
+     Vale con el refresh_token: aunque el access_token haya caducado, getSession()
+     lo renovará; si el refresco falla, la sesión se borra y el estado se corrige. */
+  function hasSession() {
+    if (!enabled()) return false;
+    if (!loadSession()) parseHash();
+    var s = loadSession();
+    return !!(s && (s.access_token || s.refresh_token));
   }
 
   function getUser() {
@@ -130,5 +168,5 @@
     return request("/rest/v1/" + table, { method: "POST", body: rows, headers: { "Prefer": "return=minimal" } });
   }
 
-  window.SB = { enabled: enabled, getSession: getSession, getUser: getUser, signUp: signUp, signInWithPassword: signInWithPassword, resetPassword: resetPassword, updateUser: updateUser, signOut: signOut, select: select, upsert: upsert, insert: insert };
+  window.SB = { enabled: enabled, getSession: getSession, hasSession: hasSession, takeAuthError: takeAuthError, getUser: getUser, signUp: signUp, signInWithPassword: signInWithPassword, resetPassword: resetPassword, updateUser: updateUser, signOut: signOut, select: select, upsert: upsert, insert: insert };
 })();
