@@ -21,6 +21,9 @@
 .hero__hud { display: inline-flex; flex-wrap: wrap; gap: 0.75rem 1.5rem; margin-top: 1.5rem; padding: 0.6rem 1rem; border-radius: 999px; border: 1px solid var(--c-line-dark); font-family: var(--f-display); font-weight: 700; font-size: 0.9rem; }
 .hero__hud .hud__rank { color: var(--c-accent-soft); }
 .hero__hud .hud__xp { font-size: inherit; color: inherit; }
+/* En móvil el rango y la racha no van en el hero: para eso está el perfil,
+   a un toque en el icono de la cabecera (decisión del titular 2026-08-25). */
+@media (max-width: 60rem) { .hero__hud { display: none; } }
 
 /* ---------- Toasts ---------- */
 .toasts { position: fixed; right: 1rem; bottom: 1rem; z-index: 300; display: grid; gap: 0.5rem; max-width: min(22rem, calc(100vw - 2rem)); }
