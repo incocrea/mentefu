@@ -514,9 +514,15 @@
      estés en la propia misión, esta pastilla flotante te devuelve a la tarjeta
      en la que ibas, navegues lo que navegues por el camino. */
   (function () {
+    /* La pastilla de regreso SOLO existe sobre el contenido complementario
+       (pergamino, historia, herramienta). En las páginas del flujo (dojo,
+       niveles, misiones) no pinta nada: ahí se navega con los enlaces del
+       propio flujo. Un ancla rancia en sessionStorage tampoco debe asomar. */
+    var capa = cfg.page && cfg.page.layout;
+    if (capa !== "article" && capa !== "story" && capa !== "tool") return;
     var o = null;
     try { o = JSON.parse(sessionStorage.getItem("mf.origen") || "null"); } catch (e) { /* nada */ }
-    if (o && o.url === window.location.pathname && o.tipo === "nivel") {
+    if (o && o.url === window.location.pathname && (o.tipo === "nivel" || o.tipo === "biblioteca")) {
       /* de vuelta en el nivel: viaje completado, el ancla se suelta */
       try { sessionStorage.removeItem("mf.origen"); sessionStorage.removeItem("mf.origen.volver"); } catch (e) { /* nada */ }
       return;
@@ -526,7 +532,8 @@
     btn.type = "button";
     btn.className = "back-origin";
     var etiqueta = o.tipo === "nivel" ? (ES ? "Volver al nivel" : "Back to the level")
-                                      : (ES ? "Volver a la misión" : "Back to the mission");
+                 : o.tipo === "biblioteca" ? (ES ? "Volver a la biblioteca" : "Back to the library")
+                 : (ES ? "Volver a la misión" : "Back to the mission");
     btn.innerHTML = '<span aria-hidden="true">↩</span> ' + etiqueta;
     btn.title = o.title || "";
     btn.addEventListener("click", function () {

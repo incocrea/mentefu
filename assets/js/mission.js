@@ -13,7 +13,7 @@
     done: "Hecho", later: "Lo haré luego", doneMsg: "+{n} XP por el microreto", open: "Abrir pergamino", scrollMeta: "Lectura de apoyo · +{n} XP al terminarlo",
     missionDone: "Misión completada", examDone: "Examen terminado", earned: "XP ganados", alreadyDone: "Ya habías completado esta misión: repasar no suma XP, pero siempre suma.",
     passed: "Aprobado: {p} %", failed: "No alcanzaste el 75 % ({p} %). Repasa las misiones y vuelve a intentarlo: no hay penalización.", beltNew: "Nuevo cinturón", retake: "Repetir examen",
-    nextMission: "Siguiente: {t}", backLevel: "Volver al nivel", toProfile: "Ver mi perfil", unlocked: "Logros desbloqueados",
+    nextMission: "Siguiente: {t}", nextLevelBtn: "Empezar el {t}", backLevel: "Volver al nivel", toProfile: "Ver mi perfil", unlocked: "Logros desbloqueados",
     placeholder: "Escribe aquí…", saved: "Se guarda automáticamente.",
   } : {
     next: "Next", prev: "Previous", finish: "Finish", card: "Card {i} of {n}", quiz: "Question", choice: "Explore", reflect: "Reflect", practice: "Micro-challenge", scroll: "Scroll", text: "",
@@ -21,7 +21,7 @@
     done: "Done", later: "I’ll do it later", doneMsg: "+{n} XP for the micro-challenge", open: "Open scroll", scrollMeta: "Supporting read · +{n} XP when finished",
     missionDone: "Mission completed", examDone: "Exam finished", earned: "XP earned", alreadyDone: "You had already completed this mission: reviewing does not add XP, but it always adds.",
     passed: "Passed: {p} %", failed: "You did not reach 75 % ({p} %). Review the missions and try again: there is no penalty.", beltNew: "New belt", retake: "Retake exam",
-    nextMission: "Next: {t}", backLevel: "Back to level", toProfile: "See my profile", unlocked: "Achievements unlocked",
+    nextMission: "Next: {t}", nextLevelBtn: "Start {t}", backLevel: "Back to level", toProfile: "See my profile", unlocked: "Achievements unlocked",
     placeholder: "Write here…", saved: "Saved automatically.",
   };
   var LETTERS = "ABCDEF";
@@ -148,7 +148,9 @@
         html += '<p class="mcard__score">' + (res.passed ? T.passed : T.failed).replace("{p}", pct) + "</p>";
         if (res.passed && res.belt) html += '<div class="mcard__belt-award"><span class="belt-pill__swatch" style="--belt:' + res.belt.color + '"></span>' + T.beltNew + ": " + (ES ? "cinturón " + res.belt.name.toLowerCase() : res.belt.name + " belt") + "</div>";
         if (res.newBelt) html += '<div class="mcard__xp">+' + (data.xp || XP.exam || 50) + " XP</div>";
-        html += '<div class="mcard__actions">' + (res.passed ? "" : '<button class="btn btn--primary" type="button" data-retake>' + T.retake + "</button>")
+        var puerta = res.passed && data.nextLevel
+          ? '<a class="btn btn--primary" href="' + data.nextLevel.href + '">' + T.nextLevelBtn.replace("{t}", data.nextLevel.title) + "</a>" : "";
+        html += '<div class="mcard__actions">' + (res.passed ? puerta : '<button class="btn btn--primary" type="button" data-retake>' + T.retake + "</button>")
               + '<a class="btn btn--ghost" href="' + (data.levelHref || "./") + '">' + T.backLevel + '</a><a class="btn btn--ghost" href="' + (cfg.profileUrl || "#") + '">' + T.toProfile + "</a></div>";
       } else {
         var unlocked = window.MF ? MF.completeMission(data.art, data.id, total, data.level) : [];
@@ -218,6 +220,7 @@
     stage.addEventListener("click", function (e) {
       var a = e.target.closest && e.target.closest("a[href]");
       if (!a || a.getAttribute("href").charAt(0) === "#") return;
+      if (a.getAttribute("href").indexOf("/dojo/") !== -1) return;   /* el flujo no deja ancla */
       try {
         sessionStorage.setItem("mf.origen", JSON.stringify({
           url: window.location.pathname, card: i, title: data.title || document.title, tipo: "mision"

@@ -106,9 +106,13 @@
     box.addEventListener("click", function (e) {
       var a = e.target.closest && e.target.closest("a[href]");
       if (!a || a.getAttribute("href").charAt(0) === "#") return;
+      /* solo las salidas hacia contenido complementario dejan ancla; los
+         enlaces del flujo (dojo, niveles, misiones) navegan sin más */
+      if (a.getAttribute("href").indexOf("/dojo/") !== -1) return;
       try {
         sessionStorage.setItem("mf.origen", JSON.stringify({
-          url: window.location.pathname, title: data.title || document.title, tipo: "nivel"
+          url: window.location.pathname, title: data.title || document.title,
+          tipo: (cfg.page && cfg.page.layout === "level") ? "nivel" : "biblioteca"
         }));
       } catch (err) { /* nada */ }
     });
