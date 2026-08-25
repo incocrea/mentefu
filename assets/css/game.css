@@ -736,3 +736,6 @@ select.input option { color: var(--c-text); background: var(--c-white); }
 .belt.is-locked .belt__link { cursor: not-allowed; }
 .belt.is-locked .belt__status::before { content: "🔒"; font-size: 0.85em; }
 .gate .gate__art { font-size: 1.8rem; }
+
+/* --- portada del arte: fila de botones Empezar/Continuar, centrados --- */
+.art-cta { display: flex; justify-content: center; align-items: center; gap: 0.85rem; flex-wrap: wrap; }

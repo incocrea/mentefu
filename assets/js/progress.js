@@ -18,6 +18,7 @@
     levelsDone: "Cinturones: {k}/8", nextLevel: "Siguiente: nivel {n}", allDone: "Cinturón negro conseguido. Sigue entrenando.",
     examLocked: "Completa todas las misiones del nivel para desbloquear el examen.",
     levelLocked: "El dojo se recorre en orden: consigue el cinturón anterior para abrir este nivel.",
+    continueBelt: "Continuar al cinturón {b}", keepTraining: "Sigue entrenando", resumeBtn: "Continuar",
     rankUp: "¡Subes de rango!", toRank: "{n} XP para {rank}", maxRank: "Rango máximo",
     noAccount: "Sin cuenta", signIn: "Entra o crea tu cuenta para empezar a sumar XP", checking: "Comprobando tu sesión…",
   } : {
@@ -26,6 +27,7 @@
     levelsDone: "Belts: {k}/8", nextLevel: "Next: level {n}", allDone: "Black belt earned. Keep training.",
     examLocked: "Complete every mission in the level to unlock the exam.",
     levelLocked: "The dojo is walked in order: earn the previous belt to open this level.",
+    continueBelt: "Continue to the {b} belt", keepTraining: "Keep training", resumeBtn: "Continue",
     rankUp: "Rank up!", toRank: "{n} XP to {rank}", maxRank: "Top rank",
     noAccount: "No account", signIn: "Sign in or create your account to start earning XP", checking: "Checking your session…",
   };
@@ -484,9 +486,37 @@
       var text = box.querySelector(".dojo-progress__text");
       if (text) text.textContent = T.levelsDone.replace("{k}", k) + (k >= 8 ? " · " + T.allDone : " · " + T.nextLevel.replace("{n}", k + 1));
     });
-    document.querySelectorAll("[data-continue]").forEach(function (a) {
-      var url = state.last[a.getAttribute("data-continue")];
-      if (url) a.setAttribute("href", url);
+    /* Portada del arte: el botón principal lleva SIEMPRE al siguiente cinturón
+       desbloqueable (nunca a un nivel cerrado), y «Continuar» —solo si ya hay
+       misiones hechas— salta al primer paso pendiente de la secuencia. */
+    var flujo = cfg.artFlow;
+    document.querySelectorAll("[data-belt-cta]").forEach(function (a) {
+      if (!dentro || !flujo) return;
+      var key = a.getAttribute("data-belt-cta");
+      var tengo = beltOf(key), sig = tengo + 1;
+      if (sig > 8) {
+        a.setAttribute("href", flujo.levels[8] || a.getAttribute("href"));
+        a.textContent = T.keepTraining;
+      } else if (tengo > 0 && flujo.levels[sig]) {
+        a.setAttribute("href", flujo.levels[sig]);
+        var b = beltInfo(sig);
+        a.textContent = T.continueBelt.replace("{b}", ES ? b.name.toLowerCase() : b.name.toLowerCase());
+      }
+      /* sin cinturones se queda el texto y el destino de serie: nivel 1 */
+    });
+    document.querySelectorAll("[data-resume-cta]").forEach(function (a) {
+      a.hidden = true;
+      if (!dentro || !flujo) return;
+      var key = a.getAttribute("data-resume-cta");
+      var st = art(key);
+      if (!Object.keys(st.missions).length) return;   /* sin misiones hechas, no aparece */
+      var tope = beltOf(key) + 1;
+      for (var i = 0; i < flujo.seq.length; i++) {
+        var s = flujo.seq[i];
+        if (s.level > tope) break;
+        var hecho = s.exam ? !!(st.exams[s.level] && st.exams[s.level].passed) : !!st.missions[s.id];
+        if (!hecho) { a.setAttribute("href", s.url); a.hidden = false; return; }
+      }
     });
   }
 
