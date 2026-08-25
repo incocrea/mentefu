@@ -50,11 +50,12 @@
   ];
 
   /* ---------- Estado ---------- */
-  function fresh() { return { v: 1, arts: {}, achievements: {}, streak: { days: 0, last: "" }, reflections: {}, flags: {}, last: {}, name: "", avatar: "", updated: "" }; }
+  function fresh() { return { v: 1, arts: {}, achievements: {}, streak: { days: 0, last: "" }, reflections: {}, flags: {}, last: {}, tree: { p: [] }, name: "", avatar: "", updated: "" }; }
   var state = MFStore.get("progress", null);
   if (!state || state.v !== 1) state = fresh();
   ["arts", "achievements", "reflections", "flags", "last"].forEach(function (k) { if (!state[k]) state[k] = {}; });
   if (!state.streak) state.streak = { days: 0, last: "" };
+  if (!state.tree || !state.tree.p) state.tree = { p: [] };
 
   function art(key) {
     key = key || "_";
@@ -252,6 +253,12 @@
       for (var lk in (s.last || {})) m.last[lk] = s.last[lk] || m.last[lk];
       if ((s.streak || {}).last > (m.streak.last || "") || ((s.streak || {}).last === m.streak.last && (s.streak || {}).days > m.streak.days)) m.streak = Object.assign({}, s.streak);
       if (s.name && !m.name) m.name = s.name;
+      /* Árbol Cerebro: la decoración es intención del alumno, no suma — gana la
+         del estado actualizado más recientemente; si está vacía, la otra. */
+      var tp = (s.tree && s.tree.p) || [];
+      if (tp.length && (!m.tree.p.length || (s.updated || "") >= (m.tree.updated || ""))) {
+        m.tree = { p: tp.slice(), updated: s.updated || "" };
+      }
       if (s.avatar && !m.avatar) m.avatar = s.avatar;
     });
     state = m;

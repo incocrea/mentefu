@@ -9,7 +9,7 @@
   var T = ES ? {
     student: "Alumno", xp: "XP", streak: "Racha", belts: "Cinturones", missions: "Misiones", toNext: "{n} XP para {rank}", max: "Rango máximo alcanzado",
     arts: "Tus artes", achievements: "Logros", certs: "Certificados de cinturón", certNote: "Reconocimiento de progreso personal. No es una certificación profesional.",
-    account: "Cuenta", avatarTitle: "Tu avatar de estudiante", avatarHelp: "Elige la cara con la que entrenas. Puedes cambiarla cuando quieras.", local: "Modo local: tu progreso vive solo en este navegador. Cuando la escuela conecte las cuentas, podrás registrarte para guardarlo en todos tus dispositivos.",
+    account: "Cuenta", arbolTitulo: "Tu Árbol Cerebro", arbolLema: "Tu mente crece con cada logro.", avatarTitle: "Tu avatar de estudiante", avatarHelp: "Elige la cara con la que entrenas. Puedes cambiarla cuando quieras.", local: "Modo local: tu progreso vive solo en este navegador. Cuando la escuela conecte las cuentas, podrás registrarte para guardarlo en todos tus dispositivos.",
     signedAs: "Conectado como", signOut: "Cerrar sesión", name: "Tu nombre (para los certificados)", save: "Guardar", saved: "Guardado.",
     login: "Crea tu cuenta o inicia sesión para guardar tu progreso en todos tus dispositivos.",
     phone: "Teléfono (opcional)", newPass: "Nueva contraseña (mínimo 8 caracteres)", changePass: "Cambiar contraseña", passChanged: "Contraseña actualizada.",
@@ -22,7 +22,7 @@
   } : {
     student: "Student", xp: "XP", streak: "Streak", belts: "Belts", missions: "Missions", toNext: "{n} XP to {rank}", max: "Top rank reached",
     arts: "Your arts", achievements: "Achievements", certs: "Belt certificates", certNote: "Recognition of personal progress. Not a professional certification.",
-    account: "Account", avatarTitle: "Your student avatar", avatarHelp: "Pick the face you train with. You can change it whenever you want.", local: "Local mode: your progress lives only in this browser. Once the school connects accounts you will be able to sign up to keep it on all your devices.",
+    account: "Account", arbolTitulo: "Your Brain Tree", arbolLema: "Your mind grows with every achievement.", avatarTitle: "Your student avatar", avatarHelp: "Pick the face you train with. You can change it whenever you want.", local: "Local mode: your progress lives only in this browser. Once the school connects accounts you will be able to sign up to keep it on all your devices.",
     signedAs: "Signed in as", signOut: "Sign out", name: "Your name (for certificates)", save: "Save", saved: "Saved.",
     login: "Create your account or sign in to keep your progress on all your devices.",
     phone: "Phone (optional)", newPass: "New password (at least 8 characters)", changePass: "Change password", passChanged: "Password updated.",
@@ -70,8 +70,9 @@
     var s = MF.state(), xp = MF.totalXP(), r = MF.rank(xp);
     var beltsTotal = 0, missionsTotal = 0;
     for (var k in s.arts) { beltsTotal += Object.keys(s.arts[k].belts || {}).length; missionsTotal += Object.keys(s.arts[k].missions || {}).length; }
-    var html = '<section class="profile__hero"><div class="profile__ring" style="--pct:' + r.pct + '"><span>' + r.pct + '%</span></div>'
-      + '<div><p class="kicker" style="color:var(--c-accent-soft)">' + T.student + (s.name ? " · " + esc(s.name) : "") + '</p><h2 class="profile__rank">' + esc(r.name) + '</h2><p class="profile__sub">' + (r.next ? T.toNext.replace("{n}", r.nextAt - xp).replace("{rank}", r.next) : T.max) + "</p></div>"
+    var html = '<section class="profile__hero profile__hero--arbol"><div class="profile__ring" style="--pct:' + r.pct + '"><span>' + r.pct + '%</span></div>'
+      + '<div class="profile__id"><p class="kicker" style="color:var(--c-accent-soft)">' + T.student + (s.name ? " · " + esc(s.name) : "") + '</p><h2 class="profile__rank">' + esc(r.name) + '</h2><p class="profile__sub">' + (r.next ? T.toNext.replace("{n}", r.nextAt - xp).replace("{rank}", r.next) : T.max) + "</p></div>"
+      + '<div class="profile__mini" data-arbol-mini aria-hidden="true"></div>'
       + '<div class="profile__stats"><span class="profile__stat"><b>' + xp + "</b>" + T.xp + '</span><span class="profile__stat"><b>' + (s.streak.days || 0) + "🔥</b>" + T.streak + '</span><span class="profile__stat"><b>' + beltsTotal + "</b>" + T.belts + '</span><span class="profile__stat"><b>' + missionsTotal + "</b>" + T.missions + "</span></div></section>";
 
     /* artes */
@@ -93,17 +94,11 @@
     });
     html += "</ul></section>";
 
-    /* avatar */
-    var avs = MF.avatars();
-    if (avs.length) {
-      html += '<section class="profile__section"><h2>' + T.avatarTitle + '</h2><p class="muted">' + T.avatarHelp + '</p><ul class="avatars">';
-      avs.forEach(function (a) {
-        var sel = String(s.avatar) === String(a.key);
-        html += '<li><button class="avatar' + (sel ? " is-selected" : "") + '" type="button" data-avatar="' + esc(a.key) + '" aria-pressed="' + sel + '">'
-              + '<img src="' + esc(a.src) + '" alt="Avatar ' + esc(a.key) + '" loading="lazy"></button></li>';
-      });
-      html += "</ul></section>";
-    }
+    /* Árbol Cerebro: el avatar-planta que crece con el rango y se decora con
+       los trofeos de los entrenamientos (arbol.js) */
+    html += '<section class="profile__section profile__section--arbol"><h2>' + T.arbolTitulo + '</h2>'
+          + '<p class="muted">' + T.arbolLema + '</p>'
+          + '<div class="arbol"><div class="arbol__lienzo" data-arbol></div><div class="arbol__cofre" data-arbol-cofre></div></div></section>';
 
     /* certificados */
     html += '<section class="profile__section"><h2>' + T.certs + "</h2>";
@@ -126,17 +121,10 @@
       + '<p style="margin:1rem 0 0"><button class="btn btn--ghost btn--sm" type="button" data-reset>' + T.reset + "</button></p></section>";
     host.innerHTML = html;
     renderAccount(host.querySelector("[data-account]"));
-    host.querySelectorAll("[data-avatar]").forEach(function (b) {
-      b.addEventListener("click", function () {
-        var k = b.getAttribute("data-avatar");
-        MF.state().avatar = (String(MF.state().avatar) === k) ? "" : k;
-        MF.save(); MF.paint();
-        if (window.SB && SB.enabled()) MFAuth.user().then(function (u) {
-          if (u) SB.upsert("profiles", { id: u.id, avatar: MF.state().avatar }, "id").catch(function () {});
-        });
-        render();
-      });
-    });
+    if (window.MFArbol) {
+      MFArbol.montar(host.querySelector("[data-arbol]"), host.querySelector("[data-arbol-cofre]"));
+      MFArbol.mini();
+    }
     host.querySelector("[data-reset]").addEventListener("click", function () { if (window.confirm(T.resetConfirm)) { MF.reset(); render(); } });
   }
 
