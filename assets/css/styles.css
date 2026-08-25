@@ -256,9 +256,6 @@ button { font: inherit; }
 .page-head__lead { max-width: 40rem; font-size: 1.15rem; color: var(--c-text-on-dark-soft); margin: 0 0 1rem; }
 .page-head__meta { display: flex; flex-wrap: wrap; gap: 0.75rem 1.25rem; align-items: center; margin: 0; font-size: var(--fs-small); color: var(--c-text-on-dark-soft); }
 .page-head__meta:empty { display: none; }
-.crumbs { font-size: var(--fs-small); color: var(--c-text-on-dark-soft); margin-bottom: 1.25rem; }
-.crumbs a { text-decoration: none; }
-.crumbs a:hover { color: var(--c-accent-soft); text-decoration: underline; }
 
 /* ---------- Prosa (contenido Markdown) ---------- */
 .layout-article main > .container, .layout-tool main > .container, .layout-story main > .container,

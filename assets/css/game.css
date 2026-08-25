@@ -172,6 +172,32 @@ a.art-card:hover { transform: translateY(-4px); box-shadow: var(--shadow); }
 .scroll-link__icon { font-size: 1.6rem; }
 .scroll-link__title { font-family: var(--f-display); font-weight: 700; }
 .scroll-link__meta { display: block; font-size: 0.8rem; color: var(--c-text-soft); }
+/* Sello de completado: leído O escuchado, desde la propia tarjeta (2026-08-25) */
+.scroll-link { position: relative; }
+.scroll-link__seal { position: absolute; top: -0.55rem; right: 0.75rem; font-family: var(--f-display); font-weight: 700; font-size: 0.72rem; letter-spacing: 0.06em; text-transform: uppercase; color: var(--c-accent-ink); background: var(--c-accent-btn); border-radius: 999px; padding: 0.2rem 0.6rem; transform: rotate(3deg); white-space: nowrap; }
+.scroll-link.is-done { border-color: var(--c-accent); }
+
+/* Minipodcast en la tarjeta scroll: play/stop propios (sin barra de salto, la
+   escucha completa es la única vía al XP); la barra solo informa el avance. */
+.scroll-audio { display: grid; grid-template-columns: auto 1fr auto; align-items: center; gap: 0.35rem 0.85rem; padding: 0.85rem 1rem; border-radius: var(--radius); background: var(--c-paper-2); border: 1px solid var(--c-line-light); margin-top: 0.6rem; }
+.scroll-audio__btn { grid-row: 1 / 3; width: 3rem; height: 3rem; border-radius: 50%; border: 0; background: var(--c-accent); color: var(--c-paper); display: grid; place-items: center; cursor: pointer; transition: transform 0.15s ease, background 0.15s ease; }
+.scroll-audio__btn:hover { transform: scale(1.06); }
+.scroll-audio__btn:disabled { background: var(--c-line-light); cursor: default; transform: none; }
+.scroll-audio__btn svg { width: 1.5rem; height: 1.5rem; fill: currentColor; }
+.scroll-audio__stop { display: none; }
+.scroll-audio.is-playing .scroll-audio__play { display: none; }
+.scroll-audio.is-playing .scroll-audio__stop { display: block; }
+.scroll-audio__text { min-width: 0; }
+.scroll-audio__label { display: block; font-family: var(--f-display); font-weight: 700; }
+.scroll-audio__meta { display: block; font-size: 0.8rem; color: var(--c-text-soft); }
+.scroll-audio__time { font-variant-numeric: tabular-nums; font-size: 0.8rem; color: var(--c-text-soft); white-space: nowrap; }
+.scroll-audio__bar { grid-column: 2 / 4; height: 0.3rem; border-radius: 999px; background: var(--c-line-light); overflow: hidden; }
+.scroll-audio__fill { height: 100%; width: 0; border-radius: inherit; background: var(--c-accent); transition: width 0.3s linear; }
+.scroll-audio.is-broken { opacity: 0.55; }
+
+/* Pergaminos completados en los listados (biblioteca): esquina sellada */
+.card--scroll.is-done .card__sheet { position: relative; }
+.card--scroll.is-done .card__sheet::after { content: "✓"; position: absolute; top: 0.5rem; right: 0.6rem; width: 1.4rem; height: 1.4rem; border-radius: 50%; background: var(--c-accent-btn); color: var(--c-accent-ink); font-weight: 700; font-size: 0.85rem; display: grid; place-items: center; transform: rotate(6deg); }
 
 /* confeti */
 .confetti { position: fixed; inset: 0; pointer-events: none; z-index: 250; overflow: hidden; }
@@ -442,7 +468,6 @@ a.art-card:hover { transform: translateY(-4px); box-shadow: var(--shadow); }
   .hero .hero__masters--sketch,
   .page-head--scene .hero__masters--sketch { opacity: 0.75; }
 
-  .page-head--scene:has(.hero__masters) .crumbs,
   .page-head--scene:has(.hero__masters) .kicker,
   .page-head--scene:has(.hero__masters) .page-head__title,
   .hero:has(.hero__masters) .kicker,
@@ -782,7 +807,6 @@ select.input option { color: var(--c-text); background: var(--c-white); }
   .page-head--scene:has(.hero__arbol) { --mascot-h: clamp(7.5rem, 30vw, 10rem); }
   .hero__arbol { top: var(--mascot-top, 1rem); transform: none; right: var(--mascot-inset, 0.75rem);
     width: var(--mascot-h); }
-  .page-head--scene:has(.hero__arbol) .crumbs,
   .page-head--scene:has(.hero__arbol) .kicker,
   .page-head--scene:has(.hero__arbol) .page-head__title { margin-inline-end: calc(var(--mascot-h) + 1.5rem); }
 }

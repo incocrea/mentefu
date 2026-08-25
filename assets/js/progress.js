@@ -186,22 +186,23 @@
     return { passed: passed, newBelt: newBelt, unlocked: unlocked, belt: beltInfo(level) };
   }
 
-  function scrollRead(artKey, id, xp) {
+  function scrollRead(artKey, id, xp, label) {
     var a = art(artKey);
     if (a.scrolls[id]) return [];
     a.scrolls[id] = { at: now(), xp: xp || XP.scroll };
     bumpStreak();
     track("scroll_read", { art: artKey, item: id, xp: xp || XP.scroll });
-    return afterAward(xp || XP.scroll, ES ? "Pergamino leído" : "Scroll read");
+    /* label: «Pergamino escuchado» cuando se completa en audio (mission.js) */
+    return afterAward(xp || XP.scroll, label || (ES ? "Pergamino leído" : "Scroll read"));
   }
 
-  function toolUsed(artKey, id, xp) {
+  function toolUsed(artKey, id, xp, label) {
     var a = art(artKey);
     if (a.tools[id]) return [];
     a.tools[id] = { at: now(), xp: xp || XP.tool };
     bumpStreak();
     track("tool_used", { art: artKey, item: id, xp: xp || XP.tool });
-    return afterAward(xp || XP.tool, ES ? "Herramienta usada" : "Tool used");
+    return afterAward(xp || XP.tool, label || (ES ? "Herramienta usada" : "Tool used"));
   }
 
   function reflect(key, text) { state.reflections[key] = text; save(); }

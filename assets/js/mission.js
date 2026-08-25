@@ -11,6 +11,7 @@
     next: "Siguiente", prev: "Anterior", finish: "Terminar", card: "Tarjeta {i} de {n}", quiz: "Pregunta", choice: "Explora", reflect: "Reflexiona", practice: "Microreto", scroll: "Pergamino", text: "",
     correct: "¡Correcto!", wrong: "No exactamente", bonus: "+{n} XP por acertar a la primera", retry: "Prueba otra vez",
     done: "Hecho", later: "Lo haré luego", doneMsg: "+{n} XP por el microreto", open: "Abrir pergamino", scrollMeta: "Lectura de apoyo · +{n} XP al terminarlo",
+    listen: "Escucharlo en audio", listenMeta: "Minipodcast · +{n} XP al escucharlo completo", stop: "Detener", listened: "Pergamino escuchado", itemDone: "Completado",
     missionDone: "Misión completada", examDone: "Examen terminado", earned: "XP ganados", alreadyDone: "Ya habías completado esta misión: repasar no suma XP, pero siempre suma.",
     passed: "Aprobado: {p} %", failed: "No alcanzaste el 75 % ({p} %). Repasa las misiones y vuelve a intentarlo: no hay penalización.", beltNew: "Nuevo cinturón", retake: "Repetir examen",
     nextMission: "Siguiente: {t}", nextLevelBtn: "Empezar el {t}", backLevel: "Volver al nivel", toProfile: "Ver mi perfil", unlocked: "Logros desbloqueados",
@@ -19,6 +20,7 @@
     next: "Next", prev: "Previous", finish: "Finish", card: "Card {i} of {n}", quiz: "Question", choice: "Explore", reflect: "Reflect", practice: "Micro-challenge", scroll: "Scroll", text: "",
     correct: "Correct!", wrong: "Not quite", bonus: "+{n} XP for a first-try hit", retry: "Try again",
     done: "Done", later: "I’ll do it later", doneMsg: "+{n} XP for the micro-challenge", open: "Open scroll", scrollMeta: "Supporting read · +{n} XP when finished",
+    listen: "Listen to it", listenMeta: "Mini-podcast · +{n} XP when you listen to the end", stop: "Stop", listened: "Scroll listened", itemDone: "Completed",
     missionDone: "Mission completed", examDone: "Exam finished", earned: "XP earned", alreadyDone: "You had already completed this mission: reviewing does not add XP, but it always adds.",
     passed: "Passed: {p} %", failed: "You did not reach 75 % ({p} %). Review the missions and try again: there is no penalty.", beltNew: "New belt", retake: "Retake exam",
     nextMission: "Next: {t}", nextLevelBtn: "Start {t}", backLevel: "Back to level", toProfile: "See my profile", unlocked: "Achievements unlocked",
@@ -47,6 +49,16 @@
     /* hasta dónde ha llegado ya: al volver atrás, las tarjetas superadas no
        vuelven a exigir su respuesta */
     var reached = 0;
+    /* audio en reproducción (tarjetas scroll): uno solo, y se detiene al
+       cambiar de tarjeta, terminar la misión o abandonar la página */
+    var sonando = null;
+    function pararAudio() {
+      if (!sonando) return;
+      sonando.au.pause();
+      if (sonando.apagar) sonando.apagar();
+      sonando = null;
+    }
+    window.addEventListener("pagehide", pararAudio);
 
     function setNext(enabled) { nextBtn.disabled = !enabled && i >= reached; }
     function progress() {
@@ -57,6 +69,7 @@
     }
 
     function renderCard(c) {
+      pararAudio();
       stage.innerHTML = "";
       var card = el('<article class="mcard mcard--' + c.type + '"></article>');
       if (T[c.type]) card.appendChild(el('<span class="mcard__type">' + T[c.type] + "</span>"));
@@ -124,9 +137,87 @@
         bs[1].addEventListener("click", function () { bs[0].disabled = true; bs[1].disabled = true; setNext(true); });
         card.appendChild(row);
       } else if (c.type === "scroll") {
-        var link = el('<a class="scroll-link" href="' + (c.href || "#") + '"><span class="scroll-link__icon" aria-hidden="true">📜</span><span><span class="scroll-link__title"></span><span class="scroll-link__meta">' + T.scrollMeta.replace("{n}", XP.scroll || 10) + "</span></span></a>");
+        var artKey = c.itemArt || data.art;
+        var xpItem = c.itemXp || XP.scroll || 10;
+        /* sin item no hay XP ni sello: la tarjeta puede enlazar una página
+           pública (p. ej. el manifiesto) que solo se lee */
+        var metaLink = c.item ? T.scrollMeta.replace("{n}", xpItem) : T.scrollMeta.split(" · ")[0];
+        var link = el('<a class="scroll-link" href="' + (c.href || "#") + '"><span class="scroll-link__icon" aria-hidden="true">📜</span><span><span class="scroll-link__title"></span><span class="scroll-link__meta">' + metaLink + '</span></span><span class="scroll-link__seal" hidden>✓ ' + T.itemDone + "</span></a>");
         link.querySelector(".scroll-link__title").textContent = c.title || T.open;
         card.appendChild(link);
+        var itemHecho = function () {
+          if (!window.MF || !c.item) return false;
+          var aa = MF.art(artKey);
+          return !!(aa.scrolls[c.item] || aa.tools[c.item]);
+        };
+        var sellar = function () {
+          if (!itemHecho()) return;
+          link.classList.add("is-done");
+          link.querySelector(".scroll-link__seal").hidden = false;
+        };
+        sellar();
+        if (c.audio) {
+          /* Minipodcast desde la propia tarjeta: play/stop sin barra de salto,
+             así «completado» solo puede significar «escuchado entero». */
+          var player = el('<div class="scroll-audio">' +
+            '<button class="scroll-audio__btn" type="button" aria-label="' + T.listen + '">' +
+              '<svg class="scroll-audio__play" viewBox="0 0 24 24" aria-hidden="true"><path d="M8.5 6.2c0-1 1.1-1.6 2-1.1l8.2 5.3c.8.5.8 1.7 0 2.2L10.5 18c-.9.6-2 0-2-1.1z"/></svg>' +
+              '<svg class="scroll-audio__stop" viewBox="0 0 24 24" aria-hidden="true"><rect x="7" y="7" width="10" height="10" rx="2"/></svg>' +
+            '</button>' +
+            '<span class="scroll-audio__text"><span class="scroll-audio__label">' + T.listen + '</span>' +
+            '<span class="scroll-audio__meta">' + T.listenMeta.replace("{n}", xpItem) + "</span></span>" +
+            '<span class="scroll-audio__time" hidden></span>' +
+            '<div class="scroll-audio__bar" aria-hidden="true"><div class="scroll-audio__fill"></div></div></div>');
+          var btn = player.querySelector(".scroll-audio__btn");
+          var fillA = player.querySelector(".scroll-audio__fill");
+          var time = player.querySelector(".scroll-audio__time");
+          var au = null;
+          var mmss = function (s) { s = Math.max(0, Math.round(s || 0)); return Math.floor(s / 60) + ":" + ("0" + (s % 60)).slice(-2); };
+          var icono = function (playing) {
+            player.classList.toggle("is-playing", playing);
+            btn.setAttribute("aria-label", playing ? T.stop : T.listen);
+          };
+          btn.addEventListener("click", function () {
+            if (au && !au.paused) { au.pause(); icono(false); if (sonando && sonando.au === au) sonando = null; return; }
+            if (!au) {
+              au = new Audio(c.audio);
+              au.preload = "metadata";
+              au.addEventListener("loadedmetadata", function () { time.hidden = false; time.textContent = mmss(au.currentTime) + " / " + mmss(au.duration); });
+              au.addEventListener("timeupdate", function () {
+                if (au.duration) fillA.style.width = Math.round((au.currentTime / au.duration) * 100) + "%";
+                time.textContent = mmss(au.currentTime) + " / " + mmss(au.duration);
+              });
+              au.addEventListener("ended", function () {
+                icono(false);
+                if (sonando && sonando.au === au) sonando = null;
+                fillA.style.width = "100%";
+                if (window.MF) {
+                  if (c.item && !itemHecho()) {
+                    /* cada destino a su colección: si no, escuchar una herramienta
+                       la apuntaría en scrolls y usarla después pagaría XP doble */
+                    if (c.itemKind === "tool") MF.toolUsed(artKey, c.item, xpItem, T.listened);
+                    else MF.scrollRead(artKey, c.item, xpItem, T.listened);
+                  }
+                  MF.track("audio_done", { item: data.id, data: { card: i, scroll: c.item } });
+                }
+                sellar();
+              });
+              au.addEventListener("error", function () {
+                icono(false);
+                /* un error tardío de un audio ya abandonado no debe soltar el
+                   que sí está sonando */
+                if (sonando && sonando.au === au) sonando = null;
+                player.classList.add("is-broken"); btn.disabled = true;
+              });
+            }
+            pararAudio();                       /* nunca dos audios a la vez */
+            sonando = { au: au, apagar: function () { icono(false); } };
+            au.play();
+            icono(true);
+            if (window.MF) MF.track("audio_play", { item: data.id, data: { card: i, scroll: c.item } });
+          });
+          card.appendChild(player);
+        }
       }
       stage.appendChild(card);
       progress();
@@ -135,6 +226,7 @@
     }
 
     function finish() {
+      pararAudio();
       stage.innerHTML = "";
       fill.style.width = "100%"; count.textContent = T.card.replace("{i}", n).replace("{n}", n);
       wrap.querySelector(".mission__actions").hidden = true;
