@@ -829,7 +829,12 @@ select.input option { color: var(--c-text); background: var(--c-white); }
 
 /* --- cofre --- */
 .arbol__cofre-titulo { font-family: var(--f-display); font-weight: 800; margin: 0 0 0.75rem; }
-.arbol__adornos { display: grid; grid-template-columns: repeat(auto-fit, minmax(4.5rem, 1fr)); gap: 0.6rem; }
+/* Los 9 accesorios de cada set, siempre con la misma silueta (2026-08-26):
+   el trofeo del curso manda —primero y con el alto de dos filas— y los ocho de
+   cinturón se reparten en dos filas de cuatro. Antes la rejilla era elástica y
+   dejaba un accesorio suelto en una segunda fila. */
+.arbol__adornos { display: grid; grid-template-columns: 1.5fr repeat(4, 1fr); gap: 0.6rem; }
+.arbol__adornos .adorno--legendario { order: -1; grid-column: 1; grid-row: span 2; aspect-ratio: auto; padding: 0.8rem; }
 .adorno { position: relative; aspect-ratio: 1; padding: 0.55rem; border-radius: var(--radius);
   border: 2px solid var(--c-line-light); background: var(--c-white); cursor: pointer;
   transition: transform 0.15s, border-color 0.15s; }
@@ -881,7 +886,10 @@ select.input option { color: var(--c-text); background: var(--c-white); }
 /* los tooltips de la primera fila del cofre caben mejor debajo en móvil */
 @media (max-width: 40rem) {
   .adorno-tip { width: 13.5rem; }
-  .arbol__adornos { grid-template-columns: repeat(auto-fit, minmax(3.8rem, 1fr)); }
+  /* misma silueta en móvil, solo más apretada */
+  .arbol__adornos { gap: 0.4rem; }
+  .arbol__adornos .adorno { padding: 0.35rem; }
+  .arbol__adornos .adorno--legendario { padding: 0.5rem; }
 }
 @media (prefers-reduced-motion: reduce) { .adorno-tip, .adorno { transition: none; } }
 
