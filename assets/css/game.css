@@ -785,8 +785,19 @@ select.input option { color: var(--c-text); background: var(--c-white); }
   .page-head--scene:has(.hero__arbol) { --mascot-h: clamp(7.5rem, 30vw, 10rem); }
   .hero__arbol { top: var(--mascot-top, 1rem); transform: none; right: var(--mascot-inset, 0.75rem);
     width: var(--mascot-h); }
-  .page-head--scene:has(.hero__arbol) .kicker,
-  .page-head--scene:has(.hero__arbol) .page-head__title { margin-inline-end: calc(var(--mascot-h) + 1.5rem); }
+  /* El texto RODEA al árbol (2026-08-26): un flotante invisible reserva su
+     columna, así ninguna línea se le monta encima —antes el lead lo hacía— y en
+     cuanto el texto pasa de largo recupera el ancho completo, en vez de quedarse
+     encajonado en media pantalla. El hero nunca es más bajo que el árbol. */
+  .page-head--scene:has(.hero__arbol) > .container::before {
+    content: ""; float: right;
+    width: calc(var(--mascot-h) + 0.9rem);
+    height: calc(var(--mascot-top) + var(--mascot-h) - 1.6rem);
+  }
+  .page-head--scene:has(.hero__arbol) > .container::after { content: ""; display: block; clear: both; }
+  .page-head--scene:has(.hero__arbol) > .container {
+    min-height: calc(var(--mascot-top) + var(--mascot-h) + 0.5rem);
+  }
 }
 
 /* la leyenda única de la sección del árbol */
@@ -827,19 +838,23 @@ select.input option { color: var(--c-text); background: var(--c-white); }
 /* --- tooltip RPG --- */
 /* display:none mientras está oculto: un tooltip invisible pero maquetado
    sobresale del documento y crea scroll horizontal fantasma */
-.adorno-tip { display: none; position: absolute; left: 50%; bottom: calc(100% + 0.6rem); transform: translateX(-50%);
-  width: 15.5rem; text-align: left; background: var(--c-ink-bg); color: var(--c-text-on-dark);
+.adorno-tip { display: none; position: absolute; left: 50%; bottom: calc(100% + 0.6rem);
+  transform: translateX(calc(-50% + var(--tip-dx, 0px)));
+  width: 15.5rem; max-width: calc(100vw - 1.5rem); text-align: left; background: var(--c-ink-bg); color: var(--c-text-on-dark);
   border: 1px solid var(--c-accent-soft); border-radius: var(--radius); padding: 0.8rem 0.95rem;
   pointer-events: none; z-index: 30; box-shadow: 0 14px 30px rgba(0,0,0,0.45); }
-@keyframes tip-in { from { opacity: 0; transform: translateX(-50%) translateY(4px); } to { opacity: 1; transform: translateX(-50%); } }
+@keyframes tip-in { from { opacity: 0; transform: translateX(calc(-50% + var(--tip-dx, 0px))) translateY(4px); }
+                    to { opacity: 1; transform: translateX(calc(-50% + var(--tip-dx, 0px))); } }
 .adorno:hover .adorno-tip, .adorno:focus-visible .adorno-tip { display: block; animation: tip-in 0.15s ease; }
-/* en los extremos del cofre, el tooltip se pega al borde de su celda en vez de
-   salirse de la pantalla */
-.adorno:first-child .adorno-tip { left: 0; transform: none; }
-.adorno:first-child:hover .adorno-tip { animation: none; }
-.adorno:last-child .adorno-tip { left: auto; right: 0; transform: none; }
-.adorno:last-child:hover .adorno-tip { animation: none; }
-.adorno-tip::after { content: ""; position: absolute; top: 100%; left: 50%; transform: translateX(-50%);
+/* Medición: arbol.js necesita el tamaño real ANTES de enseñarlo para saber
+   cuánto desplazarlo; así nunca queda fuera de la pantalla. */
+.adorno-tip.is-midiendo { display: block; visibility: hidden; animation: none; }
+/* si no cabe por arriba (cofre alto en la pantalla), se despliega hacia abajo */
+.adorno-tip.is-abajo { bottom: auto; top: calc(100% + 0.6rem); }
+.adorno-tip.is-abajo::after { top: auto; bottom: 100%;
+  border-top-color: transparent; border-bottom-color: var(--c-accent-soft); }
+.adorno-tip--legendario.is-abajo::after { border-top-color: transparent; border-bottom-color: #d9a521; }
+.adorno-tip::after { content: ""; position: absolute; top: 100%; left: calc(50% - var(--tip-dx, 0px)); transform: translateX(-50%);
   border: 7px solid transparent; border-top-color: var(--c-accent-soft); }
 .adorno-tip--legendario { border-color: #d9a521; }
 .adorno-tip--legendario::after { border-top-color: #d9a521; }

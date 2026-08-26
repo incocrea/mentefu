@@ -123,6 +123,30 @@
     if (interactivo) armarArrastre(lienzo);
   }
 
+  /* Coloca el tooltip dentro del viewport: lo mide oculto, calcula cuánto hay
+     que correrlo en horizontal (la flecha se queda apuntando al accesorio) y,
+     si no cabe por arriba, lo despliega hacia abajo. */
+  function situarTip(cel) {
+    var tip = cel.querySelector(".adorno-tip");
+    if (!tip) return;
+    var margen = 8;
+    tip.classList.remove("is-abajo");
+    tip.classList.add("is-midiendo");        /* visible pero invisible: se puede medir */
+    var ancho = tip.offsetWidth, alto = tip.offsetHeight;
+    tip.classList.remove("is-midiendo");
+    /* La posición se calcula desde el centro de la celda y el tamaño del
+       tooltip —no desde su rect actual, que ya trae aplicado el desplazamiento
+       anterior o una animación a medias y devuelve medidas engañosas. */
+    var r = cel.getBoundingClientRect();
+    var centro = r.left + r.width / 2;
+    var izq = centro - ancho / 2, der = centro + ancho / 2;
+    var dx = 0;
+    if (izq < margen) dx = margen - izq;
+    else if (der > window.innerWidth - margen) dx = (window.innerWidth - margen) - der;
+    tip.style.setProperty("--tip-dx", Math.round(dx) + "px");
+    if (r.top - alto - 10 < margen) tip.classList.add("is-abajo");
+  }
+
   function pintarCofre(cofre, lienzo) {
     var filas = CATALOGO.map(function (a) {
       var abierto = desbloqueado(a), enArbol = puesto(a.id);
@@ -137,6 +161,11 @@
       '<div class="arbol__adornos">' + filas + "</div>";
 
     cofre.querySelectorAll("[data-adorno]").forEach(function (b) {
+      /* El tooltip se sitúa solo dentro de la pantalla (2026-08-26): en móvil
+         los de las columnas de los bordes se salían y no se podían leer. */
+      ["pointerenter", "focus", "touchstart"].forEach(function (ev) {
+        b.addEventListener(ev, function () { situarTip(b); }, { passive: true });
+      });
       b.addEventListener("click", function () {
         var id = b.getAttribute("data-adorno");
         var a = CATALOGO.filter(function (c) { return c.id === id; })[0];
