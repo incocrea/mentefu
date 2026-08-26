@@ -64,7 +64,8 @@ a.art-card:hover { transform: translateY(-4px); box-shadow: var(--shadow); }
 .art-card__status--active { color: var(--belt-green); }
 .art-card__name { font-family: var(--f-display); font-size: 1.5rem; font-weight: 800; letter-spacing: -0.01em; }
 .art-card__text { color: var(--c-text-on-dark-soft); font-size: 0.82rem; }
-.art-card__belt { margin-top: auto; font-size: 0.78rem; font-weight: 600; display: inline-flex; align-items: center; gap: 0.4rem; }
+/* el padding-right reserva la esquina de la flecha → en las tarjetas compactas */
+.art-card__belt { margin-top: auto; font-size: 0.78rem; font-weight: 600; display: inline-flex; align-items: center; gap: 0.4rem; padding-right: 2rem; }
 .art-card__belt:empty { display: none; }
 .art-card .card__more { color: var(--c-accent-soft); position: absolute; right: 0.9rem; bottom: 0.7rem; }
 .belt-pill { display: inline-flex; align-items: center; gap: 0.45rem; font-weight: 600; }
@@ -326,9 +327,10 @@ a.art-card:hover { transform: translateY(-4px); box-shadow: var(--shadow); }
 
 /* ---------- Correcciones de espaciado y anchos ---------- */
 /* aire bajo el subnav / cabecera en las páginas que no lo tenían */
-.layout-profile main > .container, .layout-mission main > .container { padding-block: clamp(2.5rem, 6vw, 4.5rem); }
-/* la portada del arte: las estadísticas van pegadas al subnav (titular 2026-08-26) */
-.layout-art main > .container { padding-block: clamp(1rem, 2.5vw, 1.6rem) clamp(2.5rem, 6vw, 4.5rem); }
+.layout-art main > .container, .layout-profile main > .container, .layout-mission main > .container { padding-block: clamp(2.5rem, 6vw, 4.5rem); }
+/* solo la portada con estadísticas (arte activa) las pega al subnav (titular
+   2026-08-26); las portadas «soon» empiezan con prosa y conservan su aire */
+.layout-art main > .container:has(.art-hero) { padding-top: clamp(1rem, 2.5vw, 1.6rem); }
 /* las tarjetas de arte no truncan el nombre y aprovechan el ancho */
 .art-card__name { font-size: clamp(1rem, 0.9rem + 0.5vw, 1.15rem); overflow-wrap: anywhere; }
 /* Con 12 artes, seis por línea en escritorio: tarjetas compactas (titular 2026-08-26) */
@@ -1012,6 +1014,7 @@ html:not([data-admin-on]) [data-admin-link] { display: none; }
    los márgenes y sangrías que la prosa pone a ol/h3/p */
 .audioteca--biblioteca { padding-block: 0.5rem 0; }
 .prose .audioteca__lista { padding-left: 0; margin: 0; }
+.prose .audioteca__lista > li { margin: 0; }   /* anula el li + li de la prosa: mismo aire que la sala */
 .prose .audioteca__titulo { margin: 0 0 0.15rem; font-size: 1.02rem; }
 .prose .audioteca__sumario { margin: 0 0 0.25rem; }
 .prose .audioteca__meta { margin: 0; }

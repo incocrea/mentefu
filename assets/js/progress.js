@@ -519,8 +519,10 @@
       });
     });
     /* tarjetas de pergaminos/herramientas; las filas de la biblioteca
-       ({SCROLL_LIST}) llevan además su sello «Completado» */
-    document.querySelectorAll(".card[data-item], .audioteca__item[data-item]").forEach(function (c) {
+       ({SCROLL_LIST}) llevan además su sello «Completado». Solo las de la
+       biblioteca: las de las salas de curso las gestiona audioteca.js con su
+       resumen y sus filtros, y pintarlas desde aquí las desincronizaba. */
+    document.querySelectorAll(".card[data-item], [data-biblioteca] .audioteca__item[data-item]").forEach(function (c) {
       var id = c.getAttribute("data-item"), done = false;
       for (var k in state.arts) { if (state.arts[k].scrolls[id] || state.arts[k].tools[id]) done = true; }
       c.classList.toggle("is-done", done);
