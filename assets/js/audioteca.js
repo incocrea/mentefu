@@ -101,7 +101,9 @@
         var abrirBtn = fila.querySelector(".audioteca__abrir");
         if (it.kind !== "tool" && window.MFPergamino) {
           abrirBtn.addEventListener("click", function (e) {
+            if (e.metaKey || e.ctrlKey || e.shiftKey || e.button) return;
             e.preventDefault();
+            e.stopPropagation();
             MFPergamino.abrir({
               id: it.id, art: art, xp: it.xp, kind: it.kind, titulo: it.title,
               hecho: function () { return hecho(it); },

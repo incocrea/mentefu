@@ -44,17 +44,22 @@
   }
 
   var abierto = null;
-  function cerrar() {
+  function cerrar(desdeHistorial) {
     if (!abierto) return;
+    var conHistorial = abierto.historial;
     abierto.caja.remove();
     document.removeEventListener("keydown", abierto.tecla);
     document.body.classList.remove("has-pergamino");
     if (abierto.volverA && abierto.volverA.focus) { try { abierto.volverA.focus(); } catch (e) { /* nada */ } }
     abierto = null;
+    /* el «atrás» del móvil cierra el pergamino, no la página */
+    if (conHistorial && !desdeHistorial) { try { history.back(); } catch (e) { /* nada */ } }
   }
+  window.addEventListener("popstate", function () { if (abierto) cerrar(true); });
 
   /* opts: { id, art, xp, kind, titulo, hecho: fn, alCompletar: fn, origen: elemento } */
   function abrir(opts) {
+    cerrar();                       /* nunca dos pergaminos abiertos a la vez */
     var caja = el('<div class="pergamino-modal" role="dialog" aria-modal="true" aria-label="' + (opts.titulo || "") + '">' +
       '<div class="pergamino-modal__hoja marco-pergamino">' +
         '<button class="pergamino-modal__cerrar" type="button" aria-label="' + T.close + '">&times;</button>' +
@@ -66,15 +71,21 @@
     document.addEventListener("keydown", tecla);
     document.body.appendChild(caja);
     document.body.classList.add("has-pergamino");
-    abierto = { caja: caja, tecla: tecla, volverA: opts.origen || null };
+    var conHistorial = false;
+    try { history.pushState({ mf: "pergamino" }, ""); conHistorial = true; } catch (e) { /* nada */ }
+    abierto = { caja: caja, tecla: tecla, volverA: opts.origen || null, historial: conHistorial };
     caja.querySelector(".pergamino-modal__cerrar").focus();
 
     var cuerpo = caja.querySelector(".pergamino-modal__cuerpo");
+    function sigueSiendoElMio() { return abierto && abierto.caja === caja; }
     return traer(opts.id).then(function (data) {
+      if (!sigueSiendoElMio()) return true;   /* lo cerraron mientras cargaba */
       var partes = paginar(data.html || "");
       var n = partes.length, i = 0;
       var xp = opts.xp || data.xp || 10;
       var yaHecho = typeof opts.hecho === "function" ? opts.hecho : function () { return false; };
+      /* se relee en cada pintado: el minipodcast puede terminar mientras lees y
+         el botón no debe seguir ofreciendo un XP ya concedido */
       var leido = yaHecho();
 
       cuerpo.innerHTML = "";
@@ -94,6 +105,7 @@
       var prev = vista.querySelector("[data-prev]"), next = vista.querySelector("[data-next]");
 
       function pintar() {
+        if (!leido && yaHecho()) leido = true;
         pagina.innerHTML = "";
         pagina.appendChild(partes[i].cloneNode(true));
         fill.style.width = Math.round(((i + 1) / n) * 100) + "%";
@@ -112,7 +124,12 @@
         pintar();
       }
       function terminar() {
-        if (leido || !window.MF) return;
+        if (!window.MF) return;
+        if (leido || yaHecho()) {          /* ya estaba: ni XP ni anuncio falso */
+          leido = true;
+          next.disabled = true; next.textContent = T.already;
+          return;
+        }
         MF.scrollRead(opts.art, opts.id, xp);
         leido = true;
         next.disabled = true; next.textContent = T.read.replace("{n}", xp);
@@ -137,15 +154,21 @@
         ir(dx < 0 ? 1 : -1);
       });
       vista.addEventListener("pointercancel", function () { sw = null; });
+      /* las flechas se quedan DENTRO del pergamino: si salían, la misión de
+         debajo avanzaba sola, cortaba el minipodcast y podía darse por
+         entregada sin que el alumno la viera (2026-08-26) */
       caja.addEventListener("keydown", function (e) {
-        if (e.key === "ArrowRight") ir(1);
-        else if (e.key === "ArrowLeft") ir(-1);
+        if (e.key !== "ArrowRight" && e.key !== "ArrowLeft") return;
+        e.preventDefault();
+        e.stopPropagation();
+        ir(e.key === "ArrowRight" ? 1 : -1);
       });
 
       pintar();
       if (window.MF) MF.track("scroll_open", { item: opts.id, art: opts.art, data: { modo: "modal" } });
       return true;
     }).catch(function () {
+      if (!sigueSiendoElMio()) return true;   /* ya no está: no navegues por él */
       cerrar();
       return false;      /* quien llame decide: normalmente, navegar a la página */
     });

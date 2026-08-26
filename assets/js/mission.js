@@ -144,7 +144,12 @@
            traer, el enlace navega como siempre. */
         if (c.item && c.itemKind !== "tool" && window.MFPergamino) {
           link.addEventListener("click", function (e) {
+            /* con Ctrl/Cmd/Mayús el enlace sigue siendo un enlace: abrir en otra
+               pestaña debe funcionar */
+            if (e.metaKey || e.ctrlKey || e.shiftKey || e.button) return;
             e.preventDefault();
+            /* y no se guarda ancla de vuelta: ya no se sale de la misión */
+            e.stopPropagation();
             MFPergamino.abrir({
               id: c.item, art: artKey, xp: xpItem, kind: c.itemKind, titulo: c.title,
               hecho: itemHecho, alCompletar: sellar, origen: link,
