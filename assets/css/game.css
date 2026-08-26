@@ -99,6 +99,18 @@ a.art-card:hover { transform: translateY(-4px); box-shadow: var(--shadow); }
   transition: background 0.2s, color 0.2s, border-color 0.2s; }
 .pmap-info:hover { background: var(--c-accent-btn); border-color: var(--c-accent-btn); color: var(--c-accent-ink); }
 .pmap-info svg { display: block; }
+/* Mosaico de accesorios del arte (decora la ayuda del mapa): una sola línea,
+   gris hasta ganar el cinturón. Los selectores llevan dos clases para ganarle
+   a los estilos de lista de la prosa y del modal. */
+.adornos { display: flex; flex-wrap: nowrap; justify-content: center; align-items: center;
+  gap: clamp(0.15rem, 1.4vw, 0.55rem); list-style: none; margin: 0 0 1.35rem; padding: 0; }
+.prose .adornos, .modal__body .adornos { padding-left: 0; margin: 0 0 1.35rem; list-style: none; }
+.adornos .adornos__item { flex: 0 1 auto; min-width: 0; margin: 0; padding: 0; }
+.adornos .adornos__img { display: block; width: clamp(1.75rem, 8.5vw, 3rem); height: auto; aspect-ratio: 1;
+  object-fit: contain; filter: grayscale(1) brightness(0.85) opacity(0.7); transition: filter 0.35s ease; }
+.adornos .adornos__item.is-done .adornos__img { filter: none; }
+.adornos .adornos__item.is-current .adornos__img {
+  filter: grayscale(0.35) drop-shadow(0 0 3px rgba(255, 210, 87, 0.85)) drop-shadow(0 0 8px rgba(255, 193, 64, 0.45)); }
 .pmap { width: 100%; min-width: 58rem; height: auto; display: block; }
 /* el rastro son puntos sobre el camino, no una línea encima: cada uno se pinta
    de color cuando el avance lo alcanza */
@@ -998,7 +1010,8 @@ html:not([data-admin-on]) [data-admin-link] { display: none; }
 .audioteca__filtro.is-on { background: var(--c-accent-btn); border-color: var(--c-accent-btn); color: var(--c-accent-ink); }
 .audioteca__lista { list-style: none; margin: 0; padding: 0; display: grid; gap: 0.75rem; }
 .audioteca__nivel { display: flex; align-items: center; gap: 0.55rem; flex-wrap: wrap; margin: 1.5rem 0 0.35rem; }
-.audioteca__cinturon { width: 2.1rem; height: 2.1rem; object-fit: contain; flex: 0 0 auto; }
+/* el cinturón del separador de nivel, al doble (titular 2026-08-26) */
+.audioteca__cinturon { width: 4.2rem; height: 4.2rem; object-fit: contain; flex: 0 0 auto; }
 .audioteca__nivel-n { font-family: var(--f-display); font-weight: 800; }
 .audioteca__nivel:first-child { margin-top: 0; }
 .audioteca__nivel-titulo { font-family: var(--f-display); font-weight: 700; color: var(--c-text-soft); font-size: 0.9rem; }
