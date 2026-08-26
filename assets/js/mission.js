@@ -11,7 +11,7 @@
     next: "Siguiente", prev: "Anterior", finish: "Terminar", card: "Tarjeta {i} de {n}", quiz: "Pregunta", choice: "Explora", reflect: "Reflexiona", practice: "Microreto", scroll: "Pergamino", text: "",
     correct: "¡Correcto!", wrong: "No exactamente", bonus: "+{n} XP por acertar a la primera", retry: "Prueba otra vez",
     done: "Hecho", later: "Lo haré luego", doneMsg: "+{n} XP por el microreto", open: "Abrir pergamino", scrollMeta: "Lectura de apoyo · +{n} XP al terminarlo",
-    listen: "Escucharlo en audio", listenMeta: "Minipodcast · +{n} XP al escucharlo completo", stop: "Detener", listened: "Pergamino escuchado", itemDone: "Completado",
+    listen: "Escucharlo en audio", listenMeta: "Minipodcast · +{n} XP al escucharlo completo", stop: "Detener", listened: "Pergamino escuchado", itemDone: "Completado", speed: "Velocidad de reproducción",
     missionDone: "Misión completada", examDone: "Examen terminado", earned: "XP ganados", alreadyDone: "Ya habías completado esta misión: repasar no suma XP, pero siempre suma.",
     passed: "Aprobado: {p} %", failed: "No alcanzaste el 75 % ({p} %). Repasa las misiones y vuelve a intentarlo: no hay penalización.", beltNew: "Nuevo cinturón", retake: "Repetir examen",
     nextMission: "Siguiente: {t}", nextLevelBtn: "Empezar el {t}", backLevel: "Volver al nivel", toProfile: "Ver mi perfil", unlocked: "Logros desbloqueados",
@@ -20,7 +20,7 @@
     next: "Next", prev: "Previous", finish: "Finish", card: "Card {i} of {n}", quiz: "Question", choice: "Explore", reflect: "Reflect", practice: "Micro-challenge", scroll: "Scroll", text: "",
     correct: "Correct!", wrong: "Not quite", bonus: "+{n} XP for a first-try hit", retry: "Try again",
     done: "Done", later: "I’ll do it later", doneMsg: "+{n} XP for the micro-challenge", open: "Open scroll", scrollMeta: "Supporting read · +{n} XP when finished",
-    listen: "Listen to it", listenMeta: "Mini-podcast · +{n} XP when you listen to the end", stop: "Stop", listened: "Scroll listened", itemDone: "Completed",
+    listen: "Listen to it", listenMeta: "Mini-podcast · +{n} XP when you listen to the end", stop: "Stop", listened: "Scroll listened", itemDone: "Completed", speed: "Playback speed",
     missionDone: "Mission completed", examDone: "Exam finished", earned: "XP earned", alreadyDone: "You had already completed this mission: reviewing does not add XP, but it always adds.",
     passed: "Passed: {p} %", failed: "You did not reach 75 % ({p} %). Review the missions and try again: there is no penalty.", beltNew: "New belt", retake: "Retake exam",
     nextMission: "Next: {t}", nextLevelBtn: "Start {t}", backLevel: "Back to level", toProfile: "See my profile", unlocked: "Achievements unlocked",
@@ -29,6 +29,24 @@
   var LETTERS = "ABCDEF";
 
   function el(html) { var d = document.createElement("div"); d.innerHTML = html.trim(); return d.firstChild; }
+
+  /* ---- audio: velocidad elegida y punto donde se quedó cada pergamino ----
+     Ambas cosas viven en sessionStorage: acompañan al alumno mientras dura la
+     visita (y sobreviven a ir al pergamino y volver) sin ensuciar su progreso. */
+  var VELOCIDADES = [1, 1.25, 1.5];
+  function velGuardada() {
+    try { return parseFloat(sessionStorage.getItem("mf.audioVel")) || 1; } catch (e) { return 1; }
+  }
+  function guardarVel(v) { try { sessionStorage.setItem("mf.audioVel", String(v)); } catch (e) { /* nada */ } }
+  function posGuardada(id) {
+    try { return parseFloat(sessionStorage.getItem("mf.audioPos." + id)) || 0; } catch (e) { return 0; }
+  }
+  function guardarPos(id, t) {
+    try {
+      if (t > 1) sessionStorage.setItem("mf.audioPos." + id, String(Math.floor(t)));
+      else sessionStorage.removeItem("mf.audioPos." + id);
+    } catch (e) { /* nada */ }
+  }
 
   function start(host, data) {
     var body = host.querySelector("[data-gated-body]");
@@ -166,12 +184,32 @@
             '</button>' +
             '<span class="scroll-audio__text"><span class="scroll-audio__label">' + T.listen + '</span>' +
             '<span class="scroll-audio__meta">' + T.listenMeta.replace("{n}", xpItem) + "</span></span>" +
-            '<span class="scroll-audio__time" hidden></span>' +
+            '<span class="scroll-audio__der">' +
+              '<button class="scroll-audio__vel" type="button" aria-label="' + T.speed + '"></button>' +
+              '<span class="scroll-audio__time" hidden></span></span>' +
             '<div class="scroll-audio__bar" aria-hidden="true"><div class="scroll-audio__fill"></div></div></div>');
           var btn = player.querySelector(".scroll-audio__btn");
           var fillA = player.querySelector(".scroll-audio__fill");
           var time = player.querySelector(".scroll-audio__time");
-          var au = null;
+          var btnVel = player.querySelector(".scroll-audio__vel");
+          var au = null, reanudar = null;
+          /* Velocidad: 1× → 1,25× → 1,5× y vuelta a empezar. La elección se
+             recuerda durante la sesión: quien escucha rápido lo hace siempre. */
+          var iVel = Math.max(0, VELOCIDADES.indexOf(velGuardada()));
+          function pintarVel() {
+            var v = VELOCIDADES[iVel];
+            btnVel.textContent = (v === 1 ? "1" : String(v).replace(".", ",")) + "×";
+            btnVel.classList.toggle("is-rapido", v !== 1);
+          }
+          pintarVel();
+          btnVel.addEventListener("click", function (e) {
+            e.stopPropagation();
+            iVel = (iVel + 1) % VELOCIDADES.length;
+            pintarVel();
+            guardarVel(VELOCIDADES[iVel]);
+            if (au) au.playbackRate = VELOCIDADES[iVel];
+            if (window.MF) MF.track("audio_speed", { item: data.id, data: { card: i, speed: VELOCIDADES[iVel] } });
+          });
           var mmss = function (s) { s = Math.max(0, Math.round(s || 0)); return Math.floor(s / 60) + ":" + ("0" + (s % 60)).slice(-2); };
           var icono = function (playing) {
             player.classList.toggle("is-playing", playing);
@@ -182,7 +220,19 @@
             if (!au) {
               au = new Audio(c.audio);
               au.preload = "metadata";
-              au.addEventListener("loadedmetadata", function () { time.hidden = false; time.textContent = mmss(au.currentTime) + " / " + mmss(au.duration); });
+              au.playbackRate = VELOCIDADES[iVel];
+              /* Se reanuda donde quedó: cambiar de tarjeta ya no obliga a
+                 escuchar el pergamino entero otra vez. Se intenta con el evento
+                 Y al pulsar play, porque con el MP3 ya en caché los metadatos
+                 pueden estar listos antes de registrar el escuchador. */
+              reanudar = function () {
+                if (!au.duration) return;
+                var pos = posGuardada(c.item);
+                if (pos > 1 && pos < au.duration - 1 && Math.abs(au.currentTime - pos) > 1) au.currentTime = pos;
+                time.hidden = false; time.textContent = mmss(au.currentTime) + " / " + mmss(au.duration);
+              };
+              au.addEventListener("loadedmetadata", reanudar);
+              au.addEventListener("pause", function () { guardarPos(c.item, au.currentTime); });
               au.addEventListener("timeupdate", function () {
                 if (au.duration) fillA.style.width = Math.round((au.currentTime / au.duration) * 100) + "%";
                 time.textContent = mmss(au.currentTime) + " / " + mmss(au.duration);
@@ -191,6 +241,7 @@
                 icono(false);
                 if (sonando && sonando.au === au) sonando = null;
                 fillA.style.width = "100%";
+                guardarPos(c.item, 0);
                 if (window.MF) {
                   if (c.item && !itemHecho()) {
                     /* cada destino a su colección: si no, escuchar una herramienta
@@ -212,6 +263,7 @@
             }
             pararAudio();                       /* nunca dos audios a la vez */
             sonando = { au: au, apagar: function () { icono(false); } };
+            if (au.readyState >= 1 && reanudar) reanudar();
             au.play();
             icono(true);
             if (window.MF) MF.track("audio_play", { item: data.id, data: { card: i, scroll: c.item } });
@@ -296,6 +348,9 @@
     var sw = null;
     stage.addEventListener("pointerdown", function (e) {
       if (e.pointerType === "mouse") return;
+      /* Sobre el reproductor NO hay swipe: al tocar sus controles se cambiaba
+         de tarjeta sin querer y el audio volvía a empezar (2026-08-26). */
+      if (e.target.closest && e.target.closest(".scroll-audio")) { sw = null; return; }
       sw = { x: e.clientX, y: e.clientY };
     });
     stage.addEventListener("pointerup", function (e) {
