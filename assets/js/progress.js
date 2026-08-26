@@ -491,7 +491,7 @@
        que usara el navegador— a alguien que no se había registrado. Se limpia
        lo que hubiera quedado pintado y se sale. */
     if (!dentro) {
-      document.querySelectorAll(".belt, .pmap__node, .mission-card, .card[data-item], .adornos__item").forEach(function (el) {
+      document.querySelectorAll(".belt, .pmap__node, .mission-card, .card[data-item]").forEach(function (el) {
         el.classList.remove("is-done", "is-current", "is-locked", "is-next");
       });
       document.querySelectorAll(".pmap__punto").forEach(function (c) { c.classList.remove("is-done"); });
@@ -541,18 +541,6 @@
         c.classList.toggle("is-done", parseFloat(c.getAttribute("data-t")) <= avance);
       });
       encuadrarYArrastrar(svg, Math.min(cur, 8));
-    });
-    /* mosaico de accesorios del arte (ayuda del mapa): mismo criterio que las
-       estaciones —gris hasta ganar el cinturón, a color al conseguirlo */
-    document.querySelectorAll("[data-adornos]").forEach(function (fila) {
-      var a = art(fila.getAttribute("data-adornos"));
-      var hechos = 0;
-      for (var i = 1; i <= 8; i++) { if (a.belts[i]) hechos = i; else break; }
-      fila.querySelectorAll(".adornos__item").forEach(function (li) {
-        var n = parseInt(li.getAttribute("data-belt"), 10);
-        li.classList.toggle("is-done", n <= hechos);
-        li.classList.toggle("is-current", n === hechos + 1);
-      });
     });
     /* misiones del nivel */
     document.querySelectorAll("[data-missions]").forEach(function (list) {

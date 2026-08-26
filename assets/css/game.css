@@ -100,17 +100,20 @@ a.art-card:hover { transform: translateY(-4px); box-shadow: var(--shadow); }
 .pmap-info:hover { background: var(--c-accent-btn); border-color: var(--c-accent-btn); color: var(--c-accent-ink); }
 .pmap-info svg { display: block; }
 /* Mosaico de accesorios del arte (decora la ayuda del mapa): una sola línea,
-   gris hasta ganar el cinturón. Los selectores llevan dos clases para ganarle
-   a los estilos de lista de la prosa y del modal. */
+   TODOS a color y con el resplandor dorado del mapa encendido, escalonado para
+   que recorra la fila como una ola (titular 2026-08-26). Los selectores llevan
+   dos clases para ganarle a los estilos de lista de la prosa y del modal. */
 .adornos { display: flex; flex-wrap: nowrap; justify-content: center; align-items: center;
   gap: clamp(0.15rem, 1.4vw, 0.55rem); list-style: none; margin: 0 0 1.35rem; padding: 0; }
 .prose .adornos, .modal__body .adornos { padding-left: 0; margin: 0 0 1.35rem; list-style: none; }
 .adornos .adornos__item { flex: 0 1 auto; min-width: 0; margin: 0; padding: 0; }
 .adornos .adornos__img { display: block; width: clamp(1.75rem, 8.5vw, 3rem); height: auto; aspect-ratio: 1;
-  object-fit: contain; filter: grayscale(1) brightness(0.85) opacity(0.7); transition: filter 0.35s ease; }
-.adornos .adornos__item.is-done .adornos__img { filter: none; }
-.adornos .adornos__item.is-current .adornos__img {
-  filter: grayscale(0.35) drop-shadow(0 0 3px rgba(255, 210, 87, 0.85)) drop-shadow(0 0 8px rgba(255, 193, 64, 0.45)); }
+  object-fit: contain; --pmap-pre: brightness(1);
+  filter: var(--pmap-pre) drop-shadow(0 0 3px #ffd257) drop-shadow(0 0 9px rgba(255, 193, 64, 0.7));
+  animation: pmap-brillo 2.2s ease-in-out infinite; animation-delay: calc(var(--i, 0) * 0.14s); }
+@media (prefers-reduced-motion: reduce) {
+  .adornos .adornos__img { animation: none; }
+}
 .pmap { width: 100%; min-width: 58rem; height: auto; display: block; }
 /* el rastro son puntos sobre el camino, no una línea encima: cada uno se pinta
    de color cuando el avance lo alcanza */
