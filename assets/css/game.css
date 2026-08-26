@@ -92,11 +92,28 @@ a.art-card:hover { transform: translateY(-4px); box-shadow: var(--shadow); }
 .pmap__path { fill: none; stroke: rgba(18, 19, 26, 0.4); stroke-width: 7; stroke-linecap: round; }
 .pmap__path--done { stroke: var(--c-accent); stroke-width: 5; stroke-dasharray: 100; stroke-dashoffset: calc(100 - var(--done, 0)); transition: stroke-dashoffset 0.8s ease; }
 .pmap__node { cursor: pointer; }
-.pmap__halo { fill: var(--c-accent); opacity: 0; }
-/* estación con accesorio: gris hasta completar el nivel */
-.pmap__adorno { filter: grayscale(1) brightness(0.8) drop-shadow(0 3px 5px rgba(0, 0, 0, 0.55)); transition: filter 0.4s ease; }
+/* Estación con accesorio: gris hasta completar el nivel. El foco del nivel
+   actual es un RESPLANDOR DORADO que sigue el contorno del accesorio
+   (drop-shadow respeta el alfa); en hover, cualquier estación lo enseña. */
+.pmap__adorno { --pmap-pre: grayscale(1) brightness(0.8);
+  filter: var(--pmap-pre) drop-shadow(0 3px 5px rgba(0, 0, 0, 0.55)); transition: filter 0.4s ease; }
 .pmap__node.is-done .pmap__adorno,
-.pmap__node.is-current .pmap__adorno { filter: drop-shadow(0 3px 5px rgba(0, 0, 0, 0.55)); }
+.pmap__node.is-current .pmap__adorno { --pmap-pre: brightness(1); }
+.pmap__node.is-current .pmap__adorno { animation: pmap-brillo 2.2s ease-in-out infinite; }
+.pmap__node:hover .pmap__adorno,
+.pmap a:focus-visible .pmap__adorno {
+  filter: var(--pmap-pre) drop-shadow(0 0 3px #ffd257) drop-shadow(0 0 9px rgba(255, 193, 64, 0.8)); }
+@keyframes pmap-brillo {
+  0%, 100% { filter: var(--pmap-pre) drop-shadow(0 0 2px #ffd257) drop-shadow(0 0 7px rgba(255, 193, 64, 0.55)); }
+  50%      { filter: var(--pmap-pre) drop-shadow(0 0 4px #ffe08a) drop-shadow(0 0 14px rgba(255, 193, 64, 0.95)); }
+}
+@media (prefers-reduced-motion: reduce) {
+  .pmap__node.is-current .pmap__adorno { animation: none;
+    filter: var(--pmap-pre) drop-shadow(0 0 3px #ffd257) drop-shadow(0 0 9px rgba(255, 193, 64, 0.8)); }
+}
+/* el disco numerado (artes sin set) recibe el mismo trato */
+.pmap__node.is-current .pmap__disc { animation: pmap-brillo 2.2s ease-in-out infinite; }
+.pmap__node:hover .pmap__disc { filter: drop-shadow(0 0 3px #ffd257) drop-shadow(0 0 9px rgba(255, 193, 64, 0.8)); }
 .pmap__check-badge { display: none; }
 .pmap__check-badge circle { fill: var(--belt-green); stroke: #fffdf9; stroke-width: 2; }
 .pmap__check-badge text { font-family: var(--f-display); font-weight: 800; font-size: 12px; fill: #fffdf9; }
@@ -113,7 +130,6 @@ a.art-card:hover { transform: translateY(-4px); box-shadow: var(--shadow); }
 .pmap__node.is-done .pmap__num { display: none; }
 .pmap__node.is-done .pmap__check { display: block; }
 .pmap__node.is-done .pmap__label { fill: #fffdf9; }
-.pmap__node.is-current .pmap__halo { opacity: 0.35; animation: pulse 1.8s ease-in-out infinite; transform-origin: center; }
 .pmap__node.is-current .pmap__disc { stroke: var(--c-accent); }
 .pmap__node.is-current .pmap__label { fill: var(--c-accent-soft); }
 .pmap__node.is-locked { opacity: 0.55; }
@@ -677,7 +693,6 @@ html[data-session="out"] a[data-href].card--section:hover { transform: none; bor
 
 /* el mapa del camino sin sesión: sin manita ni halo de "esto se pulsa" */
 html[data-session="out"] .pmap a[data-href] { pointer-events: none; }
-html[data-session="out"] .pmap__halo { opacity: 0; }
 
 /* candado discreto en las tarjetas del catálogo para quien no ha entrado */
 html[data-session="out"] .card--gated::after,
