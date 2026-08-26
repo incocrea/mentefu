@@ -925,3 +925,35 @@ html:not([data-admin-on]) [data-admin-link] { display: none; }
   .admin-table td.admin-table__actions { display: flex; padding-top: 0.6rem; gap: 0.45rem; }
   .admin-table td:nth-child(5), .admin-table td:nth-child(6) { white-space: normal; }
 }
+
+/* ------------------------------------------------------------------ */
+/* Sala de pergaminos del curso: la lista tipo podcast (audioteca.js)  */
+/* ------------------------------------------------------------------ */
+.audioteca__top { display: flex; flex-wrap: wrap; gap: 0.75rem 1.25rem; align-items: center; justify-content: space-between; margin-bottom: 1.25rem; }
+.audioteca__resumen { margin: 0; color: var(--c-text-soft); font-size: 0.9rem; }
+.audioteca__filtros { display: flex; gap: 0.4rem; flex-wrap: wrap; }
+.audioteca__filtro { font-family: var(--f-display); font-weight: 700; font-size: 0.78rem; padding: 0.3rem 0.8rem;
+  border-radius: 999px; border: 1px solid var(--c-line-light); background: var(--c-paper); color: var(--c-text-soft); cursor: pointer; }
+.audioteca__filtro:hover { border-color: var(--c-accent-text); color: var(--c-accent-text); }
+.audioteca__filtro.is-on { background: var(--c-accent-btn); border-color: var(--c-accent-btn); color: var(--c-accent-ink); }
+.audioteca__lista { list-style: none; margin: 0; padding: 0; display: grid; gap: 0.75rem; }
+.audioteca__nivel { display: flex; align-items: baseline; gap: 0.6rem; flex-wrap: wrap; margin: 1.25rem 0 0.25rem; }
+.audioteca__nivel:first-child { margin-top: 0; }
+.audioteca__nivel-titulo { font-family: var(--f-display); font-weight: 700; color: var(--c-text-soft); font-size: 0.9rem; }
+.audioteca__item { border: 1px solid var(--c-line-light); border-radius: var(--radius-lg); background: var(--c-white); padding: 0.9rem 1rem; }
+.audioteca__item.is-done { border-color: var(--belt-green); }
+.audioteca__ficha { display: grid; grid-template-columns: auto 1fr auto; gap: 0.35rem 0.9rem; align-items: start; }
+.audioteca__n { font-family: var(--f-display); font-weight: 800; font-size: 1.1rem; color: var(--c-line-light); line-height: 1.2; }
+.audioteca__item.is-done .audioteca__n { color: var(--belt-green); }
+.audioteca__texto { min-width: 0; }
+.audioteca__titulo { font-family: var(--f-display); font-size: 1.02rem; font-weight: 700; margin: 0 0 0.15rem; }
+.audioteca__sumario { margin: 0 0 0.25rem; color: var(--c-text-soft); font-size: 0.92rem; }
+.audioteca__meta { margin: 0; font-size: 0.78rem; color: var(--c-text-soft); }
+.audioteca__acciones { display: flex; flex-direction: column; align-items: flex-end; gap: 0.35rem; }
+.audioteca__sello { font-family: var(--f-display); font-weight: 700; font-size: 0.7rem; letter-spacing: 0.05em; text-transform: uppercase;
+  color: var(--c-accent-ink); background: var(--c-accent-btn); border-radius: 999px; padding: 0.15rem 0.55rem; white-space: nowrap; }
+.audioteca__item .scroll-audio { margin-top: 0.7rem; }
+@media (max-width: 40rem) {
+  .audioteca__ficha { grid-template-columns: auto 1fr; }
+  .audioteca__acciones { grid-column: 1 / -1; flex-direction: row; align-items: center; justify-content: space-between; }
+}

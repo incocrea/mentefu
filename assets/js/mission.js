@@ -30,23 +30,6 @@
 
   function el(html) { var d = document.createElement("div"); d.innerHTML = html.trim(); return d.firstChild; }
 
-  /* ---- audio: velocidad elegida y punto donde se quedó cada pergamino ----
-     Ambas cosas viven en sessionStorage: acompañan al alumno mientras dura la
-     visita (y sobreviven a ir al pergamino y volver) sin ensuciar su progreso. */
-  var VELOCIDADES = [1, 1.25, 1.5];
-  function velGuardada() {
-    try { return parseFloat(sessionStorage.getItem("mf.audioVel")) || 1; } catch (e) { return 1; }
-  }
-  function guardarVel(v) { try { sessionStorage.setItem("mf.audioVel", String(v)); } catch (e) { /* nada */ } }
-  function posGuardada(id) {
-    try { return parseFloat(sessionStorage.getItem("mf.audioPos." + id)) || 0; } catch (e) { return 0; }
-  }
-  function guardarPos(id, t) {
-    try {
-      if (t > 1) sessionStorage.setItem("mf.audioPos." + id, String(Math.floor(t)));
-      else sessionStorage.removeItem("mf.audioPos." + id);
-    } catch (e) { /* nada */ }
-  }
 
   function start(host, data) {
     var body = host.querySelector("[data-gated-body]");
@@ -67,16 +50,9 @@
     /* hasta dónde ha llegado ya: al volver atrás, las tarjetas superadas no
        vuelven a exigir su respuesta */
     var reached = 0;
-    /* audio en reproducción (tarjetas scroll): uno solo, y se detiene al
-       cambiar de tarjeta, terminar la misión o abandonar la página */
-    var sonando = null;
-    function pararAudio() {
-      if (!sonando) return;
-      sonando.au.pause();
-      if (sonando.apagar) sonando.apagar();
-      sonando = null;
-    }
-    window.addEventListener("pagehide", pararAudio);
+    /* el audio se detiene al cambiar de tarjeta o terminar la misión
+       (audio.js gestiona que solo suene uno y que calle al salir) */
+    function pararAudio() { if (window.MFAudio) MFAudio.parar(); }
 
     function setNext(enabled) { nextBtn.disabled = !enabled && i >= reached; }
     function progress() {
@@ -174,101 +150,13 @@
           link.querySelector(".scroll-link__seal").hidden = false;
         };
         sellar();
-        if (c.audio) {
-          /* Minipodcast desde la propia tarjeta: play/stop sin barra de salto,
-             así «completado» solo puede significar «escuchado entero». */
-          var player = el('<div class="scroll-audio">' +
-            '<button class="scroll-audio__btn" type="button" aria-label="' + T.listen + '">' +
-              '<svg class="scroll-audio__play" viewBox="0 0 24 24" aria-hidden="true"><path d="M8.5 6.2c0-1 1.1-1.6 2-1.1l8.2 5.3c.8.5.8 1.7 0 2.2L10.5 18c-.9.6-2 0-2-1.1z"/></svg>' +
-              '<svg class="scroll-audio__stop" viewBox="0 0 24 24" aria-hidden="true"><rect x="7" y="7" width="10" height="10" rx="2"/></svg>' +
-            '</button>' +
-            '<span class="scroll-audio__text"><span class="scroll-audio__label">' + T.listen + '</span>' +
-            '<span class="scroll-audio__meta">' + T.listenMeta.replace("{n}", xpItem) + "</span></span>" +
-            '<span class="scroll-audio__der">' +
-              '<button class="scroll-audio__vel" type="button" aria-label="' + T.speed + '"></button>' +
-              '<span class="scroll-audio__time" hidden></span></span>' +
-            '<div class="scroll-audio__bar" aria-hidden="true"><div class="scroll-audio__fill"></div></div></div>');
-          var btn = player.querySelector(".scroll-audio__btn");
-          var fillA = player.querySelector(".scroll-audio__fill");
-          var time = player.querySelector(".scroll-audio__time");
-          var btnVel = player.querySelector(".scroll-audio__vel");
-          var au = null, reanudar = null;
-          /* Velocidad: 1× → 1,25× → 1,5× y vuelta a empezar. La elección se
-             recuerda durante la sesión: quien escucha rápido lo hace siempre. */
-          var iVel = Math.max(0, VELOCIDADES.indexOf(velGuardada()));
-          function pintarVel() {
-            var v = VELOCIDADES[iVel];
-            btnVel.textContent = (v === 1 ? "1" : String(v).replace(".", ",")) + "×";
-            btnVel.classList.toggle("is-rapido", v !== 1);
-          }
-          pintarVel();
-          btnVel.addEventListener("click", function (e) {
-            e.stopPropagation();
-            iVel = (iVel + 1) % VELOCIDADES.length;
-            pintarVel();
-            guardarVel(VELOCIDADES[iVel]);
-            if (au) au.playbackRate = VELOCIDADES[iVel];
-            if (window.MF) MF.track("audio_speed", { item: data.id, data: { card: i, speed: VELOCIDADES[iVel] } });
-          });
-          var mmss = function (s) { s = Math.max(0, Math.round(s || 0)); return Math.floor(s / 60) + ":" + ("0" + (s % 60)).slice(-2); };
-          var icono = function (playing) {
-            player.classList.toggle("is-playing", playing);
-            btn.setAttribute("aria-label", playing ? T.stop : T.listen);
-          };
-          btn.addEventListener("click", function () {
-            if (au && !au.paused) { au.pause(); icono(false); if (sonando && sonando.au === au) sonando = null; return; }
-            if (!au) {
-              au = new Audio(c.audio);
-              au.preload = "metadata";
-              au.playbackRate = VELOCIDADES[iVel];
-              /* Se reanuda donde quedó: cambiar de tarjeta ya no obliga a
-                 escuchar el pergamino entero otra vez. Se intenta con el evento
-                 Y al pulsar play, porque con el MP3 ya en caché los metadatos
-                 pueden estar listos antes de registrar el escuchador. */
-              reanudar = function () {
-                if (!au.duration) return;
-                var pos = posGuardada(c.item);
-                if (pos > 1 && pos < au.duration - 1 && Math.abs(au.currentTime - pos) > 1) au.currentTime = pos;
-                time.hidden = false; time.textContent = mmss(au.currentTime) + " / " + mmss(au.duration);
-              };
-              au.addEventListener("loadedmetadata", reanudar);
-              au.addEventListener("pause", function () { guardarPos(c.item, au.currentTime); });
-              au.addEventListener("timeupdate", function () {
-                if (au.duration) fillA.style.width = Math.round((au.currentTime / au.duration) * 100) + "%";
-                time.textContent = mmss(au.currentTime) + " / " + mmss(au.duration);
-              });
-              au.addEventListener("ended", function () {
-                icono(false);
-                if (sonando && sonando.au === au) sonando = null;
-                fillA.style.width = "100%";
-                guardarPos(c.item, 0);
-                if (window.MF) {
-                  if (c.item && !itemHecho()) {
-                    /* cada destino a su colección: si no, escuchar una herramienta
-                       la apuntaría en scrolls y usarla después pagaría XP doble */
-                    if (c.itemKind === "tool") MF.toolUsed(artKey, c.item, xpItem, T.listened);
-                    else MF.scrollRead(artKey, c.item, xpItem, T.listened);
-                  }
-                  MF.track("audio_done", { item: data.id, data: { card: i, scroll: c.item } });
-                }
-                sellar();
-              });
-              au.addEventListener("error", function () {
-                icono(false);
-                /* un error tardío de un audio ya abandonado no debe soltar el
-                   que sí está sonando */
-                if (sonando && sonando.au === au) sonando = null;
-                player.classList.add("is-broken"); btn.disabled = true;
-              });
-            }
-            pararAudio();                       /* nunca dos audios a la vez */
-            sonando = { au: au, apagar: function () { icono(false); } };
-            if (au.readyState >= 1 && reanudar) reanudar();
-            au.play();
-            icono(true);
-            if (window.MF) MF.track("audio_play", { item: data.id, data: { card: i, scroll: c.item } });
-          });
-          card.appendChild(player);
+        if (c.audio && window.MFAudio) {
+          /* el reproductor es pieza compartida (audio.js): la misma que usa la
+             sala de pergaminos del curso */
+          card.appendChild(MFAudio.montar({
+            src: c.audio, item: c.item, art: artKey, xp: xpItem, kind: c.itemKind,
+            hecho: itemHecho, alTerminar: sellar,
+          }));
         }
       }
       stage.appendChild(card);
