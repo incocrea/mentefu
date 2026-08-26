@@ -90,6 +90,15 @@ a.art-card:hover { transform: translateY(-4px); box-shadow: var(--shadow); }
   scrollbar-width: none; -ms-overflow-style: none; cursor: grab; }
 .pmap-wrap--viaje::-webkit-scrollbar { display: none; }
 .pmap-wrap--viaje.is-arrastrando { cursor: grabbing; }
+/* el botón de ayuda va sobre el mapa pero FUERA del visor: no se mueve cuando
+   el mapa se arrastra o hace scroll (titular 2026-08-26) */
+.pmap-caja { position: relative; }
+.pmap-info { position: absolute; top: 0.7rem; left: 0.7rem; z-index: 2; display: grid; place-items: center;
+  width: 2.3rem; height: 2.3rem; padding: 0; border-radius: 999px; cursor: pointer;
+  border: 1px solid rgba(247, 243, 236, 0.45); background: rgba(18, 19, 26, 0.55); color: #f7f3ec;
+  transition: background 0.2s, color 0.2s, border-color 0.2s; }
+.pmap-info:hover { background: var(--c-accent-btn); border-color: var(--c-accent-btn); color: var(--c-accent-ink); }
+.pmap-info svg { display: block; }
 .pmap { width: 100%; min-width: 58rem; height: auto; display: block; }
 /* el rastro son puntos sobre el camino, no una línea encima: cada uno se pinta
    de color cuando el avance lo alcanza */

@@ -275,6 +275,48 @@
     visor.addEventListener("click", function (e) { if (drag && drag.movido) { e.preventDefault(); e.stopPropagation(); } }, true);
   }
 
+  /* Ayuda del mapa: el botón «i» clavado en la esquina abre en un modal el
+     bloque [data-pmap-ayuda] de la página (cómo se entrena este arte). Sin ese
+     bloque el botón no aparece. El título sale del aria-label del botón: una
+     sola fuente para el idioma. */
+  function ayudaDelMapa() {
+    var btn = document.querySelector("[data-pmap-info]");
+    var texto = document.querySelector("[data-pmap-ayuda]");
+    if (!btn || !texto) return;
+    btn.hidden = false;
+    var titulo = btn.getAttribute("aria-label") || "";
+    btn.addEventListener("click", function () {
+      var previo = document.activeElement;
+      var caja = document.createElement("div");
+      caja.className = "modal";
+      caja.setAttribute("role", "dialog");
+      caja.setAttribute("aria-modal", "true");
+      caja.setAttribute("aria-label", titulo);
+      caja.innerHTML = '<div class="modal__panel">' +
+        '<header class="modal__head"><h2 class="modal__title"></h2>' +
+        '<button class="modal__close" type="button">&times;</button></header>' +
+        '<div class="modal__body"></div></div>';
+      caja.querySelector(".modal__title").textContent = titulo;
+      caja.querySelector(".modal__close").setAttribute("aria-label", ES ? "Cerrar" : "Close");
+      caja.querySelector(".modal__body").innerHTML = texto.innerHTML;
+      function cerrar() {
+        caja.remove();
+        document.documentElement.style.overflow = "";
+        document.removeEventListener("keydown", tecla);
+        if (previo && previo.focus) { try { previo.focus(); } catch (e) { /* nada */ } }
+      }
+      function tecla(e) { if (e.key === "Escape") cerrar(); }
+      caja.addEventListener("click", function (e) { if (e.target === caja) cerrar(); });
+      caja.querySelector(".modal__close").addEventListener("click", cerrar);
+      document.addEventListener("keydown", tecla);
+      document.body.appendChild(caja);
+      document.documentElement.style.overflow = "hidden";
+      caja.querySelector(".modal__close").focus();
+      var mapa = document.querySelector("[data-pmap]");
+      track("map_help", { art: mapa ? mapa.getAttribute("data-pmap") : null });
+    });
+  }
+
   /* ---------- Fusión local ↔ remoto ---------- */
   function merge(remote) {
     if (!remote || remote.v !== 1) return state;
@@ -635,6 +677,7 @@
     });
     document.body.appendChild(btn);
   })();
+  ayudaDelMapa();
   paint();
   flushEvents();
 })();
