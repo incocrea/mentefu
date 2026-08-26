@@ -452,7 +452,7 @@
       document.querySelectorAll(".belt, .pmap__node, .mission-card, .card[data-item]").forEach(function (el) {
         el.classList.remove("is-done", "is-current", "is-locked", "is-next");
       });
-      document.querySelectorAll("[data-pmap]").forEach(function (svg) { svg.style.setProperty("--done", 0); });
+      document.querySelectorAll(".pmap__punto").forEach(function (c) { c.classList.remove("is-done"); });
       document.querySelectorAll("[data-dojo-progress]").forEach(function (box) {
         var fill = box.querySelector(".dojo-progress__fill"); if (fill) fill.style.width = "0%";
         var text = box.querySelector(".dojo-progress__text"); if (text) text.textContent = "";
@@ -466,7 +466,7 @@
       document.querySelectorAll("[data-belts] .belt, [data-pmap] .pmap__node").forEach(function (el) {
         el.classList.remove("is-done", "is-current", "is-locked");
       });
-      document.querySelectorAll("[data-pmap]").forEach(function (svg) { svg.style.setProperty("--done", 0); });
+      document.querySelectorAll(".pmap__punto").forEach(function (c) { c.classList.remove("is-done"); });
       document.querySelectorAll("[data-dojo-progress]").forEach(function (el) { el.hidden = true; });
       return;
     }
@@ -493,7 +493,11 @@
         g.classList.toggle("is-current", n === cur);
         g.classList.toggle("is-locked", n > cur);
       });
-      svg.style.setProperty("--done", done > 0 ? Math.min(100, ((done - 1) / 7) * 100 + (cur <= 8 ? 100 / 14 : 0)) : 0);
+      /* el rastro llega hasta el nivel actual: los puntos anteriores se pintan */
+      var avance = done > 0 ? Math.min(1, ((done - 1) / 7) + 1 / 14) : 0;
+      svg.querySelectorAll(".pmap__punto").forEach(function (c) {
+        c.classList.toggle("is-done", parseFloat(c.getAttribute("data-t")) <= avance);
+      });
       encuadrarYArrastrar(svg, Math.min(cur, 8));
     });
     /* misiones del nivel */

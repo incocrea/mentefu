@@ -94,9 +94,10 @@ a.art-card:hover { transform: translateY(-4px); box-shadow: var(--shadow); }
 .pmap-wrap--viaje::-webkit-scrollbar { display: none; }
 .pmap-wrap--viaje.is-arrastrando { cursor: grabbing; }
 .pmap { width: 100%; min-width: 58rem; height: auto; display: block; }
-.pmap__path { fill: none; stroke: rgba(18, 19, 26, 0.28); stroke-width: 8; stroke-linecap: round;
-  stroke-dasharray: 2 22; }
-.pmap__path--done { stroke: var(--c-accent); stroke-width: 9; stroke-dasharray: 100; stroke-dashoffset: calc(100 - var(--done, 0)); transition: stroke-dashoffset 0.8s ease; opacity: 0.9; }
+/* el rastro son puntos sobre el camino, no una línea encima: cada uno se pinta
+   de color cuando el avance lo alcanza */
+.pmap__punto { fill: rgba(18, 19, 26, 0.3); transition: fill 0.4s ease, r 0.4s ease; }
+.pmap__punto.is-done { fill: var(--c-accent); }
 .pmap__node { cursor: pointer; }
 /* Estación con accesorio: gris hasta completar el nivel. El foco del nivel
    actual es un RESPLANDOR DORADO que sigue el contorno del accesorio
