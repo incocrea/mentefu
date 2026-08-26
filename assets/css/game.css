@@ -947,7 +947,9 @@ html:not([data-admin-on]) [data-admin-link] { display: none; }
 .audioteca__filtro:hover { border-color: var(--c-accent-text); color: var(--c-accent-text); }
 .audioteca__filtro.is-on { background: var(--c-accent-btn); border-color: var(--c-accent-btn); color: var(--c-accent-ink); }
 .audioteca__lista { list-style: none; margin: 0; padding: 0; display: grid; gap: 0.75rem; }
-.audioteca__nivel { display: flex; align-items: baseline; gap: 0.6rem; flex-wrap: wrap; margin: 1.25rem 0 0.25rem; }
+.audioteca__nivel { display: flex; align-items: center; gap: 0.55rem; flex-wrap: wrap; margin: 1.5rem 0 0.35rem; }
+.audioteca__cinturon { width: 2.1rem; height: 2.1rem; object-fit: contain; flex: 0 0 auto; }
+.audioteca__nivel-n { font-family: var(--f-display); font-weight: 800; }
 .audioteca__nivel:first-child { margin-top: 0; }
 .audioteca__nivel-titulo { font-family: var(--f-display); font-weight: 700; color: var(--c-text-soft); font-size: 0.9rem; }
 .audioteca__item { border: 1px solid var(--c-line-light); border-radius: var(--radius-lg); background: var(--c-white); padding: 0.9rem 1rem; }

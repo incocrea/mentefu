@@ -71,8 +71,13 @@
           /* el título del nivel ya empieza por «Nivel N —»: el chip lo dice,
              así que aquí se queda solo el tema */
           var tema = String(it.levelTitle || "").replace(/^(nivel|level)\s*\d+\s*[—–-]\s*/i, "");
-          var sep = el('<li class="audioteca__nivel"><span class="belt-chip"' + (it.belt ? ' style="--belt:var(--belt-' + esc(it.belt) + ')"' : "") + '>' +
-            '<span class="belt-chip__swatch" aria-hidden="true"></span>' + T.nivel.replace("{n}", it.level) + "</span>" +
+          /* el cinturón ilustrado del nivel, el mismo que en el resto del sitio;
+             si faltara la lámina, queda la pastilla de color de siempre */
+          var cinturon = (window.MF && it.belt) ? MF.artImg("belt", it.belt, "audioteca__cinturon") : "";
+          var sep = el('<li class="audioteca__nivel">' +
+            (cinturon || '<span class="belt-chip"' + (it.belt ? ' style="--belt:var(--belt-' + esc(it.belt) + ')"' : "") +
+              '><span class="belt-chip__swatch" aria-hidden="true"></span></span>') +
+            '<span class="audioteca__nivel-n">' + T.nivel.replace("{n}", it.level) + "</span>" +
             '<span class="audioteca__nivel-titulo">' + esc(tema) + "</span></li>");
           lista.appendChild(sep);
         }
