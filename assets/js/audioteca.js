@@ -86,11 +86,29 @@
                 " · " + (it.audio ? T.xp.replace("{n}", it.xp) : T.sinAudio) + "</p>" +
             "</div>" +
             '<div class="audioteca__acciones">' +
-              '<a class="btn btn--ghost btn--sm" href="' + esc(it.href) + '">' + T.read + "</a>" +
+              '<a class="btn btn--ghost btn--sm audioteca__abrir" href="' + esc(it.href) + '">' + T.read + "</a>" +
               '<span class="audioteca__sello" hidden>✓ ' + T.hecho + "</span>" +
             "</div>" +
           "</div></li>");
         if (hecho(it)) fila.querySelector(".audioteca__sello").hidden = false;
+        /* leer sin salir de la sala: el pergamino se despliega flotando y el
+           audio, si está sonando, sigue sonando */
+        var abrirBtn = fila.querySelector(".audioteca__abrir");
+        if (it.kind !== "tool" && window.MFPergamino) {
+          abrirBtn.addEventListener("click", function (e) {
+            e.preventDefault();
+            MFPergamino.abrir({
+              id: it.id, art: art, xp: it.xp, kind: it.kind, titulo: it.title,
+              hecho: function () { return hecho(it); },
+              alCompletar: function () {
+                fila.classList.add("is-done");
+                fila.querySelector(".audioteca__sello").hidden = false;
+                pintarResumen();
+              },
+              origen: abrirBtn,
+            }).then(function (ok) { if (!ok) window.location.href = it.href; });
+          });
+        }
         if (it.audio && window.MFAudio) {
           fila.appendChild(MFAudio.montar({
             src: it.audio, item: it.id, art: art, xp: it.xp, kind: it.kind,

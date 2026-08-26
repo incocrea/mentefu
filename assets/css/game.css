@@ -965,3 +965,29 @@ html:not([data-admin-on]) [data-admin-link] { display: none; }
   .audioteca__ficha { grid-template-columns: auto 1fr; }
   .audioteca__acciones { grid-column: 1 / -1; flex-direction: row; align-items: center; justify-content: space-between; }
 }
+
+/* ------------------------------------------------------------------ */
+/* El pergamino flotante (pergamino.js): se despliega sobre la misión  */
+/* o sobre la sala, con su marco, sin sacar al alumno de donde está.   */
+/* ------------------------------------------------------------------ */
+.pergamino-modal { position: fixed; inset: 0; z-index: 210; display: grid; place-items: center;
+  padding: clamp(0.6rem, 3vw, 2rem); background: rgba(8, 9, 13, 0.72); backdrop-filter: blur(6px);
+  animation: modal-in 0.18s ease; }
+.pergamino-modal__hoja { position: relative; width: min(46rem, 100%); max-height: 92vh; display: flex; flex-direction: column;
+  animation: modal-rise 0.22s cubic-bezier(0.2, 0.8, 0.3, 1); }
+.pergamino-modal__cerrar { position: absolute; top: -0.4rem; right: -0.4rem; z-index: 3;
+  width: 2.2rem; height: 2.2rem; border-radius: 50%; border: 2px solid var(--scroll-line);
+  background: var(--c-accent-btn); color: var(--c-accent-ink); font-size: 1.4rem; line-height: 1; cursor: pointer; }
+.pergamino-modal__cerrar:hover { transform: scale(1.06); }
+.pergamino-modal__cuerpo { overflow-y: auto; overscroll-behavior: contain;
+  padding: clamp(0.9rem, 3vw, 1.6rem) clamp(0.6rem, 2.5vw, 1.4rem); }
+.pergamino-modal__titulo { font-family: var(--f-display); font-size: clamp(1.15rem, 3.5vw, 1.5rem);
+  font-weight: 800; line-height: 1.15; margin: 0 0 0.9rem; }
+.pergamino-modal .reader__page { max-width: 34rem; margin-inline: auto; font-size: 1.03rem; line-height: 1.7; }
+.pergamino-modal .reader__page > h2:first-child { margin-top: 0; }
+.pergamino-modal .reader__top { margin: 0 0 1rem; padding: 0 1.6rem 0.7rem 0; border-bottom: 1px dashed var(--scroll-line-soft); }
+.pergamino-modal .mission__bar { background: rgba(122, 74, 42, 0.14); height: 0.45rem; }
+.pergamino-modal .reader__nav { margin-top: 1.4rem; padding-top: 1rem; border-top: 1px dashed var(--scroll-line-soft);
+  display: flex; gap: 0.6rem; align-items: center; justify-content: space-between; }
+.pergamino-modal__vista { touch-action: pan-y; }
+body.has-pergamino { overflow: hidden; }   /* el fondo no se mueve detrás del pergamino */

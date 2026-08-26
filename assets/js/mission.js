@@ -138,6 +138,19 @@
         var metaLink = c.item ? T.scrollMeta.replace("{n}", xpItem) : T.scrollMeta.split(" · ")[0];
         var link = el('<a class="scroll-link" href="' + (c.href || "#") + '"><span class="scroll-link__icon" aria-hidden="true">📜</span><span><span class="scroll-link__title"></span><span class="scroll-link__meta">' + metaLink + '</span></span><span class="scroll-link__seal" hidden>✓ ' + T.itemDone + "</span></a>");
         link.querySelector(".scroll-link__title").textContent = c.title || T.open;
+        /* El pergamino se despliega flotando sobre la misión: así no se pierde
+           la tarjeta ni se corta el audio. Las herramientas siguen abriéndose en
+           su página (necesitan su propio JS). Si el contenido no se puede
+           traer, el enlace navega como siempre. */
+        if (c.item && c.itemKind !== "tool" && window.MFPergamino) {
+          link.addEventListener("click", function (e) {
+            e.preventDefault();
+            MFPergamino.abrir({
+              id: c.item, art: artKey, xp: xpItem, kind: c.itemKind, titulo: c.title,
+              hecho: itemHecho, alCompletar: sellar, origen: link,
+            }).then(function (ok) { if (!ok) window.location.href = link.getAttribute("href"); });
+          });
+        }
         card.appendChild(link);
         var itemHecho = function () {
           if (!window.MF || !c.item) return false;
