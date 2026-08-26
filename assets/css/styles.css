@@ -113,6 +113,8 @@ button { font: inherit; }
 .container { width: min(100% - 2.5rem, var(--container)); margin-inline: auto; }
 .container--prose { max-width: var(--prose); }
 .section { padding-block: var(--space-section); }
+/* Banda de solo titular (antesala de la sección siguiente): respira menos. */
+.section--tight { padding-block: clamp(1.75rem, 4vw, 2.75rem); }
 .section--dark { background: var(--c-ink-bg); color: var(--c-text-on-dark); }
 .section--paper-2 { background: var(--c-paper-2); }
 .section--white { background: var(--c-white); }

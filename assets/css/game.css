@@ -18,12 +18,8 @@
 .hud.is-bump .hud__ring { animation: bump 0.5s ease; }
 @keyframes bump { 0% { transform: scale(1); } 40% { transform: scale(1.25); } 100% { transform: scale(1); } }
 
-.hero__hud { display: inline-flex; flex-wrap: wrap; gap: 0.75rem 1.5rem; margin-top: 1.5rem; padding: 0.6rem 1rem; border-radius: 999px; border: 1px solid var(--c-line-dark); font-family: var(--f-display); font-weight: 700; font-size: 0.9rem; }
-.hero__hud .hud__rank { color: var(--c-accent-soft); }
-.hero__hud .hud__xp { font-size: inherit; color: inherit; }
-/* En móvil el rango y la racha no van en el hero: para eso está el perfil,
-   a un toque en el icono de la cabecera (decisión del titular 2026-08-25). */
-@media (max-width: 60rem) { .hero__hud { display: none; } }
+/* El rango, el XP y la racha no van en el hero en ningún tamaño: para eso está
+   el perfil, a un toque en el icono de la cabecera (titular 2026-08-26). */
 
 /* ---------- Toasts ---------- */
 .toasts { position: fixed; right: 1rem; bottom: 1rem; z-index: 300; display: grid; gap: 0.5rem; max-width: min(22rem, calc(100vw - 2rem)); }
@@ -56,21 +52,21 @@
 /* ---------- Tarjetas de arte ---------- */
 @media (min-width: 40rem) { .grid--arts { grid-template-columns: repeat(auto-fit, minmax(15rem, 1fr)); } }
 @media (min-width: 60rem) { .grid--arts { grid-template-columns: repeat(auto-fit, minmax(14rem, 1fr)); } }
-.art-card { position: relative; display: flex; flex-direction: column; gap: 0.45rem; padding: 1.4rem; border-radius: var(--radius-lg); background: var(--c-ink-bg); color: var(--c-text-on-dark); text-decoration: none; overflow: hidden; min-height: 15rem; border: 1px solid var(--c-line-dark); transition: transform 0.2s, box-shadow 0.2s; }
+.art-card { position: relative; display: flex; flex-direction: column; gap: 0.4rem; padding: 1rem; border-radius: var(--radius-lg); background: var(--c-ink-bg); color: var(--c-text-on-dark); text-decoration: none; overflow: hidden; min-height: 11.5rem; border: 1px solid var(--c-line-dark); transition: transform 0.2s, box-shadow 0.2s; }
 .art-card::before { content: ""; position: absolute; inset: auto -30% -45% auto; width: 70%; aspect-ratio: 1; border-radius: 50%; background: radial-gradient(circle, var(--art) 0%, transparent 65%); opacity: 0.45; pointer-events: none; }
 a.art-card:hover { transform: translateY(-4px); box-shadow: var(--shadow); }
 .art-card--soon { opacity: 0.72; filter: saturate(0.6); }
-.art-card__icon { font-size: 2rem; line-height: 1; text-align: center; }
+.art-card__icon { font-size: 1.6rem; line-height: 1; text-align: center; }
 .art-card:has(.art-card__art) { text-align: center; }
-.art-card__art { display: block; width: 6.5rem; height: 6.5rem; object-fit: contain; margin: 0.25rem auto 0.5rem; }
+.art-card__art { display: block; width: 4.5rem; height: 4.5rem; object-fit: contain; margin: 0.2rem auto 0.4rem; }
 .art-card--soon .art-card__art { opacity: 0.9; }
-.art-card__status { font-family: var(--f-display); font-size: 0.72rem; font-weight: 700; letter-spacing: 0.14em; text-transform: uppercase; color: var(--c-text-on-dark-soft); }
+.art-card__status { font-family: var(--f-display); font-size: 0.64rem; font-weight: 700; letter-spacing: 0.12em; text-transform: uppercase; color: var(--c-text-on-dark-soft); }
 .art-card__status--active { color: var(--belt-green); }
 .art-card__name { font-family: var(--f-display); font-size: 1.5rem; font-weight: 800; letter-spacing: -0.01em; }
-.art-card__text { color: var(--c-text-on-dark-soft); font-size: 0.95rem; }
-.art-card__belt { margin-top: auto; font-size: 0.85rem; font-weight: 600; display: inline-flex; align-items: center; gap: 0.4rem; }
+.art-card__text { color: var(--c-text-on-dark-soft); font-size: 0.82rem; }
+.art-card__belt { margin-top: auto; font-size: 0.78rem; font-weight: 600; display: inline-flex; align-items: center; gap: 0.4rem; }
 .art-card__belt:empty { display: none; }
-.art-card .card__more { color: var(--c-accent-soft); position: absolute; right: 1.2rem; bottom: 1rem; }
+.art-card .card__more { color: var(--c-accent-soft); position: absolute; right: 0.9rem; bottom: 0.7rem; }
 .belt-pill { display: inline-flex; align-items: center; gap: 0.45rem; font-weight: 600; }
 .belt-pill__swatch { width: 1.4rem; height: 0.55rem; border-radius: 2px; background: var(--belt); box-shadow: inset 0 0 0 1px rgba(0,0,0,0.3); }
 
@@ -330,12 +326,15 @@ a.art-card:hover { transform: translateY(-4px); box-shadow: var(--shadow); }
 
 /* ---------- Correcciones de espaciado y anchos ---------- */
 /* aire bajo el subnav / cabecera en las páginas que no lo tenían */
-.layout-art main > .container, .layout-profile main > .container, .layout-mission main > .container { padding-block: clamp(2.5rem, 6vw, 4.5rem); }
+.layout-profile main > .container, .layout-mission main > .container { padding-block: clamp(2.5rem, 6vw, 4.5rem); }
+/* la portada del arte: las estadísticas van pegadas al subnav (titular 2026-08-26) */
+.layout-art main > .container { padding-block: clamp(1rem, 2.5vw, 1.6rem) clamp(2.5rem, 6vw, 4.5rem); }
 /* las tarjetas de arte no truncan el nombre y aprovechan el ancho */
-.art-card__name { font-size: clamp(1.2rem, 1rem + 1vw, 1.5rem); overflow-wrap: anywhere; }
+.art-card__name { font-size: clamp(1rem, 0.9rem + 0.5vw, 1.15rem); overflow-wrap: anywhere; }
+/* Con 12 artes, seis por línea en escritorio: tarjetas compactas (titular 2026-08-26) */
 .grid--arts { grid-template-columns: repeat(auto-fit, minmax(14rem, 1fr)); }
-@media (min-width: 40rem) { .grid--arts { grid-template-columns: repeat(auto-fit, minmax(15rem, 1fr)); } }
-@media (min-width: 60rem) { .grid--arts { grid-template-columns: repeat(auto-fit, minmax(14rem, 1fr)); } }
+@media (min-width: 40rem) { .grid--arts { grid-template-columns: repeat(auto-fit, minmax(11rem, 1fr)); gap: 0.9rem; } }
+@media (min-width: 64rem) { .grid--arts { grid-template-columns: repeat(6, 1fr); } }
 
 /* kickers dentro de cajas oscuras: usar el acento para fondo oscuro (contraste AA) */
 .dojo-progress .kicker, .gate .kicker, .art-card .kicker, .cert .kicker { color: var(--c-accent-soft); }
@@ -1009,6 +1008,13 @@ html:not([data-admin-on]) [data-admin-link] { display: none; }
   .audioteca__ficha { grid-template-columns: auto 1fr; }
   .audioteca__acciones { grid-column: 1 / -1; flex-direction: row; align-items: center; justify-content: space-between; }
 }
+/* La biblioteca ({SCROLL_LIST}) vive dentro de la prosa: la lista manda sobre
+   los márgenes y sangrías que la prosa pone a ol/h3/p */
+.audioteca--biblioteca { padding-block: 0.5rem 0; }
+.prose .audioteca__lista { padding-left: 0; margin: 0; }
+.prose .audioteca__titulo { margin: 0 0 0.15rem; font-size: 1.02rem; }
+.prose .audioteca__sumario { margin: 0 0 0.25rem; }
+.prose .audioteca__meta { margin: 0; }
 
 /* ------------------------------------------------------------------ */
 /* El pergamino flotante (pergamino.js): se despliega sobre la misión  */

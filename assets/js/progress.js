@@ -518,11 +518,14 @@
         if (!done && !nextSet && !(exam && !allDone)) { c.classList.add("is-next"); nextSet = true; } else { c.classList.remove("is-next"); }
       });
     });
-    /* tarjetas de pergaminos/herramientas */
-    document.querySelectorAll(".card[data-item]").forEach(function (c) {
+    /* tarjetas de pergaminos/herramientas; las filas de la biblioteca
+       ({SCROLL_LIST}) llevan además su sello «Completado» */
+    document.querySelectorAll(".card[data-item], .audioteca__item[data-item]").forEach(function (c) {
       var id = c.getAttribute("data-item"), done = false;
       for (var k in state.arts) { if (state.arts[k].scrolls[id] || state.arts[k].tools[id]) done = true; }
       c.classList.toggle("is-done", done);
+      var sello = c.querySelector(".audioteca__sello");
+      if (sello) sello.hidden = !done;
     });
     /* estadísticas del arte */
     document.querySelectorAll("[data-art-belt]").forEach(function (el) {
