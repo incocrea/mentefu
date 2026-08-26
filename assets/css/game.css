@@ -82,25 +82,41 @@ a.art-card:hover { transform: translateY(-4px); box-shadow: var(--shadow); }
 .art-hero__belt { display: block; width: 3rem; height: 1.1rem; border-radius: 3px; background: var(--belt, #3a3c4a); box-shadow: inset 0 0 0 1px rgba(0,0,0,0.35); margin: 0.45rem 0 0.3rem; }
 
 /* ---------- Mapa del camino (SVG) ---------- */
+/* El mapa del camino sobre el paisaje del viaje (valle → templo, 2026-08-26).
+   El fondo ilustrado es común a todos los entrenamientos; cada estación es el
+   accesorio que ese nivel desbloquea: gris pendiente, a color al completarlo. */
 .pmap-wrap { margin: 1.5rem 0; padding: 1rem 0.5rem; border-radius: var(--radius-lg); background: var(--c-ink-bg); overflow-x: auto; }
+.pmap-wrap--viaje { padding: 0.5rem;
+  background: var(--c-ink-bg) url("../img/game/camino-viaje.webp") center / cover no-repeat; }
 .pmap { width: 100%; min-width: 34rem; height: auto; display: block; }
-.pmap__path { fill: none; stroke: var(--c-ink-panel-2); stroke-width: 6; stroke-linecap: round; }
-.pmap__path--done { stroke: var(--c-accent); stroke-dasharray: 100; stroke-dashoffset: calc(100 - var(--done, 0)); transition: stroke-dashoffset 0.8s ease; }
+.pmap__path { fill: none; stroke: rgba(18, 19, 26, 0.4); stroke-width: 7; stroke-linecap: round; }
+.pmap__path--done { stroke: var(--c-accent); stroke-width: 5; stroke-dasharray: 100; stroke-dashoffset: calc(100 - var(--done, 0)); transition: stroke-dashoffset 0.8s ease; }
 .pmap__node { cursor: pointer; }
 .pmap__halo { fill: var(--c-accent); opacity: 0; }
+/* estación con accesorio: gris hasta completar el nivel */
+.pmap__adorno { filter: grayscale(1) brightness(0.8) drop-shadow(0 3px 5px rgba(0, 0, 0, 0.55)); transition: filter 0.4s ease; }
+.pmap__node.is-done .pmap__adorno,
+.pmap__node.is-current .pmap__adorno { filter: drop-shadow(0 3px 5px rgba(0, 0, 0, 0.55)); }
+.pmap__check-badge { display: none; }
+.pmap__check-badge circle { fill: var(--belt-green); stroke: #fffdf9; stroke-width: 2; }
+.pmap__check-badge text { font-family: var(--f-display); font-weight: 800; font-size: 12px; fill: #fffdf9; }
+.pmap__node.is-done .pmap__check-badge { display: block; }
+/* estación sin accesorio (artes sin set): el disco numerado de siempre */
 .pmap__disc { fill: var(--belt); stroke: var(--c-ink-panel-2); stroke-width: 4; transition: stroke 0.3s; }
 .pmap__num { font-family: var(--f-display); font-weight: 800; font-size: 18px; fill: #1a1a1f; }
 .pmap__node[data-belt="4"] .pmap__num, .pmap__node[data-belt="5"] .pmap__num, .pmap__node[data-belt="6"] .pmap__num, .pmap__node[data-belt="7"] .pmap__num, .pmap__node[data-belt="8"] .pmap__num { fill: #fffdf9; }
 .pmap__check { display: none; font-weight: 800; font-size: 20px; fill: #fffdf9; }
-.pmap__label { font-family: var(--f-body); font-size: 12px; font-weight: 600; fill: var(--c-text-on-dark-soft); }
+/* etiquetas con borde de tinta: legibles sobre cualquier zona de la ilustración */
+.pmap__label { font-family: var(--f-body); font-size: 12.5px; font-weight: 700; fill: #f7f3ec;
+  paint-order: stroke; stroke: rgba(18, 19, 26, 0.85); stroke-width: 3.5px; stroke-linejoin: round; }
 .pmap__node.is-done .pmap__disc { stroke: var(--belt-green); }
 .pmap__node.is-done .pmap__num { display: none; }
 .pmap__node.is-done .pmap__check { display: block; }
-.pmap__node.is-done .pmap__label { fill: var(--c-text-on-dark); }
+.pmap__node.is-done .pmap__label { fill: #fffdf9; }
 .pmap__node.is-current .pmap__halo { opacity: 0.35; animation: pulse 1.8s ease-in-out infinite; transform-origin: center; }
 .pmap__node.is-current .pmap__disc { stroke: var(--c-accent); }
 .pmap__node.is-current .pmap__label { fill: var(--c-accent-soft); }
-.pmap__node.is-locked { opacity: 0.45; }
+.pmap__node.is-locked { opacity: 0.55; }
 @keyframes pulse { 0%, 100% { transform: scale(1); opacity: 0.25; } 50% { transform: scale(1.25); opacity: 0.45; } }
 .pmap a:focus-visible .pmap__disc { stroke: var(--c-accent-soft); }
 
