@@ -86,11 +86,17 @@ a.art-card:hover { transform: translateY(-4px); box-shadow: var(--shadow); }
    El fondo ilustrado es común a todos los entrenamientos; cada estación es el
    accesorio que ese nivel desbloquea: gris pendiente, a color al completarlo. */
 .pmap-wrap { margin: 1.5rem 0; padding: 1rem 0.5rem; border-radius: var(--radius-lg); background: var(--c-ink-bg); overflow-x: auto; }
-.pmap-wrap--viaje { padding: 0.5rem;
-  background: var(--c-ink-bg) url("../img/game/camino-viaje.webp") center / cover no-repeat; }
-.pmap { width: 100%; min-width: 34rem; height: auto; display: block; }
-.pmap__path { fill: none; stroke: rgba(18, 19, 26, 0.4); stroke-width: 7; stroke-linecap: round; }
-.pmap__path--done { stroke: var(--c-accent); stroke-width: 5; stroke-dasharray: 100; stroke-dashoffset: calc(100 - var(--done, 0)); transition: stroke-dashoffset 0.8s ease; }
+/* visor del viaje: la lámina va DENTRO del SVG, así senda y estaciones son
+   una sola pieza; siempre se ve todo el alto y, si falta ancho, se hace scroll
+   horizontal sin barra, arrastrando (progress.js encuadra el nivel actual) */
+.pmap-wrap--viaje { padding: 0; background: var(--c-ink-bg); overflow-x: auto; overflow-y: hidden;
+  scrollbar-width: none; -ms-overflow-style: none; cursor: grab; }
+.pmap-wrap--viaje::-webkit-scrollbar { display: none; }
+.pmap-wrap--viaje.is-arrastrando { cursor: grabbing; }
+.pmap { width: 100%; min-width: 58rem; height: auto; display: block; }
+.pmap__path { fill: none; stroke: rgba(18, 19, 26, 0.35); stroke-width: 10; stroke-linecap: round;
+  stroke-dasharray: 2 26; }
+.pmap__path--done { stroke: var(--c-accent); stroke-width: 9; stroke-dasharray: 100; stroke-dashoffset: calc(100 - var(--done, 0)); transition: stroke-dashoffset 0.8s ease; opacity: 0.9; }
 .pmap__node { cursor: pointer; }
 /* Estación con accesorio: gris hasta completar el nivel. El foco del nivel
    actual es un RESPLANDOR DORADO que sigue el contorno del accesorio
@@ -115,17 +121,17 @@ a.art-card:hover { transform: translateY(-4px); box-shadow: var(--shadow); }
 .pmap__node.is-current .pmap__disc { animation: pmap-brillo 2.2s ease-in-out infinite; }
 .pmap__node:hover .pmap__disc { filter: drop-shadow(0 0 3px #ffd257) drop-shadow(0 0 9px rgba(255, 193, 64, 0.8)); }
 .pmap__check-badge { display: none; }
-.pmap__check-badge circle { fill: var(--belt-green); stroke: #fffdf9; stroke-width: 2; }
-.pmap__check-badge text { font-family: var(--f-display); font-weight: 800; font-size: 12px; fill: #fffdf9; }
+.pmap__check-badge circle { fill: var(--belt-green); stroke: #fffdf9; stroke-width: 4; }
+.pmap__check-badge text { font-family: var(--f-display); font-weight: 800; font-size: 24px; fill: #fffdf9; }
 .pmap__node.is-done .pmap__check-badge { display: block; }
 /* estación sin accesorio (artes sin set): el disco numerado de siempre */
 .pmap__disc { fill: var(--belt); stroke: var(--c-ink-panel-2); stroke-width: 4; transition: stroke 0.3s; }
-.pmap__num { font-family: var(--f-display); font-weight: 800; font-size: 18px; fill: #1a1a1f; }
+.pmap__num { font-family: var(--f-display); font-weight: 800; font-size: 36px; fill: #1a1a1f; }
 .pmap__node[data-belt="4"] .pmap__num, .pmap__node[data-belt="5"] .pmap__num, .pmap__node[data-belt="6"] .pmap__num, .pmap__node[data-belt="7"] .pmap__num, .pmap__node[data-belt="8"] .pmap__num { fill: #fffdf9; }
-.pmap__check { display: none; font-weight: 800; font-size: 20px; fill: #fffdf9; }
+.pmap__check { display: none; font-weight: 800; font-size: 40px; fill: #fffdf9; }
 /* etiquetas con borde de tinta: legibles sobre cualquier zona de la ilustración */
-.pmap__label { font-family: var(--f-body); font-size: 12.5px; font-weight: 700; fill: #f7f3ec;
-  paint-order: stroke; stroke: rgba(18, 19, 26, 0.85); stroke-width: 3.5px; stroke-linejoin: round; }
+.pmap__label { font-family: var(--f-body); font-size: 27px; font-weight: 700; fill: #f7f3ec;
+  paint-order: stroke; stroke: rgba(18, 19, 26, 0.85); stroke-width: 7px; stroke-linejoin: round; }
 .pmap__node.is-done .pmap__disc { stroke: var(--belt-green); }
 .pmap__node.is-done .pmap__num { display: none; }
 .pmap__node.is-done .pmap__check { display: block; }

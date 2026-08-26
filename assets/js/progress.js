@@ -230,6 +230,42 @@
     });
   }
 
+  /* ---------- Visor del mapa del viaje ----------
+     El panel corta en horizontal cuando falta ancho: al pintar se encuadra el
+     nivel actual lo más centrado posible (solo la primera vez, para no pelear
+     con el alumno) y el mapa se puede arrastrar con el ratón; en táctil ya
+     desliza solo. La barra de scroll va oculta por CSS. */
+  function encuadrarYArrastrar(svg, nivelActual) {
+    var visor = svg.closest("[data-pmap-visor]");
+    if (!visor) return;
+    if (!visor.__encuadrado) {
+      visor.__encuadrado = true;
+      var nodo = svg.querySelector('.pmap__node[data-belt="' + nivelActual + '"]');
+      if (nodo && visor.scrollWidth > visor.clientWidth + 4) {
+        var rn = nodo.getBoundingClientRect(), rv = visor.getBoundingClientRect();
+        visor.scrollLeft += (rn.left + rn.width / 2) - (rv.left + rv.width / 2);
+      }
+    }
+    if (visor.__arrastre) return;
+    visor.__arrastre = true;
+    var drag = null;
+    visor.addEventListener("pointerdown", function (e) {
+      if (e.pointerType !== "mouse" || e.button !== 0) return;   /* táctil desliza nativo */
+      drag = { x: e.clientX, s: visor.scrollLeft, movido: false };
+    });
+    visor.addEventListener("pointermove", function (e) {
+      if (!drag) return;
+      var dx = e.clientX - drag.x;
+      if (Math.abs(dx) > 4) { drag.movido = true; visor.classList.add("is-arrastrando"); }
+      visor.scrollLeft = drag.s - dx;
+    });
+    function soltar() { if (drag && !drag.movido) drag = null; else setTimeout(function () { drag = null; }, 0); visor.classList.remove("is-arrastrando"); }
+    visor.addEventListener("pointerup", soltar);
+    visor.addEventListener("pointerleave", soltar);
+    /* si hubo arrastre, el clic que lo termina no debe abrir el nivel */
+    visor.addEventListener("click", function (e) { if (drag && drag.movido) { e.preventDefault(); e.stopPropagation(); } }, true);
+  }
+
   /* ---------- Fusión local ↔ remoto ---------- */
   function merge(remote) {
     if (!remote || remote.v !== 1) return state;
@@ -449,6 +485,7 @@
         g.classList.toggle("is-locked", n > cur);
       });
       svg.style.setProperty("--done", done > 0 ? Math.min(100, ((done - 1) / 7) * 100 + (cur <= 8 ? 100 / 14 : 0)) : 0);
+      encuadrarYArrastrar(svg, Math.min(cur, 8));
     });
     /* misiones del nivel */
     document.querySelectorAll("[data-missions]").forEach(function (list) {
