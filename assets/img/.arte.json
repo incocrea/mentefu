@@ -1,9 +1,54 @@
 {
+ "art-ansiafu": {
+  "at": "2026-08-26T17:13:18",
+  "model": "gpt-image-1",
+  "out": "game/art-ansiafu.png",
+  "prompt": "A sky blue object, coloured almost entirely in sky blue: a tangled ball of yarn with one loose thread pulled out straight. Centered emblem icon, plain object with no face, no eyes, no mouth, not a character, absolutely no face anywhere, not even on ornaments. Bold silhouette, the whole object fully inside the frame with generous margin on every side, surrounded by a clean, even, pure white die-cut sticker border of constant width. The dominant colour must be sky blue — do NOT make it orange or vermilion unless sky blue says so",
+  "quality": "medium",
+  "reference": true,
+  "size": "1024x1024"
+ },
+ "art-cargafu": {
+  "at": "2026-08-26T17:14:37",
+  "model": "gpt-image-1",
+  "out": "game/art-cargafu.png",
+  "prompt": "A cool slate grey object, coloured almost entirely in cool slate grey: a rope-tied cloth bundle packed with heavy round stones. Centered emblem icon, plain object with no face, no eyes, no mouth, not a character, absolutely no face anywhere, not even on ornaments. Bold silhouette, the whole object fully inside the frame with generous margin on every side, surrounded by a clean, even, pure white die-cut sticker border of constant width. The dominant colour must be cool slate grey — do NOT make it orange or vermilion unless cool slate grey says so",
+  "quality": "medium",
+  "reference": true,
+  "size": "1024x1024"
+ },
  "art-culpafu": {
   "at": "2026-08-24T21:13:56",
   "model": "gpt-image-1",
   "out": "game/art-culpafu.png",
   "prompt": "A orange-vermilion object, coloured almost entirely in orange-vermilion: a folded martial-arts gi jacket with a cream belt and a small seal on the chest. Centered emblem icon, plain object with no face, no eyes, no mouth, not a character, absolutely no face anywhere, not even on ornaments. Bold silhouette, the whole object fully inside the frame with generous margin on every side, surrounded by a clean, even, pure white die-cut sticker border of constant width. The dominant colour must be orange-vermilion — do NOT make it orange or vermilion unless orange-vermilion says so",
+  "quality": "medium",
+  "reference": true,
+  "size": "1024x1024"
+ },
+ "art-duelofu": {
+  "at": "2026-08-26T17:16:40",
+  "model": "gpt-image-1",
+  "out": "game/art-duelofu.png",
+  "prompt": "A deep plum object, coloured almost entirely in deep plum: a single flower with a gently drooping stem and one falling petal. Centered emblem icon, plain object with no face, no eyes, no mouth, not a character, absolutely no face anywhere, not even on ornaments. Bold silhouette, the whole object fully inside the frame with generous margin on every side, surrounded by a clean, even, pure white die-cut sticker border of constant width. The dominant colour must be deep plum — do NOT make it orange or vermilion unless deep plum says so",
+  "quality": "medium",
+  "reference": true,
+  "size": "1024x1024"
+ },
+ "art-espejofu": {
+  "at": "2026-08-26T17:15:30",
+  "model": "gpt-image-1",
+  "out": "game/art-espejofu.png",
+  "prompt": "A soft lavender purple object, coloured almost entirely in soft lavender purple: two overlapping empty picture frames, one large and one small. Centered emblem icon, plain object with no face, no eyes, no mouth, not a character, absolutely no face anywhere, not even on ornaments. Bold silhouette, the whole object fully inside the frame with generous margin on every side, surrounded by a clean, even, pure white die-cut sticker border of constant width. The dominant colour must be soft lavender purple — do NOT make it orange or vermilion unless soft lavender purple says so",
+  "quality": "medium",
+  "reference": true,
+  "size": "1024x1024"
+ },
+ "art-limitefu": {
+  "at": "2026-08-26T17:14:14",
+  "model": "gpt-image-1",
+  "out": "game/art-limitefu.png",
+  "prompt": "A deep navy blue object, coloured almost entirely in deep navy blue: a small closed garden gate with a simple latch. Centered emblem icon, plain object with no face, no eyes, no mouth, not a character, absolutely no face anywhere, not even on ornaments. Bold silhouette, the whole object fully inside the frame with generous margin on every side, surrounded by a clean, even, pure white die-cut sticker border of constant width. The dominant colour must be deep navy blue — do NOT make it orange or vermilion unless deep navy blue says so",
   "quality": "medium",
   "reference": true,
   "size": "1024x1024"
@@ -31,6 +76,33 @@
   "model": "gpt-image-1",
   "out": "game/art-narcifu.png",
   "prompt": "A violet purple object, coloured almost entirely in violet purple: an ornate hand mirror with a crack across the glass. Centered emblem icon, plain object with no face, no eyes, no mouth, not a character, absolutely no face anywhere, not even on ornaments. Bold silhouette, the whole object fully inside the frame with generous margin on every side, surrounded by a clean, even, pure white die-cut sticker border of constant width. The dominant colour must be violet purple — do NOT make it orange or vermilion unless violet purple says so",
+  "quality": "medium",
+  "reference": true,
+  "size": "1024x1024"
+ },
+ "art-platafu": {
+  "at": "2026-08-26T17:16:05",
+  "model": "gpt-image-1",
+  "out": "game/art-platafu.png",
+  "prompt": "A banknote green object, coloured almost entirely in banknote green: a drawstring coin pouch with one round coin peeking out. Centered emblem icon, plain object with no face, no eyes, no mouth, not a character, absolutely no face anywhere, not even on ornaments. Bold silhouette, the whole object fully inside the frame with generous margin on every side, surrounded by a clean, even, pure white die-cut sticker border of constant width. The dominant colour must be banknote green — do NOT make it orange or vermilion unless banknote green says so",
+  "quality": "medium",
+  "reference": true,
+  "size": "1024x1024"
+ },
+ "art-raizfu": {
+  "at": "2026-08-26T17:15:10",
+  "model": "gpt-image-1",
+  "out": "game/art-raizfu.png",
+  "prompt": "A earth brown object, coloured almost entirely in earth brown: a young sapling whose bold roots spread wide below it. Centered emblem icon, plain object with no face, no eyes, no mouth, not a character, absolutely no face anywhere, not even on ornaments. Bold silhouette, the whole object fully inside the frame with generous margin on every side, surrounded by a clean, even, pure white die-cut sticker border of constant width. The dominant colour must be earth brown — do NOT make it orange or vermilion unless earth brown says so",
+  "quality": "medium",
+  "reference": true,
+  "size": "1024x1024"
+ },
+ "art-vinculofu": {
+  "at": "2026-08-26T17:13:39",
+  "model": "gpt-image-1",
+  "out": "game/art-vinculofu.png",
+  "prompt": "A warm honey amber object, coloured almost entirely in warm honey amber: two round chain rings firmly interlinked. Centered emblem icon, plain object with no face, no eyes, no mouth, not a character, absolutely no face anywhere, not even on ornaments. Bold silhouette, the whole object fully inside the frame with generous margin on every side, surrounded by a clean, even, pure white die-cut sticker border of constant width. The dominant colour must be warm honey amber — do NOT make it orange or vermilion unless warm honey amber says so",
   "quality": "medium",
   "reference": true,
   "size": "1024x1024"
