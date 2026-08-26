@@ -94,8 +94,8 @@ a.art-card:hover { transform: translateY(-4px); box-shadow: var(--shadow); }
 .pmap-wrap--viaje::-webkit-scrollbar { display: none; }
 .pmap-wrap--viaje.is-arrastrando { cursor: grabbing; }
 .pmap { width: 100%; min-width: 58rem; height: auto; display: block; }
-.pmap__path { fill: none; stroke: rgba(18, 19, 26, 0.35); stroke-width: 10; stroke-linecap: round;
-  stroke-dasharray: 2 26; }
+.pmap__path { fill: none; stroke: rgba(18, 19, 26, 0.28); stroke-width: 8; stroke-linecap: round;
+  stroke-dasharray: 2 22; }
 .pmap__path--done { stroke: var(--c-accent); stroke-width: 9; stroke-dasharray: 100; stroke-dashoffset: calc(100 - var(--done, 0)); transition: stroke-dashoffset 0.8s ease; opacity: 0.9; }
 .pmap__node { cursor: pointer; }
 /* Estación con accesorio: gris hasta completar el nivel. El foco del nivel
@@ -121,8 +121,8 @@ a.art-card:hover { transform: translateY(-4px); box-shadow: var(--shadow); }
 .pmap__node.is-current .pmap__disc { animation: pmap-brillo 2.2s ease-in-out infinite; }
 .pmap__node:hover .pmap__disc { filter: drop-shadow(0 0 3px #ffd257) drop-shadow(0 0 9px rgba(255, 193, 64, 0.8)); }
 .pmap__check-badge { display: none; }
-.pmap__check-badge circle { fill: var(--belt-green); stroke: #fffdf9; stroke-width: 4; }
-.pmap__check-badge text { font-family: var(--f-display); font-weight: 800; font-size: 24px; fill: #fffdf9; }
+.pmap__check-badge circle { fill: var(--belt-green); stroke: #fffdf9; stroke-width: 2.5; }
+.pmap__check-badge text { font-family: var(--f-display); font-weight: 800; font-size: 14px; fill: #fffdf9; }
 .pmap__node.is-done .pmap__check-badge { display: block; }
 /* estación sin accesorio (artes sin set): el disco numerado de siempre */
 .pmap__disc { fill: var(--belt); stroke: var(--c-ink-panel-2); stroke-width: 4; transition: stroke 0.3s; }
@@ -130,15 +130,17 @@ a.art-card:hover { transform: translateY(-4px); box-shadow: var(--shadow); }
 .pmap__node[data-belt="4"] .pmap__num, .pmap__node[data-belt="5"] .pmap__num, .pmap__node[data-belt="6"] .pmap__num, .pmap__node[data-belt="7"] .pmap__num, .pmap__node[data-belt="8"] .pmap__num { fill: #fffdf9; }
 .pmap__check { display: none; font-weight: 800; font-size: 40px; fill: #fffdf9; }
 /* etiquetas con borde de tinta: legibles sobre cualquier zona de la ilustración */
-.pmap__label { font-family: var(--f-body); font-size: 27px; font-weight: 700; fill: #f7f3ec;
-  paint-order: stroke; stroke: rgba(18, 19, 26, 0.85); stroke-width: 7px; stroke-linejoin: round; }
+/* el paisaje es de mediodía: tinta con halo claro se lee sobre el cielo, el
+   camino y el bosque por igual */
+.pmap__label { font-family: var(--f-body); font-size: 17.5px; font-weight: 700; fill: #12131a;
+  paint-order: stroke; stroke: rgba(255, 253, 249, 0.92); stroke-width: 4.5px; stroke-linejoin: round; }
 .pmap__node.is-done .pmap__disc { stroke: var(--belt-green); }
 .pmap__node.is-done .pmap__num { display: none; }
 .pmap__node.is-done .pmap__check { display: block; }
-.pmap__node.is-done .pmap__label { fill: #fffdf9; }
+.pmap__node.is-done .pmap__label { fill: #0f2c1a; }
 .pmap__node.is-current .pmap__disc { stroke: var(--c-accent); }
-.pmap__node.is-current .pmap__label { fill: var(--c-accent-soft); }
-.pmap__node.is-locked { opacity: 0.55; }
+.pmap__node.is-current .pmap__label { fill: var(--c-accent-text); }
+.pmap__node.is-locked { opacity: 0.72; }
 @keyframes pulse { 0%, 100% { transform: scale(1); opacity: 0.25; } 50% { transform: scale(1.25); opacity: 0.45; } }
 .pmap a:focus-visible .pmap__disc { stroke: var(--c-accent-soft); }
 

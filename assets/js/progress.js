@@ -238,21 +238,30 @@
   function encuadrarYArrastrar(svg, nivelActual) {
     var visor = svg.closest("[data-pmap-visor]");
     if (!visor) return;
-    if (!visor.__encuadrado) {
-      visor.__encuadrado = true;
+    /* Se encuadra cada vez que CAMBIA el nivel actual —el primer pintado ocurre
+       antes de que llegue el progreso de la cuenta— pero nunca después de que
+       el alumno haya movido el mapa con la mano. */
+    if (!visor.__tocado && visor.__nivelEncuadrado !== nivelActual) {
+      visor.__nivelEncuadrado = nivelActual;
       var nodo = svg.querySelector('.pmap__node[data-belt="' + nivelActual + '"]');
       if (nodo && visor.scrollWidth > visor.clientWidth + 4) {
-        var rn = nodo.getBoundingClientRect(), rv = visor.getBoundingClientRect();
-        visor.scrollLeft += (rn.left + rn.width / 2) - (rv.left + rv.width / 2);
+        var centrar = function () {
+          var rn = nodo.getBoundingClientRect(), rv = visor.getBoundingClientRect();
+          visor.scrollLeft += (rn.left + rn.width / 2) - (rv.left + rv.width / 2);
+        };
+        centrar();
+        requestAnimationFrame(centrar);      /* por si la lámina aún no midió */
       }
     }
     if (visor.__arrastre) return;
     visor.__arrastre = true;
     var drag = null;
     visor.addEventListener("pointerdown", function (e) {
+      visor.__tocado = true;                 /* a partir de aquí manda el alumno */
       if (e.pointerType !== "mouse" || e.button !== 0) return;   /* táctil desliza nativo */
       drag = { x: e.clientX, s: visor.scrollLeft, movido: false };
     });
+    visor.addEventListener("wheel", function () { visor.__tocado = true; }, { passive: true });
     visor.addEventListener("pointermove", function (e) {
       if (!drag) return;
       var dx = e.clientX - drag.x;
