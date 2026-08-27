@@ -12,6 +12,7 @@
     correct: "¡Correcto!", wrong: "No exactamente", bonus: "+{n} XP por acertar a la primera", retry: "Prueba otra vez",
     done: "Hecho", later: "Lo haré luego", doneMsg: "+{n} XP por el microreto", open: "Abrir pergamino", scrollMeta: "Lectura de apoyo · +{n} XP al terminarlo",
     listen: "Escucharlo en audio", listenMeta: "Minipodcast · +{n} XP al escucharlo completo", stop: "Detener", listened: "Pergamino escuchado", itemDone: "Completado", speed: "Velocidad de reproducción",
+    conAudio: "leer o escuchar",
     missionDone: "Misión completada", examDone: "Examen terminado", earned: "XP ganados", alreadyDone: "Ya habías completado esta misión: repasar no suma XP, pero siempre suma.",
     passed: "Aprobado: {p} %", failed: "No alcanzaste el 75 % ({p} %). Repasa las misiones y vuelve a intentarlo: no hay penalización.", beltNew: "Nuevo cinturón", retake: "Repetir examen",
     nextMission: "Siguiente: {t}", nextLevelBtn: "Empezar el {t}", backLevel: "Volver al nivel", toProfile: "Ver mi perfil", unlocked: "Logros desbloqueados",
@@ -21,6 +22,7 @@
     correct: "Correct!", wrong: "Not quite", bonus: "+{n} XP for a first-try hit", retry: "Try again",
     done: "Done", later: "I’ll do it later", doneMsg: "+{n} XP for the micro-challenge", open: "Open scroll", scrollMeta: "Supporting read · +{n} XP when finished",
     listen: "Listen to it", listenMeta: "Mini-podcast · +{n} XP when you listen to the end", stop: "Stop", listened: "Scroll listened", itemDone: "Completed", speed: "Playback speed",
+    conAudio: "read or listen",
     missionDone: "Mission completed", examDone: "Exam finished", earned: "XP earned", alreadyDone: "You had already completed this mission: reviewing does not add XP, but it always adds.",
     passed: "Passed: {p} %", failed: "You did not reach 75 % ({p} %). Review the missions and try again: there is no penalty.", beltNew: "New belt", retake: "Retake exam",
     nextMission: "Next: {t}", nextLevelBtn: "Start {t}", backLevel: "Back to level", toProfile: "See my profile", unlocked: "Achievements unlocked",
@@ -135,7 +137,11 @@
         var xpItem = c.itemXp || XP.scroll || 10;
         /* sin item no hay XP ni sello: la tarjeta puede enlazar una página
            pública (p. ej. el manifiesto) que solo se lee */
+        /* Una sola tarjeta por pergamino: leerlo y escucharlo dejaron de ser dos
+           ofertas separadas. El reproductor viaja DENTRO del pergamino abierto
+           (titular 2026-08-26); aquí solo se avisa de que lo trae. */
         var metaLink = c.item ? T.scrollMeta.replace("{n}", xpItem) : T.scrollMeta.split(" · ")[0];
+        if (c.audio) metaLink += " · " + T.conAudio;
         var link = el('<a class="scroll-link" href="' + (c.href || "#") + '"><span class="scroll-link__icon" aria-hidden="true">📜</span><span><span class="scroll-link__title"></span><span class="scroll-link__meta">' + metaLink + '</span></span><span class="scroll-link__seal" hidden>✓ ' + T.itemDone + "</span></a>");
         link.querySelector(".scroll-link__title").textContent = c.title || T.open;
         /* El pergamino se despliega flotando sobre la misión: así no se pierde
@@ -152,6 +158,7 @@
             e.stopPropagation();
             MFPergamino.abrir({
               id: c.item, art: artKey, xp: xpItem, kind: c.itemKind, titulo: c.title,
+              audio: c.audio || null,
               hecho: itemHecho, alCompletar: sellar, origen: link,
             }).then(function (ok) { if (!ok) window.location.href = link.getAttribute("href"); });
           });
@@ -168,14 +175,6 @@
           link.querySelector(".scroll-link__seal").hidden = false;
         };
         sellar();
-        if (c.audio && window.MFAudio) {
-          /* el reproductor es pieza compartida (audio.js): la misma que usa la
-             sala de pergaminos del curso */
-          card.appendChild(MFAudio.montar({
-            src: c.audio, item: c.item, art: artKey, xp: xpItem, kind: c.itemKind,
-            hecho: itemHecho, alTerminar: sellar,
-          }));
-        }
       }
       stage.appendChild(card);
       progress();

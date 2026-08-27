@@ -10,6 +10,8 @@
     loading: "Abriendo la sala…", local: "Modo local: sin cuenta conectada, el progreso se guarda solo en este navegador.",
     loadErr: "No se pudo cargar el contenido. Recarga la página.",
     tabLogin: "Entrar", tabSignup: "Crear cuenta",
+    authTitle: "Tu cuenta de MenteFu",
+    authText: "Entra o crea tu cuenta gratis: tu progreso, tus cinturones y tus logros te siguen a cualquier dispositivo.",
     name: "Tu nombre", email: "Email", country: "País", phone: "Teléfono (opcional)", pass: "Contraseña", passNew: "Contraseña (mínimo 8 caracteres)",
     terms: 'Acepto los <a href="{terms}" data-terms>términos y condiciones</a> y el tratamiento de mis datos para el uso de la plataforma.',
     badTerms: "Para crear la cuenta necesitas aceptar los términos y condiciones.", badCountry: "Dinos tu país.",
@@ -30,6 +32,8 @@
     loading: "Opening the room…", local: "Local mode: no account connected, progress is stored only in this browser.",
     loadErr: "Could not load the content. Reload the page.",
     tabLogin: "Sign in", tabSignup: "Create account",
+    authTitle: "Your MindFu account",
+    authText: "Sign in or create your free account: your progress, belts and achievements follow you to any device.",
     name: "Your name", email: "Email", country: "Country", phone: "Phone (optional)", pass: "Password", passNew: "Password (at least 8 characters)",
     terms: 'I accept the <a href="{terms}" data-terms>terms and conditions</a> and the processing of my data for the use of the platform.',
     badTerms: "You need to accept the terms and conditions to create the account.", badCountry: "Tell us your country.",
@@ -230,6 +234,62 @@
   /* ---------- formulario de cuenta (login / registro) ---------- */
   function el(html) { var d = document.createElement("div"); d.innerHTML = html.trim(); return d.firstChild; }
 
+  /* Al entrar, la página se relee desde arriba: el alumno venía de un
+     formulario a media pantalla y aterrizaba en mitad de la nada
+     (titular 2026-08-26). */
+  function irArriba() {
+    try { if (window.history && "scrollRestoration" in history) history.scrollRestoration = "manual"; } catch (e) { /* nada */ }
+    try { window.scrollTo(0, 0); } catch (e) { /* nada */ }
+  }
+
+  /* ---------- el acceso es un modal, no una página ----------
+     Entrar o registrarse ya no es un sitio al que se va: es una caja que se
+     abre donde estabas, cuando hace falta (titular 2026-08-26). */
+  var modalAbierto = null;
+  function cerrarModal() {
+    if (!modalAbierto) return;
+    var m = modalAbierto;
+    modalAbierto = null;
+    m.caja.remove();
+    document.documentElement.style.overflow = "";
+    document.removeEventListener("keydown", m.tecla);
+    if (m.volverA && m.volverA.focus) { try { m.volverA.focus(); } catch (e) { /* nada */ } }
+  }
+
+  /* opts: { modo: "login" | "signup", alEntrar: fn } */
+  function abrirModal(opts) {
+    opts = opts || {};
+    if (!(window.SB && SB.enabled())) return false;   /* modo local: no hay cuentas */
+    cerrarModal();
+    var previo = document.activeElement;
+    var caja = el('<div class="modal modal--auth" role="dialog" aria-modal="true" aria-label="' + T.tabLogin + '">' +
+      '<div class="modal__panel modal__panel--auth">' +
+      '<header class="modal__head"><h2 class="modal__title">' + T.authTitle + "</h2>" +
+      '<button class="modal__close" type="button" aria-label="' + T.termsClose + '">&times;</button></header>' +
+      '<div class="modal__body"><p class="gate__text">' + T.authText + "</p>" +
+      '<div data-auth-ui></div></div></div></div>');
+    function tecla(e) { if (e.key === "Escape") cerrarModal(); }
+    caja.addEventListener("click", function (e) { if (e.target === caja) cerrarModal(); });
+    caja.querySelector(".modal__close").addEventListener("click", cerrarModal);
+    document.addEventListener("keydown", tecla);
+    document.body.appendChild(caja);
+    document.documentElement.style.overflow = "hidden";
+    modalAbierto = { caja: caja, tecla: tecla, volverA: previo };
+
+    renderAuthUI(caja.querySelector("[data-auth-ui]"), function () {
+      cerrarModal();
+      if (opts.alEntrar) opts.alEntrar();
+      else { irArriba(); window.location.reload(); }
+    });
+    if (opts.modo === "signup") {
+      var tab = caja.querySelector('[data-tab="signup"]');
+      if (tab) tab.click();
+    }
+    var primero = caja.querySelector(".auth__form:not([hidden]) .input");
+    if (primero) primero.focus(); else caja.querySelector(".modal__close").focus();
+    return true;
+  }
+
   function renderAuthUI(host, onSignedIn) {
     if (!host || host.__built) return;
     host.__built = true;
@@ -294,6 +354,7 @@
         if (window.MF && MF.setSession) MF.setSession("in");
         if (window.MF) MF.track("signin", { item: "auth" });
         say(login, "✅");
+        irArriba();
         if (onSignedIn) onSignedIn(); else window.location.reload();
       }).catch(function () { say(login, T.loginErr); }).then(function () { busy(login, false); });
     });
@@ -318,7 +379,7 @@
       SB.signUp(email, pass, { name: name, phone: phone, country: country, terms_accepted_at: new Date().toISOString() }).then(function (d) {
         if (window.MF) { MF.state().name = MF.state().name || name; MF.save(); MF.track("signup", { item: "auth" }); }
         /* si la confirmación de email está desactivada, GoTrue ya devuelve sesión */
-        if (d && d.access_token) { olvidarUsuario(); try { sessionStorage.removeItem("mf.admin"); } catch (err) { /* nada */ } if (MF.setSession) MF.setSession("in"); window.location.reload(); return; }
+        if (d && d.access_token) { olvidarUsuario(); try { sessionStorage.removeItem("mf.admin"); } catch (err) { /* nada */ } if (MF.setSession) MF.setSession("in"); irArriba(); window.location.reload(); return; }
         say(signup, T.signupOk);
       }).catch(function (err) {
         var m = (err && err.message) || "";
@@ -379,7 +440,23 @@
     }
     user().then(function (u) {
       if (u) { pull(); whenReady(deliver); }
-      else if (box) { box.hidden = false; renderAuthUI(box.querySelector("[data-auth-ui]"), function () { box.hidden = true; olvidarUsuario(); user().then(function () { pull(); deliver(); }); }); }
+      else if (box) {
+        /* La puerta explica dónde estás; el formulario vive en el modal y se
+           abre desde sus botones (2026-08-26). Al entrar, la sala se sirve sin
+           recargar y la vista vuelve arriba. */
+        box.hidden = false;
+        box.querySelectorAll("[data-auth-abrir]").forEach(function (b) {
+          if (b.__auth) return;
+          b.__auth = true;
+          b.addEventListener("click", function (e) {
+            e.preventDefault();
+            abrirModal({ modo: b.getAttribute("data-auth-abrir"), alEntrar: function () {
+              box.hidden = true; olvidarUsuario(); irArriba();
+              user().then(function () { pull(); deliver(); });
+            } });
+          });
+        });
+      }
     });
   }
 
@@ -387,10 +464,29 @@
   else if (window.SB && SB.enabled()) user();   /* resuelve el estado en toda página que cargue auth.js */
 
   document.querySelectorAll("[data-gate]").forEach(openGate);
-  document.querySelectorAll("[data-auth-ui]:not([data-gate-box] [data-auth-ui])").forEach(function (h) { renderAuthUI(h); });
   if (window.SB && SB.enabled()) pull();
 
-  window.MFAuth = { user: user, pull: pull, push: push, loadContent: loadContent, renderAuthUI: renderAuthUI, T: T,
+  /* Cualquier botón «entrar / crear cuenta» abre el modal, esté donde esté
+     (puerta de sala, perfil, portada del arte). Y sin sesión, el chip de la
+     cabecera y los enlaces al perfil también: no hay página de acceso. */
+  document.addEventListener("click", function (e) {
+    if (e.metaKey || e.ctrlKey || e.shiftKey || e.button) return;
+    var t = e.target.closest && e.target.closest("[data-auth-abrir]");
+    if (t) {
+      e.preventDefault();
+      if (abrirModal({ modo: t.getAttribute("data-auth-abrir") })) return;
+    }
+    if (!(window.SB && SB.enabled()) || (window.MF && MF.session && MF.session() === "in")) return;
+    var a = e.target.closest && e.target.closest('a[href]');
+    if (!a) return;
+    var destino = a.getAttribute("href") || "";
+    var perfil = ES ? "perfil/" : "profile/";
+    if (destino.slice(-perfil.length - 0) !== perfil && destino.indexOf("/" + perfil) === -1) return;
+    e.preventDefault();
+    if (!abrirModal({})) window.location.href = destino;   /* sin cuentas, que navegue */
+  });
+
+  window.MFAuth = { user: user, pull: pull, push: push, loadContent: loadContent, renderAuthUI: renderAuthUI, abrirModal: abrirModal, irArriba: irArriba, T: T,
     countryCodes: COUNTRY_CODES, countryFirst: COUNTRY_FIRST,
     signOut: function () {
       /* Primero se asegura el progreso en la cuenta (por si el último push

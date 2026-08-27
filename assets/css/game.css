@@ -706,9 +706,12 @@ a.art-card:hover { transform: translateY(-4px); box-shadow: var(--shadow); }
    el padding y la mascota volvía a salirse por arriba. Con los topes, la
    proporción real manda y nunca excede el hueco: se ve entera siempre. */
 .gate__mascot { display: block; width: 100%; height: 100%; object-fit: contain; }
-.gate__perks { list-style: none; margin: 0 auto 1.5rem; padding: 0; display: grid; gap: 0.5rem; max-width: 24rem; text-align: left; }
-.gate__perks li { position: relative; padding-left: 1.6rem; color: var(--c-text-on-dark-soft); font-size: 0.95rem; }
-.gate__perks li::before { content: ""; position: absolute; left: 0; top: 0.45em; width: 0.7rem; height: 0.35rem; border-left: 2px solid var(--c-accent-soft); border-bottom: 2px solid var(--c-accent-soft); transform: rotate(-45deg); }
+/* los dos botones que abren el modal de cuenta (puerta de sala y perfil) */
+.gate__acciones { display: flex; flex-wrap: wrap; gap: 0.6rem; justify-content: center; margin: 1.25rem 0 0; }
+/* el acceso, en modal: caja estrecha, del ancho de un formulario */
+.modal__panel--auth { width: min(26rem, 100%); }
+.modal--auth .modal__body { display: grid; gap: 0.9rem; }
+.modal--auth .gate__text { margin: 0; font-size: 0.92rem; color: var(--c-text-on-dark-soft); }
 
 /* ============================================================
    ESCAPARATE Y ZONA DE ALUMNOS
@@ -1081,4 +1084,8 @@ html:not([data-admin-on]) [data-admin-link] { display: none; }
 .pergamino-modal .reader__nav { margin-top: 1.4rem; padding-top: 1rem; border-top: 1px dashed var(--scroll-line-soft);
   display: flex; gap: 0.6rem; align-items: center; justify-content: space-between; }
 .pergamino-modal__vista { touch-action: pan-y; }
+/* el minipodcast dentro de la nota: centrado bajo el texto, del ancho de la
+   lectura y con el papel del pergamino (2026-08-26) */
+.scroll-audio--nota { max-width: 34rem; margin: 1.4rem auto 0; background: rgba(122, 74, 42, 0.08);
+  border-color: var(--scroll-line-soft); }
 body.has-pergamino { overflow: hidden; }   /* el fondo no se mueve detrás del pergamino */

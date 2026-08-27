@@ -14,9 +14,8 @@
     login: "Crea tu cuenta o inicia sesión para guardar tu progreso en todos tus dispositivos.",
     phone: "Teléfono (opcional)", newPass: "Nueva contraseña (mínimo 8 caracteres)", changePass: "Cambiar contraseña", passChanged: "Contraseña actualizada.",
     noBelts: "Todavía no tienes cinturones. Aprueba el examen de un nivel para conseguir el primero.", belt: "Cinturón", art: "Arte", date: "Fecha", none: "Sin cinturón",
-    checking: "Comprobando tu sesión…", outKicker: "Tu entrenamiento", outTitle: "Entra a tu perfil",
+    checking: "Comprobando tu sesión…", outKicker: "Tu entrenamiento",
     outText: "Aquí viven tu rango, tus cinturones, tus logros y tus certificados. Crea tu cuenta gratis o entra para verlos.",
-    perks: ["Tu progreso te sigue a cualquier dispositivo", "Cinturones y certificados a tu nombre", "Misiones y pergaminos abiertos", "Racha, logros y XP"],
     outLocal: "Ya llevas {n} XP entrenando en este navegador: al entrar se suman a tu cuenta.",
   } : {
     student: "Student", xp: "XP", streak: "Streak", belts: "Belts", missions: "Missions", toNext: "{n} XP to {rank}", max: "Top rank reached",
@@ -26,9 +25,8 @@
     login: "Create your account or sign in to keep your progress on all your devices.",
     phone: "Phone (optional)", newPass: "New password (at least 8 characters)", changePass: "Change password", passChanged: "Password updated.",
     noBelts: "No belts yet. Pass a level exam to earn your first one.", belt: "Belt", art: "Art", date: "Date", none: "No belt",
-    checking: "Checking your session…", outKicker: "Your training", outTitle: "Sign in to your profile",
+    checking: "Checking your session…", outKicker: "Your training",
     outText: "Your rank, belts, achievements and certificates live here. Create your free account or sign in to see them.",
-    perks: ["Your progress follows you to any device", "Belts and certificates in your name", "Missions and scrolls unlocked", "Streak, achievements and XP"],
     outLocal: "You already have {n} XP from training in this browser: signing in adds them to your account.",
   };
   var ARTS = cfg.arts || [];
@@ -46,21 +44,29 @@
     return renderIn();
   }
 
+  /* Sin sesión no hay expediente que enseñar, solo la invitación: el formulario
+     de entrada vive en el modal de auth.js y se abre desde estos botones
+     (titular 2026-08-26). */
   function renderOut() {
     var xp = MF.totalXP();
     var mascota = MF.artImg("avatar", "1", "gate__mascot");
-    var perks = T.perks.map(function (t) { return "<li>" + esc(t) + "</li>"; }).join("");
     host.innerHTML = '<section class="gate gate--profile">'
       + (mascota ? '<div class="gate__art gate__art--mascot" aria-hidden="true">' + mascota + "</div>" : "")
-      + '<p class="kicker">' + T.outKicker + '</p><h2 class="gate__title">' + T.outTitle + '</h2>'
-      + '<p class="gate__text">' + T.outText + '</p>'
-      + '<ul class="gate__perks">' + perks + "</ul>"
-      + '<div data-auth-ui></div>'
+      + '<p class="kicker">' + T.outKicker + "</p>"
+      + '<p class="gate__text">' + T.outText + "</p>"
+      + '<p class="gate__acciones">'
+      + '<button class="btn btn--primary" type="button" data-abrir="signup">' + esc(MFAuth.T.tabSignup) + "</button>"
+      + '<button class="btn btn--ghost" type="button" data-abrir="login">' + esc(MFAuth.T.tabLogin) + "</button></p>"
       + (xp > 0 ? '<p class="form__note">' + T.outLocal.replace("{n}", xp) + "</p>" : "")
       + "</section>";
-    MFAuth.renderAuthUI(host.querySelector("[data-auth-ui]"), function () {
-      /* al entrar traemos el progreso de la cuenta antes de pintar el perfil */
-      MFAuth.pull().then(render, render);
+    host.querySelectorAll("[data-abrir]").forEach(function (b) {
+      b.addEventListener("click", function () {
+        MFAuth.abrirModal({ modo: b.getAttribute("data-abrir"), alEntrar: function () {
+          /* al entrar traemos el progreso de la cuenta antes de pintar el perfil */
+          MFAuth.irArriba();
+          MFAuth.pull().then(render, render);
+        } });
+      });
     });
   }
 

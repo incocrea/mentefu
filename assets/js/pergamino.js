@@ -47,6 +47,10 @@
   function cerrar(desdeHistorial) {
     if (!abierto) return;
     var conHistorial = abierto.historial;
+    /* el minipodcast vive DENTRO del pergamino: si se cierra la nota, se calla.
+       Solo el suyo: en la sala de pergaminos el reproductor es de la fila y
+       debe seguir sonando mientras se lee (2026-08-26). */
+    if (abierto.audioPropio && window.MFAudio) MFAudio.parar();
     abierto.caja.remove();
     document.removeEventListener("keydown", abierto.tecla);
     document.body.classList.remove("has-pergamino");
@@ -57,7 +61,7 @@
   }
   window.addEventListener("popstate", function () { if (abierto) cerrar(true); });
 
-  /* opts: { id, art, xp, kind, titulo, hecho: fn, alCompletar: fn, origen: elemento } */
+  /* opts: { id, art, xp, kind, titulo, audio, hecho: fn, alCompletar: fn, origen: elemento } */
   function abrir(opts) {
     cerrar();                       /* nunca dos pergaminos abiertos a la vez */
     var caja = el('<div class="pergamino-modal" role="dialog" aria-modal="true" aria-label="' + (opts.titulo || "") + '">' +
@@ -100,6 +104,23 @@
         "</div></div>");
       cuerpo.appendChild(vista);
       vista.querySelector(".pergamino-modal__titulo").textContent = data.title || opts.titulo || "";
+      /* El minipodcast, abajo y centrado dentro de la nota: se lee, y quien
+         prefiera escuchar le da al play sin salir de aquí. Es el mismo
+         reproductor compartido de audio.js, con su cambio de velocidad. */
+      if (opts.audio && window.MFAudio) {
+        var reproductor = MFAudio.montar({
+          src: opts.audio, item: opts.id, art: opts.art, xp: xp, kind: opts.kind,
+          hecho: function () { return leido || yaHecho(); },
+          alTerminar: function () {
+            leido = true;
+            pintar();                       /* el botón deja de ofrecer un XP ya cobrado */
+            if (opts.alCompletar) opts.alCompletar();
+          },
+        });
+        reproductor.classList.add("scroll-audio--nota");
+        vista.insertBefore(reproductor, vista.querySelector(".reader__nav"));
+        if (abierto && abierto.caja === caja) abierto.audioPropio = true;
+      }
       var fill = vista.querySelector(".mission__fill"), cuenta = vista.querySelector(".mission__count");
       var pagina = vista.querySelector(".reader__page");
       var prev = vista.querySelector("[data-prev]"), next = vista.querySelector("[data-next]");
@@ -143,7 +164,8 @@
       var sw = null;
       vista.addEventListener("pointerdown", function (e) {
         if (e.pointerType === "mouse") return;
-        if (e.target.closest && e.target.closest("button, a, input, textarea")) { sw = null; return; }
+        /* el reproductor no pasa página: arrastrar sobre él no es hojear */
+        if (e.target.closest && e.target.closest("button, a, input, textarea, .scroll-audio")) { sw = null; return; }
         sw = { x: e.clientX, y: e.clientY };
       });
       vista.addEventListener("pointerup", function (e) {

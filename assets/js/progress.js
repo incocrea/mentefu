@@ -433,13 +433,16 @@
     });
   }
 
-  /* Sin sesión, tocar un enlace dormido lleva a la puerta de entrada
-     en vez de no hacer nada. */
+  /* Sin sesión, tocar un enlace dormido abre el modal de cuenta ahí mismo; si
+     no hay cuentas (modo local) o el modal no está, queda la página de perfil
+     como puerta de entrada. */
   document.addEventListener("click", function (e) {
     var a = e.target.closest && e.target.closest("a[data-href]");
     if (!a) return;
     e.preventDefault();
-    if (sessionState === "out" && cfg.profileUrl) window.location.href = cfg.profileUrl;
+    if (sessionState !== "out") return;
+    if (window.MFAuth && MFAuth.abrirModal && MFAuth.abrirModal({})) return;
+    if (cfg.profileUrl) window.location.href = cfg.profileUrl;
   });
 
   /* El dojo se recorre en orden: los enlaces de niveles bloqueados avisan en
