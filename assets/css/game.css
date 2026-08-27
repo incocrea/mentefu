@@ -885,8 +885,13 @@ select.input option { color: var(--c-text); background: var(--c-white); }
 
 .arbol__lienzo { position: relative; aspect-ratio: 1; border-radius: var(--radius-lg); background:
     radial-gradient(80% 60% at 50% 38%, rgba(230, 59, 46, 0.12), transparent 70%), var(--c-ink-bg);
-  border: 1px solid var(--c-line-dark); overflow: hidden; touch-action: none; }
+  border: 1px solid var(--c-line-dark); overflow: hidden;
+  /* El dedo puede arrastrar la página desde el lienzo: antes `touch-action:
+     none` se comía el gesto y el sitio parecía atascado en esta zona
+     (titular 2026-08-27). Sobre un adorno manda el adorno, ver abajo. */
+  touch-action: pan-y; }
 .arbol__etapa { position: absolute; inset: 6%; width: 88%; height: 88%; object-fit: contain; user-select: none; }
+/* el adorno sí se queda el gesto: arrastrarlo no desplaza la página */
 .arbol__adorno { position: absolute; width: 13%; transform: translate(-50%, -50%); cursor: grab;
   filter: drop-shadow(0 3px 6px rgba(0,0,0,0.4)); user-select: none; touch-action: none; }
 .arbol__adorno--vuelo { cursor: grabbing; filter: drop-shadow(0 8px 16px rgba(0,0,0,0.55)); z-index: 4; }

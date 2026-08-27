@@ -296,8 +296,20 @@
       if (!d) return;
       d.movido = true;
       var r = lienzo.getBoundingClientRect();
-      d.img.style.left = Math.max(2, Math.min(98, ((e.clientX - r.left) / r.width) * 100)) + "%";
-      d.img.style.top = Math.max(2, Math.min(98, ((e.clientY - r.top) / r.height) * 100)) + "%";
+      /* El adorno no puede salirse del lienzo: el tope se calcula con su medio
+         ancho y medio alto reales (va centrado en su posición), así se queda
+         ENTERO dentro aunque cambie su tamaño. */
+      var mx = r.width ? (d.img.offsetWidth / 2 / r.width) * 100 : 6.5;
+      var my = r.height ? (d.img.offsetHeight / 2 / r.height) * 100 : 6.5;
+      d.img.style.left = Math.max(mx, Math.min(100 - mx, ((e.clientX - r.left) / r.width) * 100)) + "%";
+      d.img.style.top = Math.max(my, Math.min(100 - my, ((e.clientY - r.top) / r.height) * 100)) + "%";
+    });
+    /* si el navegador se queda el gesto (scroll de la página), el arrastre se
+       cancela: sin esto el adorno seguía pegado al dedo después */
+    lienzo.addEventListener("pointercancel", function () {
+      if (!d) return;
+      d.img.classList.remove("arbol__adorno--vuelo");
+      d = null;
     });
     lienzo.addEventListener("pointerup", function (e) {
       if (!d) return;
