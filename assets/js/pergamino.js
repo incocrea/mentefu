@@ -93,9 +93,13 @@
       var leido = yaHecho();
 
       cuerpo.innerHTML = "";
+      /* La cabecera lleva el hilo de la lectura Y el minipodcast: se queda
+         pegada arriba, así el control no se pierde al bajar por el texto
+         (titular 2026-08-26). */
       var vista = el('<div class="pergamino-modal__vista">' +
         '<div class="reader__top"><div class="mission__bar"><div class="mission__fill"></div></div>' +
-        '<span class="mission__count"></span></div>' +
+        '<div class="pergamino-modal__fila"><span class="pergamino-modal__audio"></span>' +
+        '<span class="mission__count"></span></div></div>' +
         '<h2 class="pergamino-modal__titulo"></h2>' +
         '<div class="prose reader__page"></div>' +
         '<div class="reader__nav">' +
@@ -104,9 +108,9 @@
         "</div></div>");
       cuerpo.appendChild(vista);
       vista.querySelector(".pergamino-modal__titulo").textContent = data.title || opts.titulo || "";
-      /* El minipodcast, abajo y centrado dentro de la nota: se lee, y quien
-         prefiera escuchar le da al play sin salir de aquí. Es el mismo
-         reproductor compartido de audio.js, con su cambio de velocidad. */
+      /* El minipodcast comparte la fila de cabecera con el número de parte: se
+         lee, y quien prefiera escuchar le da al play sin salir de aquí. Es el
+         mismo reproductor compartido de audio.js, con su cambio de velocidad. */
       if (opts.audio && window.MFAudio) {
         var reproductor = MFAudio.montar({
           src: opts.audio, item: opts.id, art: opts.art, xp: xp, kind: opts.kind,
@@ -118,7 +122,8 @@
           },
         });
         reproductor.classList.add("scroll-audio--nota");
-        vista.insertBefore(reproductor, vista.querySelector(".reader__nav"));
+        vista.querySelector(".pergamino-modal__audio").appendChild(reproductor);
+        vista.querySelector(".pergamino-modal__fila").classList.add("tiene-audio");
         if (abierto && abierto.caja === caja) abierto.audioPropio = true;
       }
       var fill = vista.querySelector(".mission__fill"), cuenta = vista.querySelector(".mission__count");

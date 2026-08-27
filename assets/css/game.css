@@ -1079,7 +1079,33 @@ html:not([data-admin-on]) [data-admin-link] { display: none; }
   font-weight: 800; line-height: 1.15; margin: 0 0 0.9rem; }
 .pergamino-modal .reader__page { max-width: 34rem; margin-inline: auto; font-size: 1.03rem; line-height: 1.7; }
 .pergamino-modal .reader__page > h2:first-child { margin-top: 0; }
-.pergamino-modal .reader__top { margin: 0 0 1rem; padding: 0 1.6rem 0.7rem 0; border-bottom: 1px dashed var(--scroll-line-soft); }
+/* Cabecera pegada: el hilo de lectura y el minipodcast no se pierden de vista
+   al bajar por el texto (titular 2026-08-26). El fondo es el del pergamino:
+   el texto pasa por debajo sin transparentarse. */
+.pergamino-modal .reader__top { display: block; position: sticky; top: 0; z-index: 2;
+  margin: 0 0 1rem; padding: 0.2rem 1.6rem 0.7rem 0; background: var(--scroll-paper);
+  border-bottom: 1px dashed var(--scroll-line-soft);
+  /* la caja tiene su propio relleno arriba: sin esto, el texto asomaba por ese
+     hueco al pasar por detrás. La sombra sin desenfoque lo pinta de papel y el
+     scroll la recorta en el borde. */
+  box-shadow: 0 -1.9rem 0 var(--scroll-paper); }
+/* 70 / 30: el reproductor manda, el número de parte acompaña */
+.pergamino-modal__fila { display: grid; grid-template-columns: 1fr; align-items: center; gap: 0.5rem; margin-top: 0.55rem; }
+.pergamino-modal__fila.tiene-audio { grid-template-columns: 7fr 3fr; }
+.pergamino-modal__fila .mission__count { text-align: right; }
+.pergamino-modal__fila:not(.tiene-audio) .pergamino-modal__audio { display: none; }
+/* el reproductor, en versión compacta para caber en la cabecera */
+.scroll-audio--nota { margin: 0; padding: 0.45rem 0.6rem; gap: 0.2rem 0.6rem;
+  background: rgba(122, 74, 42, 0.08); border-color: var(--scroll-line-soft); }
+.scroll-audio--nota .scroll-audio__btn { width: 2.3rem; height: 2.3rem; }
+.scroll-audio--nota .scroll-audio__btn svg { width: 1.15rem; height: 1.15rem; }
+.scroll-audio--nota .scroll-audio__label { font-size: 0.86rem; }
+.scroll-audio--nota .scroll-audio__meta { font-size: 0.72rem; }
+@media (max-width: 40rem) {
+  /* en móvil, primero el control y debajo el número de parte */
+  .pergamino-modal__fila.tiene-audio { grid-template-columns: 1fr; }
+  .pergamino-modal__fila .mission__count { text-align: left; }
+}
 .pergamino-modal .mission__bar { background: rgba(122, 74, 42, 0.14); height: 0.45rem; }
 .pergamino-modal .reader__nav { margin-top: 1.4rem; padding-top: 1rem; border-top: 1px dashed var(--scroll-line-soft);
   display: flex; gap: 0.6rem; align-items: center; justify-content: space-between; }
