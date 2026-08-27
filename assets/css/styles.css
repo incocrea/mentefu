@@ -70,6 +70,14 @@ html {
   scroll-behavior: smooth;
   scroll-padding-top: calc(var(--header-h) + 1rem);
 }
+/* Zoom de casa (titular 2026-08-27): el móvil se ve a tamaño natural, las
+   tablets y los portátiles pequeños alejan un 20 % para que quepa más de una
+   vez, y las pantallas grandes un 10 %. Es el mismo efecto que el zoom del
+   navegador —el del alumno se multiplica con este, no se pierde—; las media
+   queries siguen midiendo el viewport real, así que ningún corte se mueve.
+   Un navegador sin `zoom` (Firefox anterior a 126) enseña el sitio al 100 %. */
+@media (min-width: 601px) and (max-width: 1400px) { :root { zoom: 0.8; } }
+@media (min-width: 1401px) { :root { zoom: 0.9; } }
 [id] { scroll-margin-top: calc(var(--header-h) + 0.75rem); }
 
 body {
@@ -435,10 +443,14 @@ a.belt__link:hover { transform: translateY(-2px); box-shadow: var(--shadow); }
 .belt-chip__swatch { width: 1.6rem; height: 0.65rem; border-radius: 2px; background: var(--belt); box-shadow: inset 0 0 0 1px rgba(0,0,0,0.25); }
 
 /* Progreso del Dojo (dojo.js) */
-.dojo-progress { margin: 1.5rem 0; padding: 1.25rem 1.4rem; border-radius: var(--radius-lg); background: var(--c-ink-bg); color: var(--c-text-on-dark); }
-.dojo-progress__bar { height: 0.6rem; border-radius: 999px; background: var(--c-ink-panel-2); overflow: hidden; margin: 0.75rem 0; }
+/* Una sola fila —etiqueta y barra— en escritorio; en móvil la etiqueta se
+   pone encima de la barra (titular 2026-08-27). */
+.dojo-progress { display: grid; grid-template-columns: auto 1fr; align-items: center; gap: 0.4rem 1.1rem;
+  margin: 0 0 1.75rem; padding: 0.9rem 1.2rem; border-radius: var(--radius-lg); background: var(--c-ink-bg); color: var(--c-text-on-dark); }
+.dojo-progress__bar { height: 0.6rem; border-radius: 999px; background: var(--c-ink-panel-2); overflow: hidden; }
 .dojo-progress__fill { height: 100%; width: 0; background: linear-gradient(90deg, var(--belt-yellow), var(--c-accent)); transition: width 0.4s ease; }
-.dojo-progress__text { margin: 0; font-size: var(--fs-small); color: var(--c-text-on-dark-soft); }
+.dojo-progress__text { margin: 0; font-size: var(--fs-small); color: var(--c-text-on-dark-soft); white-space: nowrap; }
+@media (max-width: 40rem) { .dojo-progress { grid-template-columns: 1fr; } .dojo-progress__text { white-space: normal; } }
 .dojo-progress .btn { margin-top: 0.5rem; }
 .level-complete { margin: 2rem 0; padding: 1.5rem; border-radius: var(--radius-lg); border: 2px dashed var(--c-line-light); text-align: center; }
 .level-complete.is-done { border-style: solid; border-color: var(--belt-green); background: #eef8f1; }
