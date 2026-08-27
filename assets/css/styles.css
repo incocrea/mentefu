@@ -272,6 +272,9 @@ button { font: inherit; }
 .layout-page main > .container, .layout-level main > .container, .layout-section main > .container {
   padding-block: clamp(2.5rem, 6vw, 4.5rem);
 }
+/* El nivel abre con su indicador de progreso, no con texto: va pegado al
+   subnav, sin el aire que necesita una página de lectura (titular 2026-08-27). */
+.layout-level main > .container { padding-top: clamp(1rem, 2.5vw, 1.6rem); }
 .prose { font-size: 1.0625rem; }
 .prose > :first-child { margin-top: 0; }
 .prose h2 { font-family: var(--f-display); font-size: var(--fs-h2); font-weight: 800; line-height: 1.12; letter-spacing: -0.015em; margin: 2.5rem 0 0.9rem; }
@@ -449,7 +452,9 @@ a.belt__link:hover { transform: translateY(-2px); box-shadow: var(--shadow); }
   margin: 0 0 1.75rem; padding: 0.9rem 1.2rem; border-radius: var(--radius-lg); background: var(--c-ink-bg); color: var(--c-text-on-dark); }
 .dojo-progress__bar { height: 0.6rem; border-radius: 999px; background: var(--c-ink-panel-2); overflow: hidden; }
 .dojo-progress__fill { height: 100%; width: 0; background: linear-gradient(90deg, var(--belt-yellow), var(--c-accent)); transition: width 0.4s ease; }
-.dojo-progress__text { margin: 0; font-size: var(--fs-small); color: var(--c-text-on-dark-soft); white-space: nowrap; }
+/* el margen inferior que la prosa da a los <p> descentraba la etiqueta frente
+   a su barra: aquí manda el bloque */
+.dojo-progress__text, .prose .dojo-progress__text { margin: 0; font-size: var(--fs-small); line-height: 1.35; color: var(--c-text-on-dark-soft); white-space: nowrap; }
 @media (max-width: 40rem) { .dojo-progress { grid-template-columns: 1fr; } .dojo-progress__text { white-space: normal; } }
 .dojo-progress .btn { margin-top: 0.5rem; }
 .level-complete { margin: 2rem 0; padding: 1.5rem; border-radius: var(--radius-lg); border: 2px dashed var(--c-line-light); text-align: center; }
