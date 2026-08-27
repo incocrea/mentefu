@@ -123,48 +123,108 @@
     if (interactivo) armarArrastre(lienzo);
   }
 
-  /* Coloca el tooltip dentro del viewport: lo mide oculto, calcula cuánto hay
-     que correrlo en horizontal (la flecha se queda apuntando al accesorio) y
-     elige el lado —arriba o abajo— donde se vea ENTERO. */
+  /* Coloca el tooltip ENTERO dentro del viewport, midiéndolo antes de
+     enseñarlo. Nunca se recorta ni lleva scroll: si no cabe, primero se
+     ensancha —más ancho, menos líneas, menos alto— y, si aun así no cabe por
+     arriba ni por abajo, se va al costado, donde dispone de toda la franja
+     entre la cabecera y el borde inferior.
+
+     El techo NO es el borde de la pantalla: la cabecera es pegajosa y se pinta
+     por encima del tooltip, así que lo que quede debajo de ella sale cortado
+     (se veía en escritorio, 2026-08-26). */
   function situarTip(cel) {
     var tip = cel.querySelector(".adorno-tip");
     if (!tip) return;
     var margen = 8, hueco = 10;              /* holgura al borde y para la flecha */
-    tip.classList.remove("is-abajo", "is-recortado");
-    tip.style.removeProperty("--tip-max");
-    tip.classList.add("is-midiendo");        /* visible pero invisible: se puede medir */
-    var ancho = tip.offsetWidth, alto = tip.offsetHeight;
-    tip.classList.remove("is-midiendo");
-    /* La posición se calcula desde el centro de la celda y el tamaño del
-       tooltip —no desde su rect actual, que ya trae aplicado el desplazamiento
-       anterior o una animación a medias y devuelve medidas engañosas. */
+    tip.classList.remove("is-abajo", "is-lado", "is-lado-izq");
+    tip.style.removeProperty("--tip-dx");
+    tip.style.removeProperty("--tip-dy");
+    tip.style.removeProperty("--tip-ancho");
+
+    var techo = margen;
+    var cab = document.querySelector(".header");
+    if (cab) {
+      var rc = cab.getBoundingClientRect();
+      var pos = getComputedStyle(cab).position;
+      if ((pos === "sticky" || pos === "fixed") && rc.bottom > techo) techo = rc.bottom + margen;
+    }
+    var suelo = window.innerHeight - margen;
     var r = cel.getBoundingClientRect();
+    var arriba = r.top - hueco - techo;                   /* alto libre por encima */
+    var abajo = suelo - (r.bottom + hueco);               /* y por debajo */
+    var franja = suelo - techo;                           /* y de lado: toda la franja */
+
+    tip.classList.add("is-midiendo");        /* visible pero invisible: se puede medir */
+    function medir(ancho) {
+      if (ancho) tip.style.setProperty("--tip-ancho", ancho + "px");
+      else tip.style.removeProperty("--tip-ancho");
+      return { w: tip.offsetWidth, h: tip.offsetHeight };
+    }
+    var base = medir(null);                  /* el ancho que manda el CSS */
+    var anchoMax = Math.min(30 * 16, window.innerWidth - margen * 2);   /* 30rem tope */
+    var vertical = Math.max(arriba, abajo);
+
+    /* 1. ¿cabe ya en el lado con más sitio? */
+    var elegido = base.h <= vertical ? base : null;
+    /* 2. si no, se ensancha por pasos hasta que quepa */
+    for (var w = base.w + 56; !elegido && w <= anchoMax; w += 56) {
+      var m = medir(w);
+      if (m.h <= vertical) elegido = m;
+    }
+    if (elegido) {
+      if (elegido !== base) tip.style.setProperty("--tip-ancho", elegido.w + "px");
+      else tip.style.removeProperty("--tip-ancho");
+      if (abajo > arriba && elegido.h > arriba) tip.classList.add("is-abajo");
+      colocarEnHorizontal(tip, r, elegido.w, margen);
+      tip.classList.remove("is-midiendo");
+      return;
+    }
+
+    /* 3. al costado: se elige el lado con más aire y el ancho que quepa ahí */
+    var sitioDer = window.innerWidth - margen - (r.right + hueco);
+    var sitioIzq = (r.left - hueco) - margen;
+    var izquierda = sitioIzq > sitioDer;
+    var anchoLado = Math.min(base.w, Math.max(sitioIzq, sitioDer));
+    var lat = medir(Math.max(140, Math.round(anchoLado)));
+    /* si aun de lado sobra alto, se ensancha lo que el hueco permita */
+    for (var w2 = lat.w + 56; lat.h > franja && w2 <= Math.max(sitioIzq, sitioDer); w2 += 56) {
+      lat = medir(w2);
+    }
+    /* Ni de lado cabe (contenido larguísimo en una pantalla mínima): entre
+       quedarse de lado o arriba/abajo al ancho máximo, gana lo que deje menos
+       texto fuera. Nunca hay scroll: se enseña lo máximo posible. */
+    if (lat.h > franja) {
+      var ancho2 = medir(anchoMax);
+      if (ancho2.h - vertical < lat.h - franja) {
+        tip.style.setProperty("--tip-ancho", ancho2.w + "px");
+        if (abajo > arriba) tip.classList.add("is-abajo");
+        colocarEnHorizontal(tip, r, ancho2.w, margen);
+        tip.classList.remove("is-midiendo");
+        return;
+      }
+      lat = medir(lat.w);
+    }
+    tip.classList.add("is-lado");
+    if (izquierda) tip.classList.add("is-lado-izq");
+    tip.style.setProperty("--tip-ancho", lat.w + "px");
+    /* centrado en el accesorio y empujado dentro de la franja */
+    var centroY = r.top + r.height / 2;
+    var dy = 0;
+    if (centroY - lat.h / 2 < techo) dy = techo - (centroY - lat.h / 2);
+    else if (centroY + lat.h / 2 > suelo) dy = suelo - (centroY + lat.h / 2);
+    tip.style.setProperty("--tip-dy", Math.round(dy) + "px");
+    tip.classList.remove("is-midiendo");
+  }
+
+  /* Corre el tooltip en horizontal lo justo para no salirse; la flecha se queda
+     apuntando al accesorio (compensa el mismo desplazamiento en el CSS). */
+  function colocarEnHorizontal(tip, r, ancho, margen) {
     var centro = r.left + r.width / 2;
     var izq = centro - ancho / 2, der = centro + ancho / 2;
     var dx = 0;
     if (izq < margen) dx = margen - izq;
     else if (der > window.innerWidth - margen) dx = (window.innerWidth - margen) - der;
     tip.style.setProperty("--tip-dx", Math.round(dx) + "px");
-    /* El techo NO es el borde de la pantalla: la cabecera es pegajosa y se
-       pinta por encima del tooltip, así que lo que quede debajo de ella sale
-       cortado (se veía en escritorio, 2026-08-26). */
-    var techo = margen;
-    var cab = document.querySelector(".header");
-    if (cab) {
-      var pos = getComputedStyle(cab).position;
-      var rc = cab.getBoundingClientRect();
-      if ((pos === "sticky" || pos === "fixed") && rc.bottom > techo) techo = rc.bottom + margen;
-    }
-    var arriba = r.top - hueco - techo;                        /* sitio por encima */
-    var abajo = (window.innerHeight - margen) - (r.bottom + hueco);   /* y por debajo */
-    if (alto <= arriba) return;                                /* cabe arriba: como siempre */
-    if (alto <= abajo) { tip.classList.add("is-abajo"); return; }
-    /* No cabe entero por ningún lado (pantallas muy bajas): se queda del lado
-       con más sitio y se limita a ese alto, con scroll propio, para que no se
-       pierda nada bajo la cabecera. */
-    if (abajo > arriba) tip.classList.add("is-abajo");
-    tip.classList.add("is-recortado");
-    tip.style.setProperty("--tip-max", Math.max(90, Math.floor(Math.max(arriba, abajo))) + "px");
   }
 
   function pintarCofre(cofre, lienzo) {

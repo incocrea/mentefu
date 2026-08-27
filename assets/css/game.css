@@ -918,7 +918,9 @@ select.input option { color: var(--c-text); background: var(--c-white); }
    sobresale del documento y crea scroll horizontal fantasma */
 .adorno-tip { display: none; position: absolute; left: 50%; bottom: calc(100% + 0.6rem);
   transform: translateX(calc(-50% + var(--tip-dx, 0px)));
-  width: 15.5rem; max-width: calc(100vw - 1.5rem); text-align: left; background: var(--c-ink-bg); color: var(--c-text-on-dark);
+  /* arbol.js ajusta el ancho antes de enseñarlo: un tooltip más ancho ocupa
+     menos líneas y así cabe entero sin recortes ni scroll */
+  width: var(--tip-ancho, 15.5rem); max-width: calc(100vw - 1.5rem); text-align: left; background: var(--c-ink-bg); color: var(--c-text-on-dark);
   border: 1px solid var(--c-accent-soft); border-radius: var(--radius); padding: 0.8rem 0.95rem;
   pointer-events: none; z-index: 30; box-shadow: 0 14px 30px rgba(0,0,0,0.45); }
 @keyframes tip-in { from { opacity: 0; transform: translateX(calc(-50% + var(--tip-dx, 0px))) translateY(4px); }
@@ -929,12 +931,20 @@ select.input option { color: var(--c-text); background: var(--c-white); }
 .adorno-tip.is-midiendo { display: block; visibility: hidden; animation: none; }
 /* si no cabe por arriba (cofre alto en la pantalla), se despliega hacia abajo */
 .adorno-tip.is-abajo { bottom: auto; top: calc(100% + 0.6rem); }
-/* pantalla demasiado baja para el tooltip entero: se limita al hueco que hay y
-   se puede desplazar (es hijo del botón, así que el hover no se pierde) */
-.adorno-tip.is-recortado { max-height: var(--tip-max, none); overflow-y: auto; pointer-events: auto; overscroll-behavior: contain; }
 .adorno-tip.is-abajo::after { top: auto; bottom: 100%;
   border-top-color: transparent; border-bottom-color: var(--c-accent-soft); }
 .adorno-tip--legendario.is-abajo::after { border-top-color: transparent; border-bottom-color: #d9a521; }
+/* Último recurso cuando ni arriba ni abajo hay alto suficiente: al costado, que
+   dispone de toda la franja entre la cabecera y el borde inferior. */
+.adorno-tip.is-lado { bottom: auto; top: 50%; left: calc(100% + 0.6rem); animation: none;
+  transform: translateY(calc(-50% + var(--tip-dy, 0px))); }
+.adorno-tip.is-lado.is-lado-izq { left: auto; right: calc(100% + 0.6rem); }
+.adorno-tip.is-lado::after { top: calc(50% - var(--tip-dy, 0px)); bottom: auto; left: auto; right: 100%;
+  transform: translateY(-50%); border-top-color: transparent; border-right-color: var(--c-accent-soft); }
+.adorno-tip.is-lado.is-lado-izq::after { right: auto; left: 100%;
+  border-right-color: transparent; border-left-color: var(--c-accent-soft); }
+.adorno-tip--legendario.is-lado::after { border-right-color: #d9a521; }
+.adorno-tip--legendario.is-lado.is-lado-izq::after { border-right-color: transparent; border-left-color: #d9a521; }
 .adorno-tip::after { content: ""; position: absolute; top: 100%; left: calc(50% - var(--tip-dx, 0px)); transform: translateX(-50%);
   border: 7px solid transparent; border-top-color: var(--c-accent-soft); }
 .adorno-tip--legendario { border-color: #d9a521; }
@@ -953,7 +963,7 @@ select.input option { color: var(--c-text); background: var(--c-white); }
 
 /* los tooltips de la primera fila del cofre caben mejor debajo en móvil */
 @media (max-width: 40rem) {
-  .adorno-tip { width: 13.5rem; }
+  .adorno-tip { width: var(--tip-ancho, 13.5rem); }
   /* misma silueta en móvil, solo más apretada */
   .arbol__adornos { gap: 0.4rem; }
   .arbol__adornos .adorno { padding: 0.35rem; }
