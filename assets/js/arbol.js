@@ -124,13 +124,14 @@
   }
 
   /* Coloca el tooltip dentro del viewport: lo mide oculto, calcula cuánto hay
-     que correrlo en horizontal (la flecha se queda apuntando al accesorio) y,
-     si no cabe por arriba, lo despliega hacia abajo. */
+     que correrlo en horizontal (la flecha se queda apuntando al accesorio) y
+     elige el lado —arriba o abajo— donde se vea ENTERO. */
   function situarTip(cel) {
     var tip = cel.querySelector(".adorno-tip");
     if (!tip) return;
-    var margen = 8;
-    tip.classList.remove("is-abajo");
+    var margen = 8, hueco = 10;              /* holgura al borde y para la flecha */
+    tip.classList.remove("is-abajo", "is-recortado");
+    tip.style.removeProperty("--tip-max");
     tip.classList.add("is-midiendo");        /* visible pero invisible: se puede medir */
     var ancho = tip.offsetWidth, alto = tip.offsetHeight;
     tip.classList.remove("is-midiendo");
@@ -144,7 +145,26 @@
     if (izq < margen) dx = margen - izq;
     else if (der > window.innerWidth - margen) dx = (window.innerWidth - margen) - der;
     tip.style.setProperty("--tip-dx", Math.round(dx) + "px");
-    if (r.top - alto - 10 < margen) tip.classList.add("is-abajo");
+    /* El techo NO es el borde de la pantalla: la cabecera es pegajosa y se
+       pinta por encima del tooltip, así que lo que quede debajo de ella sale
+       cortado (se veía en escritorio, 2026-08-26). */
+    var techo = margen;
+    var cab = document.querySelector(".header");
+    if (cab) {
+      var pos = getComputedStyle(cab).position;
+      var rc = cab.getBoundingClientRect();
+      if ((pos === "sticky" || pos === "fixed") && rc.bottom > techo) techo = rc.bottom + margen;
+    }
+    var arriba = r.top - hueco - techo;                        /* sitio por encima */
+    var abajo = (window.innerHeight - margen) - (r.bottom + hueco);   /* y por debajo */
+    if (alto <= arriba) return;                                /* cabe arriba: como siempre */
+    if (alto <= abajo) { tip.classList.add("is-abajo"); return; }
+    /* No cabe entero por ningún lado (pantallas muy bajas): se queda del lado
+       con más sitio y se limita a ese alto, con scroll propio, para que no se
+       pierda nada bajo la cabecera. */
+    if (abajo > arriba) tip.classList.add("is-abajo");
+    tip.classList.add("is-recortado");
+    tip.style.setProperty("--tip-max", Math.max(90, Math.floor(Math.max(arriba, abajo))) + "px");
   }
 
   function pintarCofre(cofre, lienzo) {

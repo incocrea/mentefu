@@ -929,6 +929,9 @@ select.input option { color: var(--c-text); background: var(--c-white); }
 .adorno-tip.is-midiendo { display: block; visibility: hidden; animation: none; }
 /* si no cabe por arriba (cofre alto en la pantalla), se despliega hacia abajo */
 .adorno-tip.is-abajo { bottom: auto; top: calc(100% + 0.6rem); }
+/* pantalla demasiado baja para el tooltip entero: se limita al hueco que hay y
+   se puede desplazar (es hijo del botón, así que el hover no se pierde) */
+.adorno-tip.is-recortado { max-height: var(--tip-max, none); overflow-y: auto; pointer-events: auto; overscroll-behavior: contain; }
 .adorno-tip.is-abajo::after { top: auto; bottom: 100%;
   border-top-color: transparent; border-bottom-color: var(--c-accent-soft); }
 .adorno-tip--legendario.is-abajo::after { border-top-color: transparent; border-bottom-color: #d9a521; }
