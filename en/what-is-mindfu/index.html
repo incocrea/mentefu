@@ -13,14 +13,19 @@
   } catch (e) { document.documentElement.setAttribute("data-session", "out"); }
   </script>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <!-- viewport-fit=cover: sin él, env(safe-area-inset-*) vale SIEMPRE 0 y los
+       modales a pantalla completa (pergamino y reto) meterían su botón de cerrar
+       debajo de la barra de estado del iPhone con notch. El contenido normal no
+       se descoloca porque el layout sigue midiéndose contra el ancho seguro: solo
+       los fondos a sangre y los cálculos que pidan la inset ven la diferencia. -->
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
   <title>What MindFu is (and is not) — MindFu</title>
-  <meta name="description" content="MindFu is an emotional education school that borrows the language of martial arts as a metaphor. It is not therapy, not a martial arts school and not a doctrine.">
+  <meta name="description" content="MindFu is a super dojo of courses for training your mind by playing, borrowing the language of martial arts as a metaphor. It is not therapy, not a martial arts school and not a doctrine.">
   <link rel="canonical" href="https://www.mentefu.com/en/what-is-mindfu/">
   <meta property="og:type" content="article">
   <meta property="og:site_name" content="MindFu">
   <meta property="og:title" content="What MindFu is (and is not) — MindFu">
-  <meta property="og:description" content="MindFu is an emotional education school that borrows the language of martial arts as a metaphor. It is not therapy, not a martial arts school and not a doctrine.">
+  <meta property="og:description" content="MindFu is a super dojo of courses for training your mind by playing, borrowing the language of martial arts as a metaphor. It is not therapy, not a martial arts school and not a doctrine.">
   <meta property="og:url" content="https://www.mentefu.com/en/what-is-mindfu/">
   <meta property="og:image" content="https://www.mentefu.com/assets/img/og-mindfu.png">
   <meta property="og:image:width" content="1200">
@@ -37,9 +42,9 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@500;600;700;800&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="../../assets/css/styles.css?v=1aae2d65">
-  <link rel="stylesheet" href="../../assets/css/game.css?v=680b2584">
-<script>window.MF_CONFIG = {"lang": "en", "brand": "mentefu", "prefix": "../", "supabaseUrl": "https://qlalxlsnmvqrsfwxstbu.supabase.co", "supabaseAnonKey": "sb_publishable_pzcyZyaWUmB4TIHnYW4qVQ_fFg8FrKM", "gate": true, "xp": {"mission": 20, "quiz_first_try": 5, "practice": 10, "scroll": 10, "exam": 50, "tool": 15, "exam_pass": 0.75}, "ranks": [[0, "Novice"], [100, "Apprentice"], [300, "Practitioner"], [700, "Adept"], [1500, "Hall Master"], [3000, "Grand Master"]], "belts": [{"n": 1, "key": "white", "color": "#f4f1ea", "name": "White"}, {"n": 2, "key": "yellow", "color": "#f2c230", "name": "Yellow"}, {"n": 3, "key": "orange", "color": "#f07c22", "name": "Orange"}, {"n": 4, "key": "green", "color": "#2e9e5b", "name": "Green"}, {"n": 5, "key": "blue", "color": "#2f6fd8", "name": "Blue"}, {"n": 6, "key": "purple", "color": "#7b3fbf", "name": "Purple"}, {"n": 7, "key": "brown", "color": "#7a4a2a", "name": "Brown"}, {"n": 8, "key": "black", "color": "#1a1a1f", "name": "Black"}], "profileUrl": "../profile/", "artsUrl": "../arts/", "assets": "../../", "gameArt": {"art-ansiafu": "assets/img/game/art-ansiafu.webp", "art-cargafu": "assets/img/game/art-cargafu.webp", "art-culpafu": "assets/img/game/art-culpafu.webp", "art-duelofu": "assets/img/game/art-duelofu.webp", "art-espejofu": "assets/img/game/art-espejofu.webp", "art-limitefu": "assets/img/game/art-limitefu.webp", "art-lovefu": "assets/img/game/art-lovefu.webp", "art-manipufu": "assets/img/game/art-manipufu.webp", "art-narcifu": "assets/img/game/art-narcifu.webp", "art-platafu": "assets/img/game/art-platafu.webp", "art-raizfu": "assets/img/game/art-raizfu.webp", "art-vinculofu": "assets/img/game/art-vinculofu.webp", "avatar-1": "assets/img/game/avatar-1.webp", "avatar-2": "assets/img/game/avatar-2.webp", "avatar-3": "assets/img/game/avatar-3.webp", "avatar-4": "assets/img/game/avatar-4.webp", "avatar-5": "assets/img/game/avatar-5.webp", "avatar-6": "assets/img/game/avatar-6.webp", "avatar-7": "assets/img/game/avatar-7.webp", "avatar-8": "assets/img/game/avatar-8.webp", "badge-belt-black": "assets/img/game/badge-belt-black.webp", "badge-belt-green": "assets/img/game/badge-belt-green.webp", "badge-belt-white": "assets/img/game/badge-belt-white.webp", "badge-belt-yellow": "assets/img/game/badge-belt-yellow.webp", "badge-early-bird": "assets/img/game/badge-early-bird.webp", "badge-first-mission": "assets/img/game/badge-first-mission.webp", "badge-first-scroll": "assets/img/game/badge-first-scroll.webp", "badge-first-tool": "assets/img/game/badge-first-tool.webp", "badge-missions-10": "assets/img/game/badge-missions-10.webp", "badge-night-owl": "assets/img/game/badge-night-owl.webp", "badge-perfect-exam": "assets/img/game/badge-perfect-exam.webp", "badge-streak-3": "assets/img/game/badge-streak-3.webp", "badge-streak-7": "assets/img/game/badge-streak-7.webp", "belt-black": "assets/img/game/belt-black.webp", "belt-blue": "assets/img/game/belt-blue.webp", "belt-brown": "assets/img/game/belt-brown.webp", "belt-green": "assets/img/game/belt-green.webp", "belt-orange": "assets/img/game/belt-orange.webp", "belt-purple": "assets/img/game/belt-purple.webp", "belt-white": "assets/img/game/belt-white.webp", "belt-yellow": "assets/img/game/belt-yellow.webp", "camino-viaje": "assets/img/game/camino-viaje.webp", "home-logros": "assets/img/game/home-logros.webp", "home-misiones": "assets/img/game/home-misiones.webp", "home-pergaminos": "assets/img/game/home-pergaminos.webp"}, "arts": [{"key": "culpafu", "name": "GuiltFu", "url": "../guiltfu/", "color": "#e63b2e", "icon": "🥋", "status": "active"}], "artStats": {"ansiafu": {"missions": 0, "levels": 0}, "cargafu": {"missions": 0, "levels": 0}, "duelofu": {"missions": 0, "levels": 0}, "espejofu": {"missions": 0, "levels": 0}, "culpafu": {"missions": 24, "levels": 8}, "limitefu": {"missions": 0, "levels": 0}, "lovefu": {"missions": 0, "levels": 0}, "manipufu": {"missions": 0, "levels": 0}, "narcifu": {"missions": 0, "levels": 0}, "platafu": {"missions": 0, "levels": 0}, "raizfu": {"missions": 0, "levels": 0}, "vinculofu": {"missions": 0, "levels": 0}}, "page": {"id": "about", "layout": "page", "art": null, "level": null}};</script>
+  <link rel="stylesheet" href="../../assets/css/styles.css?v=479dc47d">
+  <link rel="stylesheet" href="../../assets/css/game.css?v=c1b70b10">
+<script>window.MF_CONFIG = {"lang": "en", "brand": "mentefu", "prefix": "../", "supabaseUrl": "https://qlalxlsnmvqrsfwxstbu.supabase.co", "supabaseAnonKey": "sb_publishable_pzcyZyaWUmB4TIHnYW4qVQ_fFg8FrKM", "gate": true, "xp": {"mission": 20, "quiz_first_try": 5, "scroll": 10, "exam": 50, "tool": 15, "exam_pass": 0.75}, "ranks": [[0, "Novice"], [100, "Apprentice"], [300, "Practitioner"], [700, "Adept"], [1500, "Hall Master"], [3000, "Grand Master"]], "belts": [{"n": 1, "key": "white", "color": "#f4f1ea", "name": "White"}, {"n": 2, "key": "yellow", "color": "#f2c230", "name": "Yellow"}, {"n": 3, "key": "orange", "color": "#f07c22", "name": "Orange"}, {"n": 4, "key": "green", "color": "#2e9e5b", "name": "Green"}, {"n": 5, "key": "blue", "color": "#2f6fd8", "name": "Blue"}, {"n": 6, "key": "purple", "color": "#7b3fbf", "name": "Purple"}, {"n": 7, "key": "brown", "color": "#7a4a2a", "name": "Brown"}, {"n": 8, "key": "black", "color": "#1a1a1f", "name": "Black"}], "profileUrl": "../profile/", "artsUrl": "../arts/", "assets": "../../", "gameArt": {"aprobar": "assets/img/game/aprobar.webp", "art-ansiafu": "assets/img/game/art-ansiafu.webp", "art-cargafu": "assets/img/game/art-cargafu.webp", "art-culpafu": "assets/img/game/art-culpafu.webp", "art-duelofu": "assets/img/game/art-duelofu.webp", "art-espejofu": "assets/img/game/art-espejofu.webp", "art-limitefu": "assets/img/game/art-limitefu.webp", "art-lovefu": "assets/img/game/art-lovefu.webp", "art-manipufu": "assets/img/game/art-manipufu.webp", "art-narcifu": "assets/img/game/art-narcifu.webp", "art-platafu": "assets/img/game/art-platafu.webp", "art-raizfu": "assets/img/game/art-raizfu.webp", "art-vinculofu": "assets/img/game/art-vinculofu.webp", "badge-belt-black": "assets/img/game/badge-belt-black.webp", "badge-belt-green": "assets/img/game/badge-belt-green.webp", "badge-belt-white": "assets/img/game/badge-belt-white.webp", "badge-belt-yellow": "assets/img/game/badge-belt-yellow.webp", "badge-early-bird": "assets/img/game/badge-early-bird.webp", "badge-first-mission": "assets/img/game/badge-first-mission.webp", "badge-first-scroll": "assets/img/game/badge-first-scroll.webp", "badge-first-tool": "assets/img/game/badge-first-tool.webp", "badge-missions-10": "assets/img/game/badge-missions-10.webp", "badge-night-owl": "assets/img/game/badge-night-owl.webp", "badge-perfect-exam": "assets/img/game/badge-perfect-exam.webp", "badge-streak-3": "assets/img/game/badge-streak-3.webp", "badge-streak-7": "assets/img/game/badge-streak-7.webp", "belt-black": "assets/img/game/belt-black.webp", "belt-blue": "assets/img/game/belt-blue.webp", "belt-brown": "assets/img/game/belt-brown.webp", "belt-green": "assets/img/game/belt-green.webp", "belt-orange": "assets/img/game/belt-orange.webp", "belt-purple": "assets/img/game/belt-purple.webp", "belt-white": "assets/img/game/belt-white.webp", "belt-yellow": "assets/img/game/belt-yellow.webp", "camino-viaje": "assets/img/game/camino-viaje.webp", "cerrar": "assets/img/game/cerrar.webp", "deshacer": "assets/img/game/deshacer.webp", "estrella-mision": "assets/img/game/estrella-mision.webp", "guardar": "assets/img/game/guardar.webp", "home-logros": "assets/img/game/home-logros.webp", "home-misiones": "assets/img/game/home-misiones.webp", "home-pergaminos": "assets/img/game/home-pergaminos.webp", "icono-andamio": "assets/img/game/icono-andamio.webp", "icono-campana": "assets/img/game/icono-campana.webp", "icono-domino": "assets/img/game/icono-domino.webp", "icono-herramienta": "assets/img/game/icono-herramienta.webp", "icono-kata": "assets/img/game/icono-kata.webp", "icono-kintsugi": "assets/img/game/icono-kintsugi.webp", "icono-tameshiwari": "assets/img/game/icono-tameshiwari.webp", "mano-arrastra": "assets/img/game/mano-arrastra.webp", "mas": "assets/img/game/mas.webp", "probar": "assets/img/game/probar.webp", "sonido": "assets/img/game/sonido.webp"}, "escenas": {"fondos": {"dojo": {"ruta": "game/retos/herr-fondo-dojo.webp", "anclas": {"izquierda": {"x": 18, "y": 90, "e": 1.0, "flip": true}, "centro": {"x": 50, "y": 90, "e": 1.0}, "derecha": {"x": 82, "y": 90, "e": 1.0}}}, "salon": {"ruta": "game/escenas/fondo-salon.webp", "anclas": {"izquierda": {"x": 18, "y": 92, "e": 1.0, "flip": true}, "centro": {"x": 50, "y": 92, "e": 1.0}, "derecha": {"x": 82, "y": 92, "e": 1.0}}}, "comedor": {"ruta": "game/escenas/fondo-comedor.webp", "anclas": {"izquierda": {"x": 18, "y": 90, "e": 1.0, "flip": true}, "centro": {"x": 50, "y": 90, "e": 1.0}, "derecha": {"x": 82, "y": 90, "e": 1.0}}}, "trabajo": {"ruta": "game/escenas/fondo-trabajo.webp", "anclas": {"izquierda": {"x": 18, "y": 93, "e": 1.0, "flip": true}, "centro": {"x": 50, "y": 93, "e": 1.0}, "derecha": {"x": 82, "y": 93, "e": 1.0}}}, "calle": {"ruta": "game/escenas/fondo-calle.webp", "anclas": {"izquierda": {"x": 18, "y": 87, "e": 1.0, "flip": true}, "centro": {"x": 50, "y": 87, "e": 1.0}, "derecha": {"x": 82, "y": 87, "e": 1.0}}}, "dormitorio": {"ruta": "game/escenas/fondo-dormitorio.webp", "anclas": {"izquierda": {"x": 18, "y": 90, "e": 1.0, "flip": true}, "centro": {"x": 50, "y": 90, "e": 1.0}, "derecha": {"x": 82, "y": 90, "e": 1.0}}}, "cafeteria": {"ruta": "game/escenas/fondo-cafeteria.webp", "anclas": {"izquierda": {"x": 18, "y": 91, "e": 1.0, "flip": true}, "centro": {"x": 50, "y": 91, "e": 1.0}, "derecha": {"x": 82, "y": 91, "e": 1.0}}}}, "poses": {"reposo": "mascota/propuesta-1.webp", "golpe": "game/retos/mascota-golpe.webp", "patada": "game/retos/mascota-patada.webp", "sentada": "game/retos/mascota-sentada.webp", "empuja": "game/retos/mascota-empuja.webp", "pensativa": "game/escenas/pose-pensativa.webp", "movil": "game/escenas/pose-movil.webp", "pecho": "game/escenas/pose-pecho.webp", "victoria": "game/escenas/pose-victoria.webp", "canto": "game/escenas/pose-canto.webp", "gancho": "game/escenas/pose-gancho.webp", "patada-voladora": "game/escenas/pose-patada-voladora.webp"}}, "arts": [{"key": "culpafu", "name": "GuiltFu", "url": "../guiltfu/", "color": "#e63b2e", "icon": "🥋", "status": "active"}], "artStats": {"ansiafu": {"missions": 0, "levels": 0}, "cargafu": {"missions": 0, "levels": 0}, "duelofu": {"missions": 0, "levels": 0}, "espejofu": {"missions": 0, "levels": 0}, "culpafu": {"missions": 24, "levels": 8}, "limitefu": {"missions": 0, "levels": 0}, "lovefu": {"missions": 0, "levels": 0}, "manipufu": {"missions": 0, "levels": 0}, "narcifu": {"missions": 0, "levels": 0}, "platafu": {"missions": 0, "levels": 0}, "raizfu": {"missions": 0, "levels": 0}, "vinculofu": {"missions": 0, "levels": 0}}, "page": {"id": "about", "layout": "page", "art": null, "level": null}};</script>
 
 </head>
 <body class="layout-page" data-brand="mentefu">
@@ -59,7 +64,7 @@
       </button>
       <nav class="nav" id="main-nav" aria-label="Main">
         <ul class="nav__list">
-          <li><a class="nav__link" href="../arts/">Mental arts</a></li>
+          <li><a class="nav__link" href="../arts/">Mind arts</a></li>
           <li data-students><a class="nav__link" data-href="../research/">Research</a></li>
           <li data-admin-link hidden><a class="nav__link" href="../admin/">Admin</a></li>
           <li data-students><a class="nav__link" href="../profile/">Profile</a></li>
@@ -79,7 +84,7 @@
 <section class="page-head page-head--page page-head--scene">
 <div class="hero__scene" aria-hidden="true"><img class="hero__bg" src="../../assets/img/heroes/dojo-bg.svg" alt="" width="1600" height="900" fetchpriority="high" decoding="async"><div class="hero__veil"></div></div>
   <div class="container">
-    <p class="kicker">The school</p>
+    <p class="kicker">The dojo</p>
     <h1 class="page-head__title">What MindFu is (and is not)</h1>
     <p class="page-head__lead">An honest account of what we do, what we do not do, and why we talk about belts when nobody is going to hit anyone.</p>
     <p class="page-head__meta"></p>
@@ -88,7 +93,7 @@
 <div class="container container--prose">
 <div class="prose">
 <h2 id="in-one-sentence">In one sentence</h2>
-<p>MindFu is a <strong>mental training school</strong>: emotional education with diverse trainings — guilt that tortures, narcissism, couple relationships, manipulation — so you pick the one that speaks to your reality, question the rules you never examined, and get your ability to choose back. It is a <strong>super school</strong>: each mental art is a course with eight belts, short missions, exams and achievements, and there is no set order among them. All content is free; to train you need a student account (name, email and password).</p>
+<p>MindFu is a <strong>super dojo of courses for training your mind</strong>: each course is an art with eight belts, playable missions, scrolls and minigames. We start with the wellbeing arts — the first, GuiltFu — and the platform opens to any skill of the mind; soon you will also create your own educational games in Your School. All content is free; to train you need a student account (name, email and password).</p>
 <h2 id="why-mindfu">Why “MindFu”</h2>
 <p>The name is <strong>Mind + Kung Fu</strong> — the art of training your mind. It has a Spanish-language sister brand, <a href="../../">MenteFu</a> (<em>Mente + Kung Fu</em>), and both share the same idea: the language of martial arts carries associations that describe what caring for your mind takes remarkably well — discipline, practice, balance, focus, patience, knowing when not to react.</p>
 <p>We use that language as an <strong>educational metaphor</strong>. We do not teach physical combat, we are no substitute for a real martial arts school, and we are not a traditional discipline of any kind. The belts in the training hall of <a href="../arts/">each art</a> represent personal progress, not a certification of anything.</p>
@@ -99,7 +104,8 @@
 
 <h2 id="what-mindfu-is">What MindFu IS</h2>
 <ul>
-<li>Emotional education and self-knowledge.</li>
+<li>An educational, playful platform: courses you train by playing.</li>
+<li>In its wellbeing arts: emotional education and self-knowledge.</li>
 <li>Critical thinking applied to the rules that govern you.</li>
 <li>Mental training: tools to practice with, not just to read.</li>
 <li>An invitation to responsibility <em>without</em> self-punishment.</li>
@@ -119,8 +125,8 @@
 <li>an excuse to avoid responsibility.</li>
 </ul>
 <p>And there are two things we will <strong>never tell you</strong>: that an emotion — guilt, attachment, fear — is always bad, or that your family, your partner, your religion, your employer or your society are manipulating you by default. An emotion sometimes points to something real that deserves attention or repair. And the people around you, most of the time, never examined the rules they passed on to you either.</p>
-<h2 id="how-we-talk">How we talk</h2>
-<p>We try to be clear, close and, now and then, a little irreverent. But we hold ourselves to some rules, valid across every art (the most worn-in examples come from the art of guilt):</p>
+<h2 id="how-we-talk-the-wellbeing-arts-framework">How we talk (the wellbeing arts framework)</h2>
+<p>We try to be clear, close and, now and then, a little irreverent. But we hold ourselves to some rules in the wellbeing arts (the most worn-in examples come from the art of guilt):</p>
 <table>
 <thead>
 <tr>
@@ -148,9 +154,9 @@
 </tbody>
 </table>
 <p>The goal is to foster critical thinking, not to replace one dogma with another.</p>
-<h2 id="where-this-comes-from">Where this comes from</h2>
+<h2 id="where-this-comes-from-in-the-wellbeing-arts">Where this comes from (in the wellbeing arts)</h2>
 <p>Our starting hypothesis — that much everyday suffering organizes itself around emotions and bonds we were never taught to examine: guilt that tortures, manipulation that plays your triggers, relationships where you disappear — is exactly that: <strong>a hypothesis</strong>, psychological, philosophical and sociocultural, that we explore. We do not claim that any one of those pieces is the cause of all sadness, illness or unhappiness.</p>
-<p>We lean on sources we cite in <a href="../research/">Research</a>: the psychology of moral emotions, the social psychology of influence, the philosophy of responsibility and, in each art, its own authors (in the art of guilt, above all Norberto Levy’s work). When we mention studies on martial arts and self-regulation, we do so proportionately: there are interesting signals, not proof that “training cures” anything.</p>
+<p>We lean on sources we cite in <a href="../research/">Research</a>: the psychology of moral emotions, the social psychology of influence, the philosophy of responsibility and, in each art, its own authors. When we mention studies on martial arts and self-regulation, we do so proportionately: there are interesting signals, not proof that “training cures” anything.</p>
 <h2 id="your-privacy">Your privacy</h2>
 <p>You sign in with your email and a password. Your progress (XP, belts, achievements, reflections) is stored in your account so you find it on any device, and we log your activity in the school only to understand what works and improve it. No advertising trackers. More in <a href="../privacy/">Privacy</a>.</p>
 <h2 id="mindfu-and-mentefu">MindFu and MenteFu</h2>
@@ -167,13 +173,13 @@
             <span class="brand__mark" aria-hidden="true"><svg viewBox="0 0 40 40" width="34" height="34" fill="none" aria-hidden="true"><path d="M31.5 9.5A15 15 0 1 0 35 20" stroke="currentColor" stroke-width="4.2" stroke-linecap="round"/><path d="M14 24.5l6-12 6 12" stroke="var(--c-accent)" stroke-width="3.6" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
             <span class="brand__name">MINDFU</span>
           </a>
-          <p class="footer__tagline">Train your mind. Defend your peace.</p>
-          <p class="footer__blurb">A super school for emotional growth. Diverse mental defense arts: pick yours and start training.</p>
+          <p class="footer__tagline">Train your mind by playing.</p>
+          <p class="footer__blurb">The super dojo of mind arts: courses you train by playing, with belts, missions and scrolls. Have fun learning or create your own educational games.</p>
         </div>
         <div>
           <h3 class="footer__title">The school</h3>
           <ul class="footer__list">
-            <li><a href="../arts/">Mental arts</a></li>
+            <li><a href="../arts/">Mind arts</a></li>
             <li data-students><a data-href="../research/">Research</a></li>
           </ul>
         </div>
@@ -190,14 +196,14 @@
           <h3 class="footer__title">Coming soon</h3>
           <ul class="footer__list">
             <li><span class="muted">Shop <small>(coming soon)</small></span></li>
-            <li><span class="muted">Therapy <small>(coming soon)</small></span></li>
+            <li><span class="muted">Support <small>(coming soon)</small></span></li>
             <li><span class="muted">Podcast <small>(coming soon)</small></span></li>
             <li><span class="muted">Courses <small>(coming soon)</small></span></li>
           </ul>
         </div>
       </div>
       <div class="footer__notice">
-        <p>MindFu is emotional education, not therapy or treatment. It does not diagnose and does not replace the care of a mental health professional. Belts and achievements recognize personal progress; they are not professional certifications. If you feel intense distress or think about harming yourself, seek professional help or call your local emergency services.</p>
+        <p>MindFu is an educational, playful platform: its courses do not replace professional advice. Belts and achievements recognize personal progress; they are not professional certifications.</p>
       </div>
       <div class="footer__legal">
         <p>© <span data-year>2026</span> MindFu. All rights reserved.</p>
@@ -207,12 +213,12 @@
   </footer>
 
   <div class="toasts" data-toasts aria-live="polite"></div>
-  <script src="../../assets/js/main.js?v=c6453e4f" defer></script>
+  <script src="../../assets/js/main.js?v=759642d3" defer></script>
   <script src="../../assets/js/visuals.js?v=0c4cc172" defer></script>
   <script src="../../assets/js/storage.js?v=9bdcdfc9" defer></script>
-  <script src="../../assets/js/sb.js?v=418a78eb" defer></script>
-  <script src="../../assets/js/progress.js?v=d580ed65" defer></script>
-  <script src="../../assets/js/auth.js?v=f6bc60bf" defer></script>
+  <script src="../../assets/js/sb.js?v=6a48245c" defer></script>
+  <script src="../../assets/js/progress.js?v=9a0d33c1" defer></script>
+  <script src="../../assets/js/auth.js?v=e18aabfc" defer></script>
   <script src="../../assets/js/admin.js?v=fc6c6ed7" defer></script>
 </body>
 </html>

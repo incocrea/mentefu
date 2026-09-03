@@ -32,17 +32,21 @@
       if (!btn || !id || kind === "tool") return;   /* las herramientas navegan a su sala */
       btn.addEventListener("click", function (e) {
         if (e.metaKey || e.ctrlKey || e.shiftKey || e.button) return;
-        /* sin canal cerrado no hay modal: el enlace navega sin parpadeos */
+        /* sin el canal cerrado no hay modal posible: solo AHÍ el enlace navega
+           a su página (el pergamino existe y hay que poder leerlo igual). Con
+           canal, SIEMPRE modal —jamás navegar por un fallo— (auditoría
+           2026-09-02). */
         if (!window.MFPergamino || !window.MFAuth || !MFAuth.loadContent) return;
         e.preventDefault();
         e.stopPropagation();
         MFPergamino.abrir({
           id: id, art: null, xp: xp, kind: kind,
+          href: btn.getAttribute("href"),
           titulo: (fila.querySelector(".audioteca__titulo") || {}).textContent || "",
           hecho: function () { return hecho(id); },
           alCompletar: function () { if (window.MF) MF.paint(); },
           origen: btn,
-        }).then(function (ok) { if (!ok) window.location.href = btn.getAttribute("href"); });
+        });
       });
     });
   }

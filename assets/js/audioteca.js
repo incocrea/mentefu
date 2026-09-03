@@ -1,25 +1,30 @@
 /* MenteFu / MindFu — sala de pergaminos del curso (lista tipo podcast).
 
    Recibe mf:content (auth.js) con {items} —los pergaminos del arte EN EL ORDEN
-   del entrenamiento— y pinta la lista: cada pieza se puede escuchar aquí mismo
-   (mismo reproductor y mismo XP que en la misión, audio.js) o abrir para leerla.
-   Solo muestra el curso de esta sala. */
+   del entrenamiento— y pinta la lista. Solo muestra el curso de esta sala.
+
+   Cada fila es LA MISMA tarjeta de pergamino que se ve dentro de una misión
+   (`.scroll-link`, mission.js): un pergamino debe reconocerse igual venga de
+   donde venga (titular 2026-08-28). Al pulsarla se despliega el pergamino
+   flotante —con su minipodcast dentro— sin sacar al alumno de la lista. Lo
+   propio de la sala se queda: el agrupado por niveles con su cinturón, el
+   contador, los filtros y el orden del entrenamiento. */
 (function () {
   "use strict";
   var cfg = window.MF_CONFIG || {};
   var ES = cfg.lang === "es";
   var T = ES ? {
-    read: "Leer", nivel: "Nivel {n}", minutos: "{n} min", xp: "+{n} XP", hecho: "Completado",
+    nivel: "Nivel {n}", minutos: "{n} min", xp: "+{n} XP", hecho: "Completado",
     vacio: "Todavía no hay pergaminos en esta sala.",
     resumen: "{hechos} de {total} completados · {audios} con audio",
     filtroTodos: "Todos", filtroPendientes: "Pendientes", filtroAudio: "Con audio",
-    sinAudio: "Solo lectura",
+    conAudio: "leer o escuchar", sinAudio: "solo lectura",
   } : {
-    read: "Read", nivel: "Level {n}", minutos: "{n} min", xp: "+{n} XP", hecho: "Completed",
+    nivel: "Level {n}", minutos: "{n} min", xp: "+{n} XP", hecho: "Completed",
     vacio: "No scrolls in this room yet.",
     resumen: "{hechos} of {total} completed · {audios} with audio",
     filtroTodos: "All", filtroPendientes: "Pending", filtroAudio: "With audio",
-    sinAudio: "Reading only",
+    conAudio: "read or listen", sinAudio: "reading only",
   };
 
   function el(html) { var d = document.createElement("div"); d.innerHTML = html.trim(); return d.firstChild; }
@@ -64,7 +69,7 @@
     function pintar() {
       lista.innerHTML = "";
       var nivelPintado = null;
-      items.forEach(function (it, n) {
+      items.forEach(function (it) {
         if (!visible(it)) return;
         if (it.level && it.level !== nivelPintado) {
           nivelPintado = it.level;
@@ -81,51 +86,51 @@
             '<span class="audioteca__nivel-titulo">' + esc(tema) + "</span></li>");
           lista.appendChild(sep);
         }
-        var fila = el('<li class="audioteca__item' + (hecho(it) ? " is-done" : "") + '" data-item="' + esc(it.id) + '">' +
-          '<div class="audioteca__ficha">' +
-            '<span class="audioteca__n">' + (n + 1) + "</span>" +
-            '<div class="audioteca__texto">' +
-              '<h3 class="audioteca__titulo">' + esc(it.title) + "</h3>" +
-              '<p class="audioteca__sumario">' + esc(it.summary || "") + "</p>" +
-              '<p class="audioteca__meta">' + esc(it.mission) + " · " + T.minutos.replace("{n}", it.minutes) +
-                " · " + (it.audio ? T.xp.replace("{n}", it.xp) : T.sinAudio) + "</p>" +
-            "</div>" +
-            '<div class="audioteca__acciones">' +
-              '<a class="btn btn--ghost btn--sm audioteca__abrir" href="' + esc(it.href) + '">' + T.read + "</a>" +
-              '<span class="audioteca__sello" hidden>✓ ' + T.hecho + "</span>" +
-            "</div>" +
-          "</div></li>");
-        if (hecho(it)) fila.querySelector(".audioteca__sello").hidden = false;
-        /* leer sin salir de la sala: el pergamino se despliega flotando y el
-           audio, si está sonando, sigue sonando */
-        var abrirBtn = fila.querySelector(".audioteca__abrir");
-        if (it.kind !== "tool" && window.MFPergamino) {
-          abrirBtn.addEventListener("click", function (e) {
+        /* La línea de meta dice de qué misión viene, lo que cuesta, lo que paga
+           y CÓMO se puede hacer. Ese último dato pasa a ser imprescindible
+           desde que el reproductor vive dentro del pergamino: si no lo dijera
+           aquí, el audio quedaría escondido tras un clic sin anunciarse. */
+        var meta = esc(it.mission) + " · " + T.minutos.replace("{n}", it.minutes) +
+          " · " + T.xp.replace("{n}", it.xp) + " · " + (it.audio ? T.conAudio : T.sinAudio);
+        /* misma estructura que mission.js: icono, (título + meta) y sello */
+        var fila = el('<li class="audioteca__fila" data-item="' + esc(it.id) + '"></li>');
+        var link = el('<a class="scroll-link" href="' + esc(it.href) + '">' +
+          '<span class="scroll-link__icon" aria-hidden="true">📜</span>' +
+          '<span><span class="scroll-link__title"></span>' +
+          '<span class="scroll-link__meta">' + meta + "</span></span>" +
+          '<span class="scroll-link__seal" hidden>✓ ' + T.hecho + "</span></a>");
+        link.querySelector(".scroll-link__title").textContent = it.title;
+        fila.appendChild(link);
+        var sellar = function () {
+          if (!hecho(it)) return;
+          link.classList.add("is-done");
+          link.querySelector(".scroll-link__seal").hidden = false;
+        };
+        sellar();
+        /* leer sin salir de la sala: el pergamino se despliega flotando encima
+           y al cerrarlo la lista sigue donde estaba, con su filtro y su sitio */
+        /* el pergamino SIEMPRE en su modal flotante, jamás navegando por un
+           fallo (auditoría 2026-09-02): se intercepta aunque MFPergamino aún
+           no exista en este frame —se comprueba en el click— */
+        if (it.kind !== "tool") {
+          link.addEventListener("click", function (e) {
+            /* con Ctrl/Cmd/Mayús el enlace sigue siendo un enlace: abrir en otra
+               pestaña debe funcionar */
             if (e.metaKey || e.ctrlKey || e.shiftKey || e.button) return;
             e.preventDefault();
             e.stopPropagation();
+            if (!window.MFPergamino) return;
             MFPergamino.abrir({
               id: it.id, art: art, xp: it.xp, kind: it.kind, titulo: it.title,
+              href: it.href,
+              /* el minipodcast viaja DENTRO del pergamino, igual que en la
+                 tarjeta de misión: escucharlo y leerlo dejan de ser dos sitios */
+              audio: it.audio || null,
               hecho: function () { return hecho(it); },
-              alCompletar: function () {
-                fila.classList.add("is-done");
-                fila.querySelector(".audioteca__sello").hidden = false;
-                pintarResumen();
-              },
-              origen: abrirBtn,
-            }).then(function (ok) { if (!ok) window.location.href = it.href; });
+              alCompletar: function () { sellar(); pintarResumen(); },
+              origen: link,
+            });
           });
-        }
-        if (it.audio && window.MFAudio) {
-          fila.appendChild(MFAudio.montar({
-            src: it.audio, item: it.id, art: art, xp: it.xp, kind: it.kind,
-            hecho: function () { return hecho(it); },
-            alTerminar: function () {
-              fila.classList.add("is-done");
-              fila.querySelector(".audioteca__sello").hidden = false;
-              pintarResumen();
-            },
-          }));
         }
         lista.appendChild(fila);
       });
@@ -137,7 +142,8 @@
       b.addEventListener("click", function () {
         filtro = b.getAttribute("data-f");
         wrap.querySelectorAll("[data-f]").forEach(function (x) { x.classList.toggle("is-on", x === b); });
-        if (window.MFAudio) MFAudio.parar();
+        /* ya no hace falta callar nada al filtrar: el reproductor dejó de vivir
+           en la fila y ahora se va con el pergamino cuando se cierra */
         pintar();
         if (window.MF) MF.track("audioteca_filter", { art: art, data: { filtro: filtro } });
       });

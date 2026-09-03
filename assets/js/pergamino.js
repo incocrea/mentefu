@@ -16,13 +16,24 @@
     page: "Parte {i} de {n}", prev: "Anterior", next: "Siguiente",
     done: "Marcar como leído (+{n} XP)", read: "Pergamino leído: +{n} XP",
     already: "Ya leíste este pergamino.", close: "Cerrar", cargando: "Abriendo el pergamino…",
+    error: "No se pudo cargar el pergamino. Revisa tu conexión.", reintentar: "Reintentar",
   } : {
     page: "Part {i} of {n}", prev: "Previous", next: "Next",
     done: "Mark as read (+{n} XP)", read: "Scroll read: +{n} XP",
     already: "You already read this scroll.", close: "Close", cargando: "Opening the scroll…",
+    error: "The scroll could not load. Check your connection.", reintentar: "Retry",
   };
 
+  /* Las láminas de interfaz (el sello de cerrar) cuelgan del mismo prefijo que
+     inyecta el generador en MF_CONFIG: en /en/ y en la raíz la ruta relativa no
+     es la misma, así que no puede escribirse a mano. */
+  var SELLOS = (cfg.assets || "") + "assets/img/game/";
+
   function el(html) { var d = document.createElement("div"); d.innerHTML = html.trim(); return d.firstChild; }
+  /* El título entra en un atributo (aria-label) y hay títulos con comillas
+     —«The "should"»—: sin escapar, la comilla cierra el atributo antes de
+     tiempo y el resto del título se cuela como atributo suelto del diálogo. */
+  function esc(s) { return String(s == null ? "" : s).replace(/[&<>"]/g, function (c) { return { "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;" }[c]; }); }
 
   /* una parte por apartado (H2), igual que la página del pergamino */
   function paginar(html) {
@@ -36,11 +47,19 @@
     return partes;
   }
 
+  /* Una pieza no se pide dos veces: la primera lectura la deja aquí y el resto
+     de la sesión se abre instantánea (y sin volver a tocar la red). */
   var cache = {};
-  function traer(id) {
+  function traer(id, href, propio) {
+    /* Tu Escuela: un BORRADOR se lee sin pasar por la red ni por la caché —
+       el maestro está viendo lo que acaba de escribir, no lo publicado. */
+    if (propio) return Promise.resolve(propio);
     if (cache[id]) return Promise.resolve(cache[id]);
     if (!window.MFAuth || !MFAuth.loadContent) return Promise.reject(new Error("sin gate"));
-    return MFAuth.loadContent(cfg.lang + ":" + id, null).then(function (d) { cache[id] = d; return d; });
+    /* El href es la página DUEÑA del pergamino. Con el gate puesto no se usa
+       (manda Supabase); en modo local es de donde sale el contenido embebido,
+       porque aquí no hay «host» del que leerlo. */
+    return MFAuth.loadContent(cfg.lang + ":" + id, null, href).then(function (d) { cache[id] = d; return d; });
   }
 
   var abierto = null;
@@ -48,8 +67,8 @@
     if (!abierto) return;
     var conHistorial = abierto.historial;
     /* el minipodcast vive DENTRO del pergamino: si se cierra la nota, se calla.
-       Solo el suyo: en la sala de pergaminos el reproductor es de la fila y
-       debe seguir sonando mientras se lee (2026-08-26). */
+       Solo el suyo: `audioPropio` distingue el reproductor que montó ESTE modal
+       de cualquier otro que pudiera estar sonando en la página. */
     if (abierto.audioPropio && window.MFAudio) MFAudio.parar();
     abierto.caja.remove();
     document.removeEventListener("keydown", abierto.tecla);
@@ -61,29 +80,64 @@
   }
   window.addEventListener("popstate", function () { if (abierto) cerrar(true); });
 
-  /* opts: { id, art, xp, kind, titulo, audio, hecho: fn, alCompletar: fn, origen: elemento } */
+  /* opts: { id, href, art, xp, kind, titulo, audio, hecho: fn, alCompletar: fn,
+             origen: elemento, contenido: {html, title, xp} — el BORRADOR de Tu
+             Escuela, que se lee tal cual sin tocar la red } */
   function abrir(opts) {
-    cerrar();                       /* nunca dos pergaminos abiertos a la vez */
-    var caja = el('<div class="pergamino-modal" role="dialog" aria-modal="true" aria-label="' + (opts.titulo || "") + '">' +
+    /* Nunca dos pergaminos abiertos a la vez. Si había uno, su entrada de
+       historial se HEREDA en vez de deshacerse: el history.back() del cierre es
+       asíncrono y su popstate llegaría cuando el pergamino NUEVO ya está
+       montado, cerrándolo de golpe. Una entrada por sesión de modal es
+       justo lo que hace falta para que el «atrás» cierre el de arriba. Mismo
+       trato que el motor de retos (retos.js:648). */
+    var heredaHistorial = !!(abierto && abierto.historial);
+    cerrar(heredaHistorial);
+    var caja = el('<div class="pergamino-modal" role="dialog" aria-modal="true" aria-label="' + esc(opts.titulo || "") + '">' +
       '<div class="pergamino-modal__hoja marco-pergamino">' +
-        '<button class="pergamino-modal__cerrar" type="button" aria-label="' + T.close + '">&times;</button>' +
-        '<div class="pergamino-modal__cuerpo"><p class="muted">' + T.cargando + "</p></div>" +
+        /* El aspa es una LÁMINA y ya no un `&times;` (2026-08-28): el sello
+           bermellón con la X crema viene dibujado entero, así que el botón no
+           pone fondo ni borde (game.css) y la imagen lo llena. `alt=""` porque
+           el nombre accesible lo pone el aria-label del botón; con alt escrito
+           el lector de pantalla anunciaría «Cerrar» dos veces. El `title` va
+           además del aria-label para que el ratón también lo lea. */
+        '<button class="pergamino-modal__cerrar" type="button" title="' + esc(T.close) + '" aria-label="' + esc(T.close) + '">' +
+          '<img class="sello-icono" src="' + SELLOS + 'cerrar.webp" alt="" width="256" height="255" decoding="async">' +
+        "</button>" +
+        '<div class="pergamino-modal__cuerpo">' + (window.MFCargador ? MFCargador(T.cargando) : '<p class="muted">' + T.cargando + "</p>") + "</div>" +
       "</div></div>");
     function tecla(e) { if (e.key === "Escape") cerrar(); }
     caja.addEventListener("click", function (e) { if (e.target === caja) cerrar(); });
-    caja.querySelector(".pergamino-modal__cerrar").addEventListener("click", cerrar);
+    /* La X se envuelve a propósito: pasar `cerrar` directo como escucha le
+       entrega el EVENTO como `desdeHistorial`, que es truthy, y entonces el
+       cierre se saltaba el history.back(). Resultado medido antes de esto:
+       tras cerrar con la X quedaba viva la entrada del modal y el primer
+       «atrás» se la comía sin salir de la página. */
+    caja.querySelector(".pergamino-modal__cerrar").addEventListener("click", function () { cerrar(); });
     document.addEventListener("keydown", tecla);
     document.body.appendChild(caja);
     document.body.classList.add("has-pergamino");
-    var conHistorial = false;
-    try { history.pushState({ mf: "pergamino" }, ""); conHistorial = true; } catch (e) { /* nada */ }
+    var conHistorial = heredaHistorial;
+    if (!conHistorial) {
+      try { history.pushState({ mf: "pergamino" }, ""); conHistorial = true; } catch (e) { /* nada */ }
+    }
     abierto = { caja: caja, tecla: tecla, volverA: opts.origen || null, historial: conHistorial };
     caja.querySelector(".pergamino-modal__cerrar").focus();
 
     var cuerpo = caja.querySelector(".pergamino-modal__cuerpo");
     function sigueSiendoElMio() { return abierto && abierto.caja === caja; }
-    return traer(opts.id).then(function (data) {
-      if (!sigueSiendoElMio()) return true;   /* lo cerraron mientras cargaba */
+
+    /* EL PERGAMINO NUNCA NAVEGA FUERA (auditoría 2026-09-02, tercer reporte
+       del titular). Antes: si la carga fallaba dos veces, `abrir` resolvía
+       `false` y CADA llamador (misión, biblioteca, audioteca) hacía
+       `window.location.href = href` — el «link aparte navegado». Ese camino
+       era de DISEÑO, no un bug intermitente, y por eso los parches de token y
+       de reintento solo bajaban la frecuencia. Ahora el modal se monta
+       PRIMERO y SIEMPRE se queda; el contenido se carga dentro con reintentos
+       y, si todo falla, aparece un panel de error con «Reintentar». `abrir`
+       resuelve `true` en cuanto el modal existe: ningún llamador vuelve a
+       navegar. */
+    function montarVista(data) {
+      if (!sigueSiendoElMio()) return;   /* lo cerraron mientras cargaba */
       var partes = paginar(data.html || "");
       var n = partes.length, i = 0;
       var xp = opts.xp || data.xp || 10;
@@ -98,8 +152,14 @@
          (titular 2026-08-26). */
       var vista = el('<div class="pergamino-modal__vista">' +
         '<div class="reader__top"><div class="mission__bar"><div class="mission__fill"></div></div>' +
-        '<div class="pergamino-modal__fila"><span class="pergamino-modal__audio"></span>' +
-        '<span class="mission__count"></span></div></div>' +
+        /* El número de parte va ANTES que el reproductor (2026-08-28): la fila
+           dejó de ser dos columnas y pasó a ser dos pisos —arriba la barra de
+           lectura con su «Parte i de n», que es su etiqueta; abajo el
+           minipodcast a todo el ancho—. El orden se cambia aquí y no con
+           `order` en el CSS para que el foco del teclado siga leyéndose en el
+           mismo orden en que se ve. */
+        '<div class="pergamino-modal__fila"><span class="mission__count"></span>' +
+        '<span class="pergamino-modal__audio"></span></div></div>' +
         '<h2 class="pergamino-modal__titulo"></h2>' +
         '<div class="prose reader__page"></div>' +
         '<div class="reader__nav">' +
@@ -147,6 +207,9 @@
         var nuevo = Math.min(n - 1, Math.max(0, i + d));
         if (nuevo === i) return;
         i = nuevo;
+        /* la página que pasa (titular 2026-09-02): mismo roce de papel que en
+           las tarjetas de misión; respeta el interruptor por dentro */
+        if (window.MFSonido && MFSonido.fx) MFSonido.fx("fx-pagina");
         pintar();
       }
       function terminar() {
@@ -193,12 +256,42 @@
 
       pintar();
       if (window.MF) MF.track("scroll_open", { item: opts.id, art: opts.art, data: { modo: "modal" } });
-      return true;
-    }).catch(function () {
-      if (!sigueSiendoElMio()) return true;   /* ya no está: no navegues por él */
-      cerrar();
-      return false;      /* quien llame decide: normalmente, navegar a la página */
-    });
+    }
+
+    /* El panel de error vive DENTRO del modal: nunca saca al alumno de donde
+       está. Su botón vuelve a intentar la carga completa. */
+    function panelError() {
+      if (!sigueSiendoElMio()) return;
+      cuerpo.innerHTML = "";
+      var box = el('<div class="pergamino-modal__error"><p class="muted"></p></div>');
+      box.querySelector("p").textContent = T.error;
+      var b = el('<button class="btn btn--primary" type="button"></button>');
+      b.textContent = T.reintentar;
+      b.addEventListener("click", cargar);
+      box.appendChild(b);
+      cuerpo.appendChild(box);
+      if (window.MF) MF.track("scroll_error", { item: opts.id, art: opts.art });
+    }
+
+    /* Carga con hasta tres intentos (backoff corto) y, si aún falla, el panel
+       manual. Jamás una navegación fuera: pase lo que pase con la red, el
+       alumno se queda en su modal. */
+    function cargar() {
+      if (!sigueSiendoElMio()) return;
+      cuerpo.innerHTML = window.MFCargador ? MFCargador(T.cargando) : '<p class="muted">' + esc(T.cargando) + "</p>";
+      var intentos = 0;
+      (function probar() {
+        traer(opts.id, opts.href, opts.contenido).then(montarVista, function () {
+          if (!sigueSiendoElMio()) return;
+          intentos++;
+          if (intentos < 3) { setTimeout(probar, 500 * intentos); return; }
+          panelError();
+        });
+      })();
+    }
+    cargar();
+    /* el modal ya existe: quien llamó no navega nunca (resuelve true siempre) */
+    return Promise.resolve(true);
   }
 
   window.MFPergamino = { abrir: abrir, cerrar: cerrar };

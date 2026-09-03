@@ -126,15 +126,56 @@
   }
   if (window.MF) MF.sync = push;
 
-  /* ---------- contenido gated ---------- */
-  function loadContent(id, host) {
+  /* ---------- contenido gated ----------
+     Tercera fuente: la PÁGINA DUEÑA del contenido.
+
+     El pergamino flotante (pergamino.js) pide contenido que NO está en la
+     página donde estás —se abre desde una misión, desde la sala de pergaminos
+     o desde la biblioteca—, así que llega aquí sin `host` y hasta ahora solo le
+     quedaba Supabase. En modo local Supabase está apagado, la promesa se rompía
+     con «no content» y el enlace acababa navegando: el pergamino sacaba al
+     alumno de donde estaba. Pero el contenido SÍ existe: en modo local build.py
+     lo embebe en la página de cada pieza cerrada, así que se va a buscar allí.
+
+     Se trae con fetch, se parsea con DOMParser y solo se saca el JSON: el HTML
+     traído nunca entra en el DOM vivo. Y solo de esta misma web: un href de
+     otro origen se rechaza. Si algo falla, la promesa se rompe como siempre y
+     el que llama navega al enlace, que es la red de seguridad de toda la vida. */
+  function desdeLaPagina(id, href) {
+    if (!href || !window.fetch || !window.DOMParser) return Promise.reject(new Error("no content"));
+    var url;
+    try { url = new URL(href, window.location.href); } catch (e) { return Promise.reject(new Error("no content")); }
+    if (url.origin !== window.location.origin) return Promise.reject(new Error("otro origen"));
+    return fetch(url.href, { credentials: "same-origin" })
+      .then(function (r) { if (!r.ok) throw new Error("HTTP " + r.status); return r.text(); })
+      .then(function (txt) {
+        var doc = new DOMParser().parseFromString(txt, "text/html");
+        /* la caja del contenido PEDIDO, no la primera que haya: si el enlace
+           apuntara a otra página, mejor romper que servir otro texto. Se busca
+           recorriendo en vez de con un selector porque el id lleva dos puntos
+           («es:learn-what-is-guilt») y habría que escaparlo. */
+        var caja = null;
+        doc.querySelectorAll("[data-content-id]").forEach(function (c) {
+          if (!caja && c.getAttribute("data-content-id") === id) caja = c;
+        });
+        var s = caja && caja.querySelector("script[data-content]");
+        if (!s) throw new Error("not found");
+        return JSON.parse(s.textContent);
+      });
+  }
+
+  function loadContent(id, host, href) {
     var embedded = host && host.querySelector("script[data-content]");
     if (embedded) { try { return Promise.resolve(JSON.parse(embedded.textContent)); } catch (e) { return Promise.reject(e); } }
-    if (!window.SB || !SB.enabled()) return Promise.reject(new Error("no content"));
-    return SB.select("content", "select=data&id=eq." + encodeURIComponent(id)).then(function (rows) {
-      if (!rows || !rows[0]) throw new Error("not found");
-      return rows[0].data;
-    });
+    /* Con el gate puesto manda Supabase, exactamente como siempre: la página
+       dueña no lleva nada embebido y buscar allí sería un viaje en balde. */
+    if (window.SB && SB.enabled()) {
+      return SB.select("content", "select=data&id=eq." + encodeURIComponent(id)).then(function (rows) {
+        if (!rows || !rows[0]) throw new Error("not found");
+        return rows[0].data;
+      });
+    }
+    return desdeLaPagina(id, href);
   }
 
   /* ---------- Términos y condiciones: modal ----------
@@ -151,7 +192,7 @@
       '<div class="modal__panel">' +
         '<header class="modal__head"><h2 class="modal__title">' + T.termsTitle + '</h2>' +
         '<button class="modal__close" type="button" aria-label="' + T.termsClose + '">&times;</button></header>' +
-        '<div class="modal__body"><p class="muted">' + T.termsLoading + '</p></div>' +
+        '<div class="modal__body">' + (window.MFCargador ? MFCargador(T.termsLoading) : '<p class="muted">' + T.termsLoading + "</p>") + "</div>" +
         '<footer class="modal__foot"><button class="btn btn--primary btn--sm" type="button" data-ok>' + T.termsAccept + '</button></footer>' +
       '</div></div>');
     document.body.appendChild(caja);
@@ -423,7 +464,8 @@
 
     function deliver() {
       if (nivelBloqueado()) return candado();
-      body.innerHTML = '<p class="gated__loading">' + T.loading + "</p>";
+      /* el cargador ilustrado de la casa; el texto queda en el aria-label */
+      body.innerHTML = window.MFCargador ? MFCargador(T.loading) : '<p class="gated__loading">' + T.loading + "</p>";
       loadContent(id, host).then(function (data) {
         body.innerHTML = "";
         if (box) box.hidden = true;

@@ -42,6 +42,23 @@
           if (!res.ok) { var err = new Error((data && (data.msg || data.message || data.error_description || data.error)) || ("HTTP " + res.status)); err.status = res.status; err.data = data; throw err; }
           return data;
         });
+      })
+      .catch(function (err) {
+        /* TOKEN CADUCADO A MITAD DE SESIÓN (defecto visto 2026-09-02): el
+           refresco solo ocurría al cargar la página (getSession), así que a la
+           hora de vida del access_token cualquier petición —abrir un pergamino,
+           sincronizar progreso— moría con 401 y el pergamino usaba su red de
+           seguridad: navegar a la página vieja, sacando al alumno de la misión.
+           Ante un 401 con sesión refrescable: refrescar UNA vez y repetir la
+           misma petición. `_reintento` corta el bucle, y las llamadas con
+           `auth: false` (login, refresh) quedan fuera: su 401 es la respuesta,
+           no un token viejo. */
+        var s = loadSession();
+        if (err && err.status === 401 && opts.auth !== false && !opts._reintento && s && s.refresh_token) {
+          opts._reintento = true;
+          return refresh().then(function (ns) { if (!ns) throw err; return request(path, opts); });
+        }
+        throw err;
       });
   }
 

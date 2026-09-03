@@ -7,25 +7,27 @@
   if (!window.MFStore) return;
   var cfg = window.MF_CONFIG || {};
   var ES = cfg.lang === "es";
-  var XP = cfg.xp || { mission: 20, quiz_first_try: 5, practice: 10, scroll: 10, exam: 50, tool: 15, exam_pass: 0.75 };
+  var XP = cfg.xp || { mission: 20, quiz_first_try: 5, scroll: 10, exam: 50, tool: 15, exam_pass: 0.75 };
   var RANKS = cfg.ranks || [[0, "Novato"]];
   var BELTS = cfg.belts || [];
   var ACH_XP = 10;
 
   var T = ES ? {
-    noBelt: "Sin cinturón todavía", belt: "Cinturón", xpGained: "+{n} XP", missionDone: "Misión completada",
+    noBelt: "Sin cinturón todavía", belt: "Cinturón", xpGained: "+{n} XP", missionDone: "Misión completada", replayDone: "Reto repasado",
     achievement: "Logro desbloqueado", beltAwarded: "¡Nuevo cinturón!", streak: "{n} días de racha", streak1: "1 día de racha",
     levelsDone: "Cinturones: {k}/8", nextLevel: "Siguiente: nivel {n}", allDone: "Cinturón negro conseguido. Sigue entrenando.",
     examLocked: "Completa todas las misiones del nivel para desbloquear el examen.",
+    missionLocked: "El entrenamiento se recorre en orden: completa la misión anterior para abrir esta.",
     levelLocked: "El entrenamiento se recorre en orden: consigue el cinturón anterior para abrir este nivel.",
     continueBelt: "Continuar al cinturón {b}", keepTraining: "Sigue entrenando", resumeBtn: "Continuar",
     rankUp: "¡Subes de rango!", toRank: "{n} XP para {rank}", maxRank: "Rango máximo",
     noAccount: "Sin cuenta", signIn: "Entra o crea tu cuenta para empezar a sumar XP", checking: "Comprobando tu sesión…",
   } : {
-    noBelt: "No belt yet", belt: "Belt", xpGained: "+{n} XP", missionDone: "Mission completed",
+    noBelt: "No belt yet", belt: "Belt", xpGained: "+{n} XP", missionDone: "Mission completed", replayDone: "Challenge replayed",
     achievement: "Achievement unlocked", beltAwarded: "New belt!", streak: "{n}-day streak", streak1: "1-day streak",
     levelsDone: "Belts: {k}/8", nextLevel: "Next: level {n}", allDone: "Black belt earned. Keep training.",
     examLocked: "Complete every mission in the level to unlock the exam.",
+    missionLocked: "The training is walked in order: complete the previous mission to open this one.",
     levelLocked: "The training is walked in order: earn the previous belt to open this level.",
     continueBelt: "Continue to the {b} belt", keepTraining: "Keep training", resumeBtn: "Continue",
     rankUp: "Rank up!", toRank: "{n} XP to {rank}", maxRank: "Top rank",
@@ -57,11 +59,15 @@
   if (!state.streak) state.streak = { days: 0, last: "" };
   if (!state.tree || !state.tree.p) state.tree = { p: [] };
 
+  /* `replays` es la bolsa del repaso: las preguntas de la sala de retos que ya
+     han cobrado su propina (ver «Repaso en la sala de retos»). Se crea aquí,
+     junto al resto, para que un progreso viejo —guardado antes de que la sala
+     pagara— la estrene vacía en vez de reventar al leerla. */
   function art(key) {
     key = key || "_";
-    if (!state.arts[key]) state.arts[key] = { missions: {}, exams: {}, belts: {}, scrolls: {}, tools: {} };
+    if (!state.arts[key]) state.arts[key] = { missions: {}, exams: {}, belts: {}, scrolls: {}, tools: {}, replays: {} };
     var a = state.arts[key];
-    ["missions", "exams", "belts", "scrolls", "tools"].forEach(function (k) { if (!a[k]) a[k] = {}; });
+    ["missions", "exams", "belts", "scrolls", "tools", "replays"].forEach(function (k) { if (!a[k]) a[k] = {}; });
     return a;
   }
   function countItems(s, kind) {
@@ -72,19 +78,25 @@
   function hasBelt(s, n) { for (var k in s.arts) if (s.arts[k].belts && s.arts[k].belts[n]) return true; return false; }
   function anyExam(s, fn) { for (var k in s.arts) for (var l in (s.arts[k].exams || {})) if (fn(s.arts[k].exams[l])) return true; return false; }
 
+  /* El XP no se acumula en un contador: se SUMA de los registros cada vez. Por
+     eso basta con que el repaso (`replays`) deje su recibo en la bolsa para que
+     el HUD, el perfil y el rango lo vean sin que nadie les avise a mano —y por
+     eso fusionar dos dispositivos nunca puede cobrar dos veces lo mismo. */
+  var XP_BOLSAS = ["missions", "exams", "scrolls", "tools", "replays"];
+
   function totalXP(s) {
     s = s || state;
     var xp = 0;
     for (var k in s.arts) {
       var a = s.arts[k];
-      ["missions", "exams", "scrolls", "tools"].forEach(function (kind) { for (var id in (a[kind] || {})) xp += (a[kind][id].xp || 0); });
+      XP_BOLSAS.forEach(function (kind) { for (var id in (a[kind] || {})) xp += (a[kind][id].xp || 0); });
     }
     xp += Object.keys(s.achievements || {}).length * ACH_XP;
     return xp;
   }
   function artXP(key) {
     var a = art(key), xp = 0;
-    ["missions", "exams", "scrolls", "tools"].forEach(function (kind) { for (var id in a[kind]) xp += (a[kind][id].xp || 0); });
+    XP_BOLSAS.forEach(function (kind) { for (var id in (a[kind] || {})) xp += (a[kind][id].xp || 0); });
     return xp;
   }
   function rank(xp) {
@@ -110,10 +122,16 @@
 
   var listeners = [];
   var syncTimer = null;
+  /* Un solo sitio por el que se avisa a quien escucha. Lo que no pase por aqui
+     repinta el HUD pero deja desincronizado todo lo que vive FUERA de el: el
+     Arbol Cerebro de la cabecera del perfil es el caso real que lo destapo. */
+  function avisar() {
+    listeners.forEach(function (fn) { try { fn(state); } catch (e) { /* nada */ } });
+  }
   function save() {
     state.updated = now();
     MFStore.set("progress", state);
-    listeners.forEach(function (fn) { try { fn(state); } catch (e) { /* nada */ } });
+    avisar();
     clearTimeout(syncTimer);
     syncTimer = setTimeout(function () { if (window.MF.sync) window.MF.sync(); }, 1500);
   }
@@ -166,7 +184,7 @@
     return afterAward(gained, T.missionDone);
   }
 
-  function completeExam(artKey, level, score, xpBase) {
+  function completeExam(artKey, level, score, xpBase, beltKey) {
     var a = art(artKey);
     var passed = score >= (XP.exam_pass || 0.75);
     var prev = a.exams[level];
@@ -178,12 +196,19 @@
     track("exam", { art: artKey, item: "level-" + level, score: score, passed: passed });
     var extra = [];
     var unlocked = afterAward(gained, ES ? "Examen aprobado" : "Exam passed");
+    /* Tu Escuela (00-PLAN §3.7): un curso puede repartir sus cinturones — el
+       examen manda entonces la CLAVE del cinturón que otorga y el premio se
+       anuncia con ese color y nombre, no con el de la escalera por nivel. */
+    var b = null;
+    if (beltKey) {
+      (cfg.belts || []).forEach(function (x) { if (x.key === beltKey) b = x; });
+    }
+    if (!b) b = beltInfo(level);
     if (newBelt) {
-      var b = beltInfo(level);
       toast("belt", T.beltAwarded, (ES ? "Cinturón " : "") + (b ? b.name : level) + (ES ? "" : " belt"), "🥋");
       confetti();
     }
-    return { passed: passed, newBelt: newBelt, unlocked: unlocked, belt: beltInfo(level) };
+    return { passed: passed, newBelt: newBelt, unlocked: unlocked, belt: b };
   }
 
   function scrollRead(artKey, id, xp, label) {
@@ -203,6 +228,67 @@
     bumpStreak();
     track("tool_used", { art: artKey, item: id, xp: xp || XP.tool });
     return afterAward(xp || XP.tool, label || (ES ? "Herramienta usada" : "Tool used"));
+  }
+
+  /* ---------- Repaso en la sala de retos ----------
+     La sala deja volver a jugar los retos de las misiones ya superadas y por
+     eso paga una propina: el 10 % del XP que dio ESA misión, UNA sola vez por
+     pregunta en la vida de la cuenta.
+
+     El tope no es tacañería. Sin él, cualquiera deja pulsado el mismo reto y
+     fabrica XP infinito; entonces el rango, los cinturones y el expediente
+     entero dejan de significar nada. Con él, el techo de la sala es el número
+     de preguntas del curso: acotado y comprobable, que es lo que permite
+     soltarlo sin miedo.
+
+     Lo pagado vive en su propia bolsa del arte (`replays`), no en `missions`:
+     así el repaso no se cuela en las cuentas de misiones hechas, ni en los
+     cinturones, ni en los logros, ni en la racha —esos se ganan entrenando— y
+     a la vez viaja con la cuenta y se fusiona como todo lo demás. */
+
+  /* La proporción vive junto al resto de la economía y la puede mover el
+     generador (build.py, `XP`) sin tocar este archivo. */
+  var REPLAY_SHARE = typeof XP.replay_share === "number" ? XP.replay_share : 0.10;
+
+  /* La clave de una pregunta es su misión más el índice de su tarjeta
+     («culpafu-1-1#2»). Se construye AQUÍ para que quien cobra y quien pregunta
+     usen exactamente la misma: dos formatos distintos serían dos cobros. */
+  function replayKey(missionId, cardIndex) { return String(missionId) + "#" + cardIndex; }
+
+  /* Cuánto vale repasar una pregunta de esa misión: el 10 % del XP REALMENTE
+     registrado al superarla (20 o 25 según se acertara a la primera), nunca una
+     constante escrita a mano —si mañana cambia el XP de misión, esto le sigue
+     solo—. Suelo de 1 para que ganar jamás pague cero. Misión sin completar
+     devuelve 0: en la sala solo se repasa lo que ya se ganó entrenando. */
+  function replayXP(artKey, missionId) {
+    var rec = art(artKey).missions[missionId];
+    if (!rec) return 0;
+    return Math.max(1, Math.round((rec.xp || 0) * REPLAY_SHARE));
+  }
+
+  function replayPaid(artKey, key) { return !!art(artKey).replays[key]; }
+
+  /* Paga el repaso de UNA pregunta y devuelve lo que ha pagado. Un 0 significa
+     «esta ya estaba cobrada» (o que no había nada que pagar), y es lo que la
+     sala usa para decirlo en pantalla sin disimular: mentir sobre el XP, en
+     cualquiera de las dos direcciones, es lo peor que puede hacer esa pantalla.
+     Llamarla dos veces con la misma clave suma una sola vez. */
+  function replayWon(artKey, key, xp, label) {
+    if (!key) return 0;
+    var a = art(artKey);
+    if (a.replays[key]) return 0;
+    var base = Number(xp) || 0;
+    /* Si no llega un XP válido no se cobra NI se marca la clave: quemar la
+       pregunta para siempre por un cálculo en blanco sería el peor final. */
+    if (base <= 0) return 0;
+    var gained = Math.max(1, Math.round(base));
+    a.replays[key] = { at: now(), xp: gained };
+    track("replay_xp", { art: artKey, item: key, xp: gained });
+    /* afterAward guarda, sincroniza y repinta: el HUD y el perfil se enteran
+       solos, igual que con cualquier otro XP del sistema. Lo que NO se llama es
+       bumpStreak ni markHour: la racha y las horas premian entrenar. */
+    afterAward(gained, label || T.replayDone);
+    return gained;
   }
 
   function reflect(key, text) { state.reflections[key] = text; save(); }
@@ -325,8 +411,13 @@
       for (var k in (s.arts || {})) {
         var a = art.call(null, k); /* asegura estructura en state */
         var src = s.arts[k];
-        var dst = m.arts[k] || (m.arts[k] = { missions: {}, exams: {}, belts: {}, scrolls: {}, tools: {} });
-        ["missions", "exams", "scrolls", "tools"].forEach(function (kind) {
+        var dst = m.arts[k] || (m.arts[k] = { missions: {}, exams: {}, belts: {}, scrolls: {}, tools: {}, replays: {} });
+        /* Este bucle fusiona por UNIÓN de claves (la de cualquiera de los dos
+           lados entra) quedándose con el mejor recibo. Para `replays` esa unión
+           es justo lo que impide el único fallo grave posible aquí: si una
+           pregunta se cobró en el móvil, al sincronizar tiene que seguir cobrada
+           en el portátil, o el mismo repaso pagaría dos veces. */
+        XP_BOLSAS.forEach(function (kind) {
           for (var id in (src[kind] || {})) {
             var r = src[kind][id], cur = dst[kind][id];
             if (!cur || (r.xp || 0) > (cur.xp || 0) || (r.score || 0) > (cur.score || 0)) dst[kind][id] = Object.assign({}, cur || {}, r, { xp: Math.max((cur && cur.xp) || 0, r.xp || 0) });
@@ -417,7 +508,7 @@
   function setSession(v) {
     if (v === sessionState) return;
     sessionState = v; markSession(); paint();
-    listeners.forEach(function (fn) { try { fn(state); } catch (e) { /* nada */ } });
+    avisar();
   }
 
   /* El generador emite los enlaces a la zona de alumnos SIN href en las páginas
@@ -545,22 +636,41 @@
       });
       encuadrarYArrastrar(svg, Math.min(cur, 8));
     });
-    /* misiones del nivel */
+    /* Misiones del nivel. El entrenamiento se recorre en orden, así que una misión
+       está bloqueada mientras la ANTERIOR de su lista siga sin hacerse, y el examen
+       mientras quede cualquier misión pendiente (su regla de siempre).
+       Dos excepciones que NO se tocan: la primera de la lista nunca se bloquea (no
+       tiene anterior) y una misión YA HECHA tampoco, aunque la de delante esté
+       pendiente —hay progreso viejo conseguido en desorden y quitarle a alguien un
+       paso que ya ganó sería peor que el desorden—.
+       AVISO HONESTO: esto es un candado de INTERFAZ, no de acceso. La página de la
+       misión sigue siendo alcanzable escribiendo su URL, exactamente igual que la
+       del examen. Sirve para guiar el camino, no para impedir el paso. */
     document.querySelectorAll("[data-missions]").forEach(function (list) {
       var cards = [].slice.call(list.querySelectorAll(".mission-card"));
-      var a = null, allDone = true, nextSet = false;
+      var a = null, allDone = true, nextSet = false, previaHecha = true;
       cards.forEach(function (c) {
         a = a || art(c.getAttribute("data-art"));
         var id = c.getAttribute("data-mission");
         var exam = c.hasAttribute("data-exam");
         var done = exam ? !!(a.exams[c.getAttribute("data-level")] && a.exams[c.getAttribute("data-level")].passed) : !!a.missions[id];
         c.classList.toggle("is-done", done);
-        if (!exam && !done) allDone = false;
-        if (exam) {
-          c.classList.toggle("is-locked", !allDone && !done);
-          if (!c.__bound) { c.__bound = true; c.addEventListener("click", function (e) { if (c.classList.contains("is-locked")) { e.preventDefault(); toast("xp", T.examLocked, "", "🔒"); } }); }
+        /* el examen mira TODAS las misiones; una misión solo mira la de delante */
+        var locked = done ? false : (exam ? !allDone : !previaHecha);
+        c.classList.toggle("is-locked", locked);
+        /* el examen no cuenta como «anterior» de nadie ni se cuenta a sí mismo */
+        if (!exam) { previaHecha = done; if (!done) allDone = false; }
+        if (!c.__bound) {
+          c.__bound = true;
+          c.addEventListener("click", function (e) {
+            /* la clase se relee en cada clic: el candado cambia con cada repintado */
+            if (!c.classList.contains("is-locked")) return;
+            e.preventDefault();
+            toast("xp", c.hasAttribute("data-exam") ? T.examLocked : T.missionLocked, "", "🔒");
+          });
         }
-        if (!done && !nextSet && !(exam && !allDone)) { c.classList.add("is-next"); nextSet = true; } else { c.classList.remove("is-next"); }
+        /* «is-next» señala la siguiente JUGABLE: nunca una bloqueada */
+        if (!done && !locked && !nextSet) { c.classList.add("is-next"); nextSet = true; } else { c.classList.remove("is-next"); }
       });
     });
     /* tarjetas de pergaminos/herramientas; las filas de la biblioteca
@@ -631,6 +741,7 @@
   window.MF = {
     state: function () { return state; }, save: save, art: art, totalXP: totalXP, artXP: artXP, rank: rank, beltOf: beltOf, beltInfo: beltInfo, topBelt: topBelt,
     completeMission: completeMission, completeExam: completeExam, scrollRead: scrollRead, toolUsed: toolUsed, reflect: reflect, remember: remember,
+    replayKey: replayKey, replayXP: replayXP, replayPaid: replayPaid, replayWon: replayWon,
     track: track, flushEvents: flushEvents, merge: merge, toast: toast, confetti: confetti, beltPill: beltPill, paint: paint,
     artImg: artImg,
     avatars: function () {
@@ -639,10 +750,10 @@
     },
     session: function () { return sessionState; }, setSession: setSession,
     achievements: ACHIEVEMENTS, onChange: function (fn) { listeners.push(fn); }, T: T, XP: XP, sync: null,
-    reset: function () { state = fresh(); MFStore.set("progress", state); paint(); },
+    reset: function () { state = fresh(); MFStore.set("progress", state); paint(); avisar(); },
     /* Al cerrar sesión el navegador seguía exhibiendo los cinturones del alumno
        anterior. Esto lo borra de verdad, no solo de la pantalla. */
-    forget: function () { state = fresh(); MFStore.remove("progress"); paint(); },
+    forget: function () { state = fresh(); MFStore.remove("progress"); paint(); avisar(); },
   };
   if (cfg.page && cfg.page.art && (cfg.page.layout === "mission" || cfg.page.layout === "level")) remember(cfg.page.art, window.location.pathname);
 

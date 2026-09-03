@@ -76,7 +76,12 @@
     for (var k in s.arts) { beltsTotal += Object.keys(s.arts[k].belts || {}).length; missionsTotal += Object.keys(s.arts[k].missions || {}).length; }
     var html = '<section class="profile__hero profile__hero--filas"><div class="profile__ring" style="--pct:' + r.pct + '"><span>' + r.pct + '%</span></div>'
       + '<div class="profile__id"><p class="kicker" style="color:var(--c-accent-soft)">' + T.student + (s.name ? " · " + esc(s.name) : "") + '</p><h2 class="profile__rank">' + esc(r.name) + '</h2><p class="profile__sub">' + (r.next ? T.toNext.replace("{n}", r.nextAt - xp).replace("{rank}", r.next) : T.max) + "</p></div>"
-      + '<div class="profile__stats"><span class="profile__stat"><b>' + xp + "</b>" + T.xp + '</span><span class="profile__stat"><b>' + (s.streak.days || 0) + "🔥</b>" + T.streak + '</span><span class="profile__stat"><b>' + beltsTotal + "</b>" + T.belts + '</span><span class="profile__stat"><b>' + missionsTotal + "</b>" + T.missions + "</span></div></section>";
+      + '<div class="profile__stats"><span class="profile__stat"><b>' + xp + "</b>" + T.xp + '</span><span class="profile__stat"><b>' + (s.streak.days || 0) + "🔥</b>" + T.streak + '</span><span class="profile__stat"><b>' + beltsTotal + "</b>" + T.belts + '</span><span class="profile__stat"><b>' + missionsTotal + "</b>" + T.missions + "</span>"
+      /* Tu Escuela (F6): el acceso directo al taller y la puerta de los
+         maestros mentores viven en el mismo resumen, como un dato más. */
+      + '<a class="profile__stat profile__stat--accion" href="' + (cfg.prefix || "") + (ES ? "escuela/" : "school/") + '"><b>🎓</b>' + (ES ? "Mi escuela" : "My school") + "</a>"
+      + '<button type="button" class="profile__stat profile__stat--accion" data-maestros><b>🥋</b>' + (ES ? "Maestros Fu" : "Fu masters") + "</button>"
+      + "</div></section>";
 
     /* Árbol Cerebro: el avatar-planta que crece con el rango y se decora con
        los trofeos de los entrenamientos (arbol.js) */

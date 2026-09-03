@@ -350,6 +350,23 @@
     pintarLienzo(caja, false);
   })();
 
+  /* El mini de la cabecera vive FUERA del cuerpo que repinta profile.js, asi
+     que ningun render lo toca: `renderIn()` lo resincroniza a mano, pero
+     `renderOut()` no, y al cerrar sesion el arbol se quedaba con la etapa y los
+     adornos del alumno anterior hasta recargar la pagina. Se engancha al
+     PROGRESO y no a la vista, para que valga igual al salir, al entrar y cuando
+     el panel reinicia un expediente. La firma evita redibujar con cada gota de
+     XP: solo se repinta si de verdad cambia la etapa o los adornos. */
+  if (window.MF && MF.onChange) {
+    var firmaMini = null;
+    MF.onChange(function () {
+      var firma = etapaActual() + "|" + JSON.stringify(estadoArbol().p);
+      if (firma === firmaMini) return;
+      firmaMini = firma;
+      sincronizarMinis();
+    });
+  }
+
   window.MFArbol = {
     T: T,
     etapa: etapaActual,

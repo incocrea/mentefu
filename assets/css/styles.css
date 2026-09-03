@@ -91,12 +91,24 @@ body {
 }
 
 img, svg { max-width: 100%; display: block; }
+/* Toda ilustración es atrezo, no contenido del navegador (titular 2026-09-02):
+   ni marco de selección al arrastrar por encima ni imagen-fantasma al
+   agarrarla. Solo se selecciona el TEXTO. Firefox ignora -webkit-user-drag;
+   su mitad la pone main.js anulando dragstart sobre <img>. */
+img, svg { user-select: none; -webkit-user-select: none; -webkit-user-drag: none; }
 a { color: inherit; }
 button { font: inherit; }
 
-:focus-visible { outline: 3px solid var(--c-accent-text); outline-offset: 2px; }
-.header :focus-visible, .footer :focus-visible, .hero :focus-visible,
-.section--dark :focus-visible, .page-head :focus-visible, .cta-band :focus-visible {
+/* NINGÚN recuadro al tocar (regla del titular 2026-09-02): el anillo de foco
+   solo existe en modalidad TECLADO — main.js enciende `.con-teclado` en la
+   raíz con Tab y lo apaga con cualquier puntero. Así clicar o tocar jamás
+   dibuja una caja en ningún elemento, y quien navega con Tab conserva su
+   indicador, que es la parte de accesibilidad que no se negocia. */
+:focus { outline: none; }
+.con-teclado :focus-visible { outline: 3px solid var(--c-accent-text); outline-offset: 2px; }
+.con-teclado .header :focus-visible, .con-teclado .footer :focus-visible,
+.con-teclado .hero :focus-visible, .con-teclado .section--dark :focus-visible,
+.con-teclado .page-head :focus-visible, .con-teclado .cta-band :focus-visible {
   outline-color: var(--c-accent-soft);
 }
 
@@ -118,7 +130,16 @@ button { font: inherit; }
 .skip-link:focus { left: 0.5rem; top: 0.5rem; }
 
 /* ---------- Utilidades ---------- */
-.container { width: min(100% - 2.5rem, var(--container)); margin-inline: auto; }
+/* El `viewport-fit=cover` del <meta viewport> (templates/layout.html, puesto
+   para que los modales a pantalla completa esquiven el notch) extiende el
+   lienzo POR DEBAJO de la muesca. Sin estas insets, un iPhone en horizontal
+   —donde la inset lateral ronda los 44-59 px y el margen del contenedor son
+   20— deja el filo del texto bajo la muesca, y el header, que es pegajoso y
+   comparte contenedor, con él. Los fondos siguen llegando a sangre: se aparta
+   el CONTENIDO, no la banda. En vertical y en escritorio las insets valen 0,
+   así que aquí no cambia absolutamente nada. */
+.container { width: min(100% - 2.5rem, var(--container)); margin-inline: auto;
+  padding-inline: env(safe-area-inset-left, 0px) env(safe-area-inset-right, 0px); }
 .container--prose { max-width: var(--prose); }
 .section { padding-block: var(--space-section); }
 /* Banda de solo titular (antesala de la sección siguiente): respira menos. */
@@ -558,3 +579,38 @@ html.js [data-reveal].is-in { opacity: 1; transform: none; }
    tinta, el acento suave. */
 .section__title em { font-style: normal; color: var(--c-accent-text); }
 .section--dark .section__title em, .cta-band .section__title em { color: var(--c-accent-soft); }
+
+/* ==========================================================================
+   EL CARGADOR ILUSTRADO (titular 2026-09-02). Un único indicador de espera
+   para toda la plataforma: la mascota respirando dentro de su aro de tinta
+   —el enso girando— y tres puntos que laten. Lo pinta window.MFCargador
+   (main.js) allí donde antes había textos de «Abriendo…»; el texto sigue
+   viajando en el aria-label. Vive en styles.css y no en game.css porque
+   también espera quien aún no ha entrado a jugar (gate, términos).
+   ========================================================================== */
+.cargador { display: grid; grid-template-rows: auto auto; justify-items: center;
+  gap: 0.7rem; padding: 2rem 0; }
+/* aro y mascota comparten celda: el aro gira alrededor de ella */
+.cargador__aro { grid-area: 1 / 1; width: 5.6rem; height: 5.6rem;
+  border-radius: 50%; border: 3px solid var(--c-line-light);
+  border-top-color: var(--c-accent);
+  animation: cargador-gira 1.1s linear infinite; }
+.cargador__mascota { grid-area: 1 / 1; align-self: center; width: 3.4rem;
+  animation: cargador-respira 1.6s ease-in-out infinite; }
+.cargador__puntos { grid-area: 2 / 1; display: flex; gap: 0.35rem; }
+.cargador__puntos i { width: 0.42rem; height: 0.42rem; border-radius: 50%;
+  background: var(--c-accent); opacity: 0.25;
+  animation: cargador-late 1.2s ease-in-out infinite; }
+.cargador__puntos i:nth-child(2) { animation-delay: 0.2s; }
+.cargador__puntos i:nth-child(3) { animation-delay: 0.4s; }
+@keyframes cargador-gira { to { rotate: 360deg; } }
+@keyframes cargador-respira {
+  0%, 100% { translate: 0 0; scale: 1; }
+  50% { translate: 0 -4px; scale: 1.04; } }
+@keyframes cargador-late {
+  0%, 100% { opacity: 0.25; }
+  50% { opacity: 1; } }
+@media (prefers-reduced-motion: reduce) {
+  .cargador__aro, .cargador__mascota, .cargador__puntos i { animation: none; }
+  .cargador__puntos i { opacity: 0.6; }
+}

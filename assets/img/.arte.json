@@ -413,6 +413,123 @@
   "reference": true,
   "size": "1536x1024"
  },
+ "escena-fondo-cafeteria": {
+  "at": "2026-09-02T09:37:42",
+  "model": "gpt-image-1",
+  "out": "game/escenas/fondo-cafeteria.png",
+  "prompt": "Cozy empty little cafe interior seen straight on, in a wide horizontal format: the upper two thirds is a warm cream wall with one simple wooden shelf holding a few plain cups on the right, and one large window with soft daylight and a hanging plant on the left; the lower third is a warm honey-coloured wooden plank floor seen from the front with a clear empty area in the middle of it; a small round cafe table with two simple chairs and one steaming cup on it in the far left corner, and a warm wooden counter corner with a simple coffee machine in the far right corner; warm afternoon light, calm and completely empty, no menu boards, no people, no animals, no characters and no faces anywhere, no text anywhere, empty scenery only, with a plain empty band of wall along the top edge and a plain empty band of floor along the bottom edge that can be safely cropped away",
+  "quality": "medium",
+  "reference": true,
+  "size": "1536x1024"
+ },
+ "escena-fondo-calle": {
+  "at": "2026-09-02T09:36:48",
+  "model": "gpt-image-1",
+  "out": "game/escenas/fondo-calle.png",
+  "prompt": "Quiet empty street in a friendly small neighbourhood seen straight on, in a wide horizontal format: the upper two thirds shows the front facades of two or three simple houses with warm cream walls, dark brown window frames and vermilion tiled roofs, under a soft light blue sky with a few small clouds; the lower third is a light warm grey pavement seen from the front with a clear empty area in the middle of it; a classic street lamp in the far left corner and a small round green tree in the far right corner; soft pleasant daylight, calm and completely empty, no vehicles, no people, no animals, no characters and no faces anywhere, no text anywhere, empty scenery only, with a plain empty band of sky along the top edge and a plain empty band of pavement along the bottom edge that can be safely cropped away",
+  "quality": "medium",
+  "reference": true,
+  "size": "1536x1024"
+ },
+ "escena-fondo-comedor": {
+  "at": "2026-09-02T09:35:55",
+  "model": "gpt-image-1",
+  "out": "game/escenas/fondo-comedor.png",
+  "prompt": "Cozy empty family dining room seen straight on, in a wide horizontal format: the upper two thirds is a warm cream wall with one simple wooden shelf holding a few plain plates and cups on the left, and a window with simple curtains showing soft daylight on the right; the lower third is a warm honey-coloured wooden plank floor seen from the front with a clear empty area in the middle of it; a wooden family dining table with two simple chairs, set with plain cream plates and cups, in the far left corner, and a tall potted green plant in the far right corner; soft warm midday light, calm and completely empty, no food beyond the plain set table, no people, no animals, no characters and no faces anywhere, no text anywhere, empty scenery only, with a plain empty band of wall along the top edge and a plain empty band of floor along the bottom edge that can be safely cropped away",
+  "quality": "medium",
+  "reference": true,
+  "size": "1536x1024"
+ },
+ "escena-fondo-dormitorio": {
+  "at": "2026-09-02T09:37:18",
+  "model": "gpt-image-1",
+  "out": "game/escenas/fondo-dormitorio.png",
+  "prompt": "Cozy empty bedroom late at night seen straight on, in a wide horizontal format: the upper two thirds is a calm deep blue-grey wall with one window on the left showing a crescent moon and a few small stars in a dark night sky; the lower third is a warm honey-coloured wooden plank floor seen from the front with a clear empty area in the middle of it; a simple wooden bed with cream sheets and a vermilion blanket, made and empty, in the far right corner, with a small bedside table holding a softly glowing warm night lamp; dim calm night light, calm and completely empty, no people, no animals, no characters and no faces anywhere, no text anywhere, empty scenery only, with a plain empty band of wall along the top edge and a plain empty band of floor along the bottom edge that can be safely cropped away",
+  "quality": "medium",
+  "reference": true,
+  "size": "1536x1024"
+ },
+ "escena-fondo-salon": {
+  "at": "2026-09-02T09:35:31",
+  "model": "gpt-image-1",
+  "out": "game/escenas/fondo-salon.png",
+  "prompt": "Cozy empty living room at night seen straight on, in a wide horizontal format: the upper two thirds is a warm cream wall with one large window on the right showing a deep blue night sky with a few small stars, and one simple framed picture of plain mountains hanging on the left; the lower third is a warm honey-coloured wooden plank floor seen from the front with a clear empty area in the middle of it; a comfortable vermilion two-seat sofa with cream cushions in the far left corner, and a small wooden side table with a warm glowing table lamp in the far right corner under the window; soft warm lamplight, calm and completely empty, no people, no animals, no characters and no faces anywhere, no text anywhere, empty scenery only, with a plain empty band of wall along the top edge and a plain empty band of floor along the bottom edge that can be safely cropped away",
+  "quality": "medium",
+  "reference": true,
+  "size": "1536x1024"
+ },
+ "escena-fondo-trabajo": {
+  "at": "2026-09-02T09:36:28",
+  "model": "gpt-image-1",
+  "out": "game/escenas/fondo-trabajo.png",
+  "prompt": "Cozy empty home office corner seen straight on, in a wide horizontal format: the upper two thirds is a calm pale grey-cream wall with one simple pinboard holding a few small blank cream notes on the right, and a simple round wall clock on the left; the lower third is a warm honey-coloured wooden plank floor seen from the front with a clear empty area in the middle of it; a wooden desk with a computer monitor showing a plain glowing cream screen with no icons and no text, a small desk lamp and a simple office chair in the far left corner, and a low wooden filing cabinet with a small potted succulent on top in the far right corner; soft cool morning light, calm and completely empty, no people, no animals, no characters and no faces anywhere, no text anywhere, empty scenery only, with a plain empty band of wall along the top edge and a plain empty band of floor along the bottom edge that can be safely cropped away",
+  "quality": "medium",
+  "reference": true,
+  "size": "1536x1024"
+ },
+ "escena-pose-canto": {
+  "at": "2026-09-02T11:14:09",
+  "model": "gpt-image-1",
+  "out": "game/escenas/pose-canto.png",
+  "prompt": "A single small centered chibi figure occupying only the middle two thirds of a mostly EMPTY transparent canvas, with wide empty transparent margins on all four sides and absolutely nothing drawn near any edge. MenteFu's official mascot, always drawn exactly the same. MODEL SHEET, do not redesign: one single kawaii shonen-anime character, alone, never two. Its head IS a big soft pale pink brain with gently rounded folds and a visible central groove, wider than tall, taking about half of the total height. The brain is PALE PINK (soft rosy pink, never orange, never peach, always clearly lighter and pinker than the orange gi) — no hair, no ears, no human skull shape, no nose, genderless with no gender cues. A white headband with a small knot and short tails on the right side crosses the lower part of the brain. Below it, a small chibi body with short arms and legs and small bare feet, wearing a martial-arts gi in orange-vermilion with a dark brown belt and a white headband tied at the side. Both eyes are always large, round and identical to each other in size and shape. Same proportions, same pale pink brain colour, same orange-vermilion gi and same brown belt in every image: ONLY the pose and the facial expression change. Full body, single character alone, seen from the side facing LEFT, in a dynamic karate knife-hand chop: one open hand raised high and slicing diagonally downward-forward edge-first, the other fist chambered at the hip, both legs in a firm forward stance with the front knee bent, determined expression with a small confident smile, headband tails flying back. Both complete small bare feet with all toes fully visible, standing on an imaginary ground line placed well above the bottom edge, and the bottom fifth of the canvas left completely empty below the feet. FRAMING, identical in every pose of this set: portrait composition clearly taller than wide; the complete figure is centred and occupies about 70 percent of the image height, drawn at the same head-to-body proportion as the reference sheet; generous empty margin on every side, and no part of the drawing - not the raised hand, not the top of the brain, not the headband tails, not the feet - touches or reaches any edge of the canvas; the whole character must be complete and fully inside the frame; the whole figure surrounded by a clean, even, pure white die-cut sticker border of constant width, with clear empty margin between that sticker border and every edge of the canvas; keep the stance compact so the figure never ends up wider than tall",
+  "quality": "medium",
+  "reference": true,
+  "size": "1024x1024"
+ },
+ "escena-pose-gancho": {
+  "at": "2026-09-02T10:57:50",
+  "model": "gpt-image-1",
+  "out": "game/escenas/pose-gancho.png",
+  "prompt": "{CHARACTERS}. Full body, single character alone, seen from the side facing LEFT, in a dynamic rising uppercut punch: the front fist punching sharply upward at forehead height with the arm bent, never above the top of the brain, the other fist guarding at the chest, knees slightly bent driving the punch upward, determined expression with a small confident smile, headband tails flying back. Both complete small bare feet with all toes fully visible AND the rounded soles of both feet fully drawn and closed with the dark outline underneath, standing on an imaginary ground line placed well above the bottom edge, with clearly visible empty space between the soles and the bottom edge, and the bottom fifth of the canvas left completely empty below the feet. FRAMING, identical in every pose of this set: portrait composition clearly taller than wide; the complete figure is centred and occupies about 70 percent of the image height, drawn at the same head-to-body proportion as the reference sheet; generous empty margin on every side, and no part of the drawing - not the raised hand, not the top of the brain, not the headband tails, not the feet - touches or reaches any edge of the canvas; the whole character must be complete and fully inside the frame; the whole figure surrounded by a clean, even, pure white die-cut sticker border of constant width, with clear empty margin between that sticker border and every edge of the canvas; keep the stance compact so the figure never ends up wider than tall",
+  "quality": "medium",
+  "reference": true,
+  "size": "1024x1024"
+ },
+ "escena-pose-movil": {
+  "at": "2026-09-02T09:38:54",
+  "model": "gpt-image-1",
+  "out": "game/escenas/pose-movil.png",
+  "prompt": "MenteFu's official mascot, always drawn exactly the same. MODEL SHEET, do not redesign: one single kawaii shonen-anime character, alone, never two. Its head IS a big soft pale pink brain with gently rounded folds and a visible central groove, wider than tall, taking about half of the total height. The brain is PALE PINK (soft rosy pink, never orange, never peach, always clearly lighter and pinker than the orange gi) — no hair, no ears, no human skull shape, no nose, genderless with no gender cues. A white headband with a small knot and short tails on the right side crosses the lower part of the brain. Below it, a small chibi body with short arms and legs and small bare feet, wearing a martial-arts gi in orange-vermilion with a dark brown belt and a white headband tied at the side. Both eyes are always large, round and identical to each other in size and shape. Same proportions, same pale pink brain colour, same orange-vermilion gi and same brown belt in every image: ONLY the pose and the facial expression change. Full body, single character alone, seen from the side facing LEFT, standing and looking down at a small smartphone held in both small hands in front of its chest, the phone screen a plain glowing cream rectangle with no icons and no text, shoulders slightly hunched, worried uneasy expression with a small frown, headband tails hanging calm. Both small bare feet flat on an imaginary ground line, with clear empty space below it inside the canvas. FRAMING, identical in every pose of this set: portrait composition clearly taller than wide, about 4 units wide by 5 units tall; the complete figure is centred and occupies about 85 percent of the image height from the top of the brain down to the soles of the feet, drawn at exactly the same total height and the same head-to-body proportion as the reference sheet; keep the stance compact so the figure never ends up wider than tall",
+  "quality": "medium",
+  "reference": true,
+  "size": "1024x1024"
+ },
+ "escena-pose-patada-voladora": {
+  "at": "2026-09-02T13:41:20",
+  "model": "gpt-image-1",
+  "out": "game/escenas/pose-patada-voladora.png",
+  "prompt": "A single small centered chibi figure occupying only the middle two thirds of a mostly EMPTY transparent canvas, with wide empty transparent margins on all four sides and absolutely nothing drawn near any edge. MenteFu's official mascot, always drawn exactly the same. MODEL SHEET, do not redesign: one single kawaii shonen-anime character, alone, never two. Its head IS a big soft pale pink brain with gently rounded folds and a visible central groove, wider than tall, taking about half of the total height. The brain is PALE PINK (soft rosy pink, never orange, never peach, always clearly lighter and pinker than the orange gi) — no hair, no ears, no human skull shape, no nose, genderless with no gender cues. A white headband with a small knot and short tails on the right side crosses the lower part of the brain. Below it, a small chibi body with short arms and legs and small bare feet, wearing a martial-arts gi in orange-vermilion with a dark brown belt and a white headband tied at the side. Both eyes are always large, round and identical to each other in size and shape. Same proportions, same pale pink brain colour, same orange-vermilion gi and same brown belt in every image: ONLY the pose and the facial expression change. Full body, single character alone, seen from the side facing LEFT, in a dynamic flying jump kick, airborne: one leg extended forward in a strong kick with the small bare foot leading, the other leg tucked bent beneath the body, both small fists held up in guard, the whole body leaning into the kick in mid-air, fierce determined expression with a small confident smile, headband tails and gi flying back with the motion. The character floats fully in the air with clear empty space all around it. FRAMING, identical in every pose of this set: portrait composition clearly taller than wide; the complete figure is centred and occupies about 70 percent of the image area, drawn at the same head-to-body proportion as the reference sheet; generous empty margin on every side, and no part of the drawing - not the extended foot, not the fists, not the top of the brain, not the headband tails - touches or reaches any edge of the canvas; the whole character must be complete and fully inside the frame; the whole figure surrounded by a clean, even, pure white die-cut sticker border of constant width, with clear empty margin between that sticker border and every edge of the canvas; keep the pose compact so the figure never ends up wider than tall",
+  "quality": "medium",
+  "reference": true,
+  "size": "1024x1024"
+ },
+ "escena-pose-pecho": {
+  "at": "2026-09-02T10:02:23",
+  "model": "gpt-image-1",
+  "out": "game/escenas/pose-pecho.png",
+  "prompt": "MenteFu's official mascot, always drawn exactly the same. MODEL SHEET, do not redesign: one single kawaii shonen-anime character, alone, never two. Its head IS a big soft pale pink brain with gently rounded folds and a visible central groove, wider than tall, taking about half of the total height. The brain is PALE PINK (soft rosy pink, never orange, never peach, always clearly lighter and pinker than the orange gi) — no hair, no ears, no human skull shape, no nose, genderless with no gender cues. A white headband with a small knot and short tails on the right side crosses the lower part of the brain. Below it, a small chibi body with short arms and legs and small bare feet, wearing a martial-arts gi in orange-vermilion with a dark brown belt and a white headband tied at the side. Both eyes are always large, round and identical to each other in size and shape. Same proportions, same pale pink brain colour, same orange-vermilion gi and same brown belt in every image: ONLY the pose and the facial expression change. Full body, single character alone, seen from the side facing LEFT, standing with one small hand pressed flat on its own chest and the other arm hanging relaxed at its side, shoulders slightly dropped, apologetic uneasy expression with raised inner eyebrows and a small worried smile, headband tails hanging calm. Both complete small bare feet with all toes fully visible, standing on an imaginary ground line placed well above the bottom edge, and the bottom fifth of the canvas left completely empty below the feet. FRAMING, identical in every pose of this set: portrait composition clearly taller than wide; the complete figure is centred and occupies about 70 percent of the image height, drawn at the same head-to-body proportion as the reference sheet; generous empty margin on every side, and no part of the drawing - not the top of the brain, not the headband tails, not the soles of the feet - touches or reaches any edge of the canvas; the whole character must be complete and fully inside the frame; no die-cut sticker border, no white halo around the figure; keep the stance compact so the figure never ends up wider than tall",
+  "quality": "medium",
+  "reference": true,
+  "size": "1024x1024"
+ },
+ "escena-pose-pensativa": {
+  "at": "2026-09-02T10:02:00",
+  "model": "gpt-image-1",
+  "out": "game/escenas/pose-pensativa.png",
+  "prompt": "MenteFu's official mascot, always drawn exactly the same. MODEL SHEET, do not redesign: one single kawaii shonen-anime character, alone, never two. Its head IS a big soft pale pink brain with gently rounded folds and a visible central groove, wider than tall, taking about half of the total height. The brain is PALE PINK (soft rosy pink, never orange, never peach, always clearly lighter and pinker than the orange gi) — no hair, no ears, no human skull shape, no nose, genderless with no gender cues. A white headband with a small knot and short tails on the right side crosses the lower part of the brain. Below it, a small chibi body with short arms and legs and small bare feet, wearing a martial-arts gi in orange-vermilion with a dark brown belt and a white headband tied at the side. Both eyes are always large, round and identical to each other in size and shape. Same proportions, same pale pink brain colour, same orange-vermilion gi and same brown belt in every image: ONLY the pose and the facial expression change. Full body, single character alone, seen from the side facing LEFT, standing still and thinking hard: one small hand raised to its chin, the other arm folded across the belly supporting the first elbow, head tilted slightly downward, eyes open looking slightly down, a small thoughtful frown, headband tails hanging calm. Both complete small bare feet with all toes fully visible, standing on an imaginary ground line placed well above the bottom edge, and the bottom fifth of the canvas left completely empty below the feet. FRAMING, identical in every pose of this set: portrait composition clearly taller than wide; the complete figure is centred and occupies about 70 percent of the image height, drawn at the same head-to-body proportion as the reference sheet; generous empty margin on every side, and no part of the drawing - not the top of the brain, not the headband tails, not the soles of the feet - touches or reaches any edge of the canvas; the whole character must be complete and fully inside the frame; no die-cut sticker border, no white halo around the figure; keep the stance compact so the figure never ends up wider than tall",
+  "quality": "medium",
+  "reference": true,
+  "size": "1024x1024"
+ },
+ "escena-pose-victoria": {
+  "at": "2026-09-02T10:35:40",
+  "model": "gpt-image-1",
+  "out": "game/escenas/pose-victoria.png",
+  "prompt": "MenteFu's official mascot, always drawn exactly the same. MODEL SHEET, do not redesign: one single kawaii shonen-anime character, alone, never two. Its head IS a big soft pale pink brain with gently rounded folds and a visible central groove, wider than tall, taking about half of the total height. The brain is PALE PINK (soft rosy pink, never orange, never peach, always clearly lighter and pinker than the orange gi) — no hair, no ears, no human skull shape, no nose, genderless with no gender cues. A white headband with a small knot and short tails on the right side crosses the lower part of the brain. Below it, a small chibi body with short arms and legs and small bare feet, wearing a martial-arts gi in orange-vermilion with a dark brown belt and a white headband tied at the side. Both eyes are always large, round and identical to each other in size and shape. Same proportions, same pale pink brain colour, same orange-vermilion gi and same brown belt in every image: ONLY the pose and the facial expression change. Full body, single character alone, seen from the side facing LEFT, in a joyful little victory jump: both arms raised high in celebration with small open hands, knees tucked slightly beneath the body in mid-air, big happy smile with closed curved eyes, headband tails flying up. The whole figure floats in mid-air with clear empty space below the feet. FRAMING, identical in every pose of this set: portrait composition clearly taller than wide; the complete figure is centred and occupies about 70 percent of the image height, drawn at the same head-to-body proportion as the reference sheet; generous empty margin on every side, and no part of the drawing - not the raised hands, not the top of the brain, not the headband tails, not the feet - touches or reaches any edge of the canvas; the whole character must be complete and fully inside the frame; no die-cut sticker border, no white halo around the figure; keep the jump compact so the figure never ends up wider than tall",
+  "quality": "medium",
+  "reference": true,
+  "size": "1024x1024"
+ },
  "home-logros": {
   "at": "2026-08-24T11:52:49",
   "model": "gpt-image-1",
@@ -575,6 +692,402 @@
   "reference": true,
   "size": "1024x1536"
  },
+ "reto-campana-campana": {
+  "at": "2026-08-27T20:53:12",
+  "model": "gpt-image-1",
+  "out": "game/retos/campana-campana.png",
+  "prompt": "a single round bronze Japanese temple bell hanging alone, seen straight from the front: a small metal hanging loop at the very top centre, and under it the bell body — a rounded dome flaring into a wide flat rim at the bottom, with one horizontal band around the middle and a row of small round studs around the shoulder, warm golden bronze with thick dark brown outlines, flat colours and soft cel shading. Compact and chunky, about as wide as it is tall. Only the loop and the bell: no crossbeam, no yoke, no tower, no roof, no rope, no hammer, no sparkles, no motion lines, plain object with no face, no eyes, no mouth, not a character, surrounded by a clean, even, pure white die-cut sticker border of constant width",
+  "quality": "medium",
+  "reference": true,
+  "size": "1024x1024"
+ },
+ "reto-campana-disco": {
+  "at": "2026-08-27T20:51:17",
+  "model": "gpt-image-1",
+  "out": "game/retos/campana-disco.png",
+  "prompt": "a small round striker puck seen perfectly from the front: one flat circular disc in orange-vermilion with a thick dark brown outline, a slightly darker concentric inner ring and a soft cream crescent highlight in the upper left, perfectly circular and symmetrical, chunky and solid like a heavy wooden game token. Nothing else: no arrow, no star, no symbol, no numbers, no letters, no ground shadow, no motion lines, plain object with no face, no eyes, no mouth, not a character, surrounded by a clean, even, pure white die-cut sticker border of constant width",
+  "quality": "medium",
+  "reference": true,
+  "size": "1024x1024"
+ },
+ "reto-campana-mazo": {
+  "at": "2026-08-27T20:51:38",
+  "model": "gpt-image-1",
+  "out": "game/retos/campana-mazo.png",
+  "prompt": "a large ceremonial wooden taiko drum mallet with a thick rounded head and a long smooth handle, with a small red cord wrapped around the handle just under the head, shown diagonally with the head at the top left and the end of the handle at the bottom right, warm wood tones with thick dark brown outlines, flat colours and soft cel shading. The mallet alone: no hand, no arm, no drum, no bell, no tower, plain object with no face, no eyes, no mouth, not a character, surrounded by a clean, even, pure white die-cut sticker border of constant width",
+  "quality": "medium",
+  "reference": true,
+  "size": "1024x1024"
+ },
+ "reto-campana-torre": {
+  "at": "2026-08-27T20:50:45",
+  "model": "gpt-image-1",
+  "out": "game/retos/campana-torre.png",
+  "prompt": "a tall narrow wooden Japanese festival high-striker tower with NO bell on it: at the very top a small low curved temple roof taking less than a tenth of the total height, directly under the roof one short thick horizontal wooden crossbeam yoke spanning the width, under the yoke a completely empty gap of clear space where something could hang, then a long straight vertical wooden guide rail of constant width running all the way down with small evenly spaced carved notch marks repeating along it, and at the bottom a wide sturdy wooden base. Strictly symmetrical front view: roof, yoke, rail and base all perfectly centred on the same vertical axis, so the horizontal middle of the picture is exactly the middle of the rail. Warm brown wood with thick dark brown outlines, flat colours and soft cel shading. Extremely tall and narrow, about one unit wide to three units tall. Nothing hangs from the yoke and nothing else is in the picture: no bell, no rope, no mallet, no lever, no lanterns, no banners, no flags, no numbers, no letters and no marks other than the plain notches, plain object with no face, no eyes, no mouth, not a character, surrounded by a clean, even, pure white die-cut sticker border of constant width",
+  "quality": "medium",
+  "reference": true,
+  "size": "1024x1536"
+ },
+ "reto-domino-ficha": {
+  "at": "2026-09-01T12:39:50",
+  "model": "gpt-image-1",
+  "out": "game/retos/domino-ficha.png",
+  "prompt": "a single upright wooden domino tile standing on its flat bottom edge, seen perfectly from the front, clearly taller than wide with a height to width ratio of about 5 to 3, warm light wood frame with softly rounded corners and a plain smooth empty cream face panel, absolutely no pips, no dots, no numbers and no markings on the panel, one small vermilion round seal dot on the wooden frame just outside the cream panel, at the end that touches the ground when the tile stands upright, nothing else in the image, plain object with no face, no eyes, no mouth, not a character, bold silhouette, readable at small size, subtle shading, surrounded by a clean, even, pure white die-cut sticker border of constant width",
+  "quality": "medium",
+  "reference": true,
+  "size": "1024x1024"
+ },
+ "reto-domino-marca": {
+  "at": "2026-09-01T12:40:59",
+  "model": "gpt-image-1",
+  "out": "game/retos/domino-marca.png",
+  "prompt": "a flat wide shallow wooden floor mark for standing a tile on: one single low straight plank of warm light wood lying flat on the ground, seen from slightly above so its long top face is visible, no groove, no notch, no pegs, no stand, nothing standing on it and nothing on top of it, very wide and very low with a width to height ratio of about 5 to 1, nothing else in the image, plain object with no face, no eyes, no mouth, not a character, bold silhouette, readable at small size, subtle shading, surrounded by a clean, even, pure white die-cut sticker border of constant width",
+  "quality": "medium",
+  "reference": true,
+  "size": "1024x1024"
+ },
+ "reto-domino-tumbada": {
+  "at": "2026-09-01T12:40:27",
+  "model": "gpt-image-1",
+  "out": "game/retos/domino-tumbada.png",
+  "prompt": "the same wooden domino tile lying flat and horizontal, seen perfectly from above, very wide and short with a width to height ratio of about 3 to 1, warm light wood frame with softly rounded corners and one large plain smooth empty cream panel filling the right three quarters of the face, absolutely no pips, no dots, no numbers and no markings inside that panel so a label can sit on top, one small vermilion round seal dot on the wooden frame at the far left end, outside the cream panel, nothing else in the image, plain object with no face, no eyes, no mouth, not a character, bold silhouette, readable at small size, subtle shading, surrounded by a clean, even, pure white die-cut sticker border of constant width",
+  "quality": "medium",
+  "reference": true,
+  "size": "1024x1024"
+ },
+ "reto-gota-sudor": {
+  "at": "2026-09-01T12:57:11",
+  "model": "gpt-image-1",
+  "out": "game/retos/gota-sudor.png",
+  "prompt": "A pale sky blue object, coloured almost entirely in pale sky blue: one single large anime sweat drop bead, a round teardrop shape with the rounded end at the bottom and the tip curving up to one side, with one soft white highlight and a thick dark brown outline, nothing else in the image, plain object with no face, no eyes, no mouth, not a character, bold silhouette, readable at small size, surrounded by a clean, even, pure white die-cut sticker border of constant width. The dominant colour must be pale sky blue — do NOT make it orange, vermilion or cream",
+  "quality": "medium",
+  "reference": true,
+  "size": "1024x1024"
+ },
+ "reto-herr-candado": {
+  "at": "2026-08-27T18:50:17",
+  "model": "gpt-image-1",
+  "out": "game/retos/herr-candado.png",
+  "prompt": "a single closed padlock seen straight from the front, drawn about three units tall for every two units wide: a chunky rounded golden-yellow body with softly rounded corners and one small round dark keyhole in its middle, and a thick dark grey metal shackle forming a closed upside-down U whose two ends are both firmly locked into the top of the body, flat colours with soft cel shading and a thick dark brown outline of even thickness, no chain, no key, no rope, nothing else in the frame, the whole padlock centred with a wide even empty margin on all four sides, plain object with no face, no eyes, no mouth, not a character, bold silhouette, readable at small size, surrounded by a clean, even, pure white die-cut sticker border of constant width",
+  "quality": "medium",
+  "reference": true,
+  "size": "1024x1024"
+ },
+ "reto-herr-candado-abierto": {
+  "at": "2026-08-27T18:55:20",
+  "model": "gpt-image-1",
+  "out": "game/retos/herr-candado-abierto.png",
+  "prompt": "the same padlock now wide open, seen straight from the front, drawn about three units tall for every two units wide and at exactly the same size, angle and line weight as the closed one: the chunky rounded amber golden-yellow body with softly rounded corners and one small dark classic keyhole in its middle —a round hole with a narrow tapered slot hanging below it— sits in exactly the same place within the frame, but the thick dark grey metal shackle has sprung up and pivoted sideways so its free tip is clearly out of the body and the U hangs open to one side, the extra space taken by the open shackle left as empty margin, flat colours with soft cel shading and a thick dark brown outline of even thickness, no chain, no key, nothing else in the frame, plain object with no face, no eyes, no mouth, not a character, bold silhouette, readable at small size, surrounded by a clean, even, pure white die-cut sticker border of constant width",
+  "quality": "medium",
+  "reference": true,
+  "size": "1024x1024"
+ },
+ "reto-herr-cofre": {
+  "at": "2026-08-27T18:50:38",
+  "model": "gpt-image-1",
+  "out": "game/retos/herr-cofre.png",
+  "prompt": "a single sturdy closed wooden treasure chest seen straight from the front, drawn about four units wide for every three units tall: warm honey-brown wooden planks with a rounded domed lid shut tight, simple dark metal corner fittings and two horizontal metal bands, and a small plain metal hasp centred on the front face with nothing hanging from it, no padlock and no lock of any kind, flat colours with soft cel shading and a thick dark brown outline of even thickness, nothing else in the frame, the whole chest centred with a wide even empty margin on all four sides, plain object with no face, no eyes, no mouth, not a character, bold silhouette, readable at small size, surrounded by a clean, even, pure white die-cut sticker border of constant width",
+  "quality": "medium",
+  "reference": true,
+  "size": "1024x1024"
+ },
+ "reto-herr-cofre-abierto": {
+  "at": "2026-08-27T18:53:54",
+  "model": "gpt-image-1",
+  "out": "game/retos/herr-cofre-abierto.png",
+  "prompt": "the same wooden treasure chest now wide open, seen straight from the front, drawn about four units wide for every three units tall and at exactly the same width, angle and line weight as the closed one: the box of the chest sits in exactly the same place within the frame, warm honey-brown wooden planks, simple dark metal corner fittings and two horizontal metal bands, the small metal hasp on the front hanging loose and empty, the rounded domed lid tilted fully back and open with the space it takes left as empty margin, and the inside of the chest showing as a warm empty cream glow, absolutely nothing inside the chest, no scroll, no coins, no treasure, no padlock, flat colours with soft cel shading and a thick dark brown outline of even thickness, nothing else in the frame, plain object with no face, no eyes, no mouth, not a character, bold silhouette, readable at small size, surrounded by a clean, even, pure white die-cut sticker border of constant width",
+  "quality": "medium",
+  "reference": true,
+  "size": "1024x1024"
+ },
+ "reto-herr-fondo-dojo": {
+  "at": "2026-08-27T18:50:58",
+  "model": "gpt-image-1",
+  "out": "game/retos/herr-fondo-dojo.png",
+  "prompt": "Cozy empty corner of a Japanese dojo training hall seen straight on, in a wide horizontal format: the upper two thirds is a large plain shoji paper screen wall of pale cream panels with a simple dark wooden lattice, perfectly clean with no stains and no marks and one wide empty smooth panel in the very centre; the lower third is a warm honey-coloured wooden plank floor seen from the front with a clear empty area in the middle of it; a small potted bamboo plant in the far left corner and a paper lantern glowing softly in the far right corner; soft warm afternoon light, calm and completely empty, no chest, no boxes, no furniture and no objects in the centre of the image, no people, no animals, no characters and no faces anywhere, empty scenery only, with a plain empty band of wall along the top edge and a plain empty band of floor along the bottom edge that can be safely cropped away",
+  "quality": "medium",
+  "reference": true,
+  "size": "1536x1024"
+ },
+ "reto-herr-llave": {
+  "at": "2026-08-27T18:49:18",
+  "model": "gpt-image-1",
+  "out": "game/retos/herr-llave.png",
+  "prompt": "a single large old-fashioned key seen perfectly from the side and lying flat and horizontal, clearly wider than it is tall: a round ornate bow at the far left end, a plain straight smooth shaft running to the right, and two simple square teeth at the far right end pointing downwards, warm brass-gold metal with flat colours, soft cel shading and a thick dark brown outline of even thickness, no keyring, no ribbon, no chain, no lock, no keyhole, nothing else in the frame, the whole key centred with a wide even empty margin on all four sides, plain object with no face, no eyes, no mouth, not a character, bold silhouette, readable at small size, surrounded by a clean, even, pure white die-cut sticker border of constant width",
+  "quality": "medium",
+  "reference": true,
+  "size": "1024x1024"
+ },
+ "reto-herr-mancha": {
+  "at": "2026-08-27T18:49:41",
+  "model": "gpt-image-1",
+  "out": "game/retos/herr-mancha.png",
+  "prompt": "a single dark ink stain splotch, seen flat from the front, roughly as wide as it is tall: one big rounded organic blob of very dark blue-black ink with soft wobbly kawaii edges and one small lighter highlight patch inside it, three tiny round ink droplets scattered close around the blob, thick darker outline of even thickness, no drips running downwards, no paper sheet under it, nothing else in the frame, the blob centred with a wide even empty margin on all four sides, plain object with no face, no eyes, no mouth, not a character, bold silhouette, readable at small size, surrounded by a clean, even, pure white die-cut sticker border of constant width",
+  "quality": "medium",
+  "reference": true,
+  "size": "1024x1024"
+ },
+ "reto-herr-mancha-frotada": {
+  "at": "2026-08-27T18:52:56",
+  "model": "gpt-image-1",
+  "out": "game/retos/herr-mancha-frotada.png",
+  "prompt": "the same dark ink stain splotch after being half wiped away, seen flat from the front and drawn at exactly the same size and in the same position within the frame as the intact stain: a noticeably smaller and paler greyish blue-black smudge, its left and right sides dragged into three soft horizontal wiping streaks that thin out to nothing, ragged feathered edges, only one tiny droplet left beside it, thin soft outline where the ink is still solid, the space freed by the wiping left as empty margin, no paper sheet under it, no cloth, nothing else in the frame, plain object with no face, no eyes, no mouth, not a character, bold silhouette, readable at small size, surrounded by a clean, even, pure white die-cut sticker border of constant width",
+  "quality": "medium",
+  "reference": true,
+  "size": "1024x1024"
+ },
+ "reto-herr-pano": {
+  "at": "2026-08-27T18:48:58",
+  "model": "gpt-image-1",
+  "out": "game/retos/herr-pano.png",
+  "prompt": "a single soft folded cleaning cloth for dojo chores, seen from the front at a slight three quarter angle, roughly as wide as it is tall: warm cream fabric folded twice with softly rounded corners, a few simple stitch marks along the lower edge and one thin orange-vermilion stripe near the hem, thick dark brown outline of even thickness and flat colours with soft cel shading, one cloth alone, no hands, no bucket, no water, nothing else in the frame, the whole cloth centred with a wide even empty margin on all four sides, plain object with no face, no eyes, no mouth, not a character, bold silhouette, readable at small size, surrounded by a clean, even, pure white die-cut sticker border of constant width",
+  "quality": "medium",
+  "reference": true,
+  "size": "1024x1024"
+ },
+ "reto-kata-makiwara": {
+  "at": "2026-08-28T02:19:12",
+  "model": "gpt-image-1",
+  "out": "game/retos/kata-makiwara.png",
+  "prompt": "A warm wood-brown object, coloured almost entirely in warm wood brown: a traditional karate makiwara striking post — one single vertical wooden plank with visible kawaii wood grain, its top third wrapped in cream rope padding with neat horizontal coils, planted firmly in a small wooden wedge base. Drawn compact, roughly as tall as it is wide, filling a square framing. Centered emblem icon, plain object with no face, no eyes, no mouth, not a character, absolutely no face anywhere, not even on ornaments. Bold silhouette, readable at very small size, the whole object fully inside the frame with generous margin on every side, surrounded by a clean, even, pure white die-cut sticker border of constant width. The dominant colour must be warm wood brown — do NOT make it orange or vermilion",
+  "quality": "medium",
+  "reference": true,
+  "size": "1024x1024"
+ },
+ "reto-kata-teja": {
+  "at": "2026-09-01T11:36:47",
+  "model": "gpt-image-1",
+  "out": "game/retos/kata-teja.png",
+  "prompt": "A warm terracotta object: a short stack of three curved Japanese roof tiles in warm terracotta orange with soft darker shading along their curves and a lighter warm rim on the top tile, resting flat on a low wooden breaking stand made of two small trestles in warm honey wood. Drawn compact, roughly as tall as it is wide, filling a square framing. Centered emblem icon, plain object with no face, no eyes, no mouth, not a character, absolutely no face anywhere, not even on ornaments. Bold silhouette, readable at very small size, the whole object fully inside the frame with generous margin on every side, surrounded by a clean, even, pure white die-cut sticker border of constant width",
+  "quality": "medium",
+  "reference": true,
+  "size": "1024x1024"
+ },
+ "reto-kintsugi-fragmento": {
+  "at": "2026-08-27T16:32:49",
+  "model": "gpt-image-1",
+  "out": "game/retos/kintsugi-fragmento.png",
+  "prompt": "a single broken shard of glazed ceramic seen flat from the front, one compact triangular wedge with three straight jagged fracture edges and blunt rounded corners, no thin spikes and no long points, the overall silhouette about as wide as it is tall and centred in the square canvas with a wide empty margin on all four sides: the face is smooth pale cream glaze with one soft warm shadow along the lower edge and one thin orange-vermilion glaze band running near a single edge, the fracture edges show a slightly darker unglazed clay rim, thick dark brown outline of even thickness all around, plain smooth empty centre with no markings, no gold, no silver, no cracks drawn across the face, nothing else in the image, plain object with no face, no eyes, no mouth, not a character, bold silhouette, readable at small size, surrounded by a clean, even, pure white die-cut sticker border of constant width",
+  "quality": "medium",
+  "reference": true,
+  "size": "1024x1024"
+ },
+ "reto-kintsugi-hueco": {
+  "at": "2026-08-27T16:31:15",
+  "model": "gpt-image-1",
+  "out": "game/retos/kintsugi-hueco.png",
+  "prompt": "a single hole in a broken glazed ceramic surface, seen flat from the front, drawn alone on an otherwise completely empty canvas: one compact triangular wedge-shaped gap with three straight jagged fracture edges and blunt rounded corners, no thin spikes and no long points. The wedge sits entirely inside the upper-right quarter of the square canvas, its innermost tip stopping just short of the exact centre of the canvas and its outer edges stopping well short of the top and right edges; the whole left half and the whole lower half of the canvas are completely empty and transparent. The gap is filled flat with a dull greyed cream and darkened by a soft shadow along its upper and left inner edges so that it clearly reads as a hole and not as a piece; its broken rim is a thick dark brown outline with a few tiny chips, and a line of small evenly spaced warm golden dashes runs just inside the rim all the way around. No shard, no poured gold, no ceramic drawn around the hole, nothing else in the image. The shape must NOT be outlined in white: no white rim, no white halo, no white outline anywhere; the only outline is the thin dark brown one, plain object with no face, no eyes, no mouth, not a character, bold silhouette, readable at small size",
+  "quality": "medium",
+  "reference": true,
+  "size": "1024x1024"
+ },
+ "reto-kintsugi-vasija": {
+  "at": "2026-09-01T11:46:04",
+  "model": "gpt-image-1",
+  "out": "game/retos/kintsugi-vasija.png",
+  "prompt": "a single rounded ceramic jar seen straight from the front, pale cream glaze with soft warm shading and a small dark brown rim at its mouth, plain smooth body with NO cracks, NO gold veins and NO decoration, sitting flat, plain object with no face, no eyes, no mouth, not a character, nothing else in the image",
+  "quality": "medium",
+  "reference": true,
+  "size": "1024x1024"
+ },
+ "reto-kintsugi-veta": {
+  "at": "2026-08-27T16:31:50",
+  "model": "gpt-image-1",
+  "out": "game/retos/kintsugi-veta.png",
+  "prompt": "a closed ring of molten gold kintsugi repair seam, drawn alone on an otherwise completely empty canvas: one continuous hand-poured golden line of organically varying thickness tracing the outline of a compact triangular wedge with three straight jagged sides and blunt rounded corners, with two or three very short branch veins spreading outwards from it. The ring sits entirely inside the upper-right quarter of the square canvas, its innermost corner stopping just short of the exact centre of the canvas and its outer sides stopping well short of the top and right edges; the whole left half and the whole lower half of the canvas are completely empty and transparent. Warm gold with a pale highlight along the upper side of the stroke and a thin dark brown outline on both sides of the stroke. The area enclosed by the ring is completely empty and transparent, exactly like the area outside it: only the gold line itself is drawn, with no fill of any colour inside the ring, no shard and no ceramic. The line must NOT be outlined in white: no white rim, no white halo, no white outline anywhere; the only outline is the thin dark brown one, plain object with no face, no eyes, no mouth, not a character, bold silhouette, readable at small size",
+  "quality": "medium",
+  "reference": true,
+  "size": "1024x1024"
+ },
+ "reto-kintsugi-veta-plata": {
+  "at": "2026-08-27T16:32:14",
+  "model": "gpt-image-1",
+  "out": "game/retos/kintsugi-veta-plata.png",
+  "prompt": "a closed ring of poured silver kintsugi repair seam, drawn alone on an otherwise completely empty canvas: one continuous hand-poured silver line of organically varying thickness tracing the outline of a compact triangular wedge with three straight jagged sides and blunt rounded corners, with two or three very short branch veins spreading outwards from it. The ring sits entirely inside the upper-right quarter of the square canvas, its innermost corner stopping just short of the exact centre of the canvas and its outer sides stopping well short of the top and right edges; the whole left half and the whole lower half of the canvas are completely empty and transparent. Cool pale silver-grey with a soft bluish shadow, a white highlight along the upper side of the stroke and a thin dark brown outline on both sides of the stroke; no gold anywhere. The area enclosed by the ring is completely empty and transparent, exactly like the area outside it: only the silver line itself is drawn, with no fill of any colour inside the ring, no shard and no ceramic. The line must NOT be outlined in white: no white rim, no white halo, no white outline anywhere; the only outline is the thin dark brown one, plain object with no face, no eyes, no mouth, not a character, bold silhouette, readable at small size",
+  "quality": "medium",
+  "reference": true,
+  "size": "1024x1024"
+ },
+ "reto-linterna-apagada": {
+  "at": "2026-08-28T02:19:54",
+  "model": "gpt-image-1",
+  "out": "game/retos/linterna-apagada.png",
+  "prompt": "A dull grey object, coloured almost entirely in cool dull grey: one single small round japanese paper lantern hanging from a short cord loop, seen straight from the front, its rounded cylindrical paper body ribbed with even horizontal folds, a small dark brown cap on top and a small dark brown base with a short tassel hanging below. The lantern is clearly SWITCHED OFF: cold greyish-beige paper, no glow, no inner light, no halo, no rays, no sparks, no flame. The paper is completely blank, with no markings, no symbols and no decoration of any kind. Drawn slightly taller than wide, about 4 units wide by 5 units tall, in exactly the same shape, proportions and framing as its lit twin. Centered emblem icon, plain object with no face, no eyes, no mouth, not a character, absolutely no face anywhere, not even on ornaments. Bold silhouette, readable at very small size, the whole object fully inside the frame with generous margin on every side, surrounded by a clean, even, pure white die-cut sticker border of constant width. The dominant colour must be cool dull grey — do NOT make it orange or vermilion",
+  "quality": "medium",
+  "reference": true,
+  "size": "1024x1024"
+ },
+ "reto-linterna-encendida": {
+  "at": "2026-08-28T02:29:52",
+  "model": "gpt-image-1",
+  "out": "game/retos/linterna-encendida.png",
+  "prompt": "A warm glowing object, coloured almost entirely in warm golden cream: the very same small round japanese paper lantern, identical in shape, proportions and framing to the switched-off one, hanging from a short cord loop, seen straight from the front, its rounded cylindrical paper body ribbed with even horizontal folds, a small dark brown cap on top and a small dark brown base with a short tassel hanging below. The lantern is clearly LIT: the paper glows warm golden yellow from the inside, with a soft warm halo hugging the paper body closely — no long rays, no star sparkles, no flame outside the lantern. The paper is completely blank, with no markings, no symbols and no decoration of any kind. Drawn slightly taller than wide, about 4 units wide by 5 units tall, the glowing paper body exactly the same size as in the switched-off version. Centered emblem icon, plain object with no face, no eyes, no mouth, not a character, absolutely no face anywhere, not even on ornaments. Bold silhouette, readable at very small size, the whole object fully inside the frame with generous margin on every side, surrounded by a clean, even, pure white die-cut sticker border of constant width. The dominant colour must be warm golden yellow",
+  "quality": "medium",
+  "reference": true,
+  "size": "1024x1024"
+ },
+ "reto-mascota-empuja": {
+  "at": "2026-09-01T12:41:22",
+  "model": "gpt-image-1",
+  "out": "game/retos/mascota-empuja.png",
+  "prompt": "MenteFu's official mascot, always drawn exactly the same. MODEL SHEET, do not redesign: one single kawaii shonen-anime character, alone, never two. Its head IS a big soft pale pink brain with gently rounded folds and a visible central groove, wider than tall, taking about half of the total height. The brain is PALE PINK (soft rosy pink, never orange, never peach, always clearly lighter and pinker than the orange gi) — no hair, no ears, no human skull shape, no nose, genderless with no gender cues. A white headband with a small knot and short tails on the right side crosses the lower part of the brain. Below it, a small chibi body with short arms and legs and small bare feet, wearing a martial-arts gi in orange-vermilion with a dark brown belt and a white headband tied at the side. Both eyes are always large, round and identical to each other in size and shape. Same proportions, same pale pink brain colour, same orange-vermilion gi and same brown belt in every image: ONLY the pose and the facial expression change. Full body, side view facing right, leaning forward with one arm extended and the index finger pointing forward about to push something, the fingertip is the rightmost point of the whole drawing, the other arm held back for balance, focused playful smile",
+  "quality": "medium",
+  "reference": true,
+  "size": "1024x1024"
+ },
+ "reto-mascota-golpe": {
+  "at": "2026-08-28T02:20:31",
+  "model": "gpt-image-1",
+  "out": "game/retos/mascota-golpe.png",
+  "prompt": "MenteFu's official mascot, always drawn exactly the same. MODEL SHEET, do not redesign: one single kawaii shonen-anime character, alone, never two. Its head IS a big soft pale pink brain with gently rounded folds and a visible central groove, wider than tall, taking about half of the total height. The brain is PALE PINK (soft rosy pink, never orange, never peach, always clearly lighter and pinker than the orange gi) — no hair, no ears, no human skull shape, no nose, genderless with no gender cues. A white headband with a small knot and short tails on the right side crosses the lower part of the brain. Below it, a small chibi body with short arms and legs and small bare feet, wearing a martial-arts gi in orange-vermilion with a dark brown belt and a white headband tied at the side. Both eyes are always large, round and identical to each other in size and shape. Same proportions, same pale pink brain colour, same orange-vermilion gi and same brown belt in every image: ONLY the pose and the facial expression change. Full body, single character alone, seen from the side facing right, in a dynamic karate straight punch: the front fist punched fully forward at shoulder height, the other fist chambered back at the hip, both legs in a forward stance with the front knee bent and the back leg straight, the body leaning slightly forward, determined expression with a small confident smile. Both small bare feet flat on an imaginary ground line at the very bottom of the image, headband tails flying back. FRAMING, identical in every pose of this set: portrait composition clearly taller than wide, about 4 units wide by 5 units tall; the complete figure fills the whole height of the image from the top of the brain down to the soles of the feet, drawn at exactly the same total height and the same head-to-body proportion as the reference sheet; keep the stance compact so the figure never ends up wider than tall",
+  "quality": "medium",
+  "reference": true,
+  "size": "1024x1024"
+ },
+ "reto-mascota-patada": {
+  "at": "2026-08-31T15:10:22",
+  "model": "gpt-image-1",
+  "out": "game/retos/mascota-patada.png",
+  "prompt": "MenteFu's official mascot, always drawn exactly the same. MODEL SHEET, do not redesign: one single kawaii shonen-anime character, alone, never two. Its head IS a big soft pale pink brain with gently rounded folds and a visible central groove, wider than tall, taking about half of the total height. The brain is PALE PINK (soft rosy pink, never orange, never peach, always clearly lighter and pinker than the orange gi) — no hair, no ears, no human skull shape, no nose, genderless with no gender cues. A white headband with a small knot and short tails on the right side crosses the lower part of the brain. Below it, a small chibi body with short arms and legs and small bare feet, wearing a martial-arts gi in orange-vermilion with a dark brown belt and a white headband tied at the side. Both eyes are always large, round and identical to each other in size and shape. Same proportions, same pale pink brain colour, same orange-vermilion gi and same brown belt in every image: ONLY the pose and the facial expression change. Full body, single character alone, seen from the side facing right, in a dynamic karate front kick: one leg lifted and extended forward with the small bare foot high in the air and the toes pointed, the standing leg slightly bent, both small fists held up in guard in front of the chest, the body upright and balanced, determined expression with a small confident smile. The standing foot rests on an imaginary ground line, with clear empty space below it inside the canvas; the raised foot, both hands and the headband tails are fully visible. FRAMING, identical in every pose of this set: portrait composition clearly taller than wide, about 4 units wide by 5 units tall; the complete figure is centred and occupies about 85 percent of the image height, from the top of the brain down to the standing foot, drawn at exactly the same total height and the same head-to-body proportion as the reference sheet; keep the kick compact so the figure never ends up wider than tall",
+  "quality": "medium",
+  "reference": true,
+  "size": "1024x1024"
+ },
+ "reto-mascota-sentada": {
+  "at": "2026-08-28T02:22:38",
+  "model": "gpt-image-1",
+  "out": "game/retos/mascota-sentada.png",
+  "prompt": "MenteFu's official mascot, always drawn exactly the same. MODEL SHEET, do not redesign: one single kawaii shonen-anime character, alone, never two. Its head IS a big soft pale pink brain with gently rounded folds and a visible central groove, wider than tall, taking about half of the total height. The brain is PALE PINK (soft rosy pink, never orange, never peach, always clearly lighter and pinker than the orange gi) — no hair, no ears, no human skull shape, no nose, genderless with no gender cues. A white headband with a small knot and short tails on the right side crosses the lower part of the brain. Below it, a small chibi body with short arms and legs and small bare feet, wearing a martial-arts gi in orange-vermilion with a dark brown belt and a white headband tied at the side. Both eyes are always large, round and identical to each other in size and shape. Same proportions, same pale pink brain colour, same orange-vermilion gi and same brown belt in every image: ONLY the pose and the facial expression change. Full body, single character alone, seen from the side facing right, sitting on the ground after a harmless comic tumble: both legs folded and tucked close in front of it, one small hand resting on the ground behind it, the other small hand rubbing the side of its head, a little dizzy but completely unhurt, eyes closed as two simple downward curved arcs and a small embarrassed smile, headband still tied in place. No stars, no birds, no spirals, no motion lines, no floor, no ground shadow, no props. FRAMING: the seated figure sits on an imaginary ground line at the very bottom of the image, drawn with the same head size and the same body proportions as the reference sheet, and tucked compact so it never ends up wider than tall",
+  "quality": "medium",
+  "reference": true,
+  "size": "1024x1024"
+ },
+ "reto-pasa-carta": {
+  "at": "2026-08-27T18:02:00",
+  "model": "gpt-image-1",
+  "out": "game/retos/pasa-carta.png",
+  "prompt": "A single blank card for a japanese dojo card game, drawn perfectly flat and straight from the front, not tilted and not in perspective: a rounded-corner rectangle of warm cream washi paper with a thick even dark brown ink outline and a thin vermilion inner hairline running parallel to it, and one identical tiny vermilion brush dot in each of the four corners. The four sides are identical in width and the four corners are identical to each other, so the frame can be stretched. The whole middle of the card is completely smooth, flat and empty cream paper with nothing on it: no illustration, no pips, no suit symbols, no numbers, no lines. One single card alone, roughly square in proportion, no other cards behind it, no hand holding it, no ground shadow, plain object with no face, no eyes, no mouth, not a character, bold silhouette readable at small size, surrounded by a clean, even, pure white die-cut sticker border of constant width",
+  "quality": "medium",
+  "reference": true,
+  "size": "1024x1024"
+ },
+ "reto-pasa-sello-fuera": {
+  "at": "2026-08-27T18:03:20",
+  "model": "gpt-image-1",
+  "out": "game/retos/pasa-sello-fuera.png",
+  "prompt": "A round carved wooden dojo block-stamp seal seen flat from the front, perfectly circular: a cream wood disc with a wide vermilion rim, a bold brush-stroke cross mark carved in the centre and a small closed gate bar motif below it, and a short knotted rope loop at the top. One single seal alone, no scenery, no hand, plain object with no face, no eyes, no mouth, not a character, bold silhouette readable at small size, surrounded by a clean, even, pure white die-cut sticker border of constant width",
+  "quality": "medium",
+  "reference": true,
+  "size": "1024x1024"
+ },
+ "reto-pasa-sello-paso": {
+  "at": "2026-08-27T18:02:58",
+  "model": "gpt-image-1",
+  "out": "game/retos/pasa-sello-paso.png",
+  "prompt": "A round carved wooden dojo pass-stamp seal seen flat from the front, perfectly circular: a cream wood disc with a wide leaf-green rim, a tiny torii gate silhouette and a bold brush-stroke check mark carved in the centre, and a short knotted rope loop at the top. The rim must clearly read as green, not orange and not vermilion. One single seal alone, no scenery, no hand, plain object with no face, no eyes, no mouth, not a character, bold silhouette readable at small size, surrounded by a clean, even, pure white die-cut sticker border of constant width",
+  "quality": "medium",
+  "reference": true,
+  "size": "1024x1024"
+ },
+ "reto-pasa-torii": {
+  "at": "2026-08-27T18:02:22",
+  "model": "gpt-image-1",
+  "out": "game/retos/pasa-torii.png",
+  "prompt": "The upper section of a japanese torii gate seen straight from the front, drawn much wider than tall, about four times wider than its height, like a wide lintel: one long gently curved vermilion top beam with square dark brown end caps at both ends, a second straight dark brown beam below it, and only the short upper stumps of the two dark brown pillars at the far left and far right, each stump ending in a clean straight cut fully inside the frame, with no base and no ground. Two short dark ropes with small knots hang down from the lower beam. Flat kawaii shapes with thick even outlines, no scenery, no sky, no snow, no leaves, no lanterns, no banners, plain object with no face, no eyes, no mouth, not a character, bold silhouette readable at small size, surrounded by a clean, even, pure white die-cut sticker border of constant width",
+  "quality": "medium",
+  "reference": true,
+  "size": "1024x1024"
+ },
+ "reto-puerta-abierta": {
+  "at": "2026-09-01T11:57:51",
+  "model": "gpt-image-1",
+  "out": "game/retos/puerta-abierta.png",
+  "prompt": "a single sturdy wooden dojo double door seen straight from the front, both leaves wide OPEN outward revealing a soft warm glowing light in the doorway, warm honey wood planks with darker brown frame, plain object with no face, no eyes, no mouth, not a character, nothing else in the image",
+  "quality": "medium",
+  "reference": true,
+  "size": "1024x1024"
+ },
+ "reto-puerta-candado": {
+  "at": "2026-09-01T11:58:12",
+  "model": "gpt-image-1",
+  "out": "game/retos/puerta-candado.png",
+  "prompt": "a single chunky closed golden padlock seen straight from the front, rounded body with a dark keyhole and a thick curved shackle closed, plain object with no face, no eyes, no mouth, not a character, nothing else in the image",
+  "quality": "medium",
+  "reference": true,
+  "size": "1024x1024"
+ },
+ "reto-puerta-candado-abierto": {
+  "at": "2026-09-01T11:58:36",
+  "model": "gpt-image-1",
+  "out": "game/retos/puerta-candado-abierto.png",
+  "prompt": "a single chunky golden padlock seen straight from the front, rounded body with a dark keyhole, its thick curved shackle swung OPEN to one side, plain object with no face, no eyes, no mouth, not a character, nothing else in the image",
+  "quality": "medium",
+  "reference": true,
+  "size": "1024x1024"
+ },
+ "reto-puerta-cerrada": {
+  "at": "2026-09-01T11:57:27",
+  "model": "gpt-image-1",
+  "out": "game/retos/puerta-cerrada.png",
+  "prompt": "a single sturdy wooden dojo double door seen straight from the front, closed, warm honey wood planks with darker brown frame and two vertical handles at the centre, a metal hasp plate at the middle where a padlock would hang, plain object with no face, no eyes, no mouth, not a character, nothing else in the image",
+  "quality": "medium",
+  "reference": true,
+  "size": "1024x1024"
+ },
+ "reto-puerta-llave": {
+  "at": "2026-09-01T11:58:58",
+  "model": "gpt-image-1",
+  "out": "game/retos/puerta-llave.png",
+  "prompt": "a single old-fashioned golden key seen flat from the side, round bow with a small hole, straight shaft and two square teeth, drawn HORIZONTAL, plain object with no face, no eyes, no mouth, not a character, nothing else in the image",
+  "quality": "medium",
+  "reference": true,
+  "size": "1024x1024"
+ },
+ "reto-puntal": {
+  "at": "2026-08-27T20:50:18",
+  "model": "gpt-image-1",
+  "out": "game/retos/puntal.png",
+  "prompt": "a single vertical wooden scaffold strut standing upright, seen perfectly from the front, drawn as a tall narrow post about three and a half times taller than it is wide, like a slim fence picket: one straight rounded post of light warm honey wood with a small flat cap on top and a simple wedge foot at the bottom, a few soft rounded kawaii grain lines and two dark rope bindings, the post alone filling the full height of the image, no platform, no beam, no second strut, no scaffold, no ground, nothing else, plain object with no face, no eyes, no mouth, not a character, bold silhouette, readable at small size, subtle shading, the whole object fully inside the frame with generous margin on every side, surrounded by a clean, even, pure white die-cut sticker border of constant width",
+  "quality": "medium",
+  "reference": true,
+  "size": "1024x1024"
+ },
+ "reto-puntal-sostiene": {
+  "at": "2026-08-27T20:52:39",
+  "model": "gpt-image-1",
+  "out": "game/retos/puntal-sostiene.png",
+  "prompt": "the very same single vertical wooden scaffold strut standing upright, identical shape and identical proportion of about three and a half times taller than wide, same small flat cap on top, same wedge foot, same two dark rope bindings, same grain lines, but now the wood itself is warm glowing golden honey instead of light honey, as if lit from within; the outline stays exactly the same, no glow, no rim light, no halo, no rays, no sparkles, no stars, nothing outside the silhouette, no platform, no beam, no second strut, no ground, nothing else, plain object with no face, no eyes, no mouth, not a character, bold silhouette, readable at small size, subtle shading, the whole object fully inside the frame with generous margin on every side, surrounded by a clean, even, pure white die-cut sticker border of constant width",
+  "quality": "medium",
+  "reference": true,
+  "size": "1024x1024"
+ },
+ "reto-tameshiwari-mano": {
+  "at": "2026-08-27T12:49:24",
+  "model": "gpt-image-1",
+  "out": "game/retos/tameshiwari-mano.png",
+  "prompt": "Close-up sticker piece of a single chibi arm and open hand only, in a karate knife-hand (shuto) chop position seen from the side: fingers straight and held together, thumb tucked in, small rounded kawaii hand, short plump arm wearing an orange-vermilion martial-arts gi sleeve with a wide cream cuff, the arm pointing diagonally downward as if about to chop. Exactly one arm; no head, no face, no eyes, no body, no legs: only the sleeve, the arm and the hand as one single piece",
+  "quality": "medium",
+  "reference": true,
+  "size": "1024x1024"
+ },
+ "reto-tameshiwari-tabla": {
+  "at": "2026-08-27T12:55:08",
+  "model": "gpt-image-1",
+  "out": "game/retos/tameshiwari-tabla.png",
+  "prompt": "a single long narrow horizontal wooden breaking plank for martial-arts tameshiwari practice, seen perfectly from the front, drawn as a very wide and short board about five times wider than it is tall, like a slim ruler or a long floorboard: pale warm wood with a few soft rounded kawaii grain lines near both short ends, straight long top and bottom edges with slightly rounded corners, a plain smooth empty centre with no markings so a label can sit on top, no trestles, no stand, nothing else, the plank alone filling the full width of the image, plain object with no face, no eyes, no mouth, not a character, bold silhouette, readable at small size, surrounded by a clean, even, pure white die-cut sticker border of constant width",
+  "quality": "medium",
+  "reference": true,
+  "size": "1024x1024"
+ },
+ "reto-tameshiwari-tabla-mitad": {
+  "at": "2026-08-27T14:55:23",
+  "model": "gpt-image-1",
+  "out": "game/retos/tameshiwari-tabla-mitad.png",
+  "prompt": "the LEFT HALF of a snapped wooden breaking plank for martial-arts tameshiwari, seen perfectly from the front, wide and short, about one and a quarter times wider than it is tall: pale butterscotch wood fill (#f8cc80) with soft amber cel shading (#f2b06a) and a thick burnt-brown outline (#b04c20) of even width all the way around, flat colours, and one or two soft rounded kawaii grain lines near the outer end, exactly the same wood colours, the same outline thickness and the same flat shading as a matching whole plank. The OUTER left end is a straight edge with slightly rounded corners; the INNER right end is freshly SNAPPED: a jagged zigzag break with three or four sharp splinter teeth and a slightly paler raw wood core along the broken edge, fully outlined, with no gap in the outline anywhere. The long top and bottom edges stay straight. One single piece of wood alone, no second piece, no trestles, no stand, no motion lines, no dust, no sparks, nothing else, plain object with no face, no eyes, no mouth, not a character, bold silhouette, readable at small size, surrounded by a clean, even, pure white die-cut sticker border of constant width",
+  "quality": "medium",
+  "reference": true,
+  "size": "1024x1024"
+ },
  "scroll-bottom": {
   "at": "2026-08-24T12:49:33",
   "model": "gpt-image-1",
@@ -592,5 +1105,113 @@
   "quality": "medium",
   "reference": true,
   "size": "1536x1024"
+ },
+ "ui-cerrar": {
+  "at": "2026-08-28T13:55:57",
+  "model": "gpt-image-1",
+  "out": "game/cerrar.png",
+  "prompt": "a single chunky round seal badge seen flat from the front, plump and rounded like a sticker, filled with warm vermilion red (#e63b2e) with a lighter coral highlight across its upper left and a soft darker crimson shade along the lower right, a bold cream-white X cross mark centred on it made of two thick straight strokes with blunt rounded ends, a thick even dark-brown outline of constant width all the way around the disc, nothing else in the image, no ribbon, no rays, no sparkles, no text, no letters, plain object with no face, no eyes, no mouth, not a character, bold silhouette, readable at 28 px, surrounded by a clean, even, pure white die-cut sticker border of constant width, no grey halo and no drop shadow outside that white border",
+  "quality": "medium",
+  "reference": true,
+  "size": "1024x1024"
+ },
+ "ui-estrella-mision": {
+  "at": "2026-08-28T10:16:58",
+  "model": "gpt-image-1",
+  "out": "game/estrella-mision.png",
+  "prompt": "a single chunky five-pointed star badge seen flat from the front, plump and rounded like a sticker, filled with warm golden amber (#f2b93c) with a lighter buttery highlight across its upper left arm and a soft darker amber shade along the lower right, one small round cream glint near the top left point, a thick even dark-brown outline of constant width all the way around, short blunt rounded points and NOT thin spiky ones, nothing else in the image, no ribbon, no rays, no sparkles around it, plain object with no face, no eyes, no mouth, not a character, bold silhouette, readable at 28 px, surrounded by a clean, even, pure white die-cut sticker border of constant width",
+  "quality": "medium",
+  "reference": true,
+  "size": "1024x1024"
+ },
+ "ui-mano-arrastra": {
+  "at": "2026-09-01T11:23:38",
+  "model": "gpt-image-1",
+  "out": "game/mano-arrastra.png",
+  "prompt": "a single cute plump cartoon white glove hand like a classic mascot glove, seen from the side, pointing straight UP with its index finger, the other fingers curled into the palm and the thumb clearly visible folded at the side so the gesture reads as a friendly signpost point, one short thick arrow at its left side pointing left and one at its right side pointing right, both arrows vermilion red with blunt rounded tips, plain object with no face, no eyes, no mouth, not a character, thick even dark-brown outline of constant width around every shape, flat colours with soft cel shading, bold silhouette readable at 40 px, nothing else in the image, no text, surrounded by a clean, even, pure white die-cut sticker border of constant width, no grey halo and no drop shadow outside that white border",
+  "quality": "medium",
+  "reference": true,
+  "size": "1024x1024"
+ },
+ "ui-reto-andamio": {
+  "at": "2026-08-31T16:50:50",
+  "model": "gpt-image-1",
+  "out": "game/icono-andamio.png",
+  "prompt": "a single simple wooden scaffold seen straight from the front: one horizontal beam resting on three short upright posts, warm honey wood with darker grain, plain object with no face, no eyes, no mouth, not a character. Seen straight from the front, flat on-camera view, no perspective, no ground shadow, no scenery, no background, nothing else in the image, no text. Thick even dark-brown outline of constant width around every shape, flat colours with soft cel shading, no texture. Bold rounded shapes and a simple silhouette that still reads clearly at 32 px. The whole object fully inside the frame with generous margin on every side, nothing touching or reaching any edge, surrounded by a clean, even, pure white die-cut sticker border of constant width, with no grey halo and no drop shadow outside that white border",
+  "quality": "medium",
+  "reference": true,
+  "size": "1024x1024"
+ },
+ "ui-reto-campana": {
+  "at": "2026-08-31T16:51:20",
+  "model": "gpt-image-1",
+  "out": "game/icono-campana.png",
+  "prompt": "a single temple bell seen straight from the front, rounded golden bronze body with a small loop on top and a dark band near its rim, hanging still, plain object with no face, no eyes, no mouth, not a character. Seen straight from the front, flat on-camera view, no perspective, no ground shadow, no scenery, no background, nothing else in the image, no text. Thick even dark-brown outline of constant width around every shape, flat colours with soft cel shading, no texture. Bold rounded shapes and a simple silhouette that still reads clearly at 32 px. The whole object fully inside the frame with generous margin on every side, nothing touching or reaching any edge, surrounded by a clean, even, pure white die-cut sticker border of constant width, with no grey halo and no drop shadow outside that white border",
+  "quality": "medium",
+  "reference": true,
+  "size": "1024x1024"
+ },
+ "ui-reto-domino": {
+  "at": "2026-08-31T16:51:55",
+  "model": "gpt-image-1",
+  "out": "game/icono-domino.png",
+  "prompt": "two domino tiles seen straight from the front, standing side by side and slightly overlapping, cream ivory faces with a dark dividing line and a few round dark pips, the right one tipping over to the right, plain object with no face, no eyes, no mouth, not a character. Seen straight from the front, flat on-camera view, no perspective, no ground shadow, no scenery, no background, nothing else in the image, no text. Thick even dark-brown outline of constant width around every shape, flat colours with soft cel shading, no texture. Bold rounded shapes and a simple silhouette that still reads clearly at 32 px. The whole object fully inside the frame with generous margin on every side, nothing touching or reaching any edge, surrounded by a clean, even, pure white die-cut sticker border of constant width, with no grey halo and no drop shadow outside that white border",
+  "quality": "medium",
+  "reference": true,
+  "size": "1024x1024"
+ },
+ "ui-reto-herramienta": {
+  "at": "2026-08-31T16:50:30",
+  "model": "gpt-image-1",
+  "out": "game/icono-herramienta.png",
+  "prompt": "a single old wooden toolbox seen straight from the front, warm brown wood with a dark handle across the top, one simple golden key resting against its front face, plain object with no face, no eyes, no mouth, not a character. Seen straight from the front, flat on-camera view, no perspective, no ground shadow, no scenery, no background, nothing else in the image, no text. Thick even dark-brown outline of constant width around every shape, flat colours with soft cel shading, no texture. Bold rounded shapes and a simple silhouette that still reads clearly at 32 px. The whole object fully inside the frame with generous margin on every side, nothing touching or reaching any edge, surrounded by a clean, even, pure white die-cut sticker border of constant width, with no grey halo and no drop shadow outside that white border",
+  "quality": "medium",
+  "reference": true,
+  "size": "1024x1024"
+ },
+ "ui-reto-kata": {
+  "at": "2026-08-31T16:51:37",
+  "model": "gpt-image-1",
+  "out": "game/icono-kata.png",
+  "prompt": "a single paper lantern seen straight from the front, rounded vermilion red body with horizontal ribs and dark caps at top and bottom, glowing warm, plain object with no face, no eyes, no mouth, not a character. Seen straight from the front, flat on-camera view, no perspective, no ground shadow, no scenery, no background, nothing else in the image, no text. Thick even dark-brown outline of constant width around every shape, flat colours with soft cel shading, no texture. Bold rounded shapes and a simple silhouette that still reads clearly at 32 px. The whole object fully inside the frame with generous margin on every side, nothing touching or reaching any edge, surrounded by a clean, even, pure white die-cut sticker border of constant width, with no grey halo and no drop shadow outside that white border",
+  "quality": "medium",
+  "reference": true,
+  "size": "1024x1024"
+ },
+ "ui-reto-kintsugi": {
+  "at": "2026-08-31T16:49:27",
+  "model": "gpt-image-1",
+  "out": "game/icono-kintsugi.png",
+  "prompt": "a single small round ceramic pot seen straight from the front, pale cream glaze, mended with two bright golden veins running down its body like kintsugi repair, a small dark rim at the mouth, plain object with no face, no eyes, no mouth, not a character. Seen straight from the front, flat on-camera view, no perspective, no ground shadow, no scenery, no background, nothing else in the image, no text. Thick even dark-brown outline of constant width around every shape, flat colours with soft cel shading, no texture. Bold rounded shapes and a simple silhouette that still reads clearly at 32 px. The whole object fully inside the frame with generous margin on every side, nothing touching or reaching any edge, surrounded by a clean, even, pure white die-cut sticker border of constant width, with no grey halo and no drop shadow outside that white border",
+  "quality": "medium",
+  "reference": true,
+  "size": "1024x1024"
+ },
+ "ui-reto-pasa": {
+  "at": "2026-08-31T16:49:59",
+  "model": "gpt-image-1",
+  "out": "game/icono-pasa.png",
+  "prompt": "a single torii gate seen straight from the front, two upright posts and two crossbeams, vermilion red with dark brown ends, symmetrical and simple, plain object with no face, no eyes, no mouth, not a character. Seen straight from the front, flat on-camera view, no perspective, no ground shadow, no scenery, no background, nothing else in the image, no text. Thick even dark-brown outline of constant width around every shape, flat colours with soft cel shading, no texture. Bold rounded shapes and a simple silhouette that still reads clearly at 32 px. The whole object fully inside the frame with generous margin on every side, nothing touching or reaching any edge, surrounded by a clean, even, pure white die-cut sticker border of constant width, with no grey halo and no drop shadow outside that white border",
+  "quality": "medium",
+  "reference": true,
+  "size": "1024x1024"
+ },
+ "ui-reto-tameshiwari": {
+  "at": "2026-08-31T16:48:56",
+  "model": "gpt-image-1",
+  "out": "game/icono-tameshiwari.png",
+  "prompt": "a single short wooden board seen straight from the front, split in two by a jagged crack down its middle, the two halves tilted slightly apart, warm honey wood with darker grain lines, plain object with no face, no eyes, no mouth, not a character. Seen straight from the front, flat on-camera view, no perspective, no ground shadow, no scenery, no background, nothing else in the image, no text. Thick even dark-brown outline of constant width around every shape, flat colours with soft cel shading, no texture. Bold rounded shapes and a simple silhouette that still reads clearly at 32 px. The whole object fully inside the frame with generous margin on every side, nothing touching or reaching any edge, surrounded by a clean, even, pure white die-cut sticker border of constant width, with no grey halo and no drop shadow outside that white border",
+  "quality": "medium",
+  "reference": true,
+  "size": "1024x1024"
+ },
+ "ui-sonido": {
+  "at": "2026-08-28T13:56:20",
+  "model": "gpt-image-1",
+  "out": "game/sonido.png",
+  "prompt": "a single chunky round seal badge seen flat from the front, plump and rounded like a sticker, filled with warm vermilion red (#e63b2e) with a lighter coral highlight across its upper left and a soft darker crimson shade along the lower right, a bold cream-white loudspeaker symbol centred on it, made of one small solid trapezoid cone facing right with two short curved sound waves beside it, all strokes thick with blunt rounded ends, a thick even dark-brown outline of constant width all the way around the disc, nothing else in the image, no ribbon, no rays, no sparkles, no text, no musical notes, plain object with no face, no eyes, no mouth, not a character, bold silhouette, readable at 28 px, surrounded by a clean, even, pure white die-cut sticker border of constant width, no grey halo and no drop shadow outside that white border",
+  "quality": "medium",
+  "reference": true,
+  "size": "1024x1024"
  }
 }

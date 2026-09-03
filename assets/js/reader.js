@@ -56,9 +56,11 @@
       if (window.MF) MF.track("card_view", { item: data.id, art: data.art, data: { part: i, type: "scroll" } });
       wrap.scrollIntoView({ behavior: "smooth", block: "start" });
     }
-    prev.addEventListener("click", function () { if (i > 0) { i--; show(); } });
+    /* la página que pasa (titular 2026-09-02), como en el pergamino flotante */
+    function fxPagina() { if (window.MFSonido && MFSonido.fx) MFSonido.fx("fx-pagina"); }
+    prev.addEventListener("click", function () { if (i > 0) { i--; fxPagina(); show(); } });
     next.addEventListener("click", function () {
-      if (i < n - 1) { i++; show(); return; }
+      if (i < n - 1) { i++; fxPagina(); show(); return; }
       if (window.MF && !already) {
         MF.scrollRead(data.art, data.id, data.xp);
         already = true; next.disabled = true; next.textContent = T.read.replace("{n}", data.xp);

@@ -13,7 +13,12 @@
   } catch (e) { document.documentElement.setAttribute("data-session", "out"); }
   </script>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <!-- viewport-fit=cover: sin él, env(safe-area-inset-*) vale SIEMPRE 0 y los
+       modales a pantalla completa (pergamino y reto) meterían su botón de cerrar
+       debajo de la barra de estado del iPhone con notch. El contenido normal no
+       se descoloca porque el layout sigue midiéndose contra el ancho seguro: solo
+       los fondos a sangre y los cálculos que pidan la inset ven la diferencia. -->
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
   <title>Culpa vs vergüenza — MenteFu</title>
   <meta name="description" content="Regístrate gratis con tu email para abrir las misiones y guardar tu progreso, cinturones y logros en todos tus dispositivos.">
   <link rel="canonical" href="https://www.mentefu.com/culpafu/aprende/culpa-vs-verguenza/">
@@ -38,9 +43,9 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@500;600;700;800&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="../../../assets/css/styles.css?v=1aae2d65">
-  <link rel="stylesheet" href="../../../assets/css/game.css?v=680b2584">
-<script>window.MF_CONFIG = {"lang": "es", "brand": "mentefu", "prefix": "../../../", "supabaseUrl": "https://qlalxlsnmvqrsfwxstbu.supabase.co", "supabaseAnonKey": "sb_publishable_pzcyZyaWUmB4TIHnYW4qVQ_fFg8FrKM", "gate": true, "xp": {"mission": 20, "quiz_first_try": 5, "practice": 10, "scroll": 10, "exam": 50, "tool": 15, "exam_pass": 0.75}, "ranks": [[0, "Novato"], [100, "Aprendiz"], [300, "Practicante"], [700, "Adepto"], [1500, "Maestro de sala"], [3000, "Gran Maestro"]], "belts": [{"n": 1, "key": "white", "color": "#f4f1ea", "name": "Blanco"}, {"n": 2, "key": "yellow", "color": "#f2c230", "name": "Amarillo"}, {"n": 3, "key": "orange", "color": "#f07c22", "name": "Naranja"}, {"n": 4, "key": "green", "color": "#2e9e5b", "name": "Verde"}, {"n": 5, "key": "blue", "color": "#2f6fd8", "name": "Azul"}, {"n": 6, "key": "purple", "color": "#7b3fbf", "name": "Morado"}, {"n": 7, "key": "brown", "color": "#7a4a2a", "name": "Marrón"}, {"n": 8, "key": "black", "color": "#1a1a1f", "name": "Negro"}], "profileUrl": "../../../perfil/", "artsUrl": "../../../artes/", "assets": "../../../", "gameArt": {"art-ansiafu": "assets/img/game/art-ansiafu.webp", "art-cargafu": "assets/img/game/art-cargafu.webp", "art-culpafu": "assets/img/game/art-culpafu.webp", "art-duelofu": "assets/img/game/art-duelofu.webp", "art-espejofu": "assets/img/game/art-espejofu.webp", "art-limitefu": "assets/img/game/art-limitefu.webp", "art-lovefu": "assets/img/game/art-lovefu.webp", "art-manipufu": "assets/img/game/art-manipufu.webp", "art-narcifu": "assets/img/game/art-narcifu.webp", "art-platafu": "assets/img/game/art-platafu.webp", "art-raizfu": "assets/img/game/art-raizfu.webp", "art-vinculofu": "assets/img/game/art-vinculofu.webp", "avatar-1": "assets/img/game/avatar-1.webp", "avatar-2": "assets/img/game/avatar-2.webp", "avatar-3": "assets/img/game/avatar-3.webp", "avatar-4": "assets/img/game/avatar-4.webp", "avatar-5": "assets/img/game/avatar-5.webp", "avatar-6": "assets/img/game/avatar-6.webp", "avatar-7": "assets/img/game/avatar-7.webp", "avatar-8": "assets/img/game/avatar-8.webp", "badge-belt-black": "assets/img/game/badge-belt-black.webp", "badge-belt-green": "assets/img/game/badge-belt-green.webp", "badge-belt-white": "assets/img/game/badge-belt-white.webp", "badge-belt-yellow": "assets/img/game/badge-belt-yellow.webp", "badge-early-bird": "assets/img/game/badge-early-bird.webp", "badge-first-mission": "assets/img/game/badge-first-mission.webp", "badge-first-scroll": "assets/img/game/badge-first-scroll.webp", "badge-first-tool": "assets/img/game/badge-first-tool.webp", "badge-missions-10": "assets/img/game/badge-missions-10.webp", "badge-night-owl": "assets/img/game/badge-night-owl.webp", "badge-perfect-exam": "assets/img/game/badge-perfect-exam.webp", "badge-streak-3": "assets/img/game/badge-streak-3.webp", "badge-streak-7": "assets/img/game/badge-streak-7.webp", "belt-black": "assets/img/game/belt-black.webp", "belt-blue": "assets/img/game/belt-blue.webp", "belt-brown": "assets/img/game/belt-brown.webp", "belt-green": "assets/img/game/belt-green.webp", "belt-orange": "assets/img/game/belt-orange.webp", "belt-purple": "assets/img/game/belt-purple.webp", "belt-white": "assets/img/game/belt-white.webp", "belt-yellow": "assets/img/game/belt-yellow.webp", "camino-viaje": "assets/img/game/camino-viaje.webp", "home-logros": "assets/img/game/home-logros.webp", "home-misiones": "assets/img/game/home-misiones.webp", "home-pergaminos": "assets/img/game/home-pergaminos.webp"}, "arts": [{"key": "culpafu", "name": "CulpaFu", "url": "../../../culpafu/", "color": "#e63b2e", "icon": "🥋", "status": "active"}], "artStats": {"ansiafu": {"missions": 0, "levels": 0}, "cargafu": {"missions": 0, "levels": 0}, "culpafu": {"missions": 24, "levels": 8}, "duelofu": {"missions": 0, "levels": 0}, "espejofu": {"missions": 0, "levels": 0}, "limitefu": {"missions": 0, "levels": 0}, "lovefu": {"missions": 0, "levels": 0}, "manipufu": {"missions": 0, "levels": 0}, "narcifu": {"missions": 0, "levels": 0}, "platafu": {"missions": 0, "levels": 0}, "raizfu": {"missions": 0, "levels": 0}, "vinculofu": {"missions": 0, "levels": 0}}, "page": {"id": "learn-guilt-vs-shame", "layout": "article", "art": "culpafu", "level": null}};</script>
+  <link rel="stylesheet" href="../../../assets/css/styles.css?v=479dc47d">
+  <link rel="stylesheet" href="../../../assets/css/game.css?v=c1b70b10">
+<script>window.MF_CONFIG = {"lang": "es", "brand": "mentefu", "prefix": "../../../", "supabaseUrl": "https://qlalxlsnmvqrsfwxstbu.supabase.co", "supabaseAnonKey": "sb_publishable_pzcyZyaWUmB4TIHnYW4qVQ_fFg8FrKM", "gate": true, "xp": {"mission": 20, "quiz_first_try": 5, "scroll": 10, "exam": 50, "tool": 15, "exam_pass": 0.75}, "ranks": [[0, "Novato"], [100, "Aprendiz"], [300, "Practicante"], [700, "Adepto"], [1500, "Maestro de sala"], [3000, "Gran Maestro"]], "belts": [{"n": 1, "key": "white", "color": "#f4f1ea", "name": "Blanco"}, {"n": 2, "key": "yellow", "color": "#f2c230", "name": "Amarillo"}, {"n": 3, "key": "orange", "color": "#f07c22", "name": "Naranja"}, {"n": 4, "key": "green", "color": "#2e9e5b", "name": "Verde"}, {"n": 5, "key": "blue", "color": "#2f6fd8", "name": "Azul"}, {"n": 6, "key": "purple", "color": "#7b3fbf", "name": "Morado"}, {"n": 7, "key": "brown", "color": "#7a4a2a", "name": "Marrón"}, {"n": 8, "key": "black", "color": "#1a1a1f", "name": "Negro"}], "profileUrl": "../../../perfil/", "artsUrl": "../../../artes/", "assets": "../../../", "gameArt": {"aprobar": "assets/img/game/aprobar.webp", "art-ansiafu": "assets/img/game/art-ansiafu.webp", "art-cargafu": "assets/img/game/art-cargafu.webp", "art-culpafu": "assets/img/game/art-culpafu.webp", "art-duelofu": "assets/img/game/art-duelofu.webp", "art-espejofu": "assets/img/game/art-espejofu.webp", "art-limitefu": "assets/img/game/art-limitefu.webp", "art-lovefu": "assets/img/game/art-lovefu.webp", "art-manipufu": "assets/img/game/art-manipufu.webp", "art-narcifu": "assets/img/game/art-narcifu.webp", "art-platafu": "assets/img/game/art-platafu.webp", "art-raizfu": "assets/img/game/art-raizfu.webp", "art-vinculofu": "assets/img/game/art-vinculofu.webp", "badge-belt-black": "assets/img/game/badge-belt-black.webp", "badge-belt-green": "assets/img/game/badge-belt-green.webp", "badge-belt-white": "assets/img/game/badge-belt-white.webp", "badge-belt-yellow": "assets/img/game/badge-belt-yellow.webp", "badge-early-bird": "assets/img/game/badge-early-bird.webp", "badge-first-mission": "assets/img/game/badge-first-mission.webp", "badge-first-scroll": "assets/img/game/badge-first-scroll.webp", "badge-first-tool": "assets/img/game/badge-first-tool.webp", "badge-missions-10": "assets/img/game/badge-missions-10.webp", "badge-night-owl": "assets/img/game/badge-night-owl.webp", "badge-perfect-exam": "assets/img/game/badge-perfect-exam.webp", "badge-streak-3": "assets/img/game/badge-streak-3.webp", "badge-streak-7": "assets/img/game/badge-streak-7.webp", "belt-black": "assets/img/game/belt-black.webp", "belt-blue": "assets/img/game/belt-blue.webp", "belt-brown": "assets/img/game/belt-brown.webp", "belt-green": "assets/img/game/belt-green.webp", "belt-orange": "assets/img/game/belt-orange.webp", "belt-purple": "assets/img/game/belt-purple.webp", "belt-white": "assets/img/game/belt-white.webp", "belt-yellow": "assets/img/game/belt-yellow.webp", "camino-viaje": "assets/img/game/camino-viaje.webp", "cerrar": "assets/img/game/cerrar.webp", "deshacer": "assets/img/game/deshacer.webp", "estrella-mision": "assets/img/game/estrella-mision.webp", "guardar": "assets/img/game/guardar.webp", "home-logros": "assets/img/game/home-logros.webp", "home-misiones": "assets/img/game/home-misiones.webp", "home-pergaminos": "assets/img/game/home-pergaminos.webp", "icono-andamio": "assets/img/game/icono-andamio.webp", "icono-campana": "assets/img/game/icono-campana.webp", "icono-domino": "assets/img/game/icono-domino.webp", "icono-herramienta": "assets/img/game/icono-herramienta.webp", "icono-kata": "assets/img/game/icono-kata.webp", "icono-kintsugi": "assets/img/game/icono-kintsugi.webp", "icono-tameshiwari": "assets/img/game/icono-tameshiwari.webp", "mano-arrastra": "assets/img/game/mano-arrastra.webp", "mas": "assets/img/game/mas.webp", "probar": "assets/img/game/probar.webp", "sonido": "assets/img/game/sonido.webp"}, "escenas": {"fondos": {"dojo": {"ruta": "game/retos/herr-fondo-dojo.webp", "anclas": {"izquierda": {"x": 18, "y": 90, "e": 1.0, "flip": true}, "centro": {"x": 50, "y": 90, "e": 1.0}, "derecha": {"x": 82, "y": 90, "e": 1.0}}}, "salon": {"ruta": "game/escenas/fondo-salon.webp", "anclas": {"izquierda": {"x": 18, "y": 92, "e": 1.0, "flip": true}, "centro": {"x": 50, "y": 92, "e": 1.0}, "derecha": {"x": 82, "y": 92, "e": 1.0}}}, "comedor": {"ruta": "game/escenas/fondo-comedor.webp", "anclas": {"izquierda": {"x": 18, "y": 90, "e": 1.0, "flip": true}, "centro": {"x": 50, "y": 90, "e": 1.0}, "derecha": {"x": 82, "y": 90, "e": 1.0}}}, "trabajo": {"ruta": "game/escenas/fondo-trabajo.webp", "anclas": {"izquierda": {"x": 18, "y": 93, "e": 1.0, "flip": true}, "centro": {"x": 50, "y": 93, "e": 1.0}, "derecha": {"x": 82, "y": 93, "e": 1.0}}}, "calle": {"ruta": "game/escenas/fondo-calle.webp", "anclas": {"izquierda": {"x": 18, "y": 87, "e": 1.0, "flip": true}, "centro": {"x": 50, "y": 87, "e": 1.0}, "derecha": {"x": 82, "y": 87, "e": 1.0}}}, "dormitorio": {"ruta": "game/escenas/fondo-dormitorio.webp", "anclas": {"izquierda": {"x": 18, "y": 90, "e": 1.0, "flip": true}, "centro": {"x": 50, "y": 90, "e": 1.0}, "derecha": {"x": 82, "y": 90, "e": 1.0}}}, "cafeteria": {"ruta": "game/escenas/fondo-cafeteria.webp", "anclas": {"izquierda": {"x": 18, "y": 91, "e": 1.0, "flip": true}, "centro": {"x": 50, "y": 91, "e": 1.0}, "derecha": {"x": 82, "y": 91, "e": 1.0}}}}, "poses": {"reposo": "mascota/propuesta-1.webp", "golpe": "game/retos/mascota-golpe.webp", "patada": "game/retos/mascota-patada.webp", "sentada": "game/retos/mascota-sentada.webp", "empuja": "game/retos/mascota-empuja.webp", "pensativa": "game/escenas/pose-pensativa.webp", "movil": "game/escenas/pose-movil.webp", "pecho": "game/escenas/pose-pecho.webp", "victoria": "game/escenas/pose-victoria.webp", "canto": "game/escenas/pose-canto.webp", "gancho": "game/escenas/pose-gancho.webp", "patada-voladora": "game/escenas/pose-patada-voladora.webp"}}, "arts": [{"key": "culpafu", "name": "CulpaFu", "url": "../../../culpafu/", "color": "#e63b2e", "icon": "🥋", "status": "active"}], "artStats": {"ansiafu": {"missions": 0, "levels": 0}, "cargafu": {"missions": 0, "levels": 0}, "culpafu": {"missions": 24, "levels": 8}, "duelofu": {"missions": 0, "levels": 0}, "espejofu": {"missions": 0, "levels": 0}, "limitefu": {"missions": 0, "levels": 0}, "lovefu": {"missions": 0, "levels": 0}, "manipufu": {"missions": 0, "levels": 0}, "narcifu": {"missions": 0, "levels": 0}, "platafu": {"missions": 0, "levels": 0}, "raizfu": {"missions": 0, "levels": 0}, "vinculofu": {"missions": 0, "levels": 0}}, "page": {"id": "learn-guilt-vs-shame", "layout": "article", "art": "culpafu", "level": null}};</script>
 
 </head>
 <body class="layout-article" data-brand="mentefu">
@@ -60,7 +65,7 @@
       </button>
       <nav class="nav" id="main-nav" aria-label="Principal">
         <ul class="nav__list">
-          <li><a class="nav__link" href="../../../artes/">Artes mentales</a></li>
+          <li><a class="nav__link" href="../../../artes/">Artes de la mente</a></li>
           <li data-students><a class="nav__link" href="../../../investiga/">Investiga</a></li>
           <li data-admin-link hidden><a class="nav__link" href="../../../admin/">Admin</a></li>
           <li data-students><a class="nav__link" href="../../../perfil/">Perfil</a></li>
@@ -85,7 +90,7 @@
     
     <p class="page-head__meta"><span class="belt-chip" style="--belt:#f4f1ea"><span class="belt-chip__swatch" aria-hidden="true"></span>Cinturón blanco</span><span class="page-head__read">2 min</span><span class="xp-chip">+10 XP</span></p>
   </div>
-</section><nav class="subnav" aria-label="CulpaFu"><div class="container subnav__inner"><a class="subnav__link subnav__link--home" href="../../../culpafu/">CulpaFu</a><a class="subnav__link" data-students href="../../../culpafu/pergaminos/">Pergaminos</a></div></nav>
+</section><nav class="subnav" aria-label="CulpaFu"><div class="container subnav__inner"><a class="subnav__link subnav__link--home" href="../../../culpafu/">CulpaFu</a><a class="subnav__link" data-students href="../../../culpafu/pergaminos/">Pergaminos</a><a class="subnav__link" data-students href="../../../culpafu/retos/">Retos</a></div></nav>
 <div class="container container--prose">
 <div class="gated" data-gate data-content-id="es:learn-guilt-vs-shame" data-kind="article" data-art="culpafu" data-level=""><div class="gate" data-gate-box hidden><div class="gate__art" aria-hidden="true"><svg viewBox="0 0 40 40" width="34" height="34" fill="none" aria-hidden="true"><path d="M31.5 9.5A15 15 0 1 0 35 20" stroke="currentColor" stroke-width="4.2" stroke-linecap="round"/><path d="M14 24.5l6-12 6 12" stroke="var(--c-accent)" stroke-width="3.6" stroke-linecap="round" stroke-linejoin="round"/></svg></div><p class="kicker">Arte</p><h2 class="gate__title">Esta sala es solo para alumnos</h2><p class="gate__text">Regístrate gratis con tu email para abrir las misiones y guardar tu progreso, cinturones y logros en todos tus dispositivos.</p><p class="gate__acciones"><button class="btn btn--primary" type="button" data-auth-abrir="signup">Crear mi cuenta gratis</button><button class="btn btn--ghost" type="button" data-auth-abrir="login">Ya tengo cuenta</button></p><p class="form__note">Solo pedimos nombre, email y contraseña (el teléfono es opcional). Al entrar, el progreso de este navegador se fusiona con tu cuenta.</p></div><div class="gated__body" data-gated-body aria-live="polite"></div></div>
 </div>
@@ -99,13 +104,13 @@
             <span class="brand__mark" aria-hidden="true"><svg viewBox="0 0 40 40" width="34" height="34" fill="none" aria-hidden="true"><path d="M31.5 9.5A15 15 0 1 0 35 20" stroke="currentColor" stroke-width="4.2" stroke-linecap="round"/><path d="M14 24.5l6-12 6 12" stroke="var(--c-accent)" stroke-width="3.6" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
             <span class="brand__name">MENTEFU</span>
           </a>
-          <p class="footer__tagline">El arte de defender tu mente.</p>
-          <p class="footer__blurb">Super escuela de crecimiento emocional. Diversas artes mentales de defensa: elige la tuya y empieza a entrenar.</p>
+          <p class="footer__tagline">Entrena tu mente jugando.</p>
+          <p class="footer__blurb">El super dojo de las artes de la mente: cursos que se entrenan jugando, con cinturones, misiones y pergaminos. Diviértete aprendiendo o crea tus propios juegos educativos.</p>
         </div>
         <div>
           <h3 class="footer__title">La escuela</h3>
           <ul class="footer__list">
-            <li><a href="../../../artes/">Artes mentales</a></li>
+            <li><a href="../../../artes/">Artes de la mente</a></li>
             <li data-students><a href="../../../investiga/">Investiga</a></li>
           </ul>
         </div>
@@ -122,14 +127,14 @@
           <h3 class="footer__title">Muy pronto</h3>
           <ul class="footer__list">
             <li><span class="muted">Tienda <small>(próximamente)</small></span></li>
-            <li><span class="muted">Terapia <small>(próximamente)</small></span></li>
+            <li><span class="muted">Acompañamiento <small>(próximamente)</small></span></li>
             <li><span class="muted">Podcast <small>(próximamente)</small></span></li>
             <li><span class="muted">Cursos <small>(próximamente)</small></span></li>
           </ul>
         </div>
       </div>
       <div class="footer__notice">
-        <p>MenteFu es educación emocional, no terapia ni tratamiento. No diagnostica ni sustituye la atención de un profesional de la salud mental. Los cinturones y logros reconocen progreso personal; no son certificaciones profesionales. Si sientes un malestar intenso o piensas en hacerte daño, busca ayuda profesional o llama a los servicios de emergencia de tu país.</p>
+        <p>Este arte es educación emocional, no terapia ni tratamiento. No diagnostica ni sustituye la atención de un profesional de la salud mental. Los cinturones y logros reconocen progreso personal; no son certificaciones profesionales. Si sientes un malestar intenso o piensas en hacerte daño, busca ayuda profesional o llama a los servicios de emergencia de tu país.</p>
       </div>
       <div class="footer__legal">
         <p>© <span data-year>2026</span> MenteFu. Todos los derechos reservados.</p>
@@ -139,14 +144,14 @@
   </footer>
 
   <div class="toasts" data-toasts aria-live="polite"></div>
-  <script src="../../../assets/js/main.js?v=c6453e4f" defer></script>
+  <script src="../../../assets/js/main.js?v=759642d3" defer></script>
   <script src="../../../assets/js/visuals.js?v=0c4cc172" defer></script>
   <script src="../../../assets/js/storage.js?v=9bdcdfc9" defer></script>
-  <script src="../../../assets/js/sb.js?v=418a78eb" defer></script>
-  <script src="../../../assets/js/progress.js?v=d580ed65" defer></script>
-  <script src="../../../assets/js/auth.js?v=f6bc60bf" defer></script>
+  <script src="../../../assets/js/sb.js?v=6a48245c" defer></script>
+  <script src="../../../assets/js/progress.js?v=9a0d33c1" defer></script>
+  <script src="../../../assets/js/auth.js?v=e18aabfc" defer></script>
   <script src="../../../assets/js/admin.js?v=fc6c6ed7" defer></script>
   <script src="../../../assets/js/audio.js?v=ea095af4" defer></script>
-  <script src="../../../assets/js/reader.js?v=d008a51a" defer></script>
+  <script src="../../../assets/js/reader.js?v=fd04323b" defer></script>
 </body>
 </html>

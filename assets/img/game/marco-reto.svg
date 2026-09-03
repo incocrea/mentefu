@@ -1,0 +1,125 @@
+<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 0 96 96">
+  <!-- Marco del MODAL DE RETO de MenteFu para border-image (9-slice), hermano del
+       marco de pergamino: mismo mecanismo, otra temática. Aquí es una CUERDA DE
+       DOJO con banderines, tablillas, nudos y el sello de la casa.
+
+       Se corta en 32 (`border-image: … 32 round`): las CUATRO ESQUINAS no se
+       deforman jamás y las tres bandas centrales se repiten. De ahí las dos
+       reglas de dibujo que mandan sobre la estética:
+       1) todo trazo de una banda recorre su zona ENTERA a coordenada constante
+          (arriba/abajo de x=32 a x=64; laterales de y=32 a y=64), porque cualquier
+          trazo oblicuo o interrumpido enseñaría la costura al teselar;
+       2) los adornos van CENTRADOS en su zona y sin tocar los límites 32/64,
+          porque lo que se sale de la zona lo recorta el 9-slice.
+
+       Puntos de empalme fijos (contrato del spec, no se tocan): cuerdas
+       superiores y=14/y=20, inferiores y=76/y=82, izquierdas x=14/x=20 y
+       derechas x=76/x=82. Las esquinas nacen y mueren exactamente ahí, así que
+       la cuerda es continua alrededor de toda la caja.
+
+       El centro es transparente: el papel lo pone `background-clip: padding-box`.
+       Sin degradados ni filtros a propósito: border-image rasteriza el SVG y en
+       los zooms 0.8/0.9 de escritorio los degradados salen sucios.
+
+       Simetría: la banda y la esquina se dibujan UNA vez y se giran 90/180/270
+       sobre el centro (48,48). Girar —y no espejar— mantiene el sentido del nudo
+       igual en las cuatro esquinas, como en el marco de pergamino.
+
+       Cada <use> lleva `href` Y `xlink:href` con el mismo destino: el moderno
+       manda donde existe y el viejo es el único que entienden los navegadores
+       anteriores a SVG2. Sin el segundo, en esos navegadores el archivo carga
+       pero no pinta NADA —es el marco entero del modal— y el fallo se vería
+       como una caja desnuda, no como un error. -->
+  <defs>
+    <!-- Banda superior: la cuerda doble. Recta y a altura constante para teselar. -->
+    <g id="mfr-banda">
+      <line x1="32" y1="14" x2="64" y2="14"/>
+      <line x1="32" y1="20" x2="64" y2="20"/>
+    </g>
+
+    <!-- Codo de esquina: lleva las dos cuerdas del borde superior (x=32) hasta las
+         dos del borde izquierdo (y=32). Las tangentes de los extremos son
+         horizontal y vertical, así el empalme con la banda no hace pico. Los dos
+         codos se cruzan bajo el nudo, que se dibuja encima y los tapa. -->
+    <g id="mfr-codo">
+      <path d="M32 14 Q23 14 19 19 Q14 23 14 32"/>
+      <path d="M32 20 Q24 20 22 22 Q20 24 20 32"/>
+    </g>
+
+    <!-- El trazado completo de cuerda: cuatro bandas + cuatro codos. Se pinta dos
+         veces (contorno de tinta grueso y alma de papel encima): así la cuerda se
+         lee sobre el fondo oscuro del modal y conserva el contorno de pegatina
+         de la casa sin necesidad de duplicar geometría a mano. -->
+    <g id="mfr-cuerda">
+      <use href="#mfr-banda" xlink:href="#mfr-banda"/>
+      <use href="#mfr-banda" xlink:href="#mfr-banda" transform="rotate(90 48 48)"/>
+      <use href="#mfr-banda" xlink:href="#mfr-banda" transform="rotate(180 48 48)"/>
+      <use href="#mfr-banda" xlink:href="#mfr-banda" transform="rotate(-90 48 48)"/>
+      <use href="#mfr-codo" xlink:href="#mfr-codo"/>
+      <use href="#mfr-codo" xlink:href="#mfr-codo" transform="rotate(90 48 48)"/>
+      <use href="#mfr-codo" xlink:href="#mfr-codo" transform="rotate(180 48 48)"/>
+      <use href="#mfr-codo" xlink:href="#mfr-codo" transform="rotate(-90 48 48)"/>
+    </g>
+
+    <!-- Nudo de esquina: disco de papel con perla bermellón. Tapa el cruce de los
+         dos codos, que es justo lo que hace un nudo de verdad. -->
+    <g id="mfr-nudo">
+      <circle cx="17" cy="17" r="8" fill="#f7f3ec" stroke="#12131a" stroke-width="2.4"/>
+      <circle cx="17" cy="17" r="3.4" fill="#e63b2e" stroke="#ffffff" stroke-width="1.6"/>
+    </g>
+
+    <!-- Tablilla de los laterales: la placa de madera del dojo colgada de la
+         cuerda. Alto 14 sobre una zona de 32: al repetirse quedan separadas y no
+         forman una franja continua. La marca de dentro es abstracta (punto de
+         sello + trazo), nunca letras. -->
+    <g id="mfr-tablilla">
+      <rect x="11" y="41" width="12" height="14" rx="2.5" fill="#f7f3ec" stroke="#12131a" stroke-width="2"/>
+      <circle cx="17" cy="45.6" r="1.9" fill="#e63b2e"/>
+      <path d="M13.8 50.6 H20.2" fill="none" stroke="#12131a" stroke-width="1.8" stroke-linecap="round"/>
+    </g>
+  </defs>
+
+  <!-- 1. Banderín del borde superior: se dibuja ANTES que la cuerda para que
+       cuelgue POR DETRÁS de ella. Nace en y=19, o sea tapado por las cuerdas, y
+       baja hasta y=30.6 (con su troquel, ~31.6): así el triángulo rojo que queda
+       a la vista bajo la cuerda es ancho de verdad y no un pellizco. Nunca llega
+       al límite 32, que lo recortaría en seco. El troquel blanco de la casa se
+       consigue pintando la misma silueta dos veces, la blanca con trazo grueso
+       debajo: así el borde es de ancho constante. -->
+  <polygon points="40.5,19 55.5,19 48,30.6" fill="#ffffff" stroke="#ffffff" stroke-width="2.2" stroke-linejoin="round"/>
+  <polygon points="40.5,19 55.5,19 48,30.6" fill="#e63b2e"/>
+
+  <!-- 2. La cuerda, en dos pasadas sobre la MISMA geometría. -->
+  <g fill="none" stroke-linecap="round" stroke-linejoin="round">
+    <use href="#mfr-cuerda" xlink:href="#mfr-cuerda" stroke="#12131a" stroke-width="4.4"/>
+    <use href="#mfr-cuerda" xlink:href="#mfr-cuerda" stroke="#f7f3ec" stroke-width="2"/>
+  </g>
+
+  <!-- 3. Nudos en tres esquinas. La cuarta (inferior derecha) la ocupa el sello. -->
+  <use href="#mfr-nudo" xlink:href="#mfr-nudo"/>
+  <use href="#mfr-nudo" xlink:href="#mfr-nudo" transform="rotate(90 48 48)"/>
+  <use href="#mfr-nudo" xlink:href="#mfr-nudo" transform="rotate(-90 48 48)"/>
+
+  <!-- 4. Cuenta del borde inferior: r=5 cubre las dos cuerdas (y=76 e y=82) y las
+       enhebra, en vez de quedarse flotando entre ellas. -->
+  <circle cx="48" cy="79" r="5" fill="#f7f3ec" stroke="#12131a" stroke-width="2"/>
+  <circle cx="48" cy="79" r="2" fill="#e63b2e"/>
+
+  <!-- 5. Tablillas de los dos laterales, ambas derechas (la de la derecha es la
+       misma pieza desplazada: girarla la dejaría tumbada). -->
+  <use href="#mfr-tablilla" xlink:href="#mfr-tablilla"/>
+  <use href="#mfr-tablilla" xlink:href="#mfr-tablilla" transform="translate(62 0)"/>
+
+  <!-- 6. Sello hanko a -8°, la firma de la casa, en la esquina inferior derecha
+       sobre los codos de cuerda. El glifo es trazo de pincel abstracto
+       (montañita curva + guion ladeado): jamás letras. Va curvado y asimétrico a
+       propósito —una montañita recta sobre un guion recto se lee como una «A»,
+       y el estilo de la casa prohíbe rotular. Rotado, el troquel llega a x/y≈66
+       y 92, o sea dentro de la zona 64..96 y sin recortes. -->
+  <g transform="rotate(-8 79 79)">
+    <rect x="69" y="69" width="20" height="20" rx="3.5" fill="#ffffff" stroke="#ffffff" stroke-width="3"/>
+    <rect x="69" y="69" width="20" height="20" rx="3.5" fill="#e63b2e"/>
+    <path d="M73.6 80.6 Q77.6 71.8 84.4 77.8 M76.2 85 L83 83.4" fill="none" stroke="#f7f3ec"
+          stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"/>
+  </g>
+</svg>
