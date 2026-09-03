@@ -21,6 +21,11 @@
           "y": 90,
           "e": 1.0
         }
+      },
+      "movil": {
+        "ruta": "game/retos/herr-fondo-dojo-movil.webp",
+        "y": 92.31,
+        "alto": 33.85
       }
     },
     "salon": {
@@ -43,6 +48,11 @@
           "y": 92,
           "e": 1.0
         }
+      },
+      "movil": {
+        "ruta": "game/escenas/fondo-salon-movil.webp",
+        "y": 93.85,
+        "alto": 33.85
       }
     },
     "comedor": {
@@ -65,6 +75,11 @@
           "y": 90,
           "e": 1.0
         }
+      },
+      "movil": {
+        "ruta": "game/escenas/fondo-comedor-movil.webp",
+        "y": 92.31,
+        "alto": 33.85
       }
     },
     "trabajo": {
@@ -87,6 +102,11 @@
           "y": 93,
           "e": 1.0
         }
+      },
+      "movil": {
+        "ruta": "game/escenas/fondo-trabajo-movil.webp",
+        "y": 94.62,
+        "alto": 33.85
       }
     },
     "calle": {
@@ -109,6 +129,11 @@
           "y": 87,
           "e": 1.0
         }
+      },
+      "movil": {
+        "ruta": "game/escenas/fondo-calle-movil.webp",
+        "y": 90.0,
+        "alto": 33.85
       }
     },
     "dormitorio": {
@@ -131,6 +156,11 @@
           "y": 90,
           "e": 1.0
         }
+      },
+      "movil": {
+        "ruta": "game/escenas/fondo-dormitorio-movil.webp",
+        "y": 92.31,
+        "alto": 33.85
       }
     },
     "cafeteria": {
@@ -153,6 +183,11 @@
           "y": 91,
           "e": 1.0
         }
+      },
+      "movil": {
+        "ruta": "game/escenas/fondo-cafeteria-movil.webp",
+        "y": 93.08,
+        "alto": 33.85
       }
     }
   },
@@ -169,5 +204,6 @@
     "canto": "game/escenas/pose-canto.webp",
     "gancho": "game/escenas/pose-gancho.webp",
     "patada-voladora": "game/escenas/pose-patada-voladora.webp"
-  }
+  },
+  "_movil": "Variante VERTICAL para móvil (titular 2026-09-03): el viewport del teléfono da altura, así que la escena crece un 30 % (lienzo 15:13 en vez de 3:2) y el texto respira sin partirse en cinco líneas. Las láminas NO se regeneraron: se EXTIENDEN hacia arriba desde su propia banda de cielo o pared con PIL (0 USD, sin deformar y sin perder el atrezo lateral), así que las anclas x siguen siendo exactas. `y` es la altura del suelo en la variante y `alto` el % base de la mascota, ambos recalculados sobre el lienzo nuevo para que la mascota mida los MISMOS píxeles que en escritorio. Rehacerlas: tools/escenas_movil.py"
 }

@@ -1035,6 +1035,17 @@
        cambia de lámina, y el texto se renueva con el halo de la casa. Sin
        audio hablado (los pergaminos son la vía sonora) y sin XP: en la última
        viñeta el paso se libera. Memoria de pasada, como las demás cards. */
+    /* LA VARIANTE VERTICAL DE LAS ESCENAS (titular 2026-09-03): en el teléfono
+       el viewport da altura, así que la escena crece un 30 % (lienzo 15:13) y
+       usa las láminas extendidas hacia arriba. Cambia el fondo, la altura del
+       suelo y el % de la mascota —los tres los declara `escenas.json`—, para
+       que la mascota siga midiendo los MISMOS píxeles que en escritorio. El
+       umbral es el mismo 47rem del CSS: una sola verdad sobre «móvil». Vive
+       AQUÍ, en el módulo, porque la precarga de láminas la consulta antes de
+       que renderEscena llegue a su cuerpo. */
+    var mqVertical = window.matchMedia
+      ? window.matchMedia("(max-width: 47rem)") : { matches: false };
+
     function renderEscena(card, c, iTarjeta) {
       var vinetas = c.vinetas || [];
       var esc = cfg.escenas || {};
@@ -1059,7 +1070,9 @@
       /* todas las láminas de la historia se precargan al montar: un fondo que
          llega tarde a mitad de crossfade es un fogonazo, no una transición */
       vinetas.forEach(function (v) {
-        var p1 = new Image(); p1.src = rutaImg(fondos[v.fondo].ruta);
+        var mv = fondos[v.fondo] && fondos[v.fondo].movil;
+        var p1 = new Image();
+        p1.src = rutaImg(mqVertical.matches && mv ? mv.ruta : fondos[v.fondo].ruta);
         var p2 = new Image(); p2.src = rutaImg(poses[v.pose]);
       });
 
@@ -1099,12 +1112,19 @@
          decisión del titular, 2026-09-02: a 34 la mascota se perdía en el
          fondo). La escala fina la sigue pudiendo matizar cada ancla. */
       var ALTO_BASE = 44;
+      function usaVertical(v) {
+        return !!(mqVertical.matches && fondos[v.fondo] && fondos[v.fondo].movil);
+      }
+      function variante(v) {
+        return usaVertical(v) ? fondos[v.fondo].movil : null;
+      }
       function coloca(v) {
         var ancla = fondos[v.fondo].anclas[v.ancla];
+        var mov = variante(v);
         mascota.src = rutaImg(poses[v.pose]);
         mascota.style.left = ancla.x + "%";
-        mascota.style.bottom = (100 - ancla.y) + "%";
-        mascota.style.height = (ALTO_BASE * (ancla.e || 1)) + "%";
+        mascota.style.bottom = (100 - (mov && mov.y != null ? mov.y : ancla.y)) + "%";
+        mascota.style.height = ((mov && mov.alto != null ? mov.alto : ALTO_BASE) * (ancla.e || 1)) + "%";
         /* las poses miran a la IZQUIERDA (canon de la kata); flip las vuelve.
            `scale` queda FUERA de la transición CSS: un espejo interpolado se
            vería como la mascota aplastándose por el centro.
@@ -1119,7 +1139,8 @@
       var fondoEnA = true, fondoActual = null;
       function pintaFondo(v) {
         if (v.fondo === fondoActual) return;
-        var ruta = rutaImg(fondos[v.fondo].ruta);
+        var movF = variante(v);
+        var ruta = rutaImg(movF ? movF.ruta : fondos[v.fondo].ruta);
         if (fondoActual === null) {
           fondoA.src = ruta; fondoA.style.opacity = "1"; fondoB.style.opacity = "0";
         } else {

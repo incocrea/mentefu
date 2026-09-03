@@ -517,6 +517,27 @@ a.art-card:hover { transform: translateY(-4px); box-shadow: var(--shadow); }
 .reto-modal__caja, .examen-zen, .reto-invitacion {
   user-select: none; -webkit-user-select: none; }
 
+/* NINGUNA PIEZA DE JUEGO SE MARCA COMO SELECCIONADA (titular, dos veces: el
+   2026-09-02 por el recuadro de arrastre y el 2026-09-03 por el destello azul
+   al tocar). Reacciona al gesto —drag, drop, click— y nada más.
+   Iba pieza por pieza: cada `cursor: pointer` de juego apagaba su propio
+   `-webkit-tap-highlight-color`… y DIEZ se habían quedado sin él, entre ellas
+   la campana del revela, las tablas de la apuesta y los puntales del candado.
+   Por eso ahora se declara UNA vez, con el descendiente universal: cualquier
+   pieza que nazca mañana dentro de una superficie de juego ya viene cubierta.
+   (El foco de teclado NO se toca: `.con-teclado :focus-visible` sigue
+   dibujando su aro, que es accesibilidad y no un artefacto del navegador.) */
+.revela-escena, .revela-escena *,
+.escena-lienzo, .escena-lienzo *,
+.apuesta-escena, .apuesta-escena *,
+.puertas, .puertas *,
+.reto-modal__caja, .reto-modal__caja *,
+.reto-invitacion, .reto-invitacion *,
+.revela-maki, .revela-obj, .apuesta-tabla, .puerta,
+.arbol__lienzo, .arbol__lienzo * {
+  -webkit-tap-highlight-color: transparent;
+  -webkit-touch-callout: none; }
+
 /* VARIANTES DEL REVELA (titular 2026-09-02): cuatro escenas para el mismo
    contrato de 3 acciones → 3 frases, sorteadas por tarjeta. La mascota a la
    DERECHA pierde el espejo: las poses miran a la izquierda de fábrica y así
@@ -624,10 +645,28 @@ a.art-card:hover { transform: translateY(-4px); box-shadow: var(--shadow); }
    sobre la mascota cuando el ancla es central — los pies pisan el suelo y el
    cuerpo sube justo hasta la franja del texto). La pared alta del fondo
    siempre está libre: la mascota nunca pasa del 44 % de alto. */
-.escena-texto { position: absolute; left: 50%; top: 17%; translate: -50% 0;
-  max-width: 88%; font-family: var(--f-body); font-weight: 700;
+/* El texto se ancla por los DOS lados y no por el centro. Con `left: 50 %` +
+   `translate` el ancho disponible de un absoluto es solo lo que queda a su
+   derecha —la mitad del lienzo—, así que el `max-width: 88 %` de antes era
+   inalcanzable: medido a 375 px, el rótulo se quedaba en 147 px de 293 y se
+   partía en cinco líneas. Con left/right el ancho es real (titular
+   2026-09-03). El centrado lo hereda del lienzo, que ya es `text-align`. */
+.escena-texto { position: absolute; left: 6%; right: 6%; top: 17%;
+  font-family: var(--f-body); font-weight: 700;
   font-size: clamp(0.9rem, 3.4vw, 1.05rem); line-height: 1.3;
   color: var(--c-ink-bg); }
+
+/* EN MÓVIL LA ESCENA CRECE (titular 2026-09-03). El teléfono da altura que en
+   escritorio no sobra: el lienzo pasa de 3:2 a 15:13 —un 30 % más alto— con
+   las láminas extendidas hacia arriba (tools/escenas_movil.py), y el texto
+   gana ancho para dejar de partirse en cinco líneas. El umbral es el mismo
+   47rem que consulta mission.js, que es quien elige la lámina: si los dos no
+   coincidieran, el fondo horizontal saldría estirado en un lienzo alto. */
+@media (max-width: 47rem) {
+  .escena-lienzo { aspect-ratio: 15 / 13; }
+  .escena-texto { left: 3%; right: 3%; top: 11%;
+    font-size: clamp(0.95rem, 4vw, 1.1rem); }
+}
 /* la misma píldora de puntos que el revela: fija arriba a la derecha */
 .escena-puntos { position: absolute; top: 0.5rem; right: 0.6rem; display: flex;
   gap: 0.3rem; padding: 0.24rem 0.5rem; background: var(--c-paper);

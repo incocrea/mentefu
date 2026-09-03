@@ -70,6 +70,10 @@
     desfasadaBase: "↻ el base cambió tras traducir",
     idiomaAMedias: "traducido a medias: {h} de {t} piezas",
     estructuraDivergente: "la tarjeta no es la misma en todos los idiomas: edita algo en el idioma bueno para sincronizarla",
+    ensayar: "Ensayar la publicación",
+    ensayarNota: "En desarrollo no hay base a la que estampar: el ensayo compila todo lo que se enviaría y avisa si algo falla. Para publicar de verdad desde aquí, genera el sitio con gate (python tools/build.py) e inicia sesión.",
+    ensayoBien: "Compilado sin errores: se enviarían {n} piezas.",
+    ensayoMal: "El ensayo encontró fallos de compilación:",
     esElBase: "es el idioma base del curso: no se quita ni se traduce",
     quitarIdioma: "Quitar este idioma",
     confirmarQuitarIdioma: "¿Quitar el {lg} del curso?",
@@ -172,6 +176,10 @@
     desfasadaBase: "↻ the base changed after translation",
     idiomaAMedias: "half translated: {h} of {t} pieces",
     estructuraDivergente: "the card is not the same across languages: edit anything in the good one to sync it",
+    ensayar: "Rehearse the publish",
+    ensayarNota: "In development there is no database to stamp: the rehearsal compiles everything that would be sent and reports failures. To publish for real from here, build with the gate on (python tools/build.py) and sign in.",
+    ensayoBien: "Compiled with no errors: {n} pieces would be sent.",
+    ensayoMal: "The rehearsal found compilation failures:",
     esElBase: "is the base language of the course: neither removed nor translated",
     quitarIdioma: "Remove this language",
     confirmarQuitarIdioma: "Remove {lg} from the course?",
@@ -2508,7 +2516,14 @@
     });
     var estampar;
     if (modelo.origen !== "sb") {
-      estampar = '<span class="escuela-sello">印 ' + esc(ES ? "la publicación vive en el sitio real (con tu cuenta)" : "publishing lives on the real site (with your account)") + "</span>";
+      /* En desarrollo no hay base a la que estampar, pero SÍ se puede ensayar
+         el camino entero: compilar las filas de todos los idiomas del curso y
+         ver si alguna revienta (titular 2026-09-03, para poder probar la
+         publicación desde local). Lo único que no ocurre es el envío. */
+      estampar = '<button type="button" class="escuela-probar" data-ensayar' +
+        (rojos ? ' disabled title="' + esc(ES ? "hay " + rojos + " avisos rojos: corrígelos primero" : rojos + " red issues block it") + '"' : "") +
+        ">印 " + esc(T.ensayar) + "</button>" +
+        '<p class="escuela-nota">' + esc(T.ensayarNota) + "</p>";
     } else {
       estampar = '<button type="button" class="escuela-probar" data-publicar' +
         (rojos ? ' disabled title="' + esc(ES ? "hay " + rojos + " avisos rojos: corrígelos para estampar" : rojos + " red issues block the seal") + '"' : "") +
@@ -2531,6 +2546,40 @@
      pendiente, compila TODO el curso en ambos idiomas con el ensamblador
      verificado de F0 y sube las filas `content` por lotes vía la RPC — un
      maestro solo puede escribir filas de sus artes (lo verifica el servidor). */
+  /* El ensayo de publicación (solo en local): compila EXACTAMENTE lo que se
+     enviaría —las mismas llamadas del ensamblador que usa `publicarCurso`— y
+     enseña el recuento por idioma. Si una fila revienta, aquí se ve; en
+     producción sería a mitad del envío. No escribe en ningún sitio. */
+  function ensayarPublicacion(clave) {
+    var curso = capaCurso(clave);
+    if (!curso) return;
+    var lineas = [], total = 0, fallos = [];
+    MFEscuela.compilar.idiomasDe(curso).forEach(function (lg) {
+      var hayCapa = lg === MFEscuela.compilar.baseDe(curso) ||
+        curso.misiones.some(function (m) { return !!m[lg]; });
+      if (!hayCapa) {
+        lineas.push("🌐 " + lg.toUpperCase() + " — " + T.idiomaPendiente);
+        return;
+      }
+      var n = 0;
+      try {
+        n = MFEscuela.compilar.armarCurso(modelo.fuente, clave, lg).length;
+        if (MFEscuela.compilar.armarIndiceCurso(modelo.fuente, clave, lg)) n++;
+      } catch (e) {
+        fallos.push(lg.toUpperCase() + ": " + (e && e.message ? e.message : e));
+      }
+      total += n;
+      lineas.push("🌐 " + lg.toUpperCase() + " — " + n + " " + (ES ? "piezas" : "pieces"));
+    });
+    ventana({ titulo: "印 " + T.ensayar, panel: true, confirmar: true, cuerpo:
+      '<p class="escuela-nota">' + esc(fallos.length ? T.ensayoMal : T.ensayoBien.replace("{n}", total)) + "</p>" +
+      '<ul class="escuela-problemas">' +
+      lineas.concat(fallos.map(function (f) { return "⛔ " + f; }))
+        .map(function (l) { return "<li>" + esc(l) + "</li>"; }).join("") +
+      "</ul>" +
+      '<p class="escuela-nota">' + esc(T.ensayarNota) + "</p>" });
+  }
+
   function publicarCurso(clave) {
     var boton = raiz.querySelector("[data-publicar]");
     var curso = capaCurso(clave);
@@ -2673,6 +2722,8 @@
       if (masLg) { abrirIdiomas(ruta().curso); return; }
       var pub = e.target.closest && e.target.closest("[data-publicar]");
       if (pub) { publicarCurso(ruta().curso); return; }
+      var ens = e.target.closest && e.target.closest("[data-ensayar]");
+      if (ens && !ens.disabled) { ensayarPublicacion(ruta().curso); return; }
       /* Por el ATRIBUTO y no por la clase: el botón de probar es un sello
          ilustrado desde 2026-09-02 y ya no lleva `.escuela-probar`. */
       var pr = e.target.closest && e.target.closest("[data-mision]");
