@@ -81,6 +81,7 @@
          maestros mentores viven en el mismo resumen, como un dato más. */
       + '<a class="profile__stat profile__stat--accion" href="' + (cfg.prefix || "") + (ES ? "escuela/" : "school/") + '"><b>🎓</b>' + (ES ? "Mi escuela" : "My school") + "</a>"
       + '<button type="button" class="profile__stat profile__stat--accion" data-maestros><b>🥋</b>' + (ES ? "Maestros Fu" : "Fu masters") + "</button>"
+      + '<button type="button" class="profile__stat profile__stat--accion" data-examenes><b>🏮</b>' + (ES ? "Mis exámenes" : "My exams") + "</button>"
       + "</div></section>";
 
     /* Árbol Cerebro: el avatar-planta que crece con el rango y se decora con

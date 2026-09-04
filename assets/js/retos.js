@@ -418,7 +418,15 @@
     cards = cards || [];
     ctx = ctx || {};
     if (!content || content.kind !== "exam") return cards;
-    /* «≥3 juegos registrados»: con menos, el examen entero corre como hoy. */
+    /* Cuántas preguntas se juegan. En un examen de CINTURÓN son 3 de las 6 del
+       molde (constante de la casa). En un examenFu (docs/12 §2) las juega
+       TODAS: el maestro decidió cuántas hay y el alumno las responde todas, así
+       que las rondas son N. */
+    var rondas = content.examenFu ? (content.rondas || cards.length) : RONDAS;
+    /* «≥3 juegos registrados»: con menos, el examen entero corre como hoy.
+       Se compara contra 3 y NO contra `rondas`: con un examenFu de 20 preguntas
+       y 7 juegos, la guardia vieja habría devuelto el mazo intacto y el examen
+       se habría jugado como quiz clásico sin que nadie se enterara. */
     if (JUEGOS.length < RONDAS) return cards;
 
     var i, p, idx, lista, quiz = [];
@@ -431,12 +439,17 @@
     delete FLUJOS[claveFlujo(content, ctx)];
     var rng = rngDe(content, ctx);
     var orden = barajar(quiz.slice(), rng);
-    var cupo = Math.min(RONDAS, orden.length);
+    var cupo = Math.min(rondas, orden.length);
 
     var asignaciones = [], usados = {}, tomadas = {};
     /* Asignación voraz sobre el orden barajado. Pasada 0: juegos DISTINTOS.
        Pasada 1: se relaja lo de distintos, como manda 0.9.1. */
-    for (var pasada = 0; pasada < 2 && asignaciones.length < cupo; pasada++) {
+    /* Con más preguntas que juegos (un examenFu de 20 y siete juegos) una
+       segunda pasada no basta: se dan tantas vueltas como haga falta, y a
+       partir de la primera se permite repetir juego. Repetir es legítimo en un
+       examen largo; lo que no puede pasar es que se queden preguntas sin montar. */
+    var vueltas = Math.max(2, Math.ceil(cupo / Math.max(1, JUEGOS.length)) + 1);
+    for (var pasada = 0; pasada < vueltas && asignaciones.length < cupo; pasada++) {
       for (p = 0; p < orden.length && asignaciones.length < cupo; p++) {
         idx = orden[p];
         if (tomadas[idx]) continue;
@@ -445,6 +458,8 @@
           var libres = [];
           for (var f = 0; f < lista.length; f++) { if (!usados[lista[f]]) libres.push(lista[f]); }
           lista = libres;
+        } else if (pasada > 1) {
+          usados = {};                 /* vuelta nueva: los juegos se reciclan */
         }
         if (!lista.length) continue;
         var jid = lista[elegirIndice(rng, lista.length)];
@@ -1285,7 +1300,7 @@
        pinta fondo ni borde (game.css) y la imagen lo llena al 100 %.
        La <img> va con `alt=""` a propósito: el nombre accesible lo pone el
        aria-label del botón, y un alt con texto lo haría leer dos veces. */
-    var SELLOS = (cfg.assets || "") + "assets/img/game/";
+    var SELLOS = (cfg.assets || "") + "assets/img/ui/";
     /* El interruptor nace con el estado REAL en vez de nacer apagado: desde que
        el sonido está encendido por defecto, un markup fijo enseñaría el sello
        gris hasta que MFSonido.pintar() corrigiera, y eso es un parpadeo visible

@@ -84,7 +84,7 @@
      fundido con el barrido fijado en 360°, el fallo no anima y bajo el tablero
      se escribe «Restaurado. +5 XP». Nunca solo con animación.
 
-   DÓNDE ESTÁ EL TRAJE: en la sección RETOS de `assets/css/game.css`, bloque
+   DÓNDE ESTÁ EL TRAJE: en la sección JUEGOS de `assets/css/game.css`, bloque
    `kintsugi-*` (ficha §9.2 y §A.6). Este archivo lo escribió primero dentro de
    una constante `HOJA` que se inyectaba en el `<head>`, y esa copia se BORRÓ al
    mudar el bloque a la hoja: un `<style>` inyectado entra en la cascada DESPUÉS
@@ -160,15 +160,15 @@
      `derivadas` a false. Dos líneas, y ni una más — la geometría, la diana, las
      cicatrices y el veredicto de examen siguen funcionando igual porque todos
      leen la MISMA colocación. */
-  var RETOS = A + "assets/img/game/retos/";
+  var JUEGOS = A + "assets/img/juegos/";
   var ARTE = {
-    fragmento: RETOS + "kintsugi-fragmento.webp",
-    hueco: RETOS + "kintsugi-fragmento.webp",
-    veta: RETOS + "kintsugi-fragmento.webp",
-    /* La mano de F1, reutilizada como adorno del ritual. OPCIONAL: `game_art()`
-       (tools/build.py:890-906) no escanea subcarpetas, así que esta lámina no
-       está en MF_CONFIG.gameArt y solo se sabe si existe probándola. */
-    mano: RETOS + "tameshiwari-mano.webp",
+    fragmento: JUEGOS + "kintsugi-fragmento.webp",
+    hueco: JUEGOS + "kintsugi-fragmento.webp",
+    veta: JUEGOS + "kintsugi-fragmento.webp",
+    /* La mano de la mascota (F1), reutilizada como adorno del ritual. OPCIONAL:
+       no está en MF_CONFIG.gameArt (solo viajan las familias que se buscan por
+       clave), así que solo se sabe si existe probándola. */
+    mano: A + "assets/img/mascota/mano.webp",
     derivadas: true
   };
 
@@ -292,7 +292,7 @@
        mal la metáfora (lo vio el titular en pantalla, y razón no le faltaba).
        La lámina del arte queda de RESPALDO: si la vasija faltara en un
        despliegue, mejor el emblema viejo que un hueco sobre nada. */
-    var rutaVasija = "assets/img/game/retos/kintsugi-vasija.webp";
+    var rutaVasija = "assets/img/juegos/kintsugi-vasija.webp";
     var rutaEmblema = (cfg.gameArt || {})["art-" + (m.content && m.content.art)];
     /* No deberían llegar (los filtran `necesita` y `acepta`), pero si llegaran,
        resolver es mejor que dejar al alumno encerrado con la tarjeta bloqueada. */

@@ -180,18 +180,19 @@
      la única excepción y no está aquí: lo pone `background-image` en
      `.reto-herr-escena`, donde la ruta se resuelve contra la HOJA y sale bien
      sea cual sea la profundidad de la página. */
-  var RETOS = A + "assets/img/game/retos/";
+  var JUEGOS = A + "assets/img/juegos/";
   var L = {
-    pano: RETOS + "herr-pano.webp",
-    llave: RETOS + "herr-llave.webp",
-    mancha: RETOS + "herr-mancha.webp",
-    frotada: RETOS + "herr-mancha-frotada.webp",
-    candado: RETOS + "herr-candado.webp",
-    abierto: RETOS + "herr-candado-abierto.webp",
-    cofre: RETOS + "herr-cofre.webp",
-    cofreAb: RETOS + "herr-cofre-abierto.webp",
-    /* Reutilizado, coste 0: ya existía para la portada. */
-    pergamino: A + "assets/img/game/home-pergaminos.webp"
+    pano: JUEGOS + "herr-pano.webp",
+    llave: JUEGOS + "herr-llave.webp",
+    mancha: JUEGOS + "herr-mancha.webp",
+    frotada: JUEGOS + "herr-mancha-frotada.webp",
+    candado: JUEGOS + "herr-candado.webp",
+    abierto: JUEGOS + "herr-candado-abierto.webp",
+    cofre: JUEGOS + "herr-cofre.webp",
+    cofreAb: JUEGOS + "herr-cofre-abierto.webp",
+    /* Reutilizado, coste 0: nació como icono de la portada (home-pergaminos) y
+       desde la reorganización de 2026-09-03 vive con las piezas del juego. */
+    pergamino: JUEGOS + "herr-pergamino.webp"
   };
 
   /* Proporciones REALES de las láminas entregadas, medidas sobre los PNG en
@@ -1239,7 +1240,7 @@
 
     /* Un solo nodo, y no dos: la hoja centra el pergamino con `margin-left` y
        deja `transform` libre para el keyframe que lo hace subir, así que no hay
-       nada que separar. Es lámina reutilizada (home-pergaminos.webp): coste 0.
+       nada que separar. Es lámina reutilizada (herr-pergamino.webp, el antiguo home-pergaminos): coste 0.
        Si el archivo faltara, desaparece en silencio y la celebración sigue con
        el haz, las partículas y el sello. */
     function subirPergamino() {

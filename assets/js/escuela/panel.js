@@ -28,7 +28,7 @@
     reintentar: "Reintentar",
     misArtes: "Mis artes",
     fundar: "Fundar un arte", fundarNota: "llega con la apertura",
-    publicado: "PUBLICADO", borrador: "BORRADOR",
+    visible: "VISIBLE", sinContenido: "SIN CONTENIDO TODAVÍA",
     niveles: "niveles", misiones: "misiones", misione: "misión",
     tarjetas: "tarjetas", examen: "Examen", sinMisiones: "nivel en niebla",
     selloCamino: "El camino tiene 8 cinturones",
@@ -37,7 +37,7 @@
     probar: "▶ Probar la misión", probarExamen: "▶ Probar el examen",
     demo: "DEMO — sin XP", cerrar: "Cerrar",
     correcta: "correcta", laDelCurso: "la elección del curso",
-    feedbackDe: "Aclaración", sintesis: "Síntesis",
+    feedbackDe: "Aclaración",
     /* Rótulos del formulario de pregunta: cada dato dice DÓNDE se ve. */
     rotOpcion: "Respuesta completa (la que lee el alumno en el quiz)",
     rotCorta: "Opción de respuesta corta",
@@ -70,10 +70,6 @@
     desfasadaBase: "↻ el base cambió tras traducir",
     idiomaAMedias: "traducido a medias: {h} de {t} piezas",
     estructuraDivergente: "la tarjeta no es la misma en todos los idiomas: edita algo en el idioma bueno para sincronizarla",
-    ensayar: "Ensayar la publicación",
-    ensayarNota: "En desarrollo no hay base a la que estampar: el ensayo compila todo lo que se enviaría y avisa si algo falla. Para publicar de verdad desde aquí, genera el sitio con gate (python tools/build.py) e inicia sesión.",
-    ensayoBien: "Compilado sin errores: se enviarían {n} piezas.",
-    ensayoMal: "El ensayo encontró fallos de compilación:",
     esElBase: "es el idioma base del curso: no se quita ni se traduce",
     quitarIdioma: "Quitar este idioma",
     confirmarQuitarIdioma: "¿Quitar el {lg} del curso?",
@@ -101,14 +97,37 @@
     editar: "Editar", listo: "Listo", cancelar: "Cancelar",
     volverBaraja: "‹ Volver a la baraja",
     guardar: "Guardar", guardarCambios: "Guardar cambios", sinCambios: "Sin cambios",
+    guardadoVisible: "Guardado. Ya lo ven tus alumnos",
+    salud: "Salud del curso", saludPie: "Nada de esto frena el guardado: son avisos para que el curso quede mejor.",
+    nuevoExamen: "Nuevo examen", examen: "Examen", examenes: "Exámenes",
+    exNombre: "Nombre del examen", exPreguntas: "Preguntas", exAprobar: "Preguntas para aprobar",
+    exIntentos: "Intentos permitidos", exTiempo: "Tiempo límite", exSinLimite: "Sin límite",
+    exCrear: "Crear el examen", exPortada: "Portada", exAjustes: "Ajustes del examen",
+    exEnlace: "Enlace para compartir", exCopiado: "Enlace copiado",
+    exQuienes: "Quién puede rendirlo", exEmails: "Pega los emails separados por comas o saltos de línea",
+    exInvitar: "Invitar", exNadie: "Todavía no has invitado a nadie",
+    exRindio: "{g} de {n}", exSinRendir: "sin rendir",
+    exAcceso: "Cualquiera con el enlace", exAccesoLista: "Solo mi lista de invitados",
+    exCupo: "tu cupo de exámenes está lleno",
+    cursoNombre: "Nombre del curso",
+    dirCampo: "Dirección", exUrl: "Tu enlace será:",
+    dirPie: "Es la parte final del enlace que vas a compartir. Se rellena sola con el nombre; cámbiala si quieres. No se puede cambiar después.",
+    asistente: "Con el asistente", iaExamen: "Examen con IA", iaCurso: "Curso con IA",
+    iaExamenPie: "Pega un texto y te escribe las preguntas",
+    iaCursoPie: "Pega un texto y te escribe el curso entero, nivel a nivel",
+    iaSoloReal: "El asistente vive en el sitio real: entra con tu cuenta para usarlo.",
+    iaMaterial: "Material de base", iaGenerar: "Generar", iaGenerando: "Generando…",
+    iaNivel: "Nivel {n} de {t}…", iaCascara: "Presentación del curso…",
+    iaListo: "Listo. Revísalo y guarda cuando te guste.",
+    iaAviso: "Lo que escriba el asistente es un borrador tuyo: revísalo antes de compartirlo.",
+    misionIncompleta: "Hay misiones a medias",
+    misionIncompletaPie: "Estas misiones tienen algo sin terminar. Como lo que guardas se ve al instante, se arregla antes de guardar.",
     deshacer: "Deshacer", nadaQueDeshacer: "Nada que deshacer",
     hayPendientes: "Tienes cambios sin guardar.",
     salirIgual: "Salir sin guardar",
     confirmarOpcion: "¿Borrar esta opción?",
     confirmarFrase: "¿Borrar esta frase?",
-    confirmarPuerta: "¿Borrar esta puerta?",
     confirmarVineta: "¿Borrar esta viñeta?",
-    confirmarSintesis: "¿Quitar la síntesis?",
     seDeshace: "Puedes deshacerlo con ↶ mientras no guardes.",
     confirmarTarjeta: "¿Borrar esta tarjeta?",
     confirmarMision: "¿Enviar esta misión a la papelera?",
@@ -135,7 +154,7 @@
     reintentar: "Retry",
     misArtes: "My arts",
     fundar: "Found an art", fundarNota: "arrives with the opening",
-    publicado: "PUBLISHED", borrador: "DRAFT",
+    visible: "LIVE", sinContenido: "NO CONTENT YET",
     niveles: "levels", misiones: "missions", misione: "mission",
     tarjetas: "cards", examen: "Exam", sinMisiones: "level in the mist",
     selloCamino: "The path has 8 belts",
@@ -144,7 +163,7 @@
     probar: "▶ Play this mission", probarExamen: "▶ Play the exam",
     demo: "DEMO — no XP", cerrar: "Close",
     correcta: "correct", laDelCurso: "the course's pick",
-    feedbackDe: "Feedback", sintesis: "Synthesis",
+    feedbackDe: "Feedback",
     rotOpcion: "Full answer (what the student reads in the quiz)",
     rotCorta: "Short answer option",
     rotOrden: "Correct pick order, for games that use it",
@@ -176,10 +195,6 @@
     desfasadaBase: "↻ the base changed after translation",
     idiomaAMedias: "half translated: {h} of {t} pieces",
     estructuraDivergente: "the card is not the same across languages: edit anything in the good one to sync it",
-    ensayar: "Rehearse the publish",
-    ensayarNota: "In development there is no database to stamp: the rehearsal compiles everything that would be sent and reports failures. To publish for real from here, build with the gate on (python tools/build.py) and sign in.",
-    ensayoBien: "Compiled with no errors: {n} pieces would be sent.",
-    ensayoMal: "The rehearsal found compilation failures:",
     esElBase: "is the base language of the course: neither removed nor translated",
     quitarIdioma: "Remove this language",
     confirmarQuitarIdioma: "Remove {lg} from the course?",
@@ -207,14 +222,37 @@
     editar: "Edit", listo: "Done", cancelar: "Cancel",
     volverBaraja: "‹ Back to the deck",
     guardar: "Save", guardarCambios: "Save changes", sinCambios: "No changes",
+    guardadoVisible: "Saved. Your students can see it now",
+    salud: "Course health", saludPie: "None of this blocks saving: they are notes to make the course better.",
+    nuevoExamen: "New exam", examen: "Exam", examenes: "Exams",
+    exNombre: "Exam name", exPreguntas: "Questions", exAprobar: "Questions to pass",
+    exIntentos: "Attempts allowed", exTiempo: "Time limit", exSinLimite: "No limit",
+    exCrear: "Create the exam", exPortada: "Cover", exAjustes: "Exam settings",
+    exEnlace: "Link to share", exCopiado: "Link copied",
+    exQuienes: "Who can take it", exEmails: "Paste emails separated by commas or line breaks",
+    exInvitar: "Invite", exNadie: "You have not invited anyone yet",
+    exRindio: "{g} of {n}", exSinRendir: "not taken",
+    exAcceso: "Anyone with the link", exAccesoLista: "Only my invite list",
+    exCupo: "your exam quota is full",
+    cursoNombre: "Course name",
+    dirCampo: "Address", exUrl: "Your link will be:",
+    dirPie: "It is the last part of the link you will share. It fills in from the name; change it if you like. It cannot be changed later.",
+    asistente: "With the assistant", iaExamen: "Exam with AI", iaCurso: "Course with AI",
+    iaExamenPie: "Paste a text and it writes the questions",
+    iaCursoPie: "Paste a text and it writes the whole course, level by level",
+    iaSoloReal: "The assistant lives on the real site: sign in to use it.",
+    iaMaterial: "Source material", iaGenerar: "Generate", iaGenerando: "Generating…",
+    iaNivel: "Level {n} of {t}…", iaCascara: "Course presentation…",
+    iaListo: "Done. Review it and save when you like it.",
+    iaAviso: "Whatever the assistant writes is your draft: review it before sharing.",
+    misionIncompleta: "Some missions are unfinished",
+    misionIncompletaPie: "These missions have something unfinished. Since what you save goes live at once, fix them before saving.",
     deshacer: "Undo", nadaQueDeshacer: "Nothing to undo",
     hayPendientes: "You have unsaved changes.",
     salirIgual: "Leave without saving",
     confirmarOpcion: "Delete this option?",
     confirmarFrase: "Delete this phrase?",
-    confirmarPuerta: "Delete this door?",
     confirmarVineta: "Delete this panel?",
-    confirmarSintesis: "Remove the synthesis?",
     seDeshace: "You can undo it with ↶ until you save.",
     confirmarTarjeta: "Delete this card?",
     confirmarMision: "Send this mission to the trash?",
@@ -240,14 +278,14 @@
   var LIM = { enunciado: 220, opcion: 140, feedback: 300, frase: 175, vineta: 110,
               cuerpo: 450, scrollCuerpo: 200, corta: 24, titulo: 80 };
 
-  var ICONO = { text: "✍️", quiz: "❓", choice: "❓", apuesta: "🎯", puertas: "🚪",
+  var ICONO = { text: "✍️", quiz: "❓", choice: "❓", apuesta: "🎯",
                 revela: "👊", escena: "🎬", scroll: "📜", reflect: "💭" };
   /* La palabra «apuesta» está vetada del UI (brief): se muestra «elección». */
   function tiposDe(ES) {
     return { apuesta: ES ? "elección" : "choice", text: ES ? "texto" : "text",
              scroll: ES ? "pergamino" : "scroll",
              escena: ES ? "escena" : "scene", revela: ES ? "revela" : "reveal",
-             puertas: ES ? "puertas" : "doors", quiz: ES ? "pregunta" : "question" };
+             quiz: ES ? "pregunta" : "question" };
   }
   var TIPO_NOMBRE = tiposDe(ES);
   function nombreTipo(t) { return TIPO_NOMBRE[t] || t; }
@@ -314,12 +352,6 @@
       { tipo: "revela", listo: true, desc: ES ? "Frases que se ganan a golpes" : "Phrases earned by strikes",
         /* Tres frases desde el minuto uno: la animación hace tres acciones. */
         crear: function () { return { tipo: "revela", enunciado: par(""), frases: [par("", true), par("", true), par("", true)] }; } },
-      { tipo: "puertas", listo: true, desc: ES ? "Hasta tres puertas, una elección" : "Up to three doors, one choice",
-        crear: function () {
-          return { tipo: "puertas", enunciado: par(""), sintesis: null,
-                   opciones: [{ texto: par("", true), feedback: par("", true) },
-                              { texto: par("", true), feedback: par("", true) }] };
-        } },
       { tipo: "apuesta", listo: true, desc: ES ? "Elección sin respuesta correcta" : "Choice with no right answer",
         crear: function () {
           return { tipo: "apuesta", enunciado: par(""),
@@ -608,6 +640,204 @@
     esCampo.focus();
   }
 
+  /* El principio del enlace: origen + la ruta del player. Lo comparten el
+     wizard (para enseñar la dirección mientras se escribe), el asistente y la
+     vista del examen (para el enlace que se copia). */
+  function enlaceBase() {
+    var rutaPlayer = ES ? "curso/" : "course/";
+    try {
+      var u = new URL((cfg.prefix || "") + rutaPlayer, location.href);
+      return (cfg.origin || location.origin) + u.pathname + "#/";
+    } catch (e) {
+      return (cfg.origin || "") + "/" + rutaPlayer + "#/";
+    }
+  }
+
+  /* El campo de dirección: se rellena solo con el nombre, se puede tocar, y
+     debajo se ve el enlace que va quedando. Así «clave» deja de ser una
+     palabra técnica y pasa a ser lo que de verdad es. */
+  function engancharDireccion(form, urlEl, nombre, claveC, alCambiar) {
+    function pintar() {
+      urlEl.innerHTML = claveC.value
+        ? esc(T.exUrl) + " " + esc(enlaceBase()) + "<b>" + esc(claveC.value) + "</b>"
+        : "";
+    }
+    nombre.addEventListener("input", function () {
+      if (!claveC.dataset.tocado) {
+        claveC.value = nombre.value.toLowerCase().normalize("NFD")
+          .replace(/[̀-ͯ]/g, "")
+          .replace(/[^a-z0-9]+/g, "-").replace(/^-+|-+$/g, "").slice(0, 30);
+      }
+      pintar();
+      if (alCambiar) alCambiar();
+    });
+    claveC.addEventListener("input", function () {
+      claveC.dataset.tocado = "1";
+      pintar();
+    });
+    pintar();
+  }
+
+  /* Crear un examenFu: cuatro decisiones y ya existe. Nada de niveles ni de
+     cinturones — un examen suelto no es un camino (docs/12 §2). */
+  function abrirNuevoExamen() {
+    var opciones = function (lista, sel) {
+      return lista.map(function (o) {
+        return '<option value="' + esc(String(o[0])) + '"' + (o[0] === sel ? " selected" : "") + ">" + esc(o[1]) + "</option>";
+      }).join("");
+    };
+    var v = ventana({ titulo: "🏮 " + T.nuevoExamen, panel: true, cuerpo:
+      '<form class="escuela-fundar">' +
+      "<label>" + esc(T.exNombre) + '<input name="nombre" required maxlength="60" placeholder="' +
+        esc(ES ? "p. ej. Examen de fracciones" : "e.g. Fractions exam") + '"></label>' +
+      "<label>" + esc(T.dirCampo) +
+        '<input name="clave" required maxlength="30" pattern="[a-z0-9][a-z0-9\-]{2,29}"></label>' +
+      '<p class="escuela-fundar__url" data-url></p>' +
+      '<p class="escuela-nota">' + esc(T.dirPie) + "</p>" +
+      "<label>" + esc(T.exPreguntas) + '<input name="n" type="number" min="1" max="30" value="10"></label>' +
+      "<label>" + esc(T.exAprobar) + '<select name="aprobar"></select></label>' +
+      "<label>" + esc(T.exIntentos) + '<select name="intentos">' +
+        opciones([["", T.exSinLimite], [1, "1"], [2, "2"], [3, "3"]], "") + "</select></label>" +
+      "<label>" + esc(T.exTiempo) + '<select name="tiempo">' +
+        opciones([["", T.exSinLimite], [5, "5 min"], [10, "10 min"], [20, "20 min"], [30, "30 min"]], "") + "</select></label>" +
+      '<p class="escuela-avisos" data-ex-error hidden></p>' +
+      '<button type="submit" class="escuela-probar">🏮 ' + esc(T.exCrear) + "</button></form>" });
+    var form = v.caja.querySelector("form");
+    var nombre = form.querySelector('[name="nombre"]');
+    var claveC = form.querySelector('[name="clave"]');
+    var nC = form.querySelector('[name="n"]');
+    var aprobarC = form.querySelector('[name="aprobar"]');
+    /* El selector de «con cuántas se aprueba» se rehace al cambiar N: ofrecer
+       «aprueba con 8» en un examen de 5 sería una trampa. */
+    function refrescarAprobar() {
+      var n = Math.max(1, Math.min(30, parseInt(nC.value, 10) || 1));
+      var sug = MFEscuela.compilar.aprobarPorDefecto(n);
+      var html = "";
+      for (var k = 1; k <= n; k++) html += '<option value="' + k + '"' + (k === sug ? " selected" : "") + ">" + k + "</option>";
+      aprobarC.innerHTML = html;
+    }
+    nC.addEventListener("input", refrescarAprobar);
+    refrescarAprobar();
+    engancharDireccion(form, v.caja.querySelector("[data-url]"), nombre, claveC);
+    form.addEventListener("submit", function (e) {
+      e.preventDefault();
+      var clave = claveC.value.trim();
+      var err = v.caja.querySelector("[data-ex-error]");
+      if (!/^[a-z0-9][a-z0-9-]{2,29}$/.test(clave) || capaCurso(clave)) {
+        err.hidden = false;
+        err.textContent = "⚠ " + (ES ? "esa clave no sirve o ya existe" : "that key is invalid or taken");
+        return;
+      }
+      var vacio = function (x) { return x === "" ? null : parseInt(x, 10); };
+      var hecho = MFEscuela.compilar.plantillaExamen(clave, nombre.value.trim(), {
+        lang: cfg.lang, n: parseInt(nC.value, 10) || 10,
+        aprobar_min: parseInt(aprobarC.value, 10) || 1,
+        intentos: vacio(form.querySelector('[name="intentos"]').value),
+        tiempo_min: vacio(form.querySelector('[name="tiempo"]').value),
+      });
+      MFEscuelaDatos.fundarCurso(clave, hecho.curso).then(function () {
+        v.cerrar();
+        location.hash = "#/" + clave;
+        rutear();
+        toast(ES ? "Examen creado: ya tienes su enlace" : "Exam created: its link is ready");
+      }, function (e2) {
+        err.hidden = false;
+        var t = String((e2 && e2.message) || e2 || "");
+        err.textContent = "⚠ " + (t.indexOf("cupo-lleno") >= 0 ? T.exCupo
+          : (ES ? "no se pudo crear el examen" : "the exam could not be created"));
+      });
+    });
+    nombre.focus();
+  }
+
+  /* El asistente (docs/12 §3 y §8). El modal recoge lo mínimo —un texto y
+     cuatro números— y el resto lo hace la técnica «molde + relleno»: la
+     plataforma arma el curso vacío, la IA rellena solo los textos y se guarda
+     por la vía única, con las mismas guardias que lo escrito a mano. */
+  function abrirAsistente(tipo) {
+    var esExamen = tipo === "examen";
+    var campos = esExamen
+      ? "<label>" + esc(T.exPreguntas) + '<input name="n" type="number" min="1" max="30" value="10"></label>'
+      : "<label>" + esc(ES ? "Niveles" : "Levels") + '<input name="niveles" type="number" min="1" max="8" value="4"></label>' +
+        "<label>" + esc(ES ? "Misiones por nivel" : "Missions per level") + '<input name="porNivel" type="number" min="1" max="6" value="3"></label>';
+    var v = ventana({ titulo: "✨ " + esc(esExamen ? T.iaExamen : T.iaCurso), panel: true, cuerpo:
+      '<form class="escuela-fundar">' +
+      /* Un curso no es un examen: las etiquetas se dicen en su idioma. Estaban
+         copiadas del wizard de examen y el modal de curso pedía «Nombre del
+         examen» (defecto visto por el titular 2026-09-03). */
+      "<label>" + esc(esExamen ? T.exNombre : T.cursoNombre) +
+        '<input name="nombre" required maxlength="60"></label>' +
+      "<label>" + esc(T.dirCampo) +
+        '<input name="clave" required maxlength="30" pattern="[a-z0-9][a-z0-9\-]{2,29}"></label>' +
+      '<p class="escuela-fundar__url" data-url></p>' +
+      '<p class="escuela-nota">' + esc(T.dirPie) + "</p>" +
+      campos +
+      "<label>" + esc(T.iaMaterial) +
+        '<textarea name="material" rows="8" maxlength="60000" placeholder="' +
+        esc(ES ? "Pega aquí tus apuntes, un guion, un artículo…" : "Paste your notes, a script, an article…") + '"></textarea></label>' +
+      '<p class="escuela-nota">' + esc(T.iaAviso) + "</p>" +
+      '<p class="escuela-avisos" data-ia-error hidden></p>' +
+      '<p class="escuela-nota" data-ia-paso hidden></p>' +
+      '<button type="submit" class="escuela-probar">✨ ' + esc(T.iaGenerar) + "</button></form>" });
+    var form = v.caja.querySelector("form");
+    var nombre = form.querySelector('[name="nombre"]');
+    var claveC = form.querySelector('[name="clave"]');
+    var err = v.caja.querySelector("[data-ia-error]");
+    var paso = v.caja.querySelector("[data-ia-paso]");
+    var boton = form.querySelector('button[type="submit"]');
+    engancharDireccion(form, v.caja.querySelector("[data-url]"), nombre, claveC);
+
+    function decir(txt) { paso.hidden = false; paso.textContent = txt; }
+    function romper(e) {
+      boton.disabled = false;
+      boton.textContent = "✨ " + T.iaGenerar;
+      paso.hidden = true;
+      err.hidden = false;
+      err.textContent = "⚠ " + MFAsistente.fallo(e);
+    }
+
+    form.addEventListener("submit", function (e) {
+      e.preventDefault();
+      err.hidden = true;
+      var clave = claveC.value.trim();
+      if (!/^[a-z0-9][a-z0-9-]{2,29}$/.test(clave) || capaCurso(clave)) {
+        err.hidden = false;
+        err.textContent = "⚠ " + (ES ? "esa clave no sirve o ya existe" : "that key is invalid or taken");
+        return;
+      }
+      var material = form.querySelector('[name="material"]').value.trim();
+      boton.disabled = true;
+      boton.textContent = T.iaGenerando;
+      decir(T.iaCascara);
+
+      var comun = { clave: clave, nombre: nombre.value.trim(), material: material, lang: cfg.lang };
+      var trabajo = esExamen
+        ? MFAsistente.generarExamen(Object.assign({ n: parseInt(form.querySelector('[name="n"]').value, 10) || 10 }, comun))
+            .then(function (r) { return MFEscuelaDatos.fundarCurso(clave, r.curso); })
+        : MFAsistente.generarCurso(Object.assign({
+            niveles: parseInt(form.querySelector('[name="niveles"]').value, 10) || 4,
+            misiones: parseInt(form.querySelector('[name="porNivel"]').value, 10) || 3,
+            /* Cada nivel que llega se guarda: si la llamada 6 falla, los cinco
+               anteriores ya están a salvo y visibles (docs/12 §8). */
+            alNivel: function (n, total, curso) {
+              decir(n === 0 ? T.iaCascara : T.iaNivel.replace("{n}", n).replace("{t}", total));
+              if (n === 0) return;
+              MFEscuelaDatos.marcarSucio("curso:" + clave);
+              curso.misiones.filter(function (m) { return m.nivel === n; })
+                .forEach(function (m) { MFEscuelaDatos.marcarSucio("mision:" + m.id); });
+            },
+          }, comun)).then(function (r) { return MFEscuelaDatos.fundarCurso(clave, r.curso); });
+
+      trabajo.then(function () {
+        v.cerrar();
+        location.hash = "#/" + clave;
+        rutear();
+        toast(T.iaListo);
+      }, romper);
+    });
+    nombre.focus();
+  }
+
   function abrirNuevaMision(clave, n) {
     var curso = capaCurso(clave);
     var normales = curso.misiones.filter(function (m) { return m.kind !== "exam"; });
@@ -718,7 +948,7 @@
       '<span class="escuela-demo__banda">' + esc(opts.titulo || "") + "</span>" +
       /* el mismo sello bermellón que cierra los retos y los pergaminos */
       '<button type="button" class="escuela-demo__cerrar" title="' + esc(T.cerrar) + '" aria-label="' + esc(T.cerrar) + '">' +
-      '<img class="sello-icono" src="' + (cfg.assets || "") + 'assets/img/game/cerrar.webp" alt="" width="256" height="255" decoding="async">' +
+      '<img class="sello-icono" src="' + (cfg.assets || "") + 'assets/img/ui/cerrar.webp" alt="" width="256" height="255" decoding="async">' +
       "</button>" +
       "</div>" +
       '<div class="escuela-demo__cuerpo">' + (opts.cuerpo || "") + "</div>" +
@@ -802,7 +1032,7 @@
     if (p.length === 1) return { v: "portada", curso: p[0] };
     if (p[1] === "pergaminos") return { v: "pergaminos", curso: p[0] };
     if (p[1] === "p" && p[2]) return { v: "pergamino", curso: p[0], id: p[2] };
-    if (p[1] === "publicar") return { v: "publicar", curso: p[0] };
+    if (p[1] === "salud" || p[1] === "publicar") return { v: "salud", curso: p[0] };
     if (p[1] === "papelera") return { v: "papelera", curso: p[0] };
     if (p[1] === "estudiantes") return { v: "estudiantes", curso: p[0] };
     if (p[1] === "n" && p[2]) return { v: "nivel", curso: p[0], n: parseInt(p[2], 10) };
@@ -1027,21 +1257,61 @@
     toast(ES ? "Cambio deshecho" : "Change undone");
   }
 
+  /* GUARDAR ES PUBLICAR (titular 2026-09-03): un solo gesto escribe todo lo
+     tocado y rehace las filas que leen los alumnos, en una transacción. Por eso
+     la guardia mira TODO lo sucio y no solo la tarjeta de delante: lo que se
+     guarda se ve, así que nada a medias puede colarse. */
   function guardarActivo() {
-    var ctxE = contextoEdicion();
-    if (!ctxE) return;
-    /* Una tarjeta a medias no se guarda: primero se arregla, se descarta o se
-       borra (titular 2026-09-02). */
+    if (!puedeEditar) return;
     if (guardiaTarjeta()) return;
-    MFEscuelaDatos.guardarAhora(ctxE.clave).then(function () {
+    if (guardiaMisiones()) return;
+    MFEscuelaDatos.guardar().then(function () {
       pila = [];
-      previo = clon(entidadActiva());
-      base = clon(entidadActiva());
+      var ent = entidadActiva();
+      if (ent) { previo = clon(ent); base = clon(ent); }
       rutear();
-      toast(ES ? "Cambios guardados" : "Changes saved");
-    }, function () {
-      toast(ES ? "No se pudieron guardar los cambios" : "The changes could not be saved", { error: true });
+      toast(T.guardadoVisible);
+    }, function (err) {
+      var texto = String((err && err.message) || err || "");
+      toast(texto.indexOf("conflicto") >= 0
+        ? (ES ? "Otra pestaña guardó antes. Recarga para no pisar su trabajo." : "Another tab saved first. Reload so you do not overwrite it.")
+        : (ES ? "No se pudieron guardar los cambios" : "The changes could not be saved"), { error: true });
     });
+  }
+
+  /* La guardia de MISIÓN: los rojos de una misión entera (un examen con otro
+     número de preguntas, una estructura que se bifurcó entre idiomas) no los ve
+     `guardiaTarjeta`, que solo juzga la tarjeta abierta. Se revisan las
+     entidades SUCIAS, no el curso entero: nadie debe quedarse sin guardar su
+     trabajo por una misión vieja que no ha tocado. */
+  function guardiaMisiones() {
+    if (!puedeEditar || !MFEscuelaDatos.clavesSucias) return false;
+    var lgBase = null, malas = [];
+    MFEscuelaDatos.clavesSucias().forEach(function (k) {
+      if (k.indexOf("mision:") !== 0) return;
+      var id = k.slice(7);
+      for (var clave in modelo.fuente.cursos) {
+        var curso = modelo.fuente.cursos[clave];
+        var m = misionPorId(curso, id);
+        if (!m) continue;
+        lgBase = MFEscuela.compilar.baseDe(curso);
+        var mc = m[lgBase];
+        if (!mc) return;
+        var rojos = avisosDeMision(m, mc, lgBase).filter(function (a) { return a.n === "rojo"; });
+        if (rojos.length) malas.push({ clave: clave, m: m, titulo: mc.title, rojos: rojos });
+        return;
+      }
+    });
+    if (!malas.length) return false;
+    ventana({
+      titulo: T.misionIncompleta, panel: true, confirmar: true,
+      cuerpo: '<p class="escuela-nota">' + esc(T.misionIncompletaPie) + "</p>" +
+        '<ul class="escuela-problemas">' + malas.map(function (x) {
+          return '<li><a href="#/' + esc(x.clave) + "/m/" + esc(x.m.id) + '">' + esc(x.titulo) + "</a> — " +
+            esc(x.rojos.map(function (a) { return a.t; }).join(" · ")) + "</li>";
+        }).join("") + "</ul>",
+    });
+    return true;
   }
 
   /* ------------------------------------------- la tarjeta bien diligenciada -
@@ -1216,14 +1486,6 @@
         else if (!fondos[v.fondo].anclas[v.ancla]) rojo((ES ? "ancla desconocida en viñeta " : "unknown anchor in panel ") + (j + 1));
         if (!posesA[v.pose]) rojo((ES ? "pose desconocida en viñeta " : "unknown pose in panel ") + (j + 1));
       });
-    } else if (cardF.tipo === "puertas") {
-      mide(cardF.enunciado, LIM.enunciado, ES ? "enunciado" : "prompt");
-      if (cardF.opciones.length > 3) ambar(ES ? "máximo 3 puertas" : "max 3 doors");
-      cardF.opciones.forEach(function (op, j) {
-        mide(op.texto, LIM.opcion, (ES ? "puerta " : "door ") + (j + 1));
-        mide(op.feedback, LIM.feedback, (ES ? "consecuencia " : "consequence ") + (j + 1));
-        if (!op.feedback.md) rojo((ES ? "puerta sin consecuencia: la " : "door with no consequence: ") + (j + 1));
-      });
     } else if (cardF.tipo === "apuesta") {
       mide(cardF.enunciado, LIM.enunciado, ES ? "enunciado" : "prompt");
       cardF.opciones.forEach(function (op, j) {
@@ -1267,6 +1529,11 @@
         av.push({ n: a.n, t: (ES ? "tarjeta " : "card ") + (ix + 1) + ": " + a.t, k: ix });
       });
     });
+    var nScroll = capaM.cards.filter(function (c) { return c.tipo === "scroll"; }).length;
+    if (nScroll > MFEscuela.compilar.SCROLL_MAX_POR_MISION) {
+      av.push({ n: "rojo", t: ES ? "solo se admite un pergamino por misión (hay " + nScroll + ")"
+                                 : "only one scroll per mission is allowed (there are " + nScroll + ")" });
+    }
     if (m.kind === "exam") {
       var nQuiz = capaM.cards.filter(function (c) { return c.tipo === "quiz"; }).length;
       if (nQuiz !== 6) av.push({ n: "rojo", t: ES ? "el molde del examen pide 6 preguntas (hay " + nQuiz + ")" : "the exam mold takes 6 questions (there are " + nQuiz + ")" });
@@ -1328,9 +1595,16 @@
       '<span class="escuela-idiomas">' + chips + "</span></div>";
   }
 
+  /* Ya no hay borrador ni publicado (titular 2026-09-03): lo que hay es un
+     curso con contenido —y entonces es visible, con su código— o un curso
+     todavía vacío. El estado describe, no pide un gesto. */
   function estadoCurso(curso) {
-    var pub = (curso.status || "published") === "published";
-    return '<span class="escuela-pill ' + (pub ? "is-pub" : "is-borr") + '">' + (pub ? T.publicado : T.borrador) + "</span>";
+    var vacio = !curso.misiones.some(function (m) {
+      var mc = capa(m);
+      return mc && mc.cards && mc.cards.length;
+    });
+    return '<span class="escuela-pill ' + (vacio ? "is-borr" : "is-pub") + '">' +
+      (vacio ? T.sinContenido : T.visible) + "</span>";
   }
 
   /* La Senda del Constructor: cinco cintas que se ganan construyendo. */
@@ -1369,7 +1643,12 @@
 
   function vArtes() {
     var claves = Object.keys(modelo.fuente.cursos);
-    var tarjetas = claves.map(function (clave) {
+    /* Los exámenes tienen su propia sección más abajo: aquí solo cursos. Antes
+       salían mezclados y con «1 niveles · 0 misiones», que de un examen no
+       significa nada. */
+    var tarjetas = claves.filter(function (k) {
+      return (modelo.fuente.cursos[k].tipo || "curso") !== "examen";
+    }).map(function (clave) {
       var curso = capaCurso(clave), c = capa(curso);
       var nivelesCon = 0;
       for (var n = 1; n <= 8; n++) {
@@ -1384,8 +1663,11 @@
         '<span class="escuela-curso__datos">' + nivelesCon + " " + T.niveles + " · " + nMis + " " + T.misiones + "</span>" +
         '<span class="escuela-curso__estado">' + estadoCurso(curso) + "</span></a>";
     }).join("");
-    /* El cupo del regalo: 1 curso; más cursos y lo público son de Maestro Fu. */
-    var cupoLleno = modelo.origen === "sb" && modelo.rol === "student" && claves.length >= 1;
+    /* El cupo del regalo: 1 curso; más cursos y lo público son de Maestro Fu.
+       Los exámenes tienen su PROPIO cupo (docs/12 §2.6): 1 gratis también, así
+       que crear un examen no gasta el curso de regalo ni al revés. */
+    var soloCursos = claves.filter(function (k) { return (modelo.fuente.cursos[k].tipo || "curso") !== "examen"; });
+    var cupoLleno = modelo.origen === "sb" && modelo.rol === "student" && soloCursos.length >= 1;
     var fundar = cupoLleno
       ? '<div class="escuela-curso escuela-curso--fundar"><span class="escuela-curso__icono">🥋</span>' +
         "<h3>" + esc(ES ? "Tu regalo ya está en uso" : "Your gift is in use") + "</h3>" +
@@ -1394,9 +1676,95 @@
         '<span class="escuela-curso__icono">＋</span>' +
         "<h3>" + esc(T.fundar) + "</h3><small>" +
         esc(ES ? "1 curso gratis con tu cuenta, privado y para siempre" : "1 free course with your account, private and forever") + "</small></button>";
+    var examenes = claves.filter(function (k) { return (modelo.fuente.cursos[k].tipo || "curso") === "examen"; });
+    var cupoEx = modelo.origen === "sb" && modelo.rol === "student" && examenes.length >= 1;
+    var tarjetasEx = examenes.map(function (clave) {
+      var curso = capaCurso(clave), c = capa(curso);
+      var ex = curso.examen || {};
+      return '<a class="escuela-curso" href="#/' + esc(clave) + '">' +
+        '<span class="escuela-curso__icono">🏮</span><h3>' + esc(c.title) + "</h3>" +
+        '<span class="escuela-curso__datos">' + (ex.n || 0) + " " + esc(T.exPreguntas.toLowerCase()) +
+        (ex.tiempo_min ? " · " + ex.tiempo_min + " min" : "") + "</span>" +
+        '<span class="escuela-curso__estado">' + estadoCurso(curso) + "</span></a>";
+    }).join("");
+    var nuevoEx = cupoEx
+      ? '<div class="escuela-curso escuela-curso--fundar"><span class="escuela-curso__icono">🏮</span>' +
+        "<h3>" + esc(ES ? "Tu examen gratis ya está en uso" : "Your free exam is in use") + "</h3>" +
+        "<small>印 " + esc(ES ? "Con Maestro Fu creas los que quieras" : "With Fu Master you create as many as you want") + "</small></div>"
+      : '<button type="button" class="escuela-curso escuela-curso--fundar" data-nuevo-examen>' +
+        '<span class="escuela-curso__icono">🏮</span><h3>' + esc(T.nuevoExamen) + "</h3><small>" +
+        esc(ES ? "Preguntas, un enlace y listo: sin niveles ni cinturones" : "Questions, a link and done: no levels, no belts") + "</small></button>";
+    /* El asistente solo se ofrece donde puede funcionar: necesita la Edge
+       Function, y esa vive en el sitio real. En local se dice por qué. */
+    var conIA = modelo.origen === "sb" && window.SB && SB.fn;
+    var asistentes = conIA
+      ? '<button type="button" class="escuela-curso escuela-curso--fundar" data-ia="examen">' +
+        '<span class="escuela-curso__icono">✨</span><h3>' + esc(T.iaExamen) + "</h3><small>" +
+        esc(T.iaExamenPie) + "</small></button>" +
+        '<button type="button" class="escuela-curso escuela-curso--fundar" data-ia="curso">' +
+        '<span class="escuela-curso__icono">✨</span><h3>' + esc(T.iaCurso) + "</h3><small>" +
+        esc(T.iaCursoPie) + "</small></button>"
+      : '<p class="escuela-nota">✨ ' + esc(T.iaSoloReal) + "</p>";
     return barra([{ t: T.titulo }]) +
       "<h2 class='escuela-h2'>" + esc(T.misArtes) + "</h2>" +
-      '<div class="escuela-cursos">' + tarjetas + fundar + "</div>";
+      '<div class="escuela-cursos">' + tarjetas + fundar + "</div>" +
+      "<h2 class='escuela-h2'>" + esc(T.examenes) + "</h2>" +
+      '<div class="escuela-cursos">' + tarjetasEx + nuevoEx + "</div>" +
+      "<h2 class='escuela-h2'>✨ " + esc(T.asistente) + "</h2>" +
+      '<div class="escuela-cursos">' + asistentes + "</div>";
+  }
+
+  /* La portada de un examenFu. No hay mapa de niveles ni salas que enseñar:
+     hay un enlace que compartir, cuatro ajustes y la lista de preguntas, que
+     es la baraja de su única misión (docs/12 §2.3). */
+  function vExamenFu(clave) {
+    var curso = capaCurso(clave);
+    if (!curso) return vArtes();
+    var c = capa(curso);
+    var ex = curso.examen || {};
+    var mision = curso.misiones[0];
+    var mc = mision && capa(mision);
+    var nQuiz = mc ? mc.cards.filter(function (k) { return k.tipo === "quiz"; }).length : 0;
+
+    /* El enlace ABSOLUTO del examen. `cfg.prefix` es relativo («../»), así que
+       concatenarlo con el origen daba «mentefu.com../curso/»: se resuelve
+       contra la página actual y se le pone el origen real, que en local es
+       localhost y en producción el dominio. */
+    var enlace = enlaceBase() + clave;
+    var cabecera = '<header class="escuela-hero"><h2>🏮 ' + esc(c.title) + "</h2>" + estadoCurso(curso) +
+      (curso.codigo_curso ? '<span class="escuela-chip">#' + esc(curso.codigo_curso) + "</span>" : "") + "</header>";
+
+    var enlaceHtml = '<div class="escuela-acceso">' +
+      '<input class="curso-candado__campo escuela-acceso__enlace" readonly value="' + esc(enlace) + '">' +
+      '<button type="button" class="escuela-chip escuela-chip--ed" data-copiar-enlace="' + esc(enlace) + '">' +
+      esc(ES ? "copiar" : "copy") + "</button></div>";
+
+    var sel = function (nombre, lista, valor) {
+      return '<select data-ex="' + nombre + '">' + lista.map(function (o) {
+        return '<option value="' + esc(String(o[0])) + '"' + (String(o[0]) === String(valor == null ? "" : valor) ? " selected" : "") +
+          ">" + esc(o[1]) + "</option>";
+      }).join("") + "</select>";
+    };
+    var opcAprobar = [];
+    for (var k = 1; k <= Math.max(1, nQuiz); k++) opcAprobar.push([k, String(k)]);
+    var ajustes = '<div class="escuela-acceso">' +
+      "<label>" + esc(T.exPreguntas) + ' <input type="number" min="1" max="30" data-ex="n" value="' + (ex.n || nQuiz) + '"></label>' +
+      "<label>" + esc(T.exAprobar) + " " + sel("aprobar_min", opcAprobar, ex.aprobar_min) + "</label>" +
+      "<label>" + esc(T.exIntentos) + " " + sel("intentos", [["", T.exSinLimite], [1, "1"], [2, "2"], [3, "3"]], ex.intentos) + "</label>" +
+      "<label>" + esc(T.exTiempo) + " " + sel("tiempo_min", [["", T.exSinLimite], [5, "5 min"], [10, "10 min"], [20, "20 min"], [30, "30 min"]], ex.tiempo_min) + "</label>" +
+      "</div>";
+
+    var preguntas = mision
+      ? '<a class="escuela-fila" href="#/' + esc(clave) + "/m/" + esc(mision.id) + '">' +
+        '<span class="escuela-fila__icono">🏮</span><b>' + esc(T.exPortada + " + " + nQuiz + " " + T.exPreguntas.toLowerCase()) + "</b>" +
+        '<span class="escuela-fila__meta">' + esc(ES ? "editar" : "edit") + "</span></a>"
+      : "";
+
+    return barra([{ t: T.titulo, href: "#/" }, { t: c.title }]) + cabecera +
+      '<h3 class="escuela-h3">' + esc(T.exEnlace) + "</h3>" + enlaceHtml +
+      '<h3 class="escuela-h3">' + esc(T.exAjustes) + "</h3>" + ajustes +
+      '<h3 class="escuela-h3">' + esc(T.exPreguntas) + "</h3>" +
+      '<div class="escuela-lista">' + preguntas + "</div>";
   }
 
   function vPortada(clave) {
@@ -1456,7 +1824,7 @@
     }
     var nPerg = curso.pergaminos.length;
     var publicar = puedeEditar
-      ? '<a class="escuela-probar" href="#/' + esc(clave) + '/publicar">印 ' + esc(ES ? "Revisar y publicar" : "Review & publish") + "</a>"
+      ? '<a class="escuela-chip escuela-chip--ed" href="#/' + esc(clave) + '/salud">🩺 ' + esc(T.salud) + "</a>"
       : "";
     /* Acceso del curso (F6): visibilidad, código de acceso y código de curso.
        Solo con Supabase (en local, un sello honesto). CulpaFu y los artes
@@ -1476,7 +1844,7 @@
             esc(ES ? "código de acceso" : "access code") + '" value="' + esc(curso.codigo_acceso || "") + '">' +
             '<button type="button" class="escuela-chip escuela-chip--ed" data-guardar-codigo>' + esc(ES ? "guardar código" : "save code") + "</button>" : "") +
           (curso.codigo_curso ? '<span class="escuela-chip" title="' + esc(ES ? "el código del buscador: compártelo" : "the directory code: share it") + '">#' + esc(curso.codigo_curso) + "</span>"
-            : '<span class="escuela-chip">' + esc(ES ? "el código de curso se acuña al publicar" : "the course code is minted on publish") + "</span>") +
+            : "") +
           "</div>";
       }
     }
@@ -1716,7 +2084,7 @@
   function botonCerrar(attrs, titulo) {
     return '<button type="button" class="escuela-cerrar-mini" ' + attrs + ' title="' + esc(titulo) +
       '" aria-label="' + esc(titulo) + '"><img src="' + (cfg.assets || "") +
-      'assets/img/game/cerrar.webp" alt="" width="256" height="255" decoding="async"></button>';
+      'assets/img/ui/cerrar.webp" alt="" width="256" height="255" decoding="async"></button>';
   }
 
   /* La viñeta se decide MIRANDO: el texto se edita en el bocadillo, las
@@ -1842,7 +2210,7 @@
         }).join("") + "</div>" : "";
     var selloF3 = puedeEditar ? '<span class="escuela-sello escuela-sello--mini">印 ' + esc(T.soloF3) + "</span>" : "";
 
-    if (t === "quiz" || t === "choice" || t === "apuesta" || t === "puertas") {
+    if (t === "quiz" || t === "choice" || t === "apuesta") {
       var enun = zona(R(cardF.enunciado.html), { ruta: base + ".enunciado", modo: "bloque", filas: 2, tope: LIM.enunciado, porque: T.porque.enunciado });
       var tipoPreg = "";
       if (t === "quiz" && puedeEditar) {
@@ -1857,8 +2225,7 @@
       }
       var ops;
       if (t === "quiz" || t === "choice") ops = htmlOpciones(cardF, t, base);
-      else if (t === "apuesta") ops = htmlOpcionesEleccion(cardF, base);
-      else ops = htmlPuertas(cardF, base);
+      else ops = htmlOpcionesEleccion(cardF, base);
       var fbG = "";
       if (t === "quiz" || t === "choice") {
         fbG = '<div class="escuela-fb"><div>' +
@@ -1873,25 +2240,9 @@
       } else if (t === "choice" && puedeEditar && cardF.opciones.length < 6) {
         extra = '<button type="button" class="escuela-op escuela-op--mas" data-mas-op>' + esc(T.anadirOpcion) + " (máx. 6)</button>";
       }
-      if (t === "puertas" && puedeEditar) {
-        extra = cardF.opciones.length < 3
-          ? '<button type="button" class="escuela-op escuela-op--mas" data-mas-puerta>+ ' + esc(ES ? "puerta" : "door") + "</button>"
-          : '<li class="escuela-op escuela-op--sello"><span class="escuela-sello escuela-sello--mini">印 ' +
-            esc(ES ? "3 puertas máximo: el alumno debe poder dudar, no abrumarse" : "3 doors max: the student should hesitate, not drown") + "</span></li>";
-      }
-      var sint = "";
-      if (t === "puertas") {
-        if (cardF.sintesis) {
-          sint = '<p class="escuela-sintesis"><b>' + esc(T.sintesis) + ":</b> " +
-            zona(R(cardF.sintesis.html), { ruta: base + ".sintesis", modo: "inline", tope: LIM.feedback, porque: T.porque.feedback }) +
-            (puedeEditar ? ' <button type="button" class="escuela-quitar" data-quitar-sintesis title="' + esc(ES ? "quitar síntesis" : "remove synthesis") + '">✕</button>' : "") + "</p>";
-        } else if (puedeEditar) {
-          sint = '<button type="button" class="escuela-chip escuela-chip--ed" data-mas-sintesis>+ ' + esc(T.sintesis.toLowerCase()) + "</button>";
-        }
-      }
       var juego = t === "quiz" && puedeEditar ? seccionJuego(cardF) : "";
       return cab + '<div class="escuela-carta__cuerpo">' + enun + "</div>" + tipoPreg +
-        '<ol class="escuela-ops">' + ops + extra + "</ol>" + fbG + sint + juego + reto;
+        '<ol class="escuela-ops">' + ops + extra + "</ol>" + fbG + juego + reto;
     }
     if (t === "revela") {
       /* Tres golpes, tres ideas: ni más ni menos. La animación SIEMPRE hace
@@ -2052,7 +2403,7 @@
         T.detalleQuitarIdioma.replace("{n}", av.hechas), function () {
           MFEscuela.compilar.quitarIdioma(curso, lg);
           if (langVista === lg) fijarIdioma(base);
-          MFEscuelaDatos.guardarAhora("curso:" + clave).then(function () { rutear(); });
+          MFEscuelaDatos.marcarSucio("curso:" + clave); rutear();
           rutear();
           toast(T.idiomaQuitado.replace("{lg}", MFEscuela.compilar.IDIOMAS[lg] || lg));
         });
@@ -2074,7 +2425,7 @@
       }
       curso.idiomas = curso.idiomas || [];
       curso.idiomas.push(lg);
-      MFEscuelaDatos.guardarAhora("curso:" + clave).then(function () { rutear(); });
+      MFEscuelaDatos.marcarSucio("curso:" + clave); rutear();
       v.cerrar();
       rutear();
       toast(T.idiomaAnadido.replace("{lg}", MFEscuela.compilar.IDIOMAS[lg]));
@@ -2128,23 +2479,6 @@
       return '<li class="escuela-op"><div class="escuela-op__cab">' + estrella + "</div>" +
         zona(R(op.texto.html), { ruta: rOp + ".texto", modo: "inline", filas: 2, tope: LIM.opcion,
           rotulo: T.rotOpcion, porque: T.porque.opcion }) + fb + "</li>";
-    }).join("");
-  }
-
-  /* Las puertas: texto + consecuencia por puerta; máximo 3 (sello). */
-  function htmlPuertas(cardF, base) {
-    return cardF.opciones.map(function (op, j) {
-      var rOp = base + ".opciones." + j;
-      var quitar = puedeEditar && cardF.opciones.length > 2
-        ? botonCerrar('data-quitar-puerta="' + j + '"', ES ? "Quitar esta puerta" : "Remove this door") : "";
-      return '<li class="escuela-op"><div class="escuela-op__cab"><span class="escuela-op__rotulo">🚪 ' +
-        esc(ES ? "Puerta " : "Door ") + (j + 1) + "</span>" + quitar + "</div>" +
-        zona(R(op.texto.html), { ruta: rOp + ".texto", modo: "inline", filas: 2, tope: LIM.opcion,
-          rotulo: ES ? "Lo que dice la puerta" : "What the door says", porque: T.porque.opcion }) +
-        '<div class="escuela-fb"><div>' +
-        zona(R(op.feedback.html), { ruta: rOp + ".feedback", modo: "inline", filas: 2, tope: LIM.feedback,
-          rotulo: ES ? "Consecuencia (lo que el alumno ve al abrirla)" : "Consequence (what the student sees on opening)" }) +
-        "</div></div></li>";
     }).join("");
   }
 
@@ -2230,7 +2564,7 @@
        se perdieron los «+» del río en el primer intento. */
     return '<button type="button" class="escuela-sello-btn' + (clase ? " " + clase : "") + '" ' + attrs +
       (apagado ? " disabled" : "") + ' title="' + esc(titulo) + '" aria-label="' + esc(titulo) + '">' +
-      '<img src="' + (cfg.assets || "") + "assets/img/game/" + lamina + '.webp" alt="" ' +
+      '<img src="' + (cfg.assets || "") + "assets/img/ui/" + lamina + '.webp" alt="" ' +
       'width="256" height="255" decoding="async"></button>';
   }
 
@@ -2249,6 +2583,15 @@
   function examenInfo(m, mc, cards) {
     if (m.kind !== "exam") return "";
     var nQuiz = cards.filter(function (c) { return c.tipo === "quiz"; }).length;
+    /* Un examenFu no tiene «molde de 6 y 3 al azar»: se juegan TODAS sus
+       preguntas y el maestro fija con cuántas se aprueba (docs/12 §2). */
+    var cursoEx = capaCurso(ruta().curso);
+    if (cursoEx && cursoEx.tipo === "examen") {
+      var ex = cursoEx.examen || {};
+      return '<p class="escuela-nota">' + esc(ES
+        ? "El alumno responde las " + nQuiz + " preguntas; aprueba con " + (ex.aprobar_min || 1)
+        : "The student answers all " + nQuiz + " questions; passes with " + (ex.aprobar_min || 1)) + "</p>";
+    }
     var banner = ES
       ? "El alumno jugará 3 de estas " + nQuiz + " preguntas al azar como retos; aprueba con 2 de 3"
       : "The student plays 3 of these " + nQuiz + " questions at random as challenges; passes with 2 of 3";
@@ -2347,9 +2690,13 @@
       });
     });
     var esTool = ent.layout === "tool";
-    var palabras = pc.words || 0;
-    var medidor = '<span class="escuela-chip' + (palabras >= 180 && palabras <= 300 ? "" : " escuela-chip--ambar") + '">' +
-      palabras + " " + T.palabras + " · " + Math.max(1, Math.round(palabras / 200)) + " " + T.minutos + "</span>";
+    /* El medidor va en CARACTERES contra el tope de la cápsula: el rango viejo
+       (180-300 palabras) era el de la lectura paginada de tres cartas, que se
+       retiró el 2026-09-04. */
+    var TOPE = MFEscuela.compilar.SCROLL_MAX_CHARS;
+    var nCar = R(pc.cuerpo.html).replace(/<[^>]+>/g, " ").replace(/\s+/g, " ").trim().length;
+    var medidor = '<span class="escuela-chip' + (nCar > TOPE ? " escuela-chip--ambar" : "") + '">' +
+      nCar + "/" + TOPE + " " + esc(ES ? "caracteres" : "characters") + "</span>";
     var selloTool = esTool
       ? '<p class="escuela-avisos">印 ' + esc(ES ? "las herramientas llevan HTML interactivo: las edita la casa" : "tools carry interactive HTML: the house edits them") + "</p>" : "";
     return barra([{ t: T.titulo, href: "#/" }, { t: c.title, href: "#/" + clave },
@@ -2367,7 +2714,10 @@
       (esTool
         ? '<div class="escuela-carta__cuerpo">' + R(pc.cuerpo.html) + "</div>"
         : '<div class="escuela-carta__cuerpo">' +
-          zona(R(pc.cuerpo.html), { ruta: "cuerpo", modo: "bloque", contar: "palabras", porque: ES ? "así cabe en un minipodcast" : "so it fits a minipodcast" }) +
+          zona(R(pc.cuerpo.html), { ruta: "cuerpo", modo: "bloque", filas: 8,
+            tope: MFEscuela.compilar.SCROLL_MAX_CHARS,
+            porque: ES ? "una cápsula que se lee de un vistazo, no una lectura larga"
+                       : "a capsule read at a glance, not a long read" }) +
           "</div>") +
       "</article>" +
       (langVista === "en" && puedeEditar && !esTool && ent.es
@@ -2431,8 +2781,13 @@
     return av;
   }
 
-  /* La checklist: la única barrera dura. Rojo bloquea el sello; ámbar avisa. */
-  function vPublicar(clave) {
+  /* SALUD DEL CURSO (antes «Revisar y publicar»). Desde que guardar es
+     publicar (titular 2026-09-03) esta vista ya no es una puerta: no hay sello
+     que estampar ni nada que bloquee. Es el chequeo médico del curso —lo que
+     conviene arreglar, en rojo lo que rompe una misión y en ámbar lo editorial—
+     con un enlace para ir a cada sitio. Lo que SÍ frena el guardado son las
+     guardias de tarjeta y de misión, que actúan en el momento de guardar. */
+  function vSalud(clave) {
     var curso = capaCurso(clave);
     if (!curso) return vArtes();
     var c = capa(curso);
@@ -2510,122 +2865,11 @@
         fila("🌐 " + lg.toUpperCase(), pc.title, avs, "#/" + clave + "/p/" + p.id);
       });
     });
-    var piezas = 0;
-    ["es", "en"].forEach(function (lg) {
-      piezas += MFEscuela.compilar.armarCurso(modelo.fuente, clave, lg).length;
-    });
-    var estampar;
-    if (modelo.origen !== "sb") {
-      /* En desarrollo no hay base a la que estampar, pero SÍ se puede ensayar
-         el camino entero: compilar las filas de todos los idiomas del curso y
-         ver si alguna revienta (titular 2026-09-03, para poder probar la
-         publicación desde local). Lo único que no ocurre es el envío. */
-      estampar = '<button type="button" class="escuela-probar" data-ensayar' +
-        (rojos ? ' disabled title="' + esc(ES ? "hay " + rojos + " avisos rojos: corrígelos primero" : rojos + " red issues block it") + '"' : "") +
-        ">印 " + esc(T.ensayar) + "</button>" +
-        '<p class="escuela-nota">' + esc(T.ensayarNota) + "</p>";
-    } else {
-      estampar = '<button type="button" class="escuela-probar" data-publicar' +
-        (rojos ? ' disabled title="' + esc(ES ? "hay " + rojos + " avisos rojos: corrígelos para estampar" : rojos + " red issues block the seal") + '"' : "") +
-        ">印 " + esc(ES ? "Estampar el sello — publicar todo" : "Stamp the seal — publish all") + "</button>";
-    }
-    return barra([{ t: T.titulo, href: "#/" }, { t: c.title, href: "#/" + clave }, { t: ES ? "Revisar y publicar" : "Review & publish" }]) +
-      '<header class="escuela-hero"><h2>' + esc(ES ? "Revisar y publicar" : "Review & publish") + "</h2>" +
-      '<span class="escuela-chip' + (rojos ? " escuela-chip--ambar" : "") + '">⛔ ' + rojos + " · ⚠ " + ambares + "</span></header>" +
-      '<div class="escuela-chk">' + filas.join("") + "</div>" +
-      '<div class="escuela-estampar">' +
-      '<p class="escuela-nota">' + esc(ES
-        ? "La publicación estampa el curso COMPLETO: " + piezas + " piezas (ES + EN). Los alumnos ven la versión nueva al instante."
-        : "Publishing stamps the WHOLE course: " + piezas + " pieces (ES + EN). Students see the new version instantly.") + "</p>" +
-      estampar + "</div>";
-  }
-
-  /* ----------------------------------------------------------- publicar --- */
-
-  /* Publicación mínima de F2 (la checklist completa llega en F4): guarda lo
-     pendiente, compila TODO el curso en ambos idiomas con el ensamblador
-     verificado de F0 y sube las filas `content` por lotes vía la RPC — un
-     maestro solo puede escribir filas de sus artes (lo verifica el servidor). */
-  /* El ensayo de publicación (solo en local): compila EXACTAMENTE lo que se
-     enviaría —las mismas llamadas del ensamblador que usa `publicarCurso`— y
-     enseña el recuento por idioma. Si una fila revienta, aquí se ve; en
-     producción sería a mitad del envío. No escribe en ningún sitio. */
-  function ensayarPublicacion(clave) {
-    var curso = capaCurso(clave);
-    if (!curso) return;
-    var lineas = [], total = 0, fallos = [];
-    MFEscuela.compilar.idiomasDe(curso).forEach(function (lg) {
-      var hayCapa = lg === MFEscuela.compilar.baseDe(curso) ||
-        curso.misiones.some(function (m) { return !!m[lg]; });
-      if (!hayCapa) {
-        lineas.push("🌐 " + lg.toUpperCase() + " — " + T.idiomaPendiente);
-        return;
-      }
-      var n = 0;
-      try {
-        n = MFEscuela.compilar.armarCurso(modelo.fuente, clave, lg).length;
-        if (MFEscuela.compilar.armarIndiceCurso(modelo.fuente, clave, lg)) n++;
-      } catch (e) {
-        fallos.push(lg.toUpperCase() + ": " + (e && e.message ? e.message : e));
-      }
-      total += n;
-      lineas.push("🌐 " + lg.toUpperCase() + " — " + n + " " + (ES ? "piezas" : "pieces"));
-    });
-    ventana({ titulo: "印 " + T.ensayar, panel: true, confirmar: true, cuerpo:
-      '<p class="escuela-nota">' + esc(fallos.length ? T.ensayoMal : T.ensayoBien.replace("{n}", total)) + "</p>" +
-      '<ul class="escuela-problemas">' +
-      lineas.concat(fallos.map(function (f) { return "⛔ " + f; }))
-        .map(function (l) { return "<li>" + esc(l) + "</li>"; }).join("") +
-      "</ul>" +
-      '<p class="escuela-nota">' + esc(T.ensayarNota) + "</p>" });
-  }
-
-  function publicarCurso(clave) {
-    var boton = raiz.querySelector("[data-publicar]");
-    var curso = capaCurso(clave);
-    var filas = [];
-    /* Se publican los idiomas del curso QUE TIENEN capa (un añadido pendiente
-       de traducir no publica huecos). */
-    MFEscuela.compilar.idiomasDe(curso).forEach(function (lg) {
-      var hayCapa = lg === MFEscuela.compilar.baseDe(curso) ||
-        curso.misiones.some(function (m) { return !!m[lg]; });
-      if (!hayCapa) return;
-      MFEscuela.compilar.armarCurso(modelo.fuente, clave, lg).forEach(function (f) {
-        filas.push({ id: f.id, lang: f.lang, kind: f.kind, art: f.art, data: f.data });
-      });
-      /* La fila ÍNDICE del player dinámico (/curso/#/clave): el mapa entero. */
-      var ind = MFEscuela.compilar.armarIndiceCurso(modelo.fuente, clave, lg);
-      if (ind) filas.push({ id: lg + ":curso-" + clave, lang: lg, kind: "escuela-curso", art: clave, data: ind });
-    });
-    if (!filas.length || !window.SB) return;
-    var texto = (ES ? "Se publicarán " : "Publishing ") + filas.length +
-      (ES ? " piezas (ES + EN). Los alumnos verán la versión nueva al instante. ¿Estampar el sello?"
-          : " pieces (ES + EN). Students will see the new version instantly. Stamp the seal?");
-    if (!window.confirm(texto)) return;
-    var LOTE = 12, i = 0;
-    boton.disabled = true;
-    function paso() {
-      if (i >= filas.length) {
-        return SB.rpc("escuela_marcar_publicado", { p_clave: clave }).then(function () {
-          curso.status = "published";
-          boton.disabled = false;
-          rutear();
-          toast(ES ? "印 Sello estampado: " + filas.length + " piezas publicadas" :
-            "印 Seal stamped: " + filas.length + " pieces published");
-        });
-      }
-      var lote = filas.slice(i, i + LOTE);
-      boton.textContent = (ES ? "Publicando " : "Publishing ") + Math.min(i + LOTE, filas.length) + "/" + filas.length + "…";
-      return SB.rpc("escuela_publicar_filas", { p_filas: lote }).then(function () {
-        i += LOTE;
-        return paso();
-      });
-    }
-    MFEscuelaDatos.guardarTodo().then(paso).catch(function (err) {
-      boton.disabled = false;
-      boton.textContent = "⚠ " + (ES ? "Falló la publicación — reintentar" : "Publish failed — retry");
-      if (window.console) console.warn("publicar", err);
-    });
+    return barra([{ t: T.titulo, href: "#/" }, { t: c.title, href: "#/" + clave }, { t: T.salud }]) +
+      '<header class="escuela-hero"><h2>🩺 ' + esc(T.salud) + "</h2>" +
+      '<span class="escuela-chip' + (rojos ? " escuela-chip--ambar" : "") + '">⛔ ' + rojos + " · ⚠ " + ambares + "</span>" +
+      '<p class="escuela-hero__lead">' + esc(T.saludPie) + "</p></header>" +
+      '<div class="escuela-chk">' + filas.join("") + "</div>";
   }
 
   /* --------------------------------------------------------- modo Probar -- */
@@ -2667,12 +2911,15 @@
     pergActivo = null;
     var r = ruta();
     var html;
-    if (r.v === "portada") html = vPortada(r.curso);
+    if (r.v === "portada") {
+      var cursoR = capaCurso(r.curso);
+      html = (cursoR && cursoR.tipo === "examen") ? vExamenFu(r.curso) : vPortada(r.curso);
+    }
     else if (r.v === "nivel") html = vNivel(r.curso, r.n);
     else if (r.v === "baraja") html = vBaraja(r.curso, r.id, r.k);
     else if (r.v === "pergaminos") html = vPergaminos(r.curso);
     else if (r.v === "pergamino") html = vPergamino(r.curso, r.id);
-    else if (r.v === "publicar") html = vPublicar(r.curso);
+    else if (r.v === "salud") html = vSalud(r.curso);
     else if (r.v === "papelera") html = vPapelera(r.curso);
     else if (r.v === "estudiantes") html = vEstudiantes(r.curso);
     else html = vArtes();
@@ -2685,6 +2932,17 @@
   var ultimoEstado = null;
   var timerGuardado = null;
   function pintarGuardado(estado) {
+    /* El sello de guardar se enciende EN CUANTO hay algo que guardar, sin
+       esperar a que la vista se repinte: desde que guardar es publicar
+       (2026-09-03) es el único gesto que hay, y un botón apagado con cambios
+       encima se lee como «no hay nada pendiente». */
+    var sello = raiz && raiz.querySelector("[data-guardar]");
+    if (sello) {
+      var sucio = haySinGuardar();
+      sello.disabled = !sucio;
+      sello.title = sucio ? T.guardarCambios : T.sinCambios;
+      sello.classList.toggle("is-apagado", !sucio);
+    }
     var chip = raiz && raiz.querySelector("[data-guardado]");
     if (!chip) return;
     clearTimeout(timerGuardado);
@@ -2707,6 +2965,37 @@
   }
 
   function enganchar() {
+    /* Los ajustes de un examenFu (cuántas preguntas, con cuántas se aprueba,
+       intentos y reloj) son datos del CURSO: se tocan aquí y viajan en el
+       siguiente guardado como cualquier otro cambio — no hay botón aparte. */
+    raiz.addEventListener("change", function (e) {
+      var campo = e.target.closest && e.target.closest("[data-ex]");
+      if (!campo) return;
+      var clave = ruta().curso;
+      var curso = capaCurso(clave);
+      if (!curso || curso.tipo !== "examen") return;
+      if (!curso.examen) curso.examen = {};
+      var nombre = campo.getAttribute("data-ex");
+      var valor = campo.value === "" ? null : parseInt(campo.value, 10);
+      if (nombre === "n") {
+        valor = Math.max(1, Math.min(30, valor || 1));
+        curso.examen.n = valor;
+        /* Las preguntas se ajustan solas al número nuevo, en todos los idiomas
+           (la estructura es una sola: si se bifurcaran, el examen tendría un
+           número de preguntas distinto en cada idioma). */
+        curso.misiones.forEach(function (m) {
+          MFEscuela.compilar.idiomasDe(curso).forEach(function (lg) {
+            if (m[lg]) MFEscuela.compilar.ajustarPreguntas(m[lg], valor);
+          });
+        });
+        if (curso.examen.aprobar_min > valor) curso.examen.aprobar_min = valor;
+        MFEscuelaDatos.marcarSucio("mision:" + curso.misiones[0].id);
+      } else {
+        curso.examen[nombre] = valor;
+      }
+      MFEscuelaDatos.marcarSucio("curso:" + clave);
+      rutear();
+    });
     raiz.addEventListener("click", function (e) {
       var b = e.target.closest && e.target.closest("[data-lg]");
       if (b) {
@@ -2720,10 +3009,6 @@
       }
       var masLg = e.target.closest && e.target.closest("[data-mas-idioma]");
       if (masLg) { abrirIdiomas(ruta().curso); return; }
-      var pub = e.target.closest && e.target.closest("[data-publicar]");
-      if (pub) { publicarCurso(ruta().curso); return; }
-      var ens = e.target.closest && e.target.closest("[data-ensayar]");
-      if (ens && !ens.disabled) { ensayarPublicacion(ruta().curso); return; }
       /* Por el ATRIBUTO y no por la clase: el botón de probar es un sello
          ilustrado desde 2026-09-02 y ya no lleva `.escuela-probar`. */
       var pr = e.target.closest && e.target.closest("[data-mision]");
@@ -2780,8 +3065,7 @@
          estrella de la elección, viñetas, huellas y catálogos. */
       /* (Las frases del revela ya no se añaden ni se quitan: son tres fijas.) */
       var acc = e.target.closest && e.target.closest(
-        "[data-mas-puerta],[data-quitar-puerta]," +
-        "[data-mas-sintesis],[data-quitar-sintesis],[data-estrella],[data-mas-vineta]," +
+        "[data-estrella],[data-mas-vineta]," +
         "[data-dup-vineta],[data-quitar-vineta],[data-ancla],[data-cat],[data-girar]");
       if (acc && misionActiva) {
         var cartaEl = raiz.querySelector("[data-carta]");
@@ -2798,17 +3082,7 @@
             rutear();
           });
         }
-        if (acc.hasAttribute("data-mas-puerta")) cardA.opciones.push({ texto: par("", true), feedback: par("", true) });
-        else if (acc.hasAttribute("data-quitar-puerta")) {
-          var jP = parseInt(acc.getAttribute("data-quitar-puerta"), 10);
-          borrando(T.confirmarPuerta, function () { cardA.opciones.splice(jP, 1); });
-          return;
-        } else if (acc.hasAttribute("data-mas-sintesis")) cardA.sintesis = par("", true);
-        else if (acc.hasAttribute("data-quitar-sintesis")) {
-          borrando(T.confirmarSintesis, function () { cardA.sintesis = null; });
-          return;
-        }
-        else if (acc.hasAttribute("data-estrella")) {
+        if (acc.hasAttribute("data-estrella")) {
           var jE = parseInt(acc.getAttribute("data-estrella"), 10);
           var ya = cardA.opciones[jE].correct;
           cardA.opciones.forEach(function (o, q) { o.correct = !ya && q === jE; });
@@ -2898,6 +3172,16 @@
       if (e.target.closest && e.target.closest("[data-deshacer]")) { deshacer(); return; }
       var fundarB = e.target.closest && e.target.closest("[data-fundar]");
       if (fundarB) { abrirFundar(); return; }
+      if (e.target.closest && e.target.closest("[data-nuevo-examen]")) { abrirNuevoExamen(); return; }
+      var bIA = e.target.closest && e.target.closest("[data-ia]");
+      if (bIA) { abrirAsistente(bIA.getAttribute("data-ia")); return; }
+      var copiar = e.target.closest && e.target.closest("[data-copiar-enlace]");
+      if (copiar) {
+        var enlace = copiar.getAttribute("data-copiar-enlace");
+        if (navigator.clipboard) navigator.clipboard.writeText(enlace);
+        toast(T.exCopiado);
+        return;
+      }
       var vis = e.target.closest && e.target.closest("[data-visibilidad]");
       if (vis && !vis.disabled) {
         var claveV = ruta().curso;
@@ -2991,7 +3275,7 @@
         if (!cursoMN || alturaMN >= 8) return;
         cursoMN.niveles[String(alturaMN + 1)] = nivelNuevo(claveMN, alturaMN + 1);
         reindexarNiveles(cursoMN, claveMN);
-        MFEscuelaDatos.guardarAhora("curso:" + claveMN).then(function () { rutear(); });
+        MFEscuelaDatos.marcarSucio("curso:" + claveMN); rutear();
         rutear();
         toast((ES ? "Nivel " : "Level ") + (alturaMN + 1) + (ES ? " añadido" : " added"));
         return;
@@ -3024,7 +3308,7 @@
             }
             cursoQN.misiones.forEach(function (m) { if (m.nivel > nQN) m.nivel -= 1; });
             reindexarNiveles(cursoQN, claveQN);
-            MFEscuelaDatos.guardarAhora("curso:" + claveQN).then(function () { rutear(); });
+            MFEscuelaDatos.marcarSucio("curso:" + claveQN); rutear();
             rutear();
             toast(tituloQN + (ES ? " quitado" : " removed"));
           });
@@ -3147,7 +3431,7 @@
       if (!caraD) return;
       if (tituloDeNivel(nD, limpio, langVista) === caraD.title) return;
       caraD.title = tituloDeNivel(nD, limpio, langVista);
-      MFEscuelaDatos.guardarAhora("curso:" + rD.curso).then(function () { rutear(); });
+      MFEscuelaDatos.marcarSucio("curso:" + rD.curso); rutear();
       rutear();
       toast(ES ? "Nombre del nivel guardado" : "Level name saved");
     });
@@ -3162,7 +3446,12 @@
       var entAntes = entidadActiva();
       if (antesDeEditar === null && entAntes) antesDeEditar = JSON.stringify(entAntes);
       escribirCampo(ctxE.capa, ed, campo.value);
-      if (ed.contar === "palabras") ctxE.capa.words = MFEscuela.compilar.contarPalabras(campo.value);
+      /* `words` alimenta la ficha del pergamino en el player y en la sala, así
+         que se recalcula al tocar el cuerpo aunque el contador de la caja ya
+         mida caracteres y no palabras. */
+      if (ed.contar === "palabras" || ed.ruta === "cuerpo") {
+        ctxE.capa.words = MFEscuela.compilar.contarPalabras(campo.value);
+      }
       var cuenta = raiz.querySelector('[data-cuenta-de="' + campo.id + '"]');
       if (cuenta) {
         cuenta.textContent = textoCuenta(campo.value, ed);

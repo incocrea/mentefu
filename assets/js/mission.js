@@ -5,6 +5,10 @@
 (function () {
   "use strict";
   var cfg = window.MF_CONFIG || {};
+  /* Los sellos ilustrados (aspa, play…) viven todos aquí; misma constante y
+     misma carpeta que en retos.js y pergamino.js, para que un sello se cambie
+     una vez y cambie en todas partes. */
+  var SELLOS = (cfg.assets || "") + "assets/img/ui/";
   var ES = cfg.lang === "es";
   var XP = (window.MF && MF.XP) || {};
   var T = ES ? {
@@ -16,10 +20,18 @@
     missionDone: "Misión completada", examDone: "Examen terminado", earned: "XP ganados", alreadyDone: "Ya habías completado esta misión: repasar no suma XP, pero siempre suma.",
     passed: "Aprobado: {p} %", failed: "No alcanzaste el 75 % ({p} %). Repasa las misiones y vuelve a intentarlo: no hay penalización.", beltNew: "Nuevo cinturón", retake: "Repetir examen",
     pasoRetos: "Retos superados: {g} de {n}", falloRetos: "Superaste {g} de {n}. Con 2 de 3 el cinturón es tuyo: repite el examen, sin penalización.",
+    exFuMeta: "{n} preguntas", exFuIntentos: "{n} intentos", exFuIntento: "1 intento",
+    exFuSinTope: "intentos sin límite", exFuTiempo: "{n} min", exFuSinTiempo: "sin límite de tiempo",
+    exFuAprobar: "apruebas con {n}", exFuEmpezar: "Empezar el examen",
+    exFuAprobado: "¡Aprobado! {g} de {n}", exFuFallado: "{g} de {n}. Necesitabas {m}.",
+    exFuOtra: "Volver a intentarlo", exFuSinIntentos: "Se acabaron los intentos",
+    exFuMisExamenes: "Ir a mis exámenes", exFuTarde: "Se acabó el tiempo",
+    exFuQuedan: "Te quedan {n} intentos", exFuUltimo: "Es tu último intento",
+    exFuReloj: "Tiempo", exFuCargando: "Preparando el examen…",
     nextMission: "Siguiente: {t}", nextLevelBtn: "Empezar el {t}", backLevel: "Volver al nivel", toProfile: "Ver mi perfil", unlocked: "Logros desbloqueados",
     placeholder: "Escribe aquí…", saved: "Se guarda automáticamente.",
     retoTrain: "Entrenar", retoDone: "Superado ✓", retoExamSeal: "¡EXAMEN!",
-    apuesta: "Elige", puertas: "Puertas", cursoBadge: "✦ Correcto", puertasLema: "No hay puerta correcta: hay caminos.",
+    apuesta: "Elige", cursoBadge: "✦ Correcto",
     revela: "Revela",
     revelaAria: { makiwara: "Golpea el makiwara: cada golpe revela una frase", campana: "Toca la campana: cada campanada revela una frase", tejas: "Rompe una teja: cada teja revela una frase", faroles: "Enciende un farol: cada farol revela una frase" },
     revelaPistas: { makiwara: "¡Golpea!", campana: "¡Toca!", tejas: "¡Rompe!", faroles: "¡Enciende!" },
@@ -34,10 +46,18 @@
     missionDone: "Mission completed", examDone: "Exam finished", earned: "XP earned", alreadyDone: "You had already completed this mission: reviewing does not add XP, but it always adds.",
     passed: "Passed: {p} %", failed: "You did not reach 75 % ({p} %). Review the missions and try again: there is no penalty.", beltNew: "New belt", retake: "Retake exam",
     pasoRetos: "Challenges cleared: {g} of {n}", falloRetos: "You cleared {g} of {n}. Clear 2 of 3 and the belt is yours: retake the exam, no penalty.",
+    exFuMeta: "{n} questions", exFuIntentos: "{n} attempts", exFuIntento: "1 attempt",
+    exFuSinTope: "unlimited attempts", exFuTiempo: "{n} min", exFuSinTiempo: "no time limit",
+    exFuAprobar: "pass with {n}", exFuEmpezar: "Start the exam",
+    exFuAprobado: "Passed! {g} of {n}", exFuFallado: "{g} of {n}. You needed {m}.",
+    exFuOtra: "Try again", exFuSinIntentos: "No attempts left",
+    exFuMisExamenes: "Go to my exams", exFuTarde: "Time is up",
+    exFuQuedan: "{n} attempts left", exFuUltimo: "This is your last attempt",
+    exFuReloj: "Time", exFuCargando: "Getting the exam ready…",
     nextMission: "Next: {t}", nextLevelBtn: "Start {t}", backLevel: "Back to level", toProfile: "See my profile", unlocked: "Achievements unlocked",
     placeholder: "Write here…", saved: "Saved automatically.",
     retoTrain: "Train", retoDone: "Cleared ✓", retoExamSeal: "PASSED!",
-    apuesta: "Choose", puertas: "Doors", cursoBadge: "✦ Correct", puertasLema: "There is no right door: there are paths.",
+    apuesta: "Choose", cursoBadge: "✦ Correct",
     revela: "Reveal",
     revelaAria: { makiwara: "Strike the makiwara: each strike reveals a line", campana: "Ring the bell: each toll reveals a line", tejas: "Break a tile: each tile reveals a line", faroles: "Light a lantern: each lantern reveals a line" },
     revelaPistas: { makiwara: "Strike!", campana: "Ring it!", tejas: "Break it!", faroles: "Light it!" },
@@ -48,9 +68,19 @@
   /* Láminas de la sala de retos (patrón arbol.js:12): el prefijo del build es
      obligatorio porque las misiones cuelgan cuatro carpetas por debajo de la
      raíz y la edición inglesa vive bajo /en/. */
-  var RETOS_IMG = (cfg.assets || "") + "assets/img/game/retos/";
+  var JUEGOS_IMG = (cfg.assets || "") + "assets/img/juegos/";
+  var MASCOTA_IMG = (cfg.assets || "") + "assets/img/mascota/";
 
   function el(html) { var d = document.createElement("div"); d.innerHTML = html.trim(); return d.firstChild; }
+
+  /* Texto ajeno dentro de un html que se arma a mano. mission.js nunca lo
+     necesitó porque todo su html venía ya compilado; examenFu mete rótulos y
+     cifras propias, y eso se escapa igual que en el resto de la casa. */
+  function escapa(t) {
+    return String(t == null ? "" : t)
+      .split("&").join("&amp;").split("<").join("&lt;")
+      .split(">").join("&gt;").split('"').join("&quot;");
+  }
 
   function contarQuiz(lista) { var k, t = 0; for (k = 0; k < lista.length; k++) if (lista[k] && lista[k].type === "quiz") t++; return t; }
 
@@ -78,13 +108,11 @@
        sorteos  = juego ya sorteado por tarjeta (reabrir el modal no re-sortea);
        resueltas= tarjetas ya resueltas (rejugar por gusto nunca re-otorga XP). */
     var sorteoCtx = { ultimo: null, intento: 0, sorteos: {}, resueltas: {} };
-    /* Memoria de las cards nuevas (apuesta/puertas) durante la misión, con el
-       mismo alcance que el sorteo: al volver atrás, la apuesta recuerda qué se
-       apostó (tabla rota incluida) y las puertas cuál se eligió (compromiso:
-       una sola). No persiste fuera de la pasada ni toca XP: igual que en
+    /* Memoria de la apuesta durante la misión, con el mismo alcance que el
+       sorteo: al volver atrás, la apuesta recuerda qué se apostó (tabla rota
+       incluida). No persiste fuera de la pasada ni toca XP: igual que en
        choice, lo que perdura es la misión completada. */
     var apuestas = {};        /* iTarjeta -> índice de la opción apostada */
-    var puertasEstado = {};   /* iTarjeta -> { elegida: k } */
     var revelas = {};         /* iTarjeta -> frases ya reveladas a golpes */
     /* El sorteo de ESCENA del revela (2026-09-02): cuatro variantes con la
        misma logica; se sortea al primer montaje de cada tarjeta, dura toda la
@@ -102,7 +130,14 @@
       for (var k in sorteoCtx.sorteos) { if (sorteoCtx.sorteos[k]) return true; }
       return false;
     }
+    /* Cuántos aciertos hacen falta. En un examenFu lo decide el maestro con un
+       selector 1..N (decisión del titular 2026-09-03: por CANTIDAD, nunca por
+       porcentaje); en un examen de cinturón siguen siendo los 2 de 3 de siempre. */
+    var minAciertos = data.examenFu
+      ? Math.max(1, Math.min(data.rondas || 1, data.aprobar_min || 1))
+      : 2;
     function examenAprobado(score) {
+      if (data.examenFu) return examGanados >= minAciertos;
       return examenConRetos() ? examGanados >= 2 : score >= (XP.exam_pass || 0.75);
     }
     /* EXAMEN ENCADENADO (titular 2026-09-02): los tres retos son un solo
@@ -112,6 +147,45 @@
        ceremonial y el veredicto llega de una vez. */
     var encadenar = false;
     var escenasVistas = {};   /* iTarjeta -> viñeta alcanzada de la escena */
+
+    /* ---------------------------------------------- examenFu (docs/12 §2) --
+       El reloj y los reintentos los gobierna el SERVIDOR: si vivieran aquí,
+       cerrar la pestaña regalaría un intento y recargar regalaría el tiempo.
+       `intentoEx` guarda lo que devolvió `escuela_examen_iniciar`. */
+    var esExFu = !!data.examenFu;
+    var intentoEx = null;         /* {intento, deadline, quedan} */
+    var relojTimer = null;
+    var seAcaboElTiempo = false;
+
+    function hayServidor() { return !!(cfg.gate && window.SB && SB.enabled()); }
+
+    function pintarReloj() {
+      var chip = wrap.querySelector("[data-reloj]");
+      if (!chip || !intentoEx || !intentoEx.deadline) return;
+      var restan = Math.max(0, Math.round((new Date(intentoEx.deadline) - new Date()) / 1000));
+      var mm = Math.floor(restan / 60), ss = restan % 60;
+      chip.textContent = "⏱ " + mm + ":" + (ss < 10 ? "0" : "") + ss;
+      chip.classList.toggle("is-poco", restan <= 60);
+      if (restan <= 0 && !seAcaboElTiempo) {
+        seAcaboElTiempo = true;
+        clearInterval(relojTimer);
+        /* Se acabó: no se castiga con una pantalla en blanco, se cierra el
+           examen con lo que llevara hecho y el servidor dictamina. */
+        i = n;
+        finish();
+      }
+    }
+    function arrancarReloj() {
+      if (!intentoEx || !intentoEx.deadline) return;
+      var top = wrap.querySelector(".mission__top");
+      if (top && !wrap.querySelector("[data-reloj]")) {
+        top.appendChild(el('<span class="mission__reloj" data-reloj></span>'));
+      }
+      pintarReloj();
+      clearInterval(relojTimer);
+      relojTimer = setInterval(pintarReloj, 1000);
+    }
+
     if (isExam) prepararExamen();
 
     var wrap = el('<div class="mission"><div class="mission__top"><div class="mission__bar"><div class="mission__fill"></div></div><span class="mission__count"></span></div><div class="mission__stage"></div><div class="mission__actions"><button class="btn btn--ghost" type="button" data-prev hidden>' + T.prev + '</button><button class="btn btn--primary" type="button" data-next>' + T.next + '</button></div></div>');
@@ -143,9 +217,24 @@
       if (T[c.type]) card.appendChild(el('<span class="mcard__type">' + T[c.type] + "</span>"));
       var content = document.createElement("div"); content.innerHTML = c.html || ""; card.appendChild(content);
       /* la apertura del examen medita (titular 2026-09-02): la mascota zen de
-         masters-home preside la tarjeta de explicacion, y luego el texto */
+         la mascota meditando (mascota/medita) preside la tarjeta de explicacion, y luego el texto */
       if (isExam && i === 0 && c.type === "text") {
-        card.insertBefore(el('<img class="examen-zen" alt="" decoding="async" src="' + (cfg.assets || "") + 'assets/img/heroes/masters-home.webp">'), content);
+        card.insertBefore(el('<img class="examen-zen" alt="" decoding="async" src="' + (cfg.assets || "") + 'assets/img/mascota/medita.webp">'), content);
+      }
+      /* La PORTADA de un examenFu: además del texto del maestro, las reglas
+         del examen y un botón que lo empieza de verdad (pide el intento al
+         servidor, que es quien pone el reloj en marcha). Mientras no se pulse,
+         no se avanza: entrar sin querer no debe gastar un intento. */
+      if (esExFu && i === 0 && c.type === "text") {
+        card.appendChild(el('<p class="examen-meta">' + escapa(metaExamen()) + "</p>"));
+        var bEmp = el('<button class="btn btn--primary" type="button" data-empezar>' + escapa(T.exFuEmpezar) + "</button>");
+        card.appendChild(el('<div class="mcard__actions"></div>')).appendChild(bEmp);
+        bEmp.addEventListener("click", function () { empezarExamen(bEmp); });
+        stage.appendChild(card);
+        setNext(false);
+        nextBtn.hidden = true;
+        progress();
+        return;
       }
       setNext(true);
 
@@ -214,10 +303,6 @@
            consulta a MFRetos.sortear y no puede caer en un minijuego. */
         setNext(false);
         renderApuesta(card, c, i);
-      } else if (c.type === "puertas") {
-        /* mismo aislamiento que la apuesta: sin sorteo, sin banco */
-        setNext(false);
-        renderPuertas(card, c, i);
       } else if (c.type === "revela") {
         /* docs/08: el texto se gana a golpes; el paso se libera al revelar todo */
         setNext(false);
@@ -296,24 +381,32 @@
     }
 
     /* ---------- Miniretos (docs/07-miniretos, fase 0) ----------
-       La tarjeta-invitación: a la izquierda el icono y, a su lado, el nombre del
-       juego con la línea de qué hay que hacer debajo; el botón, después. El
-       enunciado y las opciones NO se pintan aquí (viven dentro del modal, que es
-       donde se juega), así que la tarjeta se vacía antes de montar la
+       La tarjeta-invitación, REDISEÑADA 2026-09-03 (titular): una portada en
+       columna —la lámina del juego grande y centrada arriba, debajo el nombre y
+       la línea de qué hay que hacer, y al pie el sello de play—. Antes era una
+       fila con el icono pequeño a la izquierda y un botón-píldora que decía
+       «Entrenar»: la lámina, que es lo que anuncia a qué juego se entra, se leía
+       como una viñeta al lado del texto. Ahora manda ella.
+       El enunciado y las opciones NO se pintan aquí (viven dentro del modal, que
+       es donde se juega), así que la tarjeta se vacía antes de montar la
        invitación. */
     function renderReto(card, c, iTarjeta, juego, abrirSolo) {
       card.classList.add("mcard--reto");
       card.innerHTML = "";
       var inv = el('<div class="reto-invitacion">'
-        + '<div class="reto-invitacion__cara">'
-        +   '<span class="reto-invitacion__icono" aria-hidden="true"></span>'
-        +   '<span class="reto-invitacion__textos">'
-        +     '<span class="reto-invitacion__banner"></span>'
-        +   '</span>'
-        + '</div>'
-        + '<button class="reto-boton" type="button"></button>'
+        + '<span class="reto-invitacion__icono" aria-hidden="true"></span>'
+        + '<span class="reto-invitacion__textos">'
+        +   '<span class="reto-invitacion__banner"></span>'
+        + '</span>'
+        /* El play es el MISMO sello ilustrado que «Probar» en el panel del
+           maestro: un botón sin texto necesita nombre accesible, y por eso
+           lleva aria-label y title con el verbo de siempre («Entrenar»), que
+           además da el tooltip. */
+        + '<button class="reto-play" type="button">'
+        +   '<img class="sello-icono" src="' + SELLOS + 'probar.webp" alt="" width="256" height="255" decoding="async">'
+        + '</button>'
         + '</div>');
-      var boton = inv.querySelector(".reto-boton");
+      var boton = inv.querySelector(".reto-play");
       /* textContent y no innerHTML: icono y banner los declara cada juego */
       /* Misma lámina que en la sala de retos, y por el mismo camino: si algún
          día cambia el icono de un juego, cambia en los dos sitios a la vez. */
@@ -332,10 +425,24 @@
         lineaComo.textContent = como;
         inv.querySelector(".reto-invitacion__textos").appendChild(lineaComo);
       }
-      boton.textContent = T.retoTrain;
+      boton.setAttribute("aria-label", T.retoTrain);
+      boton.title = T.retoTrain;
       card.appendChild(inv);
 
-      function pintarHecho() { boton.textContent = T.retoDone; boton.classList.add("reto-boton--hecho"); }
+      /* Ya superada: el sello sigue siendo el de play —se puede rejugar por
+         gusto— y el estado se ESCRIBE debajo en vez de viajar en un color de
+         fondo, que es lo que hacía el botón-píldora verde. El nodo se crea una
+         sola vez: ganar de nuevo al rejugar vuelve a llamar aquí. */
+      function pintarHecho() {
+        boton.setAttribute("aria-label", T.retoDone);
+        boton.title = T.retoDone;
+        boton.classList.add("reto-play--hecho");
+        if (!inv.querySelector(".reto-invitacion__estado")) {
+          var sello = el('<span class="reto-invitacion__estado"></span>');
+          sello.textContent = T.retoDone;
+          inv.appendChild(sello);
+        }
+      }
 
       /* Volver atrás a una tarjeta ya resuelta: el paso queda libre desde el
          primer render y el reto se puede rejugar por gusto, pero el bonus ya
@@ -448,10 +555,10 @@
       for (k = 0; k < ops.length; k++) { if (ops[k].correct) { kCurso = k; break; } }
 
       var quieto = !!(window.matchMedia && matchMedia("(prefers-reduced-motion: reduce)").matches);
-      var TABLA = RETOS_IMG + "tameshiwari-tabla.webp";
-      var MITAD = RETOS_IMG + "tameshiwari-tabla-mitad.webp";
-      var GOLPE = RETOS_IMG + "mascota-golpe.webp";
-      var REPOSO = (cfg.assets || "") + "assets/img/mascota/propuesta-1.webp";
+      var TABLA = JUEGOS_IMG + "tameshiwari-tabla.webp";
+      var MITAD = JUEGOS_IMG + "tameshiwari-tabla-mitad.webp";
+      var GOLPE = MASCOTA_IMG + "golpe.webp";
+      var REPOSO = MASCOTA_IMG + "reposo.webp";
       /* la mitad se precarga al montar: la rotura no puede parpadear */
       var pre = new Image(); pre.src = MITAD;
 
@@ -580,115 +687,6 @@
       });
     }
 
-    /* ---------- Puertas: COMPROMISO CON ECO (rediseño 2026-09-01) ----------
-       El titular señaló el fallo de la primera versión: si las tres puertas se
-       abren y los feedbacks se acumulan, elegir no significa nada. Ahora se
-       elige UNA y la elección es definitiva en esta pasada: tu puerta se abre
-       con su luz y vives TU consecuencia completa; las demás quedan ENTORNADAS
-       —atenuadas, ya sin toque— con su ECO: la primera frase de su feedback,
-       para saber qué te perdiste sin vivirlo. La síntesis cierra tras la única
-       elección y la card queda hecha. Rejugar la misión otro día permite tomar
-       otra puerta: eso es el repaso. El lema fijo sigue diciendo la verdad:
-       no hay puerta correcta — hay caminos, y tomas uno. */
-    function renderPuertas(card, c, iTarjeta) {
-      var ops = c.options || [];
-      if (!ops.length) { setNext(true); return; }   /* mismo salvavidas que la apuesta */
-      var st = puertasEstado[iTarjeta];
-      if (!st || st.elegida === undefined) { st = { elegida: undefined }; puertasEstado[iTarjeta] = st; }
-
-      var quieto = !!(window.matchMedia && matchMedia("(prefers-reduced-motion: reduce)").matches);
-      var lema = el('<p class="puertas-lema"></p>');
-      lema.textContent = T.puertasLema;
-      card.appendChild(lema);
-
-      var CERRADA = RETOS_IMG + "puerta-cerrada.webp";
-      var ABIERTA = RETOS_IMG + "puerta-abierta.webp";
-      var EMPUJA = RETOS_IMG + "mascota-empuja.webp";
-      var pre = new Image(); pre.src = ABIERTA;
-
-      var fila = el('<div class="puertas"></div>');
-      var botones = [];
-      ops.forEach(function (o, j) {
-        var b = el('<button class="puerta" type="button" aria-pressed="false"><img class="puerta__lamina" alt="" aria-hidden="true" decoding="async"><span class="puerta__rotulo"></span></button>');
-        b.querySelector("img").src = CERRADA;
-        b.querySelector(".puerta__rotulo").innerHTML = o.html;
-        botones.push(b);
-        fila.appendChild(b);
-      });
-      card.appendChild(fila);
-
-      function nota(f, g) {
-        if (window.MFSonido && MFSonido.nota) MFSonido.nota(f, { tipo: "triangle", attack: 8, decay: 200, gain: g || 0.16 });
-      }
-      /* El eco: la PRIMERA frase del feedback, en texto plano. Derivado, no
-         editado: cero coste editorial y siempre fiel a lo que ya está escrito. */
-      function primeraFrase(html) {
-        var tmp = document.createElement("div");
-        tmp.innerHTML = html || "";
-        var txt = (tmp.textContent || "").replace(/\s+/g, " ").trim();
-        var m = txt.match(/^[^.!?…]{2,}[.!?…]?/);
-        return m ? m[0].trim() : txt.slice(0, 90);
-      }
-
-      function elegir(j, primeraVez) {
-        st.elegida = j;
-        botones.forEach(function (b2, x) {
-          var img2 = b2.querySelector("img");
-          if (x === j) {
-            img2.src = ABIERTA;
-            b2.classList.add("is-abierta", "is-actual");
-            b2.setAttribute("aria-pressed", "true");
-            b2.disabled = true;             /* la elección es definitiva en esta pasada */
-          } else {
-            b2.classList.add("is-entornada");
-            b2.disabled = true;
-            b2.setAttribute("aria-disabled", "true");
-            var eco = el('<span class="puerta__eco"></span>');
-            eco.textContent = primeraFrase(ops[x].feedback);
-            b2.appendChild(eco);
-          }
-        });
-        if (primeraVez) {
-          /* la puerta se abre con su crujido (docs/09); beep de respaldo */
-          if (!(window.MFSonido && MFSonido.fx && MFSonido.fx("fx-puerta-abre"))) nota(523.25, 0.18);
-          if (window.MFSonido && MFSonido.vibrar) MFSonido.vibrar(10);
-          /* la mascota empuja la puerta elegida: viaja hasta su centro y se
-             desvanece al entrar. Puro adorno posicional —no mide nada del
-             juego— y con movimiento reducido no existe. */
-          if (!quieto) {
-            var masc = el('<img class="puertas-mascota" alt="" aria-hidden="true">');
-            masc.src = EMPUJA;
-            fila.appendChild(masc);
-            var destino = botones[j].offsetLeft + botones[j].offsetWidth / 2 - 24;
-            requestAnimationFrame(function () {
-              masc.style.left = Math.max(0, Math.round(destino)) + "px";
-              setTimeout(function () { masc.style.opacity = "0"; }, 460);
-              setTimeout(function () { if (masc.parentNode) masc.parentNode.removeChild(masc); }, 800);
-            });
-          }
-          if (window.MF) MF.track("puerta", { item: data.id, data: { card: iTarjeta, option: j } });
-        }
-        var panel = el('<div class="feedback" role="status"></div>');
-        panel.innerHTML = ops[j].feedback || "";
-        card.appendChild(panel);
-        if (c.sintesis) {
-          var sin = el('<div class="feedback feedback--sintesis"></div>');
-          sin.innerHTML = c.sintesis;
-          card.appendChild(sin);
-        }
-        setNext(true);
-      }
-
-      if (st.elegida !== undefined) { elegir(st.elegida, false); return; }
-
-      botones.forEach(function (b, j) {
-        b.addEventListener("click", function () {
-          if (st.elegida !== undefined) return;   /* el compromiso es un solo toque */
-          elegir(j, true);
-        });
-      });
-    }
-
     /* ---------- Revela: EL TEXTO SE GANA A GOLPES (docs/08, F1) ----------
        Cuatro escenas sorteadas por tarjeta con el mismo contrato (3 acciones,
        3 frases) y, desde el rediseño 2026-09-02, con FISICA: el makiwara se
@@ -705,15 +703,14 @@
       var frases = c.frases || [];
       if (!frases.length) { setNext(true); return; }   /* salvavidas de autor */
       var quieto = !!(window.matchMedia && matchMedia("(prefers-reduced-motion: reduce)").matches);
-      var ESC_IMG = (cfg.assets || "") + "assets/img/game/escenas/";
-      var GOLPE = RETOS_IMG + "mascota-golpe.webp";
-      var PATADA = RETOS_IMG + "mascota-patada.webp";
-      var CANTO = ESC_IMG + "pose-canto.webp";
-      var GANCHO = ESC_IMG + "pose-gancho.webp";
-      var VOLADORA = ESC_IMG + "pose-patada-voladora.webp";
-      var EMPUJA = RETOS_IMG + "mascota-empuja.webp";
-      var REPOSO = (cfg.assets || "") + "assets/img/mascota/propuesta-1.webp";
-      var VICTORIA = ESC_IMG + "pose-victoria.webp";
+      var GOLPE = MASCOTA_IMG + "golpe.webp";
+      var PATADA = MASCOTA_IMG + "patada.webp";
+      var CANTO = MASCOTA_IMG + "canto.webp";
+      var GANCHO = MASCOTA_IMG + "gancho.webp";
+      var VOLADORA = MASCOTA_IMG + "patada-voladora.webp";
+      var EMPUJA = MASCOTA_IMG + "empuja.webp";
+      var REPOSO = MASCOTA_IMG + "reposo.webp";
+      var VICTORIA = MASCOTA_IMG + "victoria.webp";
 
       /* el sorteo de ESCENA por BOLSA (titular 2026-09-02): las cuatro
          variantes salen en orden aleatorio y NINGUNA repite hasta que la
@@ -763,8 +760,8 @@
         return '<span class="revela-mascota' + (sinflip ? " revela-mascota--sinflip" : "") + '" aria-hidden="true"><img class="revela-mascota__fig" alt="" decoding="async"></span>';
       };
       var botonHTML = {
-        makiwara: '<button class="revela-maki" type="button"><img class="revela-maki__fig" alt="" aria-hidden="true" decoding="async" src="' + RETOS_IMG + 'kata-makiwara.webp"><span class="revela-pista" aria-hidden="true"></span></button>',
-        campana: '<button class="revela-obj revela-obj--campana" type="button"><span class="campana-cuerda" aria-hidden="true"></span><img class="campana-fig" alt="" aria-hidden="true" decoding="async" src="' + RETOS_IMG + 'campana-campana.webp"><span class="revela-pista" aria-hidden="true"></span></button>',
+        makiwara: '<button class="revela-maki" type="button"><img class="revela-maki__fig" alt="" aria-hidden="true" decoding="async" src="' + JUEGOS_IMG + 'kata-makiwara.webp"><span class="revela-pista" aria-hidden="true"></span></button>',
+        campana: '<button class="revela-obj revela-obj--campana" type="button"><span class="campana-cuerda" aria-hidden="true"></span><img class="campana-fig" alt="" aria-hidden="true" decoding="async" src="' + JUEGOS_IMG + 'campana-campana.webp"><span class="revela-pista" aria-hidden="true"></span></button>',
         tejas: '<button class="revela-obj revela-obj--tejas" type="button"><span class="tejas-pila" aria-hidden="true"></span><span class="revela-pista" aria-hidden="true"></span></button>',
         faroles: '<button class="revela-obj revela-obj--faroles" type="button"><span class="revela-pista" aria-hidden="true"></span></button>',
       };
@@ -797,13 +794,13 @@
       if (vr === "tejas") {
         var pila = escena.querySelector(".tejas-pila"), t;
         for (t = 0; t < frases.length; t++) {
-          pila.appendChild(el('<span class="teja"><img alt="" decoding="async" src="' + RETOS_IMG + 'kata-teja.webp"></span>'));
+          pila.appendChild(el('<span class="teja"><img alt="" decoding="async" src="' + JUEGOS_IMG + 'kata-teja.webp"></span>'));
         }
       }
       if (vr === "faroles") {
         var f;
         for (f = 0; f < frases.length; f++) {
-          boton.insertBefore(el('<span class="farol"><img class="farol__base" alt="" decoding="async" src="' + RETOS_IMG + 'linterna-apagada.webp"><img class="farol__luz" alt="" decoding="async" src="' + RETOS_IMG + 'linterna-encendida.webp"></span>'), boton.querySelector(".revela-pista"));
+          boton.insertBefore(el('<span class="farol"><img class="farol__base" alt="" decoding="async" src="' + JUEGOS_IMG + 'linterna-apagada.webp"><img class="farol__luz" alt="" decoding="async" src="' + JUEGOS_IMG + 'linterna-encendida.webp"></span>'), boton.querySelector(".revela-pista"));
         }
       }
 
@@ -1273,6 +1270,62 @@
       } catch (err) { seguir(); }
     }
 
+    /* El final de un examenFu: sin cinturón, sin nivel siguiente y sin XP de
+       misión. Quien dictamina es el SERVIDOR (cuenta los aciertos contra el
+       mínimo del maestro y comprueba el reloj); el cliente solo cuenta y
+       pregunta. El XP lo pone el sistema, no el maestro (docs/12 §2.6). */
+    function finishExamenFu() {
+      clearInterval(relojTimer);
+      var ganados = examGanados;
+      var total = data.rondas || quizTotal || 0;
+      function pintar(res) {
+        var aprobado = !!res.aprobado;
+        var tarde = !!res.tarde;
+        var html = '<article class="mcard mcard--done">';
+        html += '<div class="mcard__trophy" aria-hidden="true">' + (aprobado ? "🏆" : "🥋") + "</div>";
+        html += "<h3>" + escapa(T.examDone) + "</h3>";
+        html += '<p class="mcard__score">' + escapa(tarde ? T.exFuTarde
+          : aprobado ? T.exFuAprobado.replace("{g}", res.aciertos).replace("{n}", total)
+          : T.exFuFallado.replace("{g}", res.aciertos).replace("{n}", total).replace("{m}", res.minimo || minAciertos)) + "</p>";
+        if (aprobado && res.primeraVez) html += '<div class="mcard__xp">+' + (XP.exam || 50) + " XP</div>";
+        var acciones = [];
+        /* Reintentar solo si de verdad quedan intentos: ofrecer un botón que
+           el servidor va a rechazar sería una promesa falsa. */
+        if (!aprobado && res.puedeReintentar) {
+          acciones.push('<button class="btn btn--primary" type="button" data-retake>' + escapa(T.exFuOtra) + "</button>");
+        } else if (!aprobado) {
+          acciones.push('<p class="muted">' + escapa(T.exFuSinIntentos) + "</p>");
+        }
+        acciones.push('<a class="btn btn--ghost" href="' + (cfg.prefix || "") + (ES ? "perfil/" : "profile/") + '#examenes">' + escapa(T.exFuMisExamenes) + "</a>");
+        html += '<div class="mcard__actions">' + acciones.join("") + "</div></article>";
+        stage.appendChild(el(html));
+        var rt = stage.querySelector("[data-retake]");
+        if (rt) rt.addEventListener("click", function () { location.reload(); });
+        if (aprobado && window.MF && MF.confetti) MF.confetti();
+        if (aprobado && window.MFSonido && MFSonido.fx) MFSonido.fx("fx-yay");
+      }
+      if (!hayServidor() || !intentoEx) {
+        return pintar({ aprobado: ganados >= minAciertos, aciertos: ganados,
+                        minimo: minAciertos, puedeReintentar: true, primeraVez: false });
+      }
+      SB.rpc("escuela_examen_terminar", {
+        p_clave: data.clave || data.art, p_intento: intentoEx.intento, p_aciertos: ganados,
+      }).then(function (r) {
+        r = r || {};
+        var quedan = intentoEx.quedan;
+        r.puedeReintentar = (quedan == null) || quedan > 0;
+        /* `primera_vez` lo decide la RPC: el cliente no puede saberlo por su
+           cuenta —cuando pregunta, su propio intento ya está contado— y de eso
+           depende que se paguen los 50 XP una sola vez (docs/12 §2.6). */
+        r.primeraVez = !!r.primera_vez;
+        if (r.aprobado && window.MF && MF.examenFuAprobado) MF.examenFuAprobado(data.clave || data.art, XP.exam || 50);
+        pintar(r);
+      }, function () {
+        pintar({ aprobado: ganados >= minAciertos, aciertos: ganados, minimo: minAciertos,
+                 puedeReintentar: true, primeraVez: false });
+      });
+    }
+
     function finish() {
       pararAudio();
       stage.innerHTML = "";
@@ -1280,6 +1333,7 @@
       wrap.querySelector(".mission__actions").hidden = true;
       var total = earned + bonus;
       var html = '<article class="mcard mcard--done">';
+      if (esExFu) { return finishExamenFu(); }
       if (isExam) {
         var score = quizTotal ? quizCorrect / quizTotal : 1;
         /* EXAMEN 2 DE 3 (titular 2026-09-02): con retos manda la cuenta de
@@ -1355,6 +1409,54 @@
     /* la página que pasa (titular 2026-09-02): cambiar de tarjeta suena a
        libro. Sin fábrica de fx no suena nada — nunca hubo beep aquí. */
     function fxPagina() { if (window.MFSonido && MFSonido.fx) MFSonido.fx("fx-pagina"); }
+    /* «10 preguntas · 3 intentos · 20 min · apruebas con 8» — las reglas del
+       examen dichas en una línea, antes de empezar. Sin sorpresas a mitad. */
+    function metaExamen() {
+      var partes = [T.exFuMeta.replace("{n}", data.rondas || 0)];
+      partes.push(data.intentos == null ? T.exFuSinTope
+        : (data.intentos === 1 ? T.exFuIntento : T.exFuIntentos.replace("{n}", data.intentos)));
+      partes.push(data.tiempo_min == null ? T.exFuSinTiempo : T.exFuTiempo.replace("{n}", data.tiempo_min));
+      partes.push(T.exFuAprobar.replace("{n}", minAciertos));
+      return partes.join(" · ");
+    }
+
+    /* Empezar de verdad: el servidor abre (o reanuda) el intento y devuelve el
+       reloj. Sin servidor —modo local o «Probar» del panel— se juega igual pero
+       sin contar intentos: probar tu propio examen no debe gastarte uno. */
+    function empezarExamen(boton) {
+      if (boton) { boton.disabled = true; boton.textContent = T.exFuCargando; }
+      function seguir() {
+        arrancarReloj();
+        nextBtn.hidden = false;
+        setNext(true);
+        goNext();
+      }
+      if (!hayServidor()) { intentoEx = { intento: 1, deadline: null }; return seguir(); }
+      SB.rpc("escuela_examen_iniciar", { p_clave: data.clave || data.art }).then(function (r) {
+        intentoEx = r || { intento: 1, deadline: null };
+        if (intentoEx.quedan != null) {
+          var aviso = intentoEx.quedan <= 0 ? T.exFuUltimo : T.exFuQuedan.replace("{n}", intentoEx.quedan);
+          toastExamen(aviso);
+        }
+        seguir();
+      }, function (err) {
+        var texto = String((err && err.message) || err || "");
+        if (boton) {
+          boton.disabled = false;
+          boton.textContent = texto.indexOf("sin-intentos") >= 0 ? T.exFuSinIntentos : T.exFuEmpezar;
+        }
+        if (texto.indexOf("sin-intentos") < 0) seguir();   /* un fallo de red no encierra al alumno */
+      });
+    }
+    function toastExamen(txt) {
+      /* La firma real de la casa es toast(tipo, titulo, texto, icono)
+         (progress.js:506); llamarlo con un solo argumento dejaba el toast sin
+         título y con «undefined» de texto. */
+      if (window.MF && MF.toast) { MF.toast("info", txt, "", "⏱"); return; }
+      var top = wrap.querySelector(".mission__top");
+      if (top) top.appendChild(el('<span class="mission__aviso">' + escapa(txt) + "</span>"));
+    }
+
     function goNext() {
       if (nextBtn.disabled) return;
       i++;

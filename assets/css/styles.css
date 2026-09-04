@@ -478,6 +478,18 @@ a.belt__link:hover { transform: translateY(-2px); box-shadow: var(--shadow); }
 .dojo-progress__text, .prose .dojo-progress__text { margin: 0; font-size: var(--fs-small); line-height: 1.35; color: var(--c-text-on-dark-soft); white-space: nowrap; }
 @media (max-width: 40rem) { .dojo-progress { grid-template-columns: 1fr; } .dojo-progress__text { white-space: normal; } }
 .dojo-progress .btn { margin-top: 0.5rem; }
+/* La misma barra, pero DENTRO del hero del nivel y en pequeño (titular
+   2026-09-04). Antes vivía en el cuerpo como marcador {PROGRESS}: una banda
+   oscura a todo el ancho que empujaba las misiones hacia abajo. Aquí el hero ya
+   pone el fondo oscuro, así que la barra se queda sin caja propia y solo aporta
+   su dato. Ancho acotado: estirada de margen a margen parecía otra vez una
+   banda, que es lo que se quería quitar. */
+.dojo-progress--hero { margin: 0.85rem 0 0; padding: 0; background: none;
+  max-width: 26rem; gap: 0.3rem 0.8rem; }
+.dojo-progress--hero .dojo-progress__text { font-size: 0.72rem; opacity: 0.85; }
+.dojo-progress--hero .dojo-progress__bar { height: 0.3rem;
+  background: rgba(255, 255, 255, 0.16); }
+@media (max-width: 40rem) { .dojo-progress--hero { max-width: none; } }
 .level-complete { margin: 2rem 0; padding: 1.5rem; border-radius: var(--radius-lg); border: 2px dashed var(--c-line-light); text-align: center; }
 .level-complete.is-done { border-style: solid; border-color: var(--belt-green); background: #eef8f1; }
 .level-complete p { margin: 0 0 0.75rem; }

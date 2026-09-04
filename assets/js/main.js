@@ -67,7 +67,7 @@
 
   window.MFCargador = function (etiqueta) {
     var cfg = window.MF_CONFIG || {};
-    var ruta = (cfg.assets || "") + "assets/img/mascota/propuesta-1.webp";
+    var ruta = (cfg.assets || "") + "assets/img/mascota/reposo.webp";
     var aria = String(etiqueta || "").replace(/"/g, "&quot;");
     return '<div class="cargador" role="status" aria-label="' + aria + '">' +
       '<span class="cargador__aro" aria-hidden="true"></span>' +

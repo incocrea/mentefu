@@ -27,7 +27,7 @@
   /* Las láminas de interfaz (el sello de cerrar) cuelgan del mismo prefijo que
      inyecta el generador en MF_CONFIG: en /en/ y en la raíz la ruta relativa no
      es la misma, así que no puede escribirse a mano. */
-  var SELLOS = (cfg.assets || "") + "assets/img/game/";
+  var SELLOS = (cfg.assets || "") + "assets/img/ui/";
 
   function el(html) { var d = document.createElement("div"); d.innerHTML = html.trim(); return d.firstChild; }
   /* El título entra en un atributo (aria-label) y hay títulos con comillas

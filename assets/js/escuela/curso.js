@@ -337,8 +337,22 @@
     var r = ruta();
     if (r.v === "vacio") { vVacio(); return; }
     if (r.clave !== claveAbierta || !indice) { abrir(r.clave); return; }
-    if (r.v === "mision") vMision(r.id, r.demo);
-    else { quitarDemo(); vMapa(); }
+    if (r.v === "mision") { vMision(r.id, r.demo); return; }
+    /* Un examenFu no tiene mapa que enseñar: es UNA misión (docs/12 §2.3). El
+       enlace que comparte el maestro lleva directo a la portada del examen, sin
+       una pantalla intermedia con un solo enlace dentro. */
+    var soloExamen = examenUnico();
+    if (soloExamen) { vMision(soloExamen, r.demo); return; }
+    quitarDemo();
+    vMapa();
+  }
+
+  /* El id de la única misión cuando el curso es un examenFu; null si no lo es. */
+  function examenUnico() {
+    if (!indice || indice.tipo !== "examen") return null;
+    var nv = indice.niveles && indice.niveles[0];
+    var m = nv && nv.misiones && nv.misiones[0];
+    return m ? m.id : null;
   }
 
   function abrir(clave) {

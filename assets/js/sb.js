@@ -188,5 +188,34 @@
     return request("/rest/v1/rpc/" + fn, { method: "POST", body: args || {} });
   }
 
-  window.SB = { enabled: enabled, getSession: getSession, hasSession: hasSession, takeAuthError: takeAuthError, getUser: getUser, signUp: signUp, signInWithPassword: signInWithPassword, resetPassword: resetPassword, updateUser: updateUser, signOut: signOut, select: select, upsert: upsert, insert: insert, rpc: rpc };
+  /* Una Edge Function del proyecto (docs/12 §3). Va por el mismo canal que las
+     RPC —mismo JWT, mismos encabezados— pero contra /functions/v1. El
+     asistente de IA vive ahí porque la clave de Anthropic es un secreto del
+     proyecto y jamás puede viajar al navegador. Tiempo generoso: una
+     generación de nivel puede tardar más de un minuto. */
+  function fn(nombre, body, ms) {
+    var control = typeof AbortController !== "undefined" ? new AbortController() : null;
+    var corte = control ? setTimeout(function () { control.abort(); }, ms || 150000) : null;
+    var h = headers(true);
+    return fetch(URL_ + "/functions/v1/" + nombre, {
+      method: "POST", headers: h, body: JSON.stringify(body || {}),
+      signal: control ? control.signal : undefined,
+    }).then(function (res) {
+      if (corte) clearTimeout(corte);
+      return res.text().then(function (texto) {
+        var datos = null;
+        try { datos = texto ? JSON.parse(texto) : null; } catch (e) { datos = null; }
+        if (!res.ok) {
+          var msg = (datos && (datos.error || datos.message)) || ("fn-" + res.status);
+          throw new Error(msg);
+        }
+        return datos;
+      });
+    }, function (err) {
+      if (corte) clearTimeout(corte);
+      throw new Error(err && err.name === "AbortError" ? "tiempo-agotado" : String(err && err.message || err));
+    });
+  }
+
+  window.SB = { enabled: enabled, getSession: getSession, hasSession: hasSession, takeAuthError: takeAuthError, getUser: getUser, signUp: signUp, signInWithPassword: signInWithPassword, resetPassword: resetPassword, updateUser: updateUser, signOut: signOut, select: select, upsert: upsert, insert: insert, rpc: rpc, fn: fn };
 })();

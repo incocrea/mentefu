@@ -220,7 +220,8 @@
      resto del archivo ya monta `<img>`, ya precarga, ya intercambia sprites por
      `montaje.sprite()` y ya calibra proporciones y pivotes desde
      `naturalWidth/naturalHeight`. */
-  var RETOS = A + "assets/img/game/retos/";
+  var JUEGOS = A + "assets/img/juegos/";
+  var MASCOTA = A + "assets/img/mascota/";
 
   var ARTE = {
     /* APROBADA Y EN DISCO: la campana de F6, reutilizada tal cual. No se encarga
@@ -228,16 +229,19 @@
        estilo de la casa y el titular pidió estilo uniforme entre los ocho
        juegos. Ojo: cuelga de un ARO, no de un travesaño, así que su pivote es el
        medido abajo y no el de la fórmula de la ficha. */
-    campanita: RETOS + "campana-campana.webp",
+    campanita: JUEGOS + "campana-campana.webp",
     /* APROBADAS Y GENERADAS (titular 2026-09-01, un intento cada una): las
        cinco — el titular vio el bloque gris de la gota en pantalla y preguntó;
        con ella el catálogo del dominó queda COMPLETO y el prototipo gris ya no
        tiene nada que pintar. */
-    ficha: RETOS + "domino-ficha.webp",
-    tumbada: RETOS + "domino-tumbada.webp",
-    marca: RETOS + "domino-marca.webp",
-    mascota: RETOS + "mascota-empuja.webp",
-    gota: RETOS + "gota-sudor.webp"
+    ficha: JUEGOS + "domino-ficha.webp",
+    tumbada: JUEGOS + "domino-tumbada.webp",
+    marca: JUEGOS + "domino-marca.webp",
+    /* Las poses del personaje viven en `mascota/`, no en `juegos/` (que guarda
+       solo piezas de minijuego). Esta ruta se quedó atrás en la reorganización
+       de assets de 2026-09-03 y el dominó se quedó sin mascota. */
+    mascota: MASCOTA + "empuja.webp",
+    gota: JUEGOS + "gota-sudor.webp"
   };
 
   /* Rótulo de la ficha tumbada cuando la LÁMINA existe: el texto va SOLO sobre

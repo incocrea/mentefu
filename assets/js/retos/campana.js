@@ -113,7 +113,7 @@
      resolvería contra la URL de la página (patrón arbol.js:12). Y siempre el
      .webp: al publicar, el .png se descarta cuando existe su .webp
      (build.py `sin_png_redundantes`). */
-  var RUTA = A + "assets/img/game/retos/";
+  var RUTA = A + "assets/img/juegos/";
   var RUTA_TORRE = RUTA + "campana-torre.webp";
   var RUTA_CAMPANA = RUTA + "campana-campana.webp";
   var RUTA_DISCO = RUTA + "campana-disco.webp";
@@ -123,11 +123,11 @@
      with no markings so a label can sit on top», que es justo lo que necesita
      una etiqueta en HTML encima. */
   var RUTA_TABLA = RUTA + "tameshiwari-tabla.webp";
-  /* `propuesta-1.webp` y no `oficial.png`: son el mismo dibujo byte a byte, pero
-     el .webp pesa 89 KB en vez de 408 y el HTML de la casa siempre prefiere
+  /* La mascota en reposo (`mascota/reposo.webp`, antes `propuesta-1`): el .webp
+     pesa 89 KB en vez de los 408 del PNG y el HTML de la casa siempre prefiere
      WebP. Meter 408 KB en el modal de un minijuego para pintar 65 px sería
      pagar el peso dos veces, porque el PNG además viajaría al sitio publicado. */
-  var RUTA_MASCOTA = A + "assets/img/mascota/propuesta-1.webp";
+  var RUTA_MASCOTA = A + "assets/img/mascota/reposo.webp";
 
   var T = ES ? {
     nombre: "La campana del templo",

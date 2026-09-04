@@ -2,7 +2,7 @@
   "_": "Sistema de posiciones situacionales (docs/08-cards-vivas). Fuente ÚNICA: build.py valida cada viñeta contra este archivo y lo inyecta en MF_CONFIG.escenas para el renderer. Un ancla es DONDE APOYA LOS PIES la mascota: x/y en porcentaje del lienzo, e = escala relativa, flip = mirar al otro lado (las poses se dibujan mirando a la IZQUIERDA; flip las vuelve hacia la derecha). Las rutas son relativas a assets/img/. Se calibran UNA vez al añadir el fondo, mirando la lámina. Los fondos del lote F3 llevan anclas ESTIMADAS desde sus prompts (atrezo en las esquinas, suelo en el tercio inferior): afinar al ver cada lámina generada. Desde 2026-09-02 las anclas son TRES y ESTÁNDAR en todos los fondos (izquierda/centro/derecha); solo la altura del suelo cambia por escena, y la dirección de la mirada la decide cada viñeta con su `flip`.",
   "fondos": {
     "dojo": {
-      "ruta": "game/retos/herr-fondo-dojo.webp",
+      "ruta": "escenas/fondo-dojo.webp",
       "_": "1200x800. Suelo de tarima de y=86 a 98. Planta en maceta a la izquierda (x 0-9), farol encendido a la derecha (x 86-96). Anclas ESTÁNDAR (titular 2026-09-02): izquierda/centro/derecha a x 18/50/82 sobre el suelo de este fondo (y=90). Iguales en todas las escenas: la posición deja de ser una decisión por fondo.",
       "anclas": {
         "izquierda": {
@@ -23,13 +23,13 @@
         }
       },
       "movil": {
-        "ruta": "game/retos/herr-fondo-dojo-movil.webp",
+        "ruta": "escenas/fondo-dojo-movil.webp",
         "y": 92.31,
         "alto": 33.85
       }
     },
     "salon": {
-      "ruta": "game/escenas/fondo-salon.webp",
+      "ruta": "escenas/fondo-salon.webp",
       "_": "CALIBRADO 2026-09-02 mirando la lámina. Sofá x 0-47 (patas y84), mesita+lámpara x 78-95, suelo desde y78. El ancla sofa es DE PIE JUNTO al sofá mirándolo (no hay pose de sentarse en sofá). Anclas ESTÁNDAR (titular 2026-09-02): izquierda/centro/derecha a x 18/50/82 sobre el suelo de este fondo (y=92). Iguales en todas las escenas: la posición deja de ser una decisión por fondo.",
       "anclas": {
         "izquierda": {
@@ -50,13 +50,13 @@
         }
       },
       "movil": {
-        "ruta": "game/escenas/fondo-salon-movil.webp",
+        "ruta": "escenas/fondo-salon-movil.webp",
         "y": 93.85,
         "alto": 33.85
       }
     },
     "comedor": {
-      "ruta": "game/escenas/fondo-comedor.webp",
+      "ruta": "escenas/fondo-comedor.webp",
       "_": "CALIBRADO. Mesa con sillas x 3-45 (suelo desde y72), planta x 85-98. mesa = de pie a la derecha de la mesa, mirándola. Anclas ESTÁNDAR (titular 2026-09-02): izquierda/centro/derecha a x 18/50/82 sobre el suelo de este fondo (y=90). Iguales en todas las escenas: la posición deja de ser una decisión por fondo.",
       "anclas": {
         "izquierda": {
@@ -77,13 +77,13 @@
         }
       },
       "movil": {
-        "ruta": "game/escenas/fondo-comedor-movil.webp",
+        "ruta": "escenas/fondo-comedor-movil.webp",
         "y": 92.31,
         "alto": 33.85
       }
     },
     "trabajo": {
-      "ruta": "game/escenas/fondo-trabajo.webp",
+      "ruta": "escenas/fondo-trabajo.webp",
       "_": "CALIBRADO. Escritorio+silla x 15-63 (suelo desde y82), archivador x 72-93. escritorio = junto al borde derecho de la mesa, mirándola; centro = delante, en primer plano. Anclas ESTÁNDAR (titular 2026-09-02): izquierda/centro/derecha a x 18/50/82 sobre el suelo de este fondo (y=93). Iguales en todas las escenas: la posición deja de ser una decisión por fondo.",
       "anclas": {
         "izquierda": {
@@ -104,13 +104,13 @@
         }
       },
       "movil": {
-        "ruta": "game/escenas/fondo-trabajo-movil.webp",
+        "ruta": "escenas/fondo-trabajo-movil.webp",
         "y": 94.62,
         "alto": 33.85
       }
     },
     "calle": {
-      "ruta": "game/escenas/fondo-calle.webp",
+      "ruta": "escenas/fondo-calle.webp",
       "_": "CALIBRADO. Acera y78-84, calzada delante. Farola pegada al borde x0-5, árbol x 85-98. Los pies van sobre la acera (y85-87). Anclas ESTÁNDAR (titular 2026-09-02): izquierda/centro/derecha a x 18/50/82 sobre el suelo de este fondo (y=87). Iguales en todas las escenas: la posición deja de ser una decisión por fondo.",
       "anclas": {
         "izquierda": {
@@ -131,13 +131,13 @@
         }
       },
       "movil": {
-        "ruta": "game/escenas/fondo-calle-movil.webp",
+        "ruta": "escenas/fondo-calle-movil.webp",
         "y": 90.0,
         "alto": 33.85
       }
     },
     "dormitorio": {
-      "ruta": "game/escenas/fondo-dormitorio.webp",
+      "ruta": "escenas/fondo-dormitorio.webp",
       "_": "CALIBRADO. Cama x 50-95 (patas y90), mesilla+lámpara x 50-62, ventana x 4-29, suelo desde y72. cama = a los pies de la mesilla mirando la cama (flip); ventana = bajo la ventana mirando al cuarto (flip). Anclas ESTÁNDAR (titular 2026-09-02): izquierda/centro/derecha a x 18/50/82 sobre el suelo de este fondo (y=90). Iguales en todas las escenas: la posición deja de ser una decisión por fondo.",
       "anclas": {
         "izquierda": {
@@ -158,13 +158,13 @@
         }
       },
       "movil": {
-        "ruta": "game/escenas/fondo-dormitorio-movil.webp",
+        "ruta": "escenas/fondo-dormitorio-movil.webp",
         "y": 92.31,
         "alto": 33.85
       }
     },
     "cafeteria": {
-      "ruta": "game/escenas/fondo-cafeteria.webp",
+      "ruta": "escenas/fondo-cafeteria.webp",
       "_": "CALIBRADO. Mesita+sillas x 0-33 (suelo desde y78), mostrador x 70-100. mesa = de pie junto a la mesa mirándola; mostrador = ante el mostrador mirándolo (flip). Anclas ESTÁNDAR (titular 2026-09-02): izquierda/centro/derecha a x 18/50/82 sobre el suelo de este fondo (y=91). Iguales en todas las escenas: la posición deja de ser una decisión por fondo.",
       "anclas": {
         "izquierda": {
@@ -185,25 +185,25 @@
         }
       },
       "movil": {
-        "ruta": "game/escenas/fondo-cafeteria-movil.webp",
+        "ruta": "escenas/fondo-cafeteria-movil.webp",
         "y": 93.08,
         "alto": 33.85
       }
     }
   },
   "poses": {
-    "reposo": "mascota/propuesta-1.webp",
-    "golpe": "game/retos/mascota-golpe.webp",
-    "patada": "game/retos/mascota-patada.webp",
-    "sentada": "game/retos/mascota-sentada.webp",
-    "empuja": "game/retos/mascota-empuja.webp",
-    "pensativa": "game/escenas/pose-pensativa.webp",
-    "movil": "game/escenas/pose-movil.webp",
-    "pecho": "game/escenas/pose-pecho.webp",
-    "victoria": "game/escenas/pose-victoria.webp",
-    "canto": "game/escenas/pose-canto.webp",
-    "gancho": "game/escenas/pose-gancho.webp",
-    "patada-voladora": "game/escenas/pose-patada-voladora.webp"
+    "reposo": "mascota/reposo.webp",
+    "golpe": "mascota/golpe.webp",
+    "patada": "mascota/patada.webp",
+    "sentada": "mascota/sentada.webp",
+    "empuja": "mascota/empuja.webp",
+    "pensativa": "mascota/pensativa.webp",
+    "movil": "mascota/movil.webp",
+    "pecho": "mascota/pecho.webp",
+    "victoria": "mascota/victoria.webp",
+    "canto": "mascota/canto.webp",
+    "gancho": "mascota/gancho.webp",
+    "patada-voladora": "mascota/patada-voladora.webp"
   },
   "_movil": "Variante VERTICAL para móvil (titular 2026-09-03): el viewport del teléfono da altura, así que la escena crece un 30 % (lienzo 15:13 en vez de 3:2) y el texto respira sin partirse en cinco líneas. Las láminas NO se regeneraron: se EXTIENDEN hacia arriba desde su propia banda de cielo o pared con PIL (0 USD, sin deformar y sin perder el atrezo lateral), así que las anclas x siguen siendo exactas. `y` es la altura del suelo en la variante y `alto` el % base de la mascota, ambos recalculados sobre el lienzo nuevo para que la mascota mida los MISMOS píxeles que en escritorio. Rehacerlas: tools/escenas_movil.py"
 }

@@ -89,11 +89,11 @@
 
   /* Rutas de las láminas definitivas (ficha §7). Siempre el .webp: al publicar,
      el .png se descarta cuando existe su .webp. */
-  var RUTA_MANO = A + "assets/img/game/retos/tameshiwari-mano.webp";
-  var RUTA_TABLA = A + "assets/img/game/retos/tameshiwari-tabla.webp";
+  var RUTA_MANO = A + "assets/img/mascota/mano.webp";
+  var RUTA_TABLA = A + "assets/img/juegos/tameshiwari-tabla.webp";
   /* Media tabla partida: el sprite del estado «rota». Una sola lámina sirve para
      los dos trozos porque el derecho es esta misma espejada por CSS. */
-  var RUTA_MITAD = A + "assets/img/game/retos/tameshiwari-tabla-mitad.webp";
+  var RUTA_MITAD = A + "assets/img/juegos/tameshiwari-tabla-mitad.webp";
 
   /* =================================================== RESERVA SIN LÁMINA === */
 

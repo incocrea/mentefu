@@ -198,16 +198,16 @@
      `tameshiwari-tabla.webp` (F1, ya pagada) con `border-image` de 9 zonas desde
      game.css, donde la ruta se resuelve contra la HOJA y sale bien sea cual sea
      la profundidad de la página. Por eso no aparece en este archivo. */
-  var RETOS = A + "assets/img/game/retos/";
+  var JUEGOS = A + "assets/img/juegos/";
   /* Desde el rediseño, la "pieza" es la LLAVE; el nombre de la variable se
      conserva para no reescribir medio archivo. Las láminas del escenario
      (puerta y candado, con sus estados) son nuevas y propias de este juego. */
-  var RUTA_PUNTAL = RETOS + "puerta-llave.webp";
-  var RUTA_SOSTIENE = RETOS + "puerta-llave.webp";
-  var RUTA_PUERTA = RETOS + "puerta-cerrada.webp";
-  var RUTA_PUERTA_AB = RETOS + "puerta-abierta.webp";
-  var RUTA_CANDADO = RETOS + "puerta-candado.webp";
-  var RUTA_CANDADO_AB = RETOS + "puerta-candado-abierto.webp";
+  var RUTA_PUNTAL = JUEGOS + "puerta-llave.webp";
+  var RUTA_SOSTIENE = JUEGOS + "puerta-llave.webp";
+  var RUTA_PUERTA = JUEGOS + "puerta-cerrada.webp";
+  var RUTA_PUERTA_AB = JUEGOS + "puerta-abierta.webp";
+  var RUTA_CANDADO = JUEGOS + "puerta-candado.webp";
+  var RUTA_CANDADO_AB = JUEGOS + "puerta-candado-abierto.webp";
 
   /* Proporciones REALES (ancho/alto) de las láminas entregadas, medidas sobre
      los archivos en disco y no las que pedía el prompt:
@@ -421,6 +421,30 @@
     var rafs = [];
     var control = null;
     var ocupado = true;            /* PRESENTANDO: los taps se ignoran, no se encolan */
+    /* PERO cuando lo que ocupa al juego es una retirada YA juzgada, el toque
+       siguiente sí se guarda (titular 2026-09-04: «obliga a dar doble clic»).
+       Entre una retirada y la siguiente pasan 300 + 250 + 1200 = 1750 ms —
+       anticipación, caída y lectura mínima del feedback— y en todo ese tramo el
+       toque se descartaba en silencio: el alumno tocaba la segunda llave, no
+       pasaba nada, y tenía que volver a tocar. Ahora se encola y se atiende al
+       volver a reposo, así que el primer toque siempre cuenta.
+       Solo durante ESA ventana: en la presentación y en la victoria los taps se
+       siguen ignorando, que es lo que impide colar una retirada en la cascada
+       final o antes de que el tablero exista. */
+    var encolado = null;
+    var admiteCola = false;
+
+    /* Volver a reposo: libera y atiende lo que el alumno pidió mientras leía. */
+    function liberar() {
+      ocupado = false;
+      admiteCola = false;
+      var n = encolado;
+      encolado = null;
+      if (!n) return;
+      var d = piezaDe(n);
+      /* la pieza pudo salir por otro camino (arrastre) mientras esperaba */
+      if (d && !d.fuera && !n.disabled) tirar(n);
+    }
     var idResize = 0;
     var iOrig = indiceOriginal(m);
 
@@ -504,6 +528,8 @@
         window.removeEventListener("resize", alRedimensionar);
         if (control) { control.destruir(); control = null; }
         ocupado = true;
+        encolado = null;
+        admiteCola = false;
       });
     }
 
@@ -639,7 +665,9 @@
          envoltorio acumula el estilo en línea de MFDrag, que le ganaría en
          cuanto el puntal se hubiera arrastrado una vez. */
       b.addEventListener("pointerdown", function () {
-        if (ocupado || b.disabled) return;
+        if (b.disabled || (ocupado && !admiteCola)) return;
+        /* también cuando el toque se va a encolar: sin respuesta táctil el
+           alumno cree otra vez que no le han oído, que es el defecto entero */
         if (window.MFJuice && MFJuice.respuesta) MFJuice.respuesta(d.fig);
       });
 
@@ -653,7 +681,8 @@
          dos veces; y sigue vivo aunque MFDrag no esté cargado, que es lo que
          hace innecesario un camino de reserva aparte. */
       b.addEventListener("click", function () {
-        if (ocupado || b.disabled) return;
+        if (b.disabled) return;
+        if (ocupado) { if (admiteCola) encolado = b; return; }
         tirar(b);
       });
 
@@ -898,6 +927,12 @@
       var d = piezaDe(nodo);
       if (!d || d.fuera) return;
       ocupado = true;
+      /* Desde AQUÍ el toque siguiente se encola: la suerte de esta pieza ya está
+         echada y lo que venga después es teatro y lectura. Medido en el
+         navegador, entre este punto y el reposo pasan unos 4 s; abrir la
+         ventana más tarde —al pintar el feedback, ~2 s— dejaba fuera justo el
+         tramo en el que el alumno vuelve a tocar. */
+      admiteCola = true;
       estado("retirando");
       /* SIEMPRE sobre el <img> interior, jamás sobre el envoltorio: MFDrag ocupa
          su `transform` en línea y una animación gana siempre al estilo en línea
@@ -974,7 +1009,7 @@
         luego(m.examen ? MS_LEE_EXAMEN : MS_LEE, function () {
           if (quedanFalsos() === 0) { victoria(); return; }
           estado("reposo");
-          ocupado = false;
+          liberar();
         });
       });
     }
@@ -1047,7 +1082,7 @@
            pulsar nada para volver a intentarlo (regla 2). */
         luego(MS_LEE_FALLO, function () {
           estado("reposo");
-          ocupado = false;
+          liberar();
         });
       });
     }
@@ -1114,6 +1149,8 @@
 
     function victoria() {
       ocupado = true;
+      encolado = null;
+      admiteCola = false;   /* en la cascada final ya no hay nada que retirar */
       estado("victoria");
       pista.hidden = true;                 /* ya no hay nada que retirar */
       var d = elPortante();

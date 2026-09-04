@@ -39,7 +39,6 @@
     { key: "first-mission", icon: "🎯", es: ["Primera misión", "Completaste tu primera misión."], en: ["First mission", "You completed your first mission."], test: function (s) { return countItems(s, "missions") >= 1; } },
     { key: "missions-10", icon: "⚡", es: ["Diez misiones", "Diez misiones completadas."], en: ["Ten missions", "Ten missions completed."], test: function (s) { return countItems(s, "missions") >= 10; } },
     { key: "first-scroll", icon: "📜", es: ["Primer pergamino", "Leíste un pergamino hasta el final."], en: ["First scroll", "You read a scroll to the end."], test: function (s) { return countItems(s, "scrolls") >= 1; } },
-    { key: "first-tool", icon: "🧰", es: ["Primera herramienta", "Usaste una herramienta de entrenamiento."], en: ["First tool", "You used a training tool."], test: function (s) { return countItems(s, "tools") >= 1; } },
     { key: "belt-white", icon: "🥋", es: ["Cinturón blanco", "Tu primer cinturón: la guardia está en pie."], en: ["White belt", "Your first belt: the guard is up."], test: function (s) { return hasBelt(s, 1); } },
     { key: "belt-yellow", icon: "🟡", es: ["Cinturón amarillo", "Segundo nivel superado: ya oyes lo que antes pasaba de largo."], en: ["Yellow belt", "Second level cleared: you now hear what used to slip by."], test: function (s) { return hasBelt(s, 2); } },
     { key: "belt-green", icon: "🟢", es: ["Cinturón verde", "Mitad del camino: los patrones ya no te pillan por sorpresa."], en: ["Green belt", "Halfway up: the patterns no longer catch you off guard."], test: function (s) { return hasBelt(s, 4); } },
@@ -211,6 +210,20 @@
     return { passed: passed, newBelt: newBelt, unlocked: unlocked, belt: b };
   }
 
+  /* examenFu (docs/12 §2.6): un examen suelto SÍ da nivel de plataforma —el XP
+     lo pone el sistema, no el maestro— pero NO reparte cinturón: los cinturones
+     son del camino de un curso. Se guarda aparte de `exams`, que está indexado
+     por nivel y es del dojo. Solo la primera vez que se aprueba. */
+  function examenFuAprobado(clave, xpBase) {
+    /* `state` es la variable del módulo (progress.js:56), no una función. */
+    if (!state.examenes) state.examenes = {};
+    if (state.examenes[clave] && state.examenes[clave].passed) { save(); return []; }
+    state.examenes[clave] = { at: now(), passed: true };
+    bumpStreak(); markHour();
+    track("examenfu", { art: clave, item: clave, passed: true });
+    return afterAward(xpBase || XP.exam || 50, ES ? "Examen aprobado" : "Exam passed");
+  }
+
   function scrollRead(artKey, id, xp, label) {
     var a = art(artKey);
     if (a.scrolls[id]) return [];
@@ -334,11 +347,16 @@
         var centrar = function () {
           var rn = nodo.getBoundingClientRect(), rv = visor.getBoundingClientRect();
           visor.scrollLeft += (rn.left + rn.width / 2) - (rv.left + rv.width / 2);
+          /* donde el mapa abre es el reposo del cielo: ahí las dos capas
+             coinciden con la lámina original (ver el paralaje, más abajo) */
+          visor.__cieloRef = visor.scrollLeft;
+          if (visor.__pintarCielo) visor.__pintarCielo();
         };
         centrar();
         requestAnimationFrame(centrar);      /* por si la lámina aún no midió */
       }
     }
+    instalarParalaje(svg, visor);
     if (visor.__arrastre) return;
     visor.__arrastre = true;
     var drag = null;
@@ -359,6 +377,58 @@
     visor.addEventListener("pointerleave", soltar);
     /* si hubo arrastre, el clic que lo termina no debe abrir el nivel */
     visor.addEventListener("click", function (e) { if (drag && drag.movido) { e.preventDefault(); e.stopPropagation(); } }, true);
+  }
+
+  /* ---------- Paralaje del cielo (titular 2026-09-03) ----------
+     El fondo del mapa son DOS capas (build.py): el cielo, 256 unidades más
+     ancho por cada lado, y delante la montaña con el cielo transparente. Al
+     mover el mapa el cielo viaja a un 45 % de la velocidad del suelo —lo
+     lejano se mueve menos— y en reposo (donde el mapa abre) las capas
+     coinciden píxel a píxel con la lámina original. Donde el mapa no hace
+     scroll porque cabe entero (pantalla ancha), el arrastre mueve SOLO el
+     cielo, hasta ese margen de 256, y al soltar vuelve a su sitio con una
+     transición (la clase is-volviendo, en game.css). Se usa la propiedad CSS
+     `transform` y no el atributo: en unidades de usuario del SVG y con
+     transición posible. Con prefers-reduced-motion el cielo no se mueve. */
+  function instalarParalaje(svg, visor) {
+    if (visor.__paralaje) return;
+    var cielo = svg.querySelector(".pmap__cielo");
+    var quieto = !!(window.matchMedia && matchMedia("(prefers-reduced-motion: reduce)").matches);
+    if (!cielo || quieto) return;
+    visor.__paralaje = true;
+    var K = 0.45, MARGEN = 256;
+    if (visor.__cieloRef == null) visor.__cieloRef = visor.scrollLeft;
+    function escala() { var r = svg.getBoundingClientRect(); return r.width ? 1536 / r.width : 1; }
+    function pintar(dx) { cielo.style.transform = "translateX(" + dx.toFixed(1) + "px)"; }
+    function porScroll() {
+      cielo.classList.remove("is-volviendo");
+      pintar((visor.scrollLeft - (visor.__cieloRef || 0)) * (1 - K) * escala());
+    }
+    visor.__pintarCielo = porScroll;
+    visor.addEventListener("scroll", porScroll, { passive: true });
+    /* sin scroll posible: el arrastre mueve solo el cielo y vuelve al soltar */
+    var suelto = null;
+    visor.addEventListener("pointerdown", function (e) {
+      if (visor.scrollWidth > visor.clientWidth + 4) return;
+      if (e.pointerType === "mouse" && e.button !== 0) return;
+      suelto = { x: e.clientX };
+      cielo.classList.remove("is-volviendo");
+    });
+    visor.addEventListener("pointermove", function (e) {
+      if (!suelto) return;
+      var dx = (e.clientX - suelto.x) * 0.6 * escala();
+      pintar(Math.max(-MARGEN, Math.min(MARGEN, dx)));
+    });
+    function soltar() {
+      if (!suelto) return;
+      suelto = null;
+      cielo.classList.add("is-volviendo");
+      pintar(0);
+    }
+    visor.addEventListener("pointerup", soltar);
+    visor.addEventListener("pointerleave", soltar);
+    visor.addEventListener("pointercancel", soltar);
+    porScroll();
   }
 
   /* Ayuda del mapa: el botón «i» clavado en la esquina abre en un modal el
@@ -479,7 +549,7 @@
   }
 
   /* Ilustraciones de gamificación: si el archivo existe se usa; si no, el emoji.
-     `art` lo inyecta el generador en MF_CONFIG (assets/img/game/*.webp). */
+     `art` lo inyecta el generador en MF_CONFIG (assets/img/{cinturones,logros,artes,ui}/*.webp e icono-* de juegos/). */
   var ART = cfg.gameArt || {};
   function artImg(kind, key, cls, alt) {
     var f = ART[kind + "-" + key];
@@ -687,7 +757,23 @@
     /* estadísticas del arte */
     document.querySelectorAll("[data-art-belt]").forEach(function (el) {
       var key = el.getAttribute("data-art-belt"), n = beltOf(key);
-      if (el.classList.contains("art-hero__belt")) { var b = beltInfo(n); el.style.setProperty("--belt", b ? b.color : "#3a3c4a"); el.title = b ? b.name : T.noBelt; }
+      if (el.classList.contains("art-hero__belt")) {
+        /* La LÁMINA del cinturón, no un rectángulo de color (titular
+           2026-09-03): misma ilustración y mismo camino (`cfg.gameArt`) que el
+           mapa del dojo y el panel del maestro, para que el cinturón se vea
+           igual en todo el sitio. Sin cinturón todavía se pinta la primera
+           (blanca) apagada; si aún no existiera la lámina, se cae al
+           rectángulo de color de siempre y no queda un hueco. */
+        var b = beltInfo(n), muestra = b || BELTS[0] || null;
+        var lam = muestra ? (cfg.gameArt || {})["belt-" + muestra.key] : null;
+        el.title = b ? b.name : T.noBelt;
+        el.classList.toggle("art-hero__belt--vacio", !b);
+        if (lam) {
+          el.innerHTML = '<img src="' + (cfg.assets || "") + lam + '" alt="" width="512" height="434" decoding="async">';
+        } else {
+          el.style.setProperty("--belt", b ? b.color : "#3a3c4a");
+        }
+      }
       else el.innerHTML = beltPill(n, true);
     });
     document.querySelectorAll("[data-art-xp]").forEach(function (el) { el.textContent = artXP(el.getAttribute("data-art-xp")); });
@@ -743,6 +829,7 @@
     completeMission: completeMission, completeExam: completeExam, scrollRead: scrollRead, toolUsed: toolUsed, reflect: reflect, remember: remember,
     replayKey: replayKey, replayXP: replayXP, replayPaid: replayPaid, replayWon: replayWon,
     track: track, flushEvents: flushEvents, merge: merge, toast: toast, confetti: confetti, beltPill: beltPill, paint: paint,
+    examenFuAprobado: examenFuAprobado,
     artImg: artImg,
     avatars: function () {
       return Object.keys(ART).filter(function (k) { return k.indexOf("avatar-") === 0; })

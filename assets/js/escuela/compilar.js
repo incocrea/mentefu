@@ -98,16 +98,12 @@
       }
       return copiarReto(card, out);
     }
-    if (tipo === "apuesta" || tipo === "puertas") {
+    if (tipo === "apuesta") {
       out = { type: tipo, html: R(card.enunciado.html), options: [] };
       for (i = 0; i < card.opciones.length; i++) {
         op = card.opciones[i];
-        o = tipo === "apuesta"
-          ? { html: R(op.texto.html), correct: !!op.correct, feedback: R(op.feedback.html) }
-          : { html: R(op.texto.html), feedback: R(op.feedback.html) };
-        out.options.push(o);
+        out.options.push({ html: R(op.texto.html), correct: !!op.correct, feedback: R(op.feedback.html) });
       }
-      if (tipo === "puertas") out.sintesis = card.sintesis ? R(card.sintesis.html) : null;
       return copiarReto(card, out);
     }
     if (tipo === "revela") {
@@ -135,6 +131,21 @@
     }
     if (tipo === "reflect") {
       return copiarReto(card, { type: "reflect", html: R(card.cuerpo.html), placeholder: card.placeholder || "" });
+    }
+    /* `text` y cualquier tarjeta de cuerpo simple. Un tipo RETIRADO (las
+       «puertas» del 2026-09-03, el microreto, el juego «pasa») puede seguir
+       vivo en la base de un curso guardado antes de la retirada: se OMITE en
+       vez de reventar el ensamblador entero — una tarjeta de menos es un
+       arreglo editorial; un panel que no carga deja al maestro sin curso. */
+    /* Se mira si el campo EXISTE, no si tiene texto: una tarjeta `text` recién
+       creada está vacía a propósito (la portada de un examenFu nace así) y debe
+       compilar igual. Solo se omite la que no trae `cuerpo` en absoluto, que es
+       la señal de un tipo retirado guardado antes de la retirada. */
+    if (!card.cuerpo) {
+      if (typeof console !== "undefined" && console.warn) {
+        console.warn("compilar: tarjeta de tipo «" + tipo + "» sin cuerpo — omitida (¿tipo retirado?)");
+      }
+      return null;
     }
     return copiarReto(card, { type: tipo, html: R(card.cuerpo.html) });
   }
@@ -246,6 +257,7 @@
     var cards = [];
     for (var i = 0; i < capa.cards.length; i++) {
       var c = compilarCard(capa.cards[i], R);
+      if (!c) continue;                      /* tipo retirado: se omite */
       enriquecerScroll(c, ctx, pr.prefix, pr.aprefix);
       cards.push(c);
     }
@@ -274,6 +286,23 @@
       var lp = ctx.curso.niveles[String(m.nivel + 1)];
       var lpCapa = lp && lp[ctx.lang];
       if (lpCapa) data.nextLevel = { title: lpCapa.title, href: pr.prefix + lpCapa.url };
+    }
+    /* examenFu (docs/12 §2): el examen suelto que un maestro comparte por
+       enlace. Los ajustes viajan en la fila para que mission.js sepa cuántas
+       rondas jugar, con cuántos aciertos se aprueba y si hay reloj o tope de
+       intentos, sin tener que consultar la base. `examenFu: true` es lo que
+       separa este examen del examen de CINTURÓN de un curso, que no lleva
+       reloj ni intentos y sí reparte cinturón. */
+    if (m.kind === "exam" && ctx.curso.tipo === "examen") {
+      var ex = ctx.curso.examen || {};
+      data.examenFu = true;
+      data.clave = ctx.artDir;
+      data.rondas = ex.n || cards.filter(function (c) { return c.type === "quiz"; }).length;
+      data.aprobar_min = ex.aprobar_min || Math.max(1, Math.ceil(data.rondas * 0.75));
+      data.intentos = ex.intentos == null ? null : ex.intentos;
+      data.tiempo_min = ex.tiempo_min == null ? null : ex.tiempo_min;
+      delete data.nextLevel;             /* no hay nivel siguiente que ofrecer */
+      delete data.belt;                  /* un examenFu no reparte cinturón */
     }
     data.pool = pools[m.nivel] || [];
     return { id: ctx.lang + ":" + m.id, lang: ctx.lang, kind: m.kind, art: ctx.artDir, url: capa.url, data: data };
@@ -390,6 +419,9 @@
   function armarIndiceCurso(fuente, clave, lang) {
     var ctx = contexto(fuente, clave, lang);
     if (!ctx) return null;
+    /* El player lee `tipo` para saltarse el mapa de niveles cuando es un
+       examenFu y llevar directo a la única misión (docs/12 §2.3). */
+    var tipoCurso = ctx.curso.tipo || "curso";
     var capaArte = ctx.capaArte;
     var niveles = [];
     for (var n = 1; n <= 8; n++) {
@@ -428,6 +460,7 @@
       return lg === baseDe(ctx.curso) || ctx.curso.misiones.some(function (m) { return !!m[lg]; });
     });
     return { id: "curso-" + clave, kind: "escuela-curso", clave: clave,
+             tipo: tipoCurso, examen: ctx.curso.examen || null,
              idioma_base: baseDe(ctx.curso), idiomas: idiomas,
              title: capaArte.title, description: capaArte.description || "",
              categoria: ctx.curso.categoria || "general",
@@ -600,7 +633,14 @@
         leer: function () { return obj[campo].md || ""; },
         escribir: function (v) {
           obj[campo] = { md: v, html: v ? (tipo === "bloque" ? mdBloque(v) : mdInline(v)) : "" };
-        } });
+        },
+        /* El PAR entero, para quien necesita conservar el html EXACTO en vez de
+           recompilarlo: el importado viene de python-markdown y el compilador
+           JS no lo reproduce byte a byte (9,3 % del corpus difiere — ids de
+           encabezado y saltos entre bloques). El traductor y la IA siguen
+           usando `leer`/`escribir`, que hablan markdown. */
+        leerPar: function () { return obj[campo]; },
+        escribirPar: function (p) { obj[campo] = p; } });
     }
 
     var cc = curso[lang];
@@ -638,10 +678,9 @@
       par(base + ".siguiente", mc, "siguiente", "bloque");
       (mc.cards || []).forEach(function (c, ix) {
         var b = base + ".card." + ix;
-        if (c.tipo === "quiz" || c.tipo === "choice" || c.tipo === "apuesta" || c.tipo === "puertas") {
+        if (c.tipo === "quiz" || c.tipo === "choice" || c.tipo === "apuesta") {
           par(b + ".enunciado", c, "enunciado", "bloque");
           par(b + ".feedback", c, "feedback", "bloque");
-          par(b + ".sintesis", c, "sintesis", "inline");
           (c.opciones || []).forEach(function (op, j) {
             par(b + ".op." + j + ".texto", op, "texto", "inline");
             par(b + ".op." + j + ".feedback", op, "feedback", "inline");
@@ -652,7 +691,9 @@
           (c.frases || []).forEach(function (f, j) {
             visitor({ clave: b + ".frase." + j, tipo: "inline",
               leer: function () { return f.md || ""; },
-              escribir: function (v) { c.frases[j] = { md: v, html: v ? mdInline(v) : "" }; } });
+              escribir: function (v) { c.frases[j] = { md: v, html: v ? mdInline(v) : "" }; },
+              leerPar: function () { return c.frases[j]; },
+              escribirPar: function (p) { c.frases[j] = p; } });
           });
         } else if (c.tipo === "escena") {
           (c.vinetas || []).forEach(function (v, j) {
@@ -789,6 +830,43 @@
   }
 
 
+  /* ------------------------------------------------- guardar es publicar ---
+     Los idiomas que de verdad se sirven al alumno (docs/12 §1.2). El base
+     siempre; un añadido, SOLO si está completo: media traducción publicada son
+     huecos en mitad de una misión, y eso es peor que no ofrecer el idioma. El
+     panel lo enseña con el chip ⏳ y «Salud del curso», así que nadie se queda
+     sin saber por qué su PT al 90 % todavía no aparece. */
+  function idiomasServibles(curso) {
+    var base = baseDe(curso);
+    return idiomasDe(curso).filter(function (lg) {
+      if (lg === base) return true;
+      if (!curso.misiones.some(function (m) { return !!m[lg]; })) return false;
+      return coberturaIdioma(curso, lg).length === 0;
+    });
+  }
+
+  /* TODAS las filas `content` de un curso, listas para la RPC única. Es el
+     curso ENTERO a propósito (docs/12 §«El modelo óptimo»): las filas dependen
+     unas de otras —el pool de señuelos de cada misión sale de las demás del
+     nivel, `next`/`nextLevel` de la vecina, la sala de retos y la audioteca de
+     todo el curso—, así que materializar «solo lo que cambió» dejaría pools
+     viejos sin que nada avise. Compilar el curso completo cuesta milisegundos
+     y quita de en medio una clase entera de errores. */
+  function armarVisible(fuente, clave) {
+    var curso = fuente.cursos[clave];
+    if (!curso) return [];
+    var filas = [];
+    idiomasServibles(curso).forEach(function (lg) {
+      armarCurso(fuente, clave, lg).forEach(function (f) {
+        filas.push({ id: f.id, lang: f.lang, kind: f.kind, art: f.art, data: f.data });
+      });
+      /* La fila ÍNDICE del player dinámico (/curso/#/clave): el mapa entero. */
+      var ind = armarIndiceCurso(fuente, clave, lg);
+      if (ind) filas.push({ id: lg + ":curso-" + clave, lang: lg, kind: "escuela-curso", art: clave, data: ind });
+    });
+    return filas;
+  }
+
   /* ------------------------------------ una sola tarjeta, muchos idiomas ---
      La tarjeta es UNA (titular 2026-09-03): su ESTRUCTURA —el tipo, el juego,
      cuántas opciones hay, cuál es la correcta, el orden, los fondos, anclas,
@@ -805,7 +883,7 @@
      escribe cada idioma. */
   function textosDeCard(c) {
     var t = { _tipo: c.tipo };
-    ["enunciado", "feedback", "sintesis", "cuerpo", "siguiente"].forEach(function (k) {
+    ["enunciado", "feedback", "cuerpo", "siguiente"].forEach(function (k) {
       if (c[k] && typeof c[k] === "object") t[k] = c[k];
     });
     if (typeof c.titulo === "string") t.titulo = c.titulo;
@@ -825,7 +903,7 @@
   function fundirCard(molde, viejos) {
     var out = JSON.parse(JSON.stringify(molde));
     if (!viejos || viejos._tipo !== molde.tipo) return out;
-    ["enunciado", "feedback", "sintesis", "cuerpo", "siguiente"].forEach(function (k) {
+    ["enunciado", "feedback", "cuerpo", "siguiente"].forEach(function (k) {
       if (out[k] && viejos[k]) out[k] = viejos[k];
     });
     if (typeof out.titulo === "string" && typeof viejos.titulo === "string") out.titulo = viejos.titulo;
@@ -874,7 +952,7 @@
       var e = JSON.parse(JSON.stringify(c));
       var t = textosDeCard(c);
       /* se compara TODO menos los textos */
-      ["enunciado", "feedback", "sintesis", "cuerpo", "siguiente", "titulo", "href", "placeholder"].forEach(function (k) { delete e[k]; });
+      ["enunciado", "feedback", "cuerpo", "siguiente", "titulo", "href", "placeholder"].forEach(function (k) { delete e[k]; });
       (e.opciones || []).forEach(function (o) { delete o.texto; delete o.feedback; delete o.corta; });
       if (e.frases) e.frases = e.frases.length;
       (e.vinetas || []).forEach(function (v) { delete v.texto; });
@@ -884,7 +962,7 @@
       if (lg === base || lg.length !== 2 || !entry[lg] || !entry[lg].cards) return false;
       var otro = JSON.stringify(entry[lg].cards.map(function (c) {
         var e = JSON.parse(JSON.stringify(c));
-        ["enunciado", "feedback", "sintesis", "cuerpo", "siguiente", "titulo", "href", "placeholder"].forEach(function (k) { delete e[k]; });
+        ["enunciado", "feedback", "cuerpo", "siguiente", "titulo", "href", "placeholder"].forEach(function (k) { delete e[k]; });
         (e.opciones || []).forEach(function (o) { delete o.texto; delete o.feedback; delete o.corta; });
         if (e.frases) e.frases = e.frases.length;
         (e.vinetas || []).forEach(function (v) { delete v.texto; });
@@ -894,11 +972,387 @@
     });
   }
 
+
+  /* ============================ ESTRUCTURA UNA VEZ, TEXTOS POR CLAVE (F0.5)
+     Hasta aquí cada entidad guardaba una CAPA COMPLETA por idioma: la
+     estructura (tipos de tarjeta, opciones, cuál es la correcta, el orden, los
+     fondos, anclas y poses de las viñetas) viajaba duplicada en cada idioma y
+     `sincronizarEstructura` tenía que reigualarla en cada edición para que no
+     divergiera — y ya divergió una vez (commit 9a5ddb5).
+
+     El formato nuevo la guarda UNA sola vez y deja por idioma únicamente los
+     textos, en el mismo mapa plano `clave → md` que produce `recorrerTextos`
+     para el traductor. Con eso: pesa menos de la mitad, la divergencia entre
+     idiomas deja de ser posible (no hay dos estructuras que igualar), la
+     cobertura es una diferencia de conjuntos, y crear con IA, traducir y editar
+     son la misma operación sobre el mismo mapa (docs/12 §7).
+
+     Estas dos funciones son inversas exactas: `hidratar(deshidratar(e)) === e`.
+     El `html` NO se guarda: se recompila al hidratar con el mismo mdInline /
+     mdBloque de la casa, así que el formato nuevo tampoco arrastra derivados. */
+
+  /* Un curso MÍNIMO que contenga solo esta entidad: así el recorredor único
+     sirve igual para una misión suelta que para el curso entero, y no hay una
+     segunda lista de campos traducibles que se pueda desincronizar. */
+  function envolverEntidad(entrada, tipo) {
+    if (tipo === "mision") return { niveles: {}, salas: {}, misiones: [entrada], pergaminos: [] };
+    if (tipo === "pergamino") return { niveles: {}, salas: {}, misiones: [], pergaminos: [entrada] };
+    /* curso: sus propias capas, niveles y salas; las entidades van aparte */
+    var c = {};
+    for (var k in entrada) if (k !== "misiones" && k !== "pergaminos") c[k] = entrada[k];
+    c.misiones = []; c.pergaminos = [];
+    return c;
+  }
+  function prefijoEntidad(entrada, tipo) {
+    return tipo === "curso" ? "" : tipo + "." + entrada.id + ".";
+  }
+
+  /* Los campos de una capa que NO son texto ni estructura de tarjeta: la ruta
+     que ese idioma ocupa en el sitio. Viajan por idioma, aparte de los textos,
+     porque un slug traducido es una decisión de publicación, no una frase. */
+  /* `words` va aquí y no en la estructura: es el recuento del texto DE ESE
+     idioma (el inglés de un pergamino no tiene las mismas palabras que el
+     español) y alimenta el «X min de lectura» de la audioteca. */
+  var CAMPOS_RUTA = ["slug", "url", "words"];
+
+  /* Lo que cambia por idioma sin ser una frase: la ruta que ocupa la capa y el
+     `href` de cada tarjeta que enlaza a un pergamino (el destino es la misma
+     pieza, pero su dirección la escribe cada idioma — `{P}guiltfu/learn/…`
+     frente a `{P}culpafu/aprende/…`). Si esto viviera en la estructura común,
+     el inglés apuntaría a las urls del español. */
+  function camposDeRuta(capa) {
+    var r = {};
+    if (!capa) return r;
+    CAMPOS_RUTA.forEach(function (c) { if (capa[c] != null) r[c] = capa[c]; });
+    if (capa.baseHash != null) r.baseHash = capa.baseHash;
+    (capa.cards || []).forEach(function (c, i) {
+      if (typeof c.href === "string") r["card." + i + ".href"] = c.href;
+    });
+    return r;
+  }
+  function aplicarRutas(capa, r) {
+    for (var c in r) {
+      var m = c.match(/^card\.(\d+)\.href$/);
+      if (m) { if (capa.cards && capa.cards[+m[1]]) capa.cards[+m[1]].href = r[c]; }
+      else capa[c] = r[c];
+    }
+  }
+
+  /* Entidad en capas → { estructura, rutas, textos } */
+  function deshidratarEntidad(entrada, tipo, base) {
+    var envoltorio = envolverEntidad(entrada, tipo);
+    var pref = prefijoEntidad(entrada, tipo);
+    var textos = {}, rutas = {};
+    var idiomas = Object.keys(entrada).filter(function (k) {
+      return k.length === 2 && entrada[k] && typeof entrada[k] === "object";
+    });
+    idiomas.forEach(function (lg) {
+      var mapa = {};
+      recorrerTextos(envoltorio, lg, function (v) {
+        var clave = v.clave.slice(pref.length);
+        /* Los campos con markdown guardan el PAR: así el html importado viaja
+           intacto y la paridad con build.py se conserva. Los campos planos
+           (title, corta, placeholder, dominio) son un string. */
+        if (v.leerPar) {
+          var p = v.leerPar();
+          if (p && (p.md || p.html)) {
+            /* Se guarda SOLO el markdown cuando el html es derivable de él —lo
+               es en el 90,7 % del corpus—, y el par entero cuando no (el
+               importado viene de python-markdown, que numera los encabezados
+               con `id` y espacia distinto los bloques con HTML crudo dentro;
+               recompilar ahí cambiaría el contenido publicado sin que nadie lo
+               haya decidido). Así el formato pesa lo que pesa el texto y la
+               paridad byte a byte con build.py se conserva. */
+            var re = p.md ? (v.tipo === "bloque" ? mdBloque(p.md) : mdInline(p.md)) : "";
+            mapa[clave] = (re === (p.html || "")) ? p.md : p;
+          }
+        } else {
+          var t = v.leer();
+          if (t !== "") mapa[clave] = t;
+        }
+      });
+      textos[lg] = mapa;
+      rutas[lg] = camposDeRuta(entrada[lg]);
+    });
+    /* La estructura es la capa BASE con todos sus textos vaciados: se saca con
+       el mismo recorredor, así que ningún campo traducible puede quedarse
+       dentro por descuido. */
+    var estructura = JSON.parse(JSON.stringify(entrada[base] || {}));
+    var soloEstructura = envolverEntidad(
+      tipo === "curso" ? estructura : asignar({}, entrada, base, estructura), tipo);
+    recorrerTextos(soloEstructura, base, function (v) { v.escribir(""); });
+    /* El `href` es del idioma (va en rutas), no de la estructura común. */
+    (estructura.cards || []).forEach(function (c) { if (typeof c.href === "string") c.href = ""; });
+    CAMPOS_RUTA.concat(["baseHash", "esHash"]).forEach(function (c) { delete estructura[c]; });
+
+    var fuera = { estructura: estructura, rutas: rutas, textos: textos };
+    /* Todo lo que no es ni capa de idioma ni lista de hijos es identidad de la
+       entidad (id, nivel, orden, kind, ordenArchivo, tipo…) y se conserva. */
+    for (var k in entrada) {
+      if (k.length === 2 && entrada[k] && typeof entrada[k] === "object") continue;
+      if (k === "misiones" || k === "pergaminos") continue;
+      fuera[k] = entrada[k];
+    }
+    return fuera;
+  }
+  function asignar(dest, entrada, lg, capa) {
+    for (var k in entrada) if (k.length !== 2) dest[k] = entrada[k];
+    dest[lg] = capa;
+    return dest;
+  }
+
+  /* { estructura, rutas, textos } → entidad en capas (lo que el panel edita) */
+  function hidratarEntidad(guardado, tipo) {
+    var entrada = {};
+    for (var k in guardado) {
+      if (k === "estructura" || k === "rutas" || k === "textos") continue;
+      entrada[k] = guardado[k];
+    }
+    Object.keys(guardado.textos || {}).forEach(function (lg) {
+      var capa = JSON.parse(JSON.stringify(guardado.estructura || {}));
+      aplicarRutas(capa, (guardado.rutas || {})[lg] || {});
+      entrada[lg] = capa;
+    });
+    /* Los textos se escriben con el MISMO recorredor que los sacó: cada clave
+       vuelve a su sitio y el html se recompila con la tipografía de la casa. */
+    Object.keys(guardado.textos || {}).forEach(function (lg) {
+      var envoltorio = envolverEntidad(entrada, tipo);
+      var pref = prefijoEntidad(entrada, tipo);
+      var mapa = guardado.textos[lg];
+      recorrerTextos(envoltorio, lg, function (v) {
+        var clave = v.clave.slice(pref.length);
+        var val = Object.prototype.hasOwnProperty.call(mapa, clave) ? mapa[clave] : "";
+        if (val && typeof val === "object" && v.escribirPar) v.escribirPar(val);
+        else v.escribir(typeof val === "string" ? val : "");
+      });
+    });
+    return entrada;
+  }
+
+  /* ¿Esta fila viene en el formato nuevo? (la base convive con los dos durante
+     la migración: cada entidad se pasa al nuevo la primera vez que se guarda) */
+  function esDeshidratada(fila) {
+    return !!(fila && fila.textos && fila.estructura);
+  }
+
+
+  /* ======================================================= examenFu (F1) ===
+     Un examenFu es un curso con `tipo: "examen"`: UN nivel, UNA misión de tipo
+     examen y cero pergaminos. Se construye aquí, en el ensamblador, y no en el
+     panel, porque la misma plantilla la van a usar dos productores: el wizard
+     «Nuevo examen» (que la deja vacía para que el maestro la rellene) y el
+     asistente de IA de F3 (que la rellena de una vez). Una sola forma, dos
+     caminos — que es la regla de la casa desde que hay tres productores de
+     contenido (docs/12 §«El modelo óptimo»). */
+
+  function parVacio(md) { return { md: md || "", html: md ? mdBloque(md) : "" }; }
+
+  function quizVacia() {
+    /* Tres opciones, respuesta única: el molde de la casa desde 2026-09-02. */
+    return { tipo: "quiz", enunciado: parVacio(""), feedback: parVacio(""),
+      opciones: [
+        { texto: { md: "", html: "" }, correct: true, feedback: { md: "", html: "" } },
+        { texto: { md: "", html: "" }, correct: false, feedback: { md: "", html: "" } },
+        { texto: { md: "", html: "" }, correct: false, feedback: { md: "", html: "" } }] };
+  }
+
+  /* Cuántos aciertos se piden por defecto para aprobar: tres cuartos, redondeado
+     hacia arriba y nunca menos de uno. El maestro lo cambia con un selector
+     1..N (decisión del titular: por CANTIDAD, jamás por porcentaje). */
+  function aprobarPorDefecto(n) {
+    /* Redondeo normal y no hacia arriba: con 3 preguntas da 2, que es
+       exactamente el «2 de 3» de los exámenes de cinturón de la casa. */
+    return Math.max(1, Math.min(n, Math.round(n * 0.75)));
+  }
+
+  /* Devuelve { curso, mision } listos para `fundarCurso` + `crearMision`. */
+  function plantillaExamen(clave, titulo, opts) {
+    opts = opts || {};
+    var lang = opts.lang || "es";
+    var n = Math.max(1, Math.min(30, opts.n || 10));
+    var en = lang === "en";
+    var curso = {
+      categoria: "examen", tipo: "examen", visibilidad: "enlace",
+      idioma_base: lang, idiomas: [],
+      examen: {
+        n: n,
+        aprobar_min: opts.aprobar_min || aprobarPorDefecto(n),
+        intentos: opts.intentos == null ? null : opts.intentos,
+        tiempo_min: opts.tiempo_min == null ? null : opts.tiempo_min,
+      },
+      niveles: {}, misiones: [], pergaminos: [], salas: {},
+    };
+    curso[lang] = { slug: "", url: clave + "/", title: titulo, description: "", summary: "" };
+    /* Las salas existen VACÍAS a propósito: `contexto()` y `armarCurso` dan por
+       hecho que `salas.pergaminos` y `salas.retos` están (aunque sin capa de
+       idioma, y entonces no emiten fila). Sin ellas, compilar un examen
+       reventaría. */
+    curso.salas = { pergaminos: { id: clave + "-pergaminos" }, retos: { id: clave + "-retos" } };
+    curso.niveles["1"] = { id: clave + "-level-1", belt: "black" };
+    curso.niveles["1"][lang] = {
+      slug: en ? "exam" : "examen", url: clave + (en ? "/exam/" : "/examen/"),
+      title: en ? "Exam" : "Examen", description: "", summary: "",
+    };
+    var cards = [{ tipo: "text", cuerpo: parVacio("") }];   /* la portada */
+    for (var i = 0; i < n; i++) cards.push(quizVacia());
+    var mision = { id: clave + "-1-exam", nivel: 1, orden: 99, kind: "exam", ordenArchivo: {} };
+    mision.ordenArchivo[lang] = 99;
+    mision[lang] = {
+      slug: en ? "exam" : "examen",
+      url: curso.niveles["1"][lang].url,
+      title: titulo, description: "", summary: "", cards: cards,
+    };
+    curso.misiones.push(mision);
+    return { curso: curso, mision: mision };
+  }
+
+  /* ================================= el molde de un CURSO entero (F4) ===
+     La misma idea que `plantillaExamen`, a lo grande: la plataforma construye
+     ids, urls, el reparto de cinturones y la baraja de cada misión, y lo deja
+     TODO vacío. Luego el maestro lo rellena a mano o el asistente de IA lo
+     rellena de una vez; en los dos casos, lo que se guarda pasa por las mismas
+     guardias. El modelo nunca escribe estructura (docs/12 §8). */
+
+  /* La rotación de barajas de la casa: una misión no es una lista de preguntas,
+     es un ritmo. Se alternan tres moldes para que dos misiones seguidas no se
+     sientan iguales, y todos acaban en una tarjeta de cierre. */
+  var BARAJAS = [
+    ["escena", "revela", "quiz", "quiz", "text"],
+    ["escena", "text", "quiz", "revela", "quiz", "text"],
+    ["escena", "quiz", "revela", "quiz", "text"],
+  ];
+
+  function cardVacia(tipo) {
+    if (tipo === "quiz") return quizVacia();
+    if (tipo === "revela") {
+      return { tipo: "revela", enunciado: parVacio(""),
+        frases: [{ md: "", html: "" }, { md: "", html: "" }, { md: "", html: "" }] };
+    }
+    if (tipo === "escena") {
+      /* Tres viñetas con fondo y pose por defecto: la IA elige el fondo y la
+         pose entre los del catálogo, pero la ESTRUCTURA ya está puesta. */
+      var v = function () {
+        return { fondo: "salon", ancla: "centro", pose: "reposo", texto: { md: "", html: "" } };
+      };
+      return { tipo: "escena", vinetas: [v(), v(), v()] };
+    }
+    return { tipo: "text", cuerpo: parVacio("") };
+  }
+
+  /* ============================ el puente con el asistente de IA (F3/F4) ===
+     El molde ya construido se traduce a la LISTA DE CLAVES que el modelo tiene
+     que rellenar, y su respuesta se devuelve a su sitio. Las dos funciones se
+     apoyan en el recorredor único, así que no hay una segunda lista de campos
+     que se pueda desincronizar: si mañana una tarjeta gana un campo de texto,
+     la IA lo rellena sola. */
+
+  /* Las claves de texto de un curso (o de una de sus entidades) en el idioma
+     dado, EN ORDEN. `filtro` recorta a una entidad concreta —una misión, un
+     nivel— para poder generar por lotes sin pedir el curso entero de una vez. */
+  function clavesDeTextos(curso, lang, filtro) {
+    var out = [];
+    recorrerTextos(curso, lang, function (v) {
+      if (filtro && v.clave.indexOf(filtro) !== 0) return;
+      out.push(v.clave);
+    });
+    return out;
+  }
+
+  /* Devuelve los textos del modelo a su sitio. Ignora lo que no reconozca (un
+     modelo servicial a veces añade una clave de su cosecha) y no toca lo que no
+     venga: así un lote parcial nunca borra lo que ya estaba escrito. */
+  function materializarTextos(curso, lang, mapa) {
+    var puestos = 0;
+    recorrerTextos(curso, lang, function (v) {
+      if (!Object.prototype.hasOwnProperty.call(mapa, v.clave)) return;
+      var t = mapa[v.clave];
+      if (typeof t !== "string" || !t) return;
+      v.escribir(t);
+      puestos++;
+    });
+    return puestos;
+  }
+
+  function plantillaCurso(clave, titulo, opts) {
+    opts = opts || {};
+    var lang = opts.lang || "es";
+    var en = lang === "en";
+    var nNiveles = Math.max(1, Math.min(8, opts.niveles || 4));
+    var porNivel = Math.max(1, Math.min(6, opts.misiones || 3));
+    var curso = {
+      categoria: opts.categoria || "general", tipo: "curso", visibilidad: "privado",
+      idioma_base: lang, idiomas: [], niveles: {}, misiones: [], pergaminos: [], salas: {},
+    };
+    curso[lang] = { slug: "", url: clave + "/", title: titulo, description: "", summary: "" };
+    var salaP = { id: clave + "-pergaminos" };
+    salaP[lang] = { url: clave + (en ? "/scrolls/" : "/pergaminos/"),
+                    title: en ? "Scrolls" : "Pergaminos", cuerpo: parVacio("") };
+    var salaR = { id: clave + "-retos" };
+    salaR[lang] = { url: clave + (en ? "/challenges/" : "/retos/"),
+                    title: en ? "Challenge hall" : "Sala de retos", cuerpo: parVacio("") };
+    curso.salas = { pergaminos: salaP, retos: salaR };
+
+    for (var n = 1; n <= nNiveles; n++) {
+      /* Los cinturones se reparten en orden por la escalera fija de ocho: un
+         curso de 4 niveles no da blanco-amarillo-naranja-verde, da los cuatro
+         repartidos hasta el negro (docs/10 §3.7). */
+      var idxBelt = nNiveles === 1 ? 7 : Math.round((n - 1) * (BELTS.length - 1) / (nNiveles - 1));
+      curso.niveles[String(n)] = { id: clave + "-level-" + n, belt: BELTS[idxBelt] };
+      curso.niveles[String(n)][lang] = {
+        slug: (en ? "level-" : "nivel-") + n,
+        url: clave + "/dojo/" + (en ? "level-" : "nivel-") + n + "/",
+        title: (en ? "Level " : "Nivel ") + n, description: "", summary: "",
+      };
+      for (var k = 1; k <= porNivel; k++) {
+        var baraja = BARAJAS[(n + k) % BARAJAS.length];
+        var cards = [];
+        for (var c = 0; c < baraja.length; c++) cards.push(cardVacia(baraja[c]));
+        var m = { id: clave + "-" + n + "-" + k, nivel: n, orden: k, kind: "mission", ordenArchivo: {} };
+        m.ordenArchivo[lang] = k;
+        m[lang] = {
+          slug: (en ? "mission-" : "mision-") + k,
+          url: curso.niveles[String(n)][lang].url + (en ? "mission-" : "mision-") + k + "/",
+          title: (en ? "Mission " : "Misión ") + n + "." + k, description: "", summary: "", cards: cards,
+        };
+        curso.misiones.push(m);
+      }
+      /* Cada nivel cierra con su examen de cinturón: seis preguntas, el molde
+         de la casa. */
+      var ex = { id: clave + "-" + n + "-exam", nivel: n, orden: 99, kind: "exam", ordenArchivo: {} };
+      ex.ordenArchivo[lang] = 99;
+      var exCards = [cardVacia("text")];
+      for (var q = 0; q < 6; q++) exCards.push(quizVacia());
+      ex[lang] = {
+        slug: en ? "belt-exam" : "examen-cinturon",
+        url: curso.niveles[String(n)][lang].url + (en ? "belt-exam/" : "examen-cinturon/"),
+        title: (en ? "Belt exam " : "Examen de cinturón ") + n, description: "", summary: "",
+        cards: exCards, siguiente: parVacio(""),
+      };
+      curso.misiones.push(ex);
+    }
+    return curso;
+  }
+
+  /* Añade o quita preguntas hasta dejar exactamente N (el maestro cambia el
+     número en los ajustes y las preguntas se ajustan solas; quitar va por el
+     final y nunca toca la portada). */
+  function ajustarPreguntas(capa, n) {
+    var quizzes = capa.cards.filter(function (c) { return c.tipo === "quiz"; }).length;
+    while (quizzes < n) { capa.cards.push(quizVacia()); quizzes++; }
+    while (quizzes > n) {
+      for (var i = capa.cards.length - 1; i >= 0; i--) {
+        if (capa.cards[i].tipo === "quiz") { capa.cards.splice(i, 1); break; }
+      }
+      quizzes--;
+    }
+    return capa;
+  }
+
   var API = {
     XP: XP, BELTS: BELTS, FRASES_PROHIBIDAS: FRASES_PROHIBIDAS,
     resolver: resolver, textoPlano: textoPlano, desescapar: desescapar,
     compilarCard: compilarCard, armarCurso: armarCurso, armarMisionDemo: armarMisionDemo,
-    armarIndiceCurso: armarIndiceCurso,
+    armarIndiceCurso: armarIndiceCurso, armarVisible: armarVisible, idiomasServibles: idiomasServibles,
     mdInline: mdInline, mdBloque: mdBloque, contarPalabras: contarPalabras,
     IDIOMAS: IDIOMAS, PREFIJO_NIVEL: PREFIJO_NIVEL,
     baseDe: baseDe, idiomasDe: idiomasDe,
@@ -909,6 +1363,16 @@
     sincronizarEstructura: sincronizarEstructura,
     estructuraDivergente: estructuraDivergente,
     avanceIdioma: avanceIdioma,
+    deshidratarEntidad: deshidratarEntidad, hidratarEntidad: hidratarEntidad,
+    esDeshidratada: esDeshidratada,
+    plantillaExamen: plantillaExamen, quizVacia: quizVacia, plantillaCurso: plantillaCurso,
+    ajustarPreguntas: ajustarPreguntas, aprobarPorDefecto: aprobarPorDefecto,
+    clavesDeTextos: clavesDeTextos, materializarTextos: materializarTextos,
+    /* Un pergamino es una CÁPSULA (titular 2026-09-04): una lectura corta que
+       se abre en modal desde UNA tarjeta de su misión, opcional y de un
+       vistazo. Vale para todos los cursos, no solo para el fundador. Espejo de
+       SCROLL_MAX_CHARS / SCROLL_MAX_POR_MISION en build.py. */
+    SCROLL_MAX_CHARS: 600, SCROLL_MAX_POR_MISION: 1,
   };
   if (typeof module !== "undefined" && module.exports) module.exports = API;
   else raiz.MFEscuela = Object.assign(raiz.MFEscuela || {}, { compilar: API });

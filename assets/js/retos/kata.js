@@ -154,21 +154,20 @@
      la PÁGINA, así que sin él son 404 en todas ellas (retos.js:478-482,
      arbol.js:12). El `.png` sigue siendo la reserva del `onerror` de cada <img>,
      que es la única red que queda cuando el WebP no llega. */
-  var RETOS = A + "assets/img/game/retos/";
+  var JUEGOS = A + "assets/img/juegos/";
   var MASCOTA = A + "assets/img/mascota/";
 
   /* Nombre de archivo SIN extensión: `poner()` prueba .webp y cae a .png. */
   var LAM_OFF = "linterna-apagada";
   var LAM_ON = "linterna-encendida";
-  var LAM_REPOSO = "propuesta-1";
-  var LAM_GOLPE = "mascota-golpe";
-  var LAM_PATADA = "mascota-patada";
-  var LAM_SENTADA = "mascota-sentada";
+  var LAM_REPOSO = "reposo";
+  var LAM_GOLPE = "golpe";
+  var LAM_PATADA = "patada";
+  var LAM_SENTADA = "sentada";
   /* las poses nuevas viven en la carpeta de escenas (docs/08) */
-  var ESCENAS = A + "assets/img/game/escenas/";
-  var LAM_CANTO = "pose-canto";
-  var LAM_GANCHO = "pose-gancho";
-  var LAM_VOLADORA = "pose-patada-voladora";
+  var LAM_CANTO = "canto";
+  var LAM_GANCHO = "gancho";
+  var LAM_VOLADORA = "patada-voladora";
 
   /* Los props, POR RANURA y jamás por corrección: qué opción cae en qué ranura
      lo decide la barajadura (§4.4), así que la silueta no puede transportar ni
@@ -209,8 +208,8 @@
        linterna-encendida 167×256 = 0.652      (pedida 0.800; casa al píxel con
                                                 su gemela: mismo bbox alfa ±1 px,
                                                 así que el swap no salta)
-       propuesta-1        550×700 = 0.786      (mascota canónica, de frente)
-       mascota-golpe      478×512 = 0.934      (pedida 0.800)
+       reposo             550×700 = 0.786      (mascota canónica, de frente; mascota/)
+       golpe              478×512 = 0.934      (pedida 0.800; mascota/)
        mascota-patada     453×512 = 0.885      (pedida 0.800)
        mascota-sentada    465×512 = 0.908      (pedida 0.800)
 
@@ -639,7 +638,7 @@
     function crearCirculo(n) {
       var c = document.createElement("span");
       c.className = "kata-circulo";
-      var fig = crearLamina("kata-circulo__fig", RETOS, LAM_OFF);
+      var fig = crearLamina("kata-circulo__fig", JUEGOS, LAM_OFF);
       c.appendChild(fig);
       pergamino.appendChild(c);
       return { nodo: c, fig: fig, fantasma: null };
@@ -661,11 +660,11 @@
        acierto exhibe EL SUYO con su fx del censo, y el remate repite esa
        misma tanda: la secuencia final es la de tus golpes. */
     var GOLPES_KATA = [
-      { base: RETOS, lam: LAM_GOLPE, fx: "fx-golpe" },
-      { base: RETOS, lam: LAM_PATADA, fx: "fx-patada" },
-      { base: ESCENAS, lam: LAM_CANTO, fx: "fx-canto" },
-      { base: ESCENAS, lam: LAM_GANCHO, fx: "fx-gancho" },
-      { base: ESCENAS, lam: LAM_VOLADORA, fx: "fx-patada" },
+      { base: MASCOTA, lam: LAM_GOLPE, fx: "fx-golpe" },
+      { base: MASCOTA, lam: LAM_PATADA, fx: "fx-patada" },
+      { base: MASCOTA, lam: LAM_CANTO, fx: "fx-canto" },
+      { base: MASCOTA, lam: LAM_GANCHO, fx: "fx-gancho" },
+      { base: MASCOTA, lam: LAM_VOLADORA, fx: "fx-patada" },
     ];
     var golpesRonda = [];
     (function () {
@@ -699,7 +698,7 @@
          de progreso y aquí queda solo la ilustración del prop con su placa. */
 
       /* El prop lo elige la RANURA, jamás la corrección (§2). */
-      b.appendChild(crearLamina("kata-prop", RETOS, PROPS[r % PROPS.length]));
+      b.appendChild(crearLamina("kata-prop", JUEGOS, PROPS[r % PROPS.length]));
 
       /* Sin modificador de etiqueta larga: aquí la placa va en la columna y no
          superpuesta a la lámina, así que la hoja la resuelve con `overflow-wrap`
@@ -748,13 +747,13 @@
        golpe —el único que el alumno mira— y la pieza parpadearía en blanco. */
     if (m.precargar) {
       m.precargar([
-        ruta(RETOS, LAM_ON, ".webp"),
-        ruta(RETOS, LAM_GOLPE, ".webp"),
-        ruta(RETOS, LAM_PATADA, ".webp"),
-        ruta(ESCENAS, LAM_CANTO, ".webp"),
-        ruta(ESCENAS, LAM_GANCHO, ".webp"),
-        ruta(ESCENAS, LAM_VOLADORA, ".webp"),
-        ruta(RETOS, LAM_SENTADA, ".webp")
+        ruta(JUEGOS, LAM_ON, ".webp"),
+        ruta(MASCOTA, LAM_GOLPE, ".webp"),
+        ruta(MASCOTA, LAM_PATADA, ".webp"),
+        ruta(MASCOTA, LAM_CANTO, ".webp"),
+        ruta(MASCOTA, LAM_GANCHO, ".webp"),
+        ruta(MASCOTA, LAM_VOLADORA, ".webp"),
+        ruta(MASCOTA, LAM_SENTADA, ".webp")
       ]);
     }
 
@@ -828,7 +827,7 @@
          la tira se enciende. La `corta` ya no se escribe en ningún sitio de la
          tira —no van textos—, pero la firma se conserva porque los llamantes
          (el vuelo de la etiqueta y la restauración) no tienen por qué saberlo. */
-      poner(c.fig, RETOS, LAM_ON);
+      poner(c.fig, JUEGOS, LAM_ON);
     }
 
     function activarCirculo(n) {
@@ -1252,7 +1251,7 @@
            postura por selector de `src`, así que la corrección viaja con el
            sprite y no hay ninguna variable que este archivo tenga que acordarse
            de poner —ni, peor, de quitar en el camino de vuelta—. */
-        poner(figura, RETOS, LAM_SENTADA);
+        poner(figura, MASCOTA, LAM_SENTADA);
       });
       luego(MS_SENTADA, function () { poner(figura, MASCOTA, LAM_REPOSO); });
     }
