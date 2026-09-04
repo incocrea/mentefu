@@ -20,6 +20,14 @@
 (function (raiz) {
   "use strict";
 
+  /* El audio de los pergaminos, DESHABILITADO (titular 2026-09-04). Espejo
+     exacto de AUDIO_PERGAMINOS en build.py: sin él, apagar el audio solo en el
+     generador dejaba encendido el de la ESCUELA, que es quien escribe las filas
+     `content` de un curso vivo — y el reproductor seguía saliendo en el modal
+     con un minipodcast de dos minutos sobre una cápsula de cinco líneas (lo vio
+     el titular en producción). Poner los DOS en true vuelve a conectarlo. */
+  var AUDIO_PERGAMINOS = false;
+
   /* Economía y escalera FIJAS de plataforma (espejo de build.py:100-125). */
   var XP = { mission: 20, exam: 50, scroll: 10, tool: 15 };
   var BELTS = ["white", "yellow", "orange", "green", "blue", "purple", "brown", "black"];
@@ -205,7 +213,9 @@
     c.itemArt = ctx.artDir;
     c.itemXp = xpPergamino(ent, capa);
     c.itemKind = ent.layout === "tool" ? "tool" : "scroll";
-    if (ctx.audio.indexOf(ent.id) >= 0) c.audio = aprefix + "assets/audio/" + ctx.lang + "/" + ent.id + ".mp3";
+    if (AUDIO_PERGAMINOS && ctx.audio.indexOf(ent.id) >= 0) {
+      c.audio = aprefix + "assets/audio/" + ctx.lang + "/" + ent.id + ".mp3";
+    }
   }
 
   /* Pools de señuelos por nivel (espejo de llenar_pools): tarjetas quiz de las
@@ -341,7 +351,7 @@
           id: ent.id, title: pc.title,
           summary: pc.summary || pc.description,
           href: pr.prefix + pc.url,
-          audio: ctx.audio.indexOf(ent.id) >= 0
+          audio: (AUDIO_PERGAMINOS && ctx.audio.indexOf(ent.id) >= 0)
             ? pr.aprefix + "assets/audio/" + ctx.lang + "/" + ent.id + ".mp3" : null,
           xp: xpPergamino(ent, pc),
           kind: ent.layout === "tool" ? "tool" : "scroll",
@@ -450,7 +460,7 @@
       if (!capaP) continue;
       pergaminos.push({ id: p.id, layout: p.layout, title: capaP.title,
                         kicker: capaP.kicker || "", words: capaP.words || 0, url: capaP.url,
-                        audio: ctx.audio.indexOf(p.id) >= 0,
+                        audio: AUDIO_PERGAMINOS && ctx.audio.indexOf(p.id) >= 0,
                         xp: xpPergamino(p, capaP) });
     }
     /* Los idiomas DISPONIBLES del curso (con capa de verdad): el selector del
@@ -1373,6 +1383,7 @@
        vistazo. Vale para todos los cursos, no solo para el fundador. Espejo de
        SCROLL_MAX_CHARS / SCROLL_MAX_POR_MISION en build.py. */
     SCROLL_MAX_CHARS: 600, SCROLL_MAX_POR_MISION: 1,
+    AUDIO_PERGAMINOS: AUDIO_PERGAMINOS,
   };
   if (typeof module !== "undefined" && module.exports) module.exports = API;
   else raiz.MFEscuela = Object.assign(raiz.MFEscuela || {}, { compilar: API });
