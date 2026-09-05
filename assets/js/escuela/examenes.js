@@ -15,6 +15,7 @@
  */
 (function () {
   "use strict";
+  var esc = MFDom.esc;   /* dom.js: una sola copia para todos */
   var cfg = window.MF_CONFIG || {};
   var ES = cfg.lang === "es";
   var esLocal = !(cfg.gate && window.SB && SB.enabled());
@@ -41,11 +42,6 @@
     demoLocal: "Local mode: exams from this browser.",
   };
 
-  function esc(t) {
-    return String(t == null ? "" : t)
-      .split("&").join("&amp;").split("<").join("&lt;")
-      .split(">").join("&gt;").split('"').join("&quot;");
-  }
 
   /* La dirección del player para un examen, absoluta dentro de este sitio. */
   function enlaceDe(clave) {
@@ -54,11 +50,30 @@
     catch (e) { return (cfg.prefix || "") + ruta + "#/" + clave; }
   }
 
+  /* Cuántas preguntas tiene un examen: se CUENTAN de su baraja. Antes se leía
+     `curso.examen.n`, un número guardado, y desde 2026-09-04 el maestro añade y
+     quita preguntas a voluntad, así que ese número mentiría. Va escrito aquí y
+     no se toma de `MFEscuela.compilar.contarPreguntas`, que hace lo mismo: este
+     archivo se carga en el PERFIL, donde el compilador no está (build.py solo
+     lo pone en los layouts `escuela` y `curso`) — pedirlo allí sería un
+     ReferenceError en la página del alumno. */
+  function preguntasDe(curso) {
+    var mis = (curso && curso.misiones) || [];
+    var base = (curso && curso.idioma_base) || "es";
+    for (var i = 0; i < mis.length; i++) {
+      if (mis[i].kind !== "exam") continue;
+      var capa = mis[i][base];
+      if (!capa || !capa.cards) return 0;
+      return capa.cards.filter(function (c) { return c.tipo === "quiz"; }).length;
+    }
+    return 0;
+  }
+
   function listar() {
     if (!esLocal) return SB.rpc("escuela_mis_examenes");
     /* En local no hay cuentas: se enseñan los exámenes de la fuente y de los
        borradores de este navegador, que es con lo que se prueba. */
-    return fetch(cfg.prefix + "escuela-fuente.json").then(function (r) { return r.json(); })
+    return fetch((cfg.assets || cfg.prefix) + "escuela-fuente.json").then(function (r) { return r.json(); })
       .then(function (f) {
         var creados = [];
         var cursos = f.cursos || {};
@@ -75,7 +90,7 @@
           if ((c.tipo || "curso") !== "examen") return;
           var base = c.idioma_base || "es";
           creados.push({ clave: clave, titulo: (c[base] && c[base].title) || clave,
-            n: (c.examen && c.examen.n) || 0, rendidos: 0 });
+            n: preguntasDe(c), rendidos: 0 });
         });
         return { creados: creados, mios: [] };
       }, function () { return { creados: [], mios: [] }; });

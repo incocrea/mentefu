@@ -23,7 +23,7 @@
   }
 
   function desdeArchivo() {
-    return fetch(cfg.prefix + "escuela-fuente.json").then(function (res) {
+    return fetch((cfg.assets || cfg.prefix) + "escuela-fuente.json").then(function (res) {
       if (!res.ok) throw new Error("fuente local " + res.status);
       return res.json();
     }).then(function (fuente) {
@@ -400,8 +400,23 @@
     ]).then(function (r) { return { misiones: r[0] || [], pergaminos: r[1] || [] }; });
   }
 
+  /* Eliminar un curso o un examen ENTERO. Sin papelera, a diferencia de las
+     misiones: media medida no libera el cupo ni suelta la clave, que es lo que
+     se busca al eliminar. El aviso lo da la interfaz, que pide confirmación.
+     En modo local basta con soltar el borrador de este navegador. */
+  function borrarCurso(clave) {
+    function olvidar() {
+      delete modelo.fuente.cursos[clave];
+      delete modelo.versiones["curso:" + clave];
+      try { localStorage.removeItem(LS_PREFIJO + "cursoNuevo:" + clave); } catch (e) { /* nada */ }
+    }
+    if (modelo.origen !== "sb") { olvidar(); return Promise.resolve(); }
+    return SB.rpc("escuela_borrar_curso", { p_clave: clave }).then(olvidar);
+  }
+
   window.MFEscuelaDatos = {
     fundarCurso: fundarCurso,
+    borrarCurso: borrarCurso,
     crearMision: crearMision,
     crearPergamino: crearPergamino,
     borrarFila: borrarFila,

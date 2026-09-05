@@ -12,6 +12,7 @@
  */
 (function () {
   "use strict";
+  var esc = MFDom.esc;   /* dom.js: una sola copia para todos */
   var cfg = window.MF_CONFIG || {};
   var ES = cfg.lang !== "en";
   var esLocal = !(cfg.gate && window.SB && SB.enabled());
@@ -25,7 +26,7 @@
     editar: "editar", quitar: "remover", guardar: "Guardar", cancelar: "Cancelar",
     vacio: "No has autorizado a ningún maestro todavía.",
     error: "No se pudo guardar. Reintenta.",
-    demoLocal: "印 modo local: esta lista es de prueba; en el sitio real vive en tu cuenta",
+    demoLocal: "modo local: esta lista es de prueba; en el sitio real vive en tu cuenta",
     sinCuenta: "Inicia sesión para autorizar maestros.",
   } : {
     titulo: "Fu masters",
@@ -35,14 +36,10 @@
     editar: "edit", quitar: "remove", guardar: "Save", cancelar: "Cancel",
     vacio: "You have not authorized any master yet.",
     error: "Could not save. Retry.",
-    demoLocal: "印 local mode: this list is a rehearsal; on the real site it lives in your account",
+    demoLocal: "local mode: this list is a rehearsal; on the real site it lives in your account",
     sinCuenta: "Sign in to authorize masters.",
   };
 
-  function esc(t) {
-    return String(t == null ? "" : t).replace(/&/g, "&amp;").replace(/</g, "&lt;")
-      .replace(/>/g, "&gt;").replace(/"/g, "&quot;");
-  }
   function emailValido(e) { return /^[^@\s]+@[^@\s]+\.[^@\s]+$/.test(e); }
 
   /* ---- datos: RPCs con Supabase, localStorage en la demo local ---- */

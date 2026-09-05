@@ -32,6 +32,7 @@
    sola. */
 (function () {
   "use strict";
+  var el = MFDom.el, esc = MFDom.esc;   /* dom.js: una sola copia para todos */
 
   var cfg = window.MF_CONFIG || {};
   var ES = cfg.lang === "es";
@@ -79,8 +80,6 @@
     nivelTodos: "All", nivel: "Level {n}", nivelesAria: "Question level", nivelEtiqueta: "Level",
   };
 
-  function el(html) { var d = document.createElement("div"); d.innerHTML = html.trim(); return d.firstChild; }
-  function esc(s) { return String(s == null ? "" : s).replace(/[&<>"]/g, function (c) { return { "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;" }[c]; }); }
   function propio(o, k) { return !!o && Object.prototype.hasOwnProperty.call(o, k); }
 
   /* Un índice dentro del array sin que un redondeo se salga por arriba: mismo
@@ -247,15 +246,19 @@
        Se enciende SOLO en localhost. En el sitio publicado esta apagado por
        construccion, para que no pueda escaparse a produccion en un despiste:
        alli regalaria el curso entero a cualquiera. Para forzarlo fuera de
-       localhost, `?todo=1`; para apagarlo aqui, `?todo=0`.
+       localhost no hay forma de encenderlo; aqui, `?todo=0` lo apaga.
 
        PARA QUITARLO cuando ya no haga falta: borrar este bloque y la primera
        linea de `completada()`. No hay nada mas que deshacer. */
     var TODO_ABIERTO = (function () {
-      var q = (window.location.search.match(/[?&]todo=([01])/) || [])[1];
-      if (q) return q === "1";
+      /* El host manda ANTES que el parametro: fuera de localhost esto es false
+         diga lo que diga la URL. Antes `?todo=1` se leia primero y abria la sala
+         entera en el sitio publicado a cualquier alumno que lo anadiera (lo
+         encontro la radiografia del 2026-09-04). */
       var h = window.location.hostname;
-      return h === "localhost" || h === "127.0.0.1" || h === "";
+      if (!(h === "localhost" || h === "127.0.0.1" || h === "")) return false;
+      var q = (window.location.search.match(/[?&]todo=([01])/) || [])[1];
+      return q !== "0";
     })();
 
     function completada(entrada) {

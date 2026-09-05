@@ -4,6 +4,7 @@
    reflexiones guardadas, microretos y pantalla final con XP y cinturón. */
 (function () {
   "use strict";
+  var el = MFDom.el;   /* dom.js: una sola copia para todos */
   var cfg = window.MF_CONFIG || {};
   /* Los sellos ilustrados (aspa, play…) viven todos aquí; misma constante y
      misma carpeta que en retos.js y pergamino.js, para que un sello se cambie
@@ -12,10 +13,9 @@
   var ES = cfg.lang === "es";
   var XP = (window.MF && MF.XP) || {};
   var T = ES ? {
-    next: "Siguiente", prev: "Anterior", finish: "Terminar", card: "Tarjeta {i} de {n}", quiz: "Pregunta", choice: "Explora", reflect: "Reflexiona", scroll: "Pergamino", text: "",
+    next: "Siguiente", prev: "Anterior", finish: "Terminar", card: "Tarjeta {i} de {n}",
     correct: "¡Correcto!", wrong: "No exactamente", bonus: "+{n} XP por acertar a la primera", retry: "Prueba otra vez",
-    open: "Abrir pergamino", scrollMeta: "Lectura de apoyo · +{n} XP al terminarlo",
-    listen: "Escucharlo en audio", listenMeta: "Minipodcast · +{n} XP al escucharlo completo", stop: "Detener", listened: "Pergamino escuchado", itemDone: "Completado", speed: "Velocidad de reproducción",
+    open: "Abrir pergamino", scrollMeta: "Lectura de apoyo · +{n} XP al terminarlo", listenMeta: "Minipodcast · +{n} XP al escucharlo completo", stop: "Detener", listened: "Pergamino escuchado", itemDone: "Completado", speed: "Velocidad de reproducción",
     conAudio: "leer o escuchar",
     missionDone: "Misión completada", examDone: "Examen terminado", earned: "XP ganados", alreadyDone: "Ya habías completado esta misión: repasar no suma XP, pero siempre suma.",
     passed: "Aprobado: {p} %", failed: "No alcanzaste el 75 % ({p} %). Repasa las misiones y vuelve a intentarlo: no hay penalización.", beltNew: "Nuevo cinturón", retake: "Repetir examen",
@@ -26,22 +26,19 @@
     exFuAprobado: "¡Aprobado! {g} de {n}", exFuFallado: "{g} de {n}. Necesitabas {m}.",
     exFuOtra: "Volver a intentarlo", exFuSinIntentos: "Se acabaron los intentos",
     exFuMisExamenes: "Ir a mis exámenes", exFuTarde: "Se acabó el tiempo",
-    exFuQuedan: "Te quedan {n} intentos", exFuUltimo: "Es tu último intento",
-    exFuReloj: "Tiempo", exFuCargando: "Preparando el examen…",
-    nextMission: "Siguiente: {t}", nextLevelBtn: "Empezar el {t}", backLevel: "Volver al nivel", toProfile: "Ver mi perfil", unlocked: "Logros desbloqueados",
+    exFuQuedan: "Te quedan {n} intentos", exFuUltimo: "Es tu último intento", exFuCargando: "Preparando el examen…",
+    nextMission: "Siguiente: {t}", nextLevelBtn: "Empezar el {t}", backLevel: "Volver al nivel", backMap: "Volver al mapa", toProfile: "Ver mi perfil", unlocked: "Logros desbloqueados",
     placeholder: "Escribe aquí…", saved: "Se guarda automáticamente.",
     retoTrain: "Entrenar", retoDone: "Superado ✓", retoExamSeal: "¡EXAMEN!",
-    apuesta: "Elige", cursoBadge: "✦ Correcto",
-    revela: "Revela",
+    cursoBadge: "✦ Correcto",
     revelaAria: { makiwara: "Golpea el makiwara: cada golpe revela una frase", campana: "Toca la campana: cada campanada revela una frase", tejas: "Rompe una teja: cada teja revela una frase", faroles: "Enciende un farol: cada farol revela una frase" },
     revelaPistas: { makiwara: "¡Golpea!", campana: "¡Toca!", tejas: "¡Rompe!", faroles: "¡Enciende!" },
     revelaReset: "Reiniciar la secuencia",
-    escena: "Escena", escenaSigue: "Toca para seguir la escena", escenaPista: "Toca la escena para continuar",
+    escenaSigue: "Toca para seguir la escena", escenaPista: "Toca la escena para continuar",
   } : {
-    next: "Next", prev: "Previous", finish: "Finish", card: "Card {i} of {n}", quiz: "Question", choice: "Explore", reflect: "Reflect", scroll: "Scroll", text: "",
+    next: "Next", prev: "Previous", finish: "Finish", card: "Card {i} of {n}",
     correct: "Correct!", wrong: "Not quite", bonus: "+{n} XP for a first-try hit", retry: "Try again",
-    open: "Open scroll", scrollMeta: "Supporting read · +{n} XP when finished",
-    listen: "Listen to it", listenMeta: "Mini-podcast · +{n} XP when you listen to the end", stop: "Stop", listened: "Scroll listened", itemDone: "Completed", speed: "Playback speed",
+    open: "Open scroll", scrollMeta: "Supporting read · +{n} XP when finished", listenMeta: "Mini-podcast · +{n} XP when you listen to the end", stop: "Stop", listened: "Scroll listened", itemDone: "Completed", speed: "Playback speed",
     conAudio: "read or listen",
     missionDone: "Mission completed", examDone: "Exam finished", earned: "XP earned", alreadyDone: "You had already completed this mission: reviewing does not add XP, but it always adds.",
     passed: "Passed: {p} %", failed: "You did not reach 75 % ({p} %). Review the missions and try again: there is no penalty.", beltNew: "New belt", retake: "Retake exam",
@@ -52,17 +49,15 @@
     exFuAprobado: "Passed! {g} of {n}", exFuFallado: "{g} of {n}. You needed {m}.",
     exFuOtra: "Try again", exFuSinIntentos: "No attempts left",
     exFuMisExamenes: "Go to my exams", exFuTarde: "Time is up",
-    exFuQuedan: "{n} attempts left", exFuUltimo: "This is your last attempt",
-    exFuReloj: "Time", exFuCargando: "Getting the exam ready…",
-    nextMission: "Next: {t}", nextLevelBtn: "Start {t}", backLevel: "Back to level", toProfile: "See my profile", unlocked: "Achievements unlocked",
+    exFuQuedan: "{n} attempts left", exFuUltimo: "This is your last attempt", exFuCargando: "Getting the exam ready…",
+    nextMission: "Next: {t}", nextLevelBtn: "Start {t}", backLevel: "Back to level", backMap: "Back to the map", toProfile: "See my profile", unlocked: "Achievements unlocked",
     placeholder: "Write here…", saved: "Saved automatically.",
     retoTrain: "Train", retoDone: "Cleared ✓", retoExamSeal: "PASSED!",
-    apuesta: "Choose", cursoBadge: "✦ Correct",
-    revela: "Reveal",
+    cursoBadge: "✦ Correct",
     revelaAria: { makiwara: "Strike the makiwara: each strike reveals a line", campana: "Ring the bell: each toll reveals a line", tejas: "Break a tile: each tile reveals a line", faroles: "Light a lantern: each lantern reveals a line" },
     revelaPistas: { makiwara: "Strike!", campana: "Ring it!", tejas: "Break it!", faroles: "Light it!" },
     revelaReset: "Restart the sequence",
-    escena: "Scene", escenaSigue: "Tap to continue the scene", escenaPista: "Tap the scene to continue",
+    escenaSigue: "Tap to continue the scene", escenaPista: "Tap the scene to continue",
   };
   var LETTERS = "ABCDEF";
   /* Láminas de la sala de retos (patrón arbol.js:12): el prefijo del build es
@@ -70,8 +65,17 @@
      raíz y la edición inglesa vive bajo /en/. */
   var JUEGOS_IMG = (cfg.assets || "") + "assets/img/juegos/";
   var MASCOTA_IMG = (cfg.assets || "") + "assets/img/mascota/";
+  var ESCENAS_IMG = (cfg.assets || "") + "assets/img/escenas/";
+  /* Los fondos ilustrados de la tarjeta REVELA (titular 2026-09-04): se
+     sortean por tarjeta para que la escena no sea siempre la misma. VACÍO
+     mientras las láminas no existan —generarlas consume la API de imágenes y
+     eso solo lo dispara el titular—: con la lista vacía no se monta capa
+     ninguna y la escena sigue con su degradado de dos tonos, exactamente como
+     hasta ahora. Al llenar la lista se enciende sola.
+     Los nombres son los de `assets/img/escenas/revela-<nombre>.webp` y sus
+     recetas viven en tools/arte.py. */
+  var REVELA_FONDOS = ["dojo", "armas", "engawa", "patio", "jardin"];
 
-  function el(html) { var d = document.createElement("div"); d.innerHTML = html.trim(); return d.firstChild; }
 
   /* Texto ajeno dentro de un html que se arma a mano. mission.js nunca lo
      necesitó porque todo su html venía ya compilado; examenFu mete rótulos y
@@ -122,6 +126,55 @@
     var revelaVar = {};       /* iTarjeta -> variante sorteada */
     var revelaBolsa = [];     /* la tanda barajada pendiente de salir */
     var revelaUltimo = null;
+    /* Y desde 2026-09-04, además de la variante se sortean el FONDO y el LADO
+       (titular: «que randomicen fondo y ubicación»). Van en cachés por tarjeta
+       igual que la variante, y por el mismo motivo: el botón de reiniciar
+       vuelve a llamar a renderCard() sin borrarlas, así que un sorteo al vuelo
+       cambiaría el decorado de sitio en cada pulsación. */
+    var revelaFondo = {};     /* iTarjeta -> lámina de fondo sorteada */
+    var revelaFondoBolsa = [];
+    var revelaFondoUltimo = null;
+    var revelaEspejo = {};    /* iTarjeta -> ¿la escena va del revés? */
+
+    /* El sorteo del fondo, compartido: lo usan la tarjeta REVELA y la de ELIGE
+       (titular 2026-09-04), que montan la misma estampa —mascota a un lado, el
+       objeto al otro, sobre una banda con su línea de suelo— y hasta copiaban
+       literal el mismo degradado de dos tonos. Ilustrar solo una habría dejado
+       dos lenguajes visuales conviviendo en la misma misión.
+       Por BOLSA: ninguna lámina repite hasta agotar la tanda, y la primera de
+       la tanda nueva no puede ser la última de la vieja. Cacheado por tarjeta,
+       porque estas escenas se repintan a cada interacción y sortear al vuelo
+       cambiaría el decorado a media jugada.
+       Con REVELA_FONDOS vacío devuelve nada y no se monta capa: manda el
+       degradado del CSS, que sigue siendo el respaldo si una lámina no carga. */
+    function sortearFondo(iTarjeta) {
+      if (!REVELA_FONDOS.length) return null;
+      if (!(iTarjeta in revelaFondo)) {
+        if (!revelaFondoBolsa.length) {
+          revelaFondoBolsa = REVELA_FONDOS.slice();
+          for (var fz = revelaFondoBolsa.length - 1; fz > 0; fz--) {
+            var fj = Math.floor(Math.random() * (fz + 1));
+            var ftmp = revelaFondoBolsa[fz]; revelaFondoBolsa[fz] = revelaFondoBolsa[fj]; revelaFondoBolsa[fj] = ftmp;
+          }
+          if (revelaFondoBolsa.length > 1 && revelaFondoBolsa[0] === revelaFondoUltimo) {
+            revelaFondoBolsa.push(revelaFondoBolsa.shift());
+          }
+        }
+        revelaFondo[iTarjeta] = revelaFondoBolsa.shift();
+        revelaFondoUltimo = revelaFondo[iTarjeta];
+      }
+      return revelaFondo[iTarjeta];
+    }
+
+    /* La capa del fondo. Va como PRIMER hijo de la escena y por debajo de todo
+       —el degradado de dos tonos queda detrás como respaldo—, y se espeja sola
+       sin arrastrar consigo a la mascota ni al objeto. */
+    function capaFondo(nombre, espejo) {
+      if (!nombre) return "";
+      return '<span class="fondo-sorteado' + (espejo ? " is-espejo" : "") +
+        '" aria-hidden="true" style="background-image:url(' + ESCENAS_IMG +
+        "revela-" + nombre + '.webp)"></span>';
+    }
     /* EXAMEN 2 DE 3 (titular 2026-09-02): con miniretos, el examen se aprueba
        superando al menos dos retos, no por porcentaje. El clasico sin motor
        conserva su 75 %. */
@@ -133,12 +186,14 @@
     /* Cuántos aciertos hacen falta. En un examenFu lo decide el maestro con un
        selector 1..N (decisión del titular 2026-09-03: por CANTIDAD, nunca por
        porcentaje); en un examen de cinturón siguen siendo los 2 de 3 de siempre. */
+    /* En un examen de cinturón, «aprueba con» lo dicta build.py
+       (MF_CONFIG.examen.aprueba): el mismo número que retos.js y el panel. */
     var minAciertos = data.examenFu
       ? Math.max(1, Math.min(data.rondas || 1, data.aprobar_min || 1))
-      : 2;
+      : ((cfg.examen && cfg.examen.aprueba) || 2);
     function examenAprobado(score) {
       if (data.examenFu) return examGanados >= minAciertos;
-      return examenConRetos() ? examGanados >= 2 : score >= (XP.exam_pass || 0.75);
+      return examenConRetos() ? examGanados >= minAciertos : score >= (XP.exam_pass || 0.75);
     }
     /* EXAMEN ENCADENADO (titular 2026-09-02): los tres retos son un solo
        combate. Al cerrarse un reto resuelto la bandera se levanta, goNext
@@ -177,8 +232,10 @@
     }
     function arrancarReloj() {
       if (!intentoEx || !intentoEx.deadline) return;
-      var top = wrap.querySelector(".mission__top");
-      if (top && !wrap.querySelector("[data-reloj]")) {
+      /* `top` es la variable de start(): tras el trasplante la barra ya no
+         cuelga del wrap y un querySelector sobre él devolvería null, dejando
+         el examenFu sin reloj y sin un solo error en consola. */
+      if (top && !top.querySelector("[data-reloj]")) {
         top.appendChild(el('<span class="mission__reloj" data-reloj></span>'));
       }
       pintarReloj();
@@ -191,6 +248,24 @@
     var wrap = el('<div class="mission"><div class="mission__top"><div class="mission__bar"><div class="mission__fill"></div></div><span class="mission__count"></span></div><div class="mission__stage"></div><div class="mission__actions"><button class="btn btn--ghost" type="button" data-prev hidden>' + T.prev + '</button><button class="btn btn--primary" type="button" data-next>' + T.next + '</button></div></div>');
     body.appendChild(wrap);
     var fill = wrap.querySelector(".mission__fill"), count = wrap.querySelector(".mission__count"), stage = wrap.querySelector(".mission__stage"), nextBtn = wrap.querySelector("[data-next]"), prevBtn = wrap.querySelector("[data-prev]");
+    /* La barra de tarjetas sube al HERO (titular 2026-09-04). No se reescribe
+       el marcado: se TRASPLANTA el nodo, y así `progress()`, `finish()`, el
+       reloj del examenFu y el reintento siguen funcionando sin tocarse.
+       OJO AL ORDEN: `fill` y `count` viven DENTRO de la barra, así que hay que
+       tomarlos ANTES de moverla; buscarlos en el wrap después devuelve null y
+       el contador se queda mudo (pasó, y solo se vio mirándolo en pantalla).
+       El hueco se vacía antes de recibirla: al cambiar de sesión auth.js borra
+       el cuerpo y vuelve a entregar el contenido, y sin esto el hero
+       acumularía la barra vieja —congelada— encima de la nueva.
+       Si no hay hueco (player de /curso/, «Probar» de /escuela/) la barra se
+       queda donde estaba, que es justo lo que allí conviene. */
+    var top = wrap.querySelector(".mission__top");
+    var hueco = document.querySelector("[data-mission-progress]");
+    if (hueco && top) {
+      hueco.innerHTML = "";
+      top.classList.add("mission__top--hero");
+      hueco.appendChild(top);
+    }
     /* hasta dónde ha llegado ya: al volver atrás, las tarjetas superadas no
        vuelven a exigir su respuesta */
     var reached = 0;
@@ -214,7 +289,6 @@
       encadenar = false;
       stage.innerHTML = "";
       var card = el('<article class="mcard mcard--' + c.type + '"></article>');
-      if (T[c.type]) card.appendChild(el('<span class="mcard__type">' + T[c.type] + "</span>"));
       var content = document.createElement("div"); content.innerHTML = c.html || ""; card.appendChild(content);
       /* la apertura del examen medita (titular 2026-09-02): la mascota zen de
          la mascota meditando (mascota/medita) preside la tarjeta de explicacion, y luego el texto */
@@ -344,7 +418,7 @@
            toda misión, pero de este modo un orden de carga adverso tampoco
            podría dejar el enlace navegable. Solo las tarjetas SIN item (una
            página pública como el manifiesto) siguen siendo enlaces normales. */
-        if (c.item && c.itemKind !== "tool") {
+        if (c.item) {
           link.addEventListener("click", function (e) {
             /* con Ctrl/Cmd/Mayús el enlace sigue siendo un enlace: abrir en otra
                pestaña debe funcionar */
@@ -365,7 +439,7 @@
         var itemHecho = function () {
           if (!window.MF || !c.item) return false;
           var aa = MF.art(artKey);
-          return !!(aa.scrolls[c.item] || aa.tools[c.item]);
+          return !!aa.scrolls[c.item];
         };
         var sellar = function () {
           if (!itemHecho()) return;
@@ -565,7 +639,14 @@
       /* La mascota vive en una CAJA de medidas fijas y la lámina cambia DENTRO
          (el canon de la kata): reposo y golpe tienen proporciones distintas y
          sin la caja el swap ensanchaba la columna y toda la fila bailaba. */
-      var escena = el('<div class="apuesta-escena"><span class="apuesta-mascota" aria-hidden="true"><img class="apuesta-mascota__fig" alt="" decoding="async"></span><div class="apuesta-tablas"></div></div>');
+      /* Mismo fondo sorteado que la tarjeta revela: comparten estampa y hasta
+         compartían el degradado. El LADO aquí no se espeja —las mitades de una
+         tabla rota caen con giro y desplazamiento propios (`.apuesta-mitad`), y
+         reflejarlas es otro encargo— así que la lámina tampoco, o el suelo
+         quedaría del revés respecto a una escena que no lo está. */
+      var escena = el('<div class="apuesta-escena">'
+        + capaFondo(sortearFondo(iTarjeta), false)
+        + '<span class="apuesta-mascota" aria-hidden="true"><img class="apuesta-mascota__fig" alt="" decoding="async"></span><div class="apuesta-tablas"></div></div>');
       var mascota = escena.querySelector(".apuesta-mascota__fig");
       mascota.src = REPOSO;
       var filaT = escena.querySelector(".apuesta-tablas");
@@ -732,6 +813,16 @@
       }
       var vr = revelaVar[iTarjeta];
 
+      var fondoCls = sortearFondo(iTarjeta);
+      /* EL LADO: cara o cruz, cacheado. No se hace con `scaleX(-1)` sobre la
+         escena —eso escribiría del revés el texto de la pista, cambiaría de
+         esquina la píldora de puntos y el botón de reiniciar, y sobre todo
+         mandaría las partículas de MFJuice al lado contrario del impacto,
+         porque se inyectan DENTRO de la escena con left/top absolutos—. Se
+         hace donde el código ya decidía el lado: en el ORDEN del markup. */
+      if (!(iTarjeta in revelaEspejo)) revelaEspejo[iTarjeta] = Math.random() < 0.5;
+      var espejo = revelaEspejo[iTarjeta];
+
       /* el sorteo de GOLPE: cuatro laminas, nunca dos iguales seguidas */
       var GOLPES = [GOLPE, PATADA, CANTO, GANCHO, VOLADORA];
       var ultimoGolpe = null;
@@ -765,9 +856,23 @@
         tejas: '<button class="revela-obj revela-obj--tejas" type="button"><span class="tejas-pila" aria-hidden="true"></span><span class="revela-pista" aria-hidden="true"></span></button>',
         faroles: '<button class="revela-obj revela-obj--faroles" type="button"><span class="revela-pista" aria-hidden="true"></span></button>',
       };
-      var izquierda = (vr === "makiwara" || vr === "faroles");
-      var escena = el('<div class="revela-escena revela-escena--' + vr + '">'
-        + (izquierda ? mascotaHTML(vr === "faroles") + botonHTML[vr] : botonHTML[vr] + mascotaHTML(true))
+      var izqBase = (vr === "makiwara" || vr === "faroles");
+      var izquierda = espejo ? !izqBase : izqBase;
+      /* La mirada, generalizada. Todas las láminas de la mascota se dibujan
+         mirando a la IZQUIERDA salvo `empuja` (la de faroles), que mira a la
+         derecha de fábrica. Así que el espejo sobra exactamente cuando la
+         mascota ya mira hacia donde está el objeto: XOR entre «está a la
+         derecha» y «es la pose que mira al revés». Antes esto estaba escrito
+         como dos casos sueltos porque el lado era fijo. */
+      var sinflip = (!izquierda) !== (vr === "faroles");
+      /* La dirección va también en una clase: dos físicas son direccionales
+         —el makiwara pivota en su base y se tumba con giro positivo, la
+         campana cae hacia la izquierda— y sin reflejarlas el poste y la
+         campana caerían ENCIMA de la mascota. */
+      var escena = el('<div class="revela-escena revela-escena--' + vr
+        + (izquierda ? " revela-escena--izq" : " revela-escena--der") + '">'
+        + capaFondo(fondoCls, espejo)
+        + (izquierda ? mascotaHTML(sinflip) + botonHTML[vr] : botonHTML[vr] + mascotaHTML(sinflip))
         + '<span class="revela-puntos" aria-hidden="true"></span>'
         /* reiniciar SOLO esta card (titular 2026-09-02): rehacer la secuencia
            de revelado desde cero, mismo escenario, texto y golpes ocultos */
@@ -778,10 +883,18 @@
       reset.setAttribute("title", T.revelaReset);
       reset.addEventListener("click", function () {
         /* la memoria de frases vuelve a cero y se re-pinta la MISMA card: el
-           dispatch de renderCard vuelve a bloquear el paso (setNext(false))
-           y renderRevela monta el escenario limpio con la variante ya
-           sorteada (revelaVar[iTarjeta] se conserva) */
+           dispatch de renderCard vuelve a bloquear el paso (setNext(false)) */
         revelas[iTarjeta] = 0;
+        /* REFRESCAR TAMBIÉN REBARAJA EL DECORADO (titular 2026-09-04): al
+           reiniciar cambian el fondo y el lado, así que repetir la tarjeta no
+           es repetir la misma estampa. Se borran sus dos cachés y el sorteo de
+           arriba vuelve a tirar los dados; la bolsa sigue mandando, así que el
+           fondo tampoco repite hasta agotar la tanda.
+           La VARIANTE (campana, makiwara, tejas, faroles) NO se re-sortea: es
+           el objeto con el que se interactúa y cambiarlo sería cambiar de
+           juego a mitad de la tarjeta, no refrescar el escenario. */
+        delete revelaFondo[iTarjeta];
+        delete revelaEspejo[iTarjeta];
         renderCard(c);
       });
       var mascota = escena.querySelector(".revela-mascota__fig");
@@ -945,7 +1058,11 @@
           var chispa = el('<span class="revela-chispa" aria-hidden="true"></span>');
           escena.appendChild(chispa);
           sfx("fx-chispa-viaje");
-          var x0 = rm.right - re.left - 6, y0 = rm.top - re.top + rm.height * 0.40;
+          /* el borde de la caja donde queda la mano: con la mascota a la
+             izquierda es el derecho, y al espejar la escena pasa a ser el
+             izquierdo. Sin esto la chispa sale de la nuca. */
+          var x0 = (izquierda ? rm.right - re.left - 6 : rm.left - re.left + 6);
+          var y0 = rm.top - re.top + rm.height * 0.40;
           var x1 = x0, y1 = y0;
           if (farol) {
             var rf = farol.getBoundingClientRect();
@@ -1332,6 +1449,25 @@
       fill.style.width = "100%"; count.textContent = T.card.replace("{i}", n).replace("{n}", n);
       wrap.querySelector(".mission__actions").hidden = true;
       var total = earned + bonus;
+      /* Al cerrar un EXAMEN se vuelve al MAPA DEL CURSO —la portada del arte,
+         la que lleva el camino de los ocho cinturones— y no a la página del
+         nivel: con el cinturón recién ganado, lo siguiente es el mapa, no la
+         casilla de la que se sale.
+         La URL ya viaja en MF_CONFIG.arts, relativa a ESTA página, así que no
+         hay que tocar build.py ni resembrar el content de Supabase; es el mismo
+         patrón que usa profile.js. Solo en las páginas estáticas: en el player
+         /curso/ y en el modo Probar de /escuela/ no hay portada de arte, y ahí
+         se deja el destino de siempre —que curso.js ya intercepta y convierte
+         en el mapa del curso, así que la etiqueta nueva es incluso más veraz—. */
+      function mapaHref() {
+        if (cfg.page && cfg.page.layout === "mission") {
+          var arts = cfg.arts || [];
+          for (var q = 0; q < arts.length; q++) {
+            if (arts[q].key === data.art && arts[q].url) return arts[q].url;
+          }
+        }
+        return data.levelHref || "./";
+      }
       var html = '<article class="mcard mcard--done">';
       if (esExFu) { return finishExamenFu(); }
       if (isExam) {
@@ -1363,7 +1499,7 @@
         var puerta = res.passed && data.nextLevel
           ? '<a class="btn btn--primary" href="' + data.nextLevel.href + '">' + T.nextLevelBtn.replace("{t}", data.nextLevel.title) + "</a>" : "";
         html += '<div class="mcard__actions">' + (res.passed ? puerta : '<button class="btn btn--primary" type="button" data-retake>' + T.retake + "</button>")
-              + '<a class="btn btn--ghost" href="' + (data.levelHref || "./") + '">' + T.backLevel + '</a><a class="btn btn--ghost" href="' + (cfg.profileUrl || "#") + '">' + T.toProfile + "</a></div>";
+              + '<a class="btn btn--ghost" href="' + mapaHref() + '">' + T.backMap + '</a><a class="btn btn--ghost" href="' + (cfg.profileUrl || "#") + '">' + T.toProfile + "</a></div>";
       } else {
         var unlocked = window.MF ? MF.completeMission(data.art, data.id, total, data.level) : [];
         html += '<div class="mcard__trophy" aria-hidden="true">⚡</div><h3>' + T.missionDone + "</h3>";
@@ -1453,7 +1589,7 @@
          (progress.js:506); llamarlo con un solo argumento dejaba el toast sin
          título y con «undefined» de texto. */
       if (window.MF && MF.toast) { MF.toast("info", txt, "", "⏱"); return; }
-      var top = wrap.querySelector(".mission__top");
+      /* misma razón que en arrancarReloj(): la barra puede vivir en el hero */
       if (top) top.appendChild(el('<span class="mission__aviso">' + escapa(txt) + "</span>"));
     }
 

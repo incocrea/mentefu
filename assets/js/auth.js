@@ -4,6 +4,7 @@
    el contenido viene embebido y no hay cuentas. Expone window.MFAuth. */
 (function () {
   "use strict";
+  var el = MFDom.el;   /* dom.js: una sola copia para todos */
   var cfg = window.MF_CONFIG || {};
   var ES = cfg.lang === "es";
   var T = ES ? {
@@ -273,7 +274,6 @@
   }
 
   /* ---------- formulario de cuenta (login / registro) ---------- */
-  function el(html) { var d = document.createElement("div"); d.innerHTML = html.trim(); return d.firstChild; }
 
   /* Al entrar, la página se relee desde arriba: el alumno venía de un
      formulario a media pantalla y aterrizaba en mitad de la nada
@@ -391,7 +391,7 @@
       busy(login, true); say(login, T.working);
       SB.signInWithPassword(email, pass).then(function () {
         olvidarUsuario();
-        try { sessionStorage.removeItem("mf.admin"); } catch (err) { /* nada */ }
+        try { sessionStorage.removeItem("mf.admin2"); } catch (err) { /* nada */ }
         if (window.MF && MF.setSession) MF.setSession("in");
         if (window.MF) MF.track("signin", { item: "auth" });
         say(login, "✅");
@@ -420,7 +420,7 @@
       SB.signUp(email, pass, { name: name, phone: phone, country: country, terms_accepted_at: new Date().toISOString() }).then(function (d) {
         if (window.MF) { MF.state().name = MF.state().name || name; MF.save(); MF.track("signup", { item: "auth" }); }
         /* si la confirmación de email está desactivada, GoTrue ya devuelve sesión */
-        if (d && d.access_token) { olvidarUsuario(); try { sessionStorage.removeItem("mf.admin"); } catch (err) { /* nada */ } if (MF.setSession) MF.setSession("in"); irArriba(); window.location.reload(); return; }
+        if (d && d.access_token) { olvidarUsuario(); try { sessionStorage.removeItem("mf.admin2"); } catch (err) { /* nada */ } if (MF.setSession) MF.setSession("in"); irArriba(); window.location.reload(); return; }
         say(signup, T.signupOk);
       }).catch(function (err) {
         var m = (err && err.message) || "";
@@ -539,7 +539,7 @@
         .then(function () { return SB.signOut(); })
         .then(function () {
           olvidarUsuario();
-          try { sessionStorage.removeItem("mf.admin"); } catch (err) { /* nada */ }
+          try { sessionStorage.removeItem("mf.admin2"); } catch (err) { /* nada */ }
           if (window.MF && MF.forget) MF.forget();
           if (window.MF && MF.setSession) MF.setSession("out");
         });

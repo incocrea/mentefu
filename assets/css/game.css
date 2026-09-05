@@ -15,6 +15,20 @@
 .hud__meta { display: flex; flex-direction: column; line-height: 1.1; }
 .hud__rank { font-family: var(--f-display); font-weight: 700; font-size: 0.78rem; letter-spacing: 0.06em; text-transform: uppercase; }
 .hud__xp { font-size: 0.72rem; color: var(--c-text-on-dark-soft); }
+/* El atajo al MAPA DEL CURSO, hermano del chip de perfil (titular 2026-09-04).
+   Se lee como pareja del `.hud`: misma píldora redonda, mismo borde, mismo
+   alto. Va DESPUÉS de él en el DOM y no antes, y eso importa: en móvil el
+   `.hud` se lleva el `margin-left: auto`, así que un hermano anterior caería
+   pegado al burger, en la otra punta de la cabecera.
+   El icono es SVG y hereda `currentColor`, por eso el hover solo cambia el
+   color y el borde y no hay que repintar nada. */
+.mapa-chip { display: inline-flex; align-items: center; justify-content: center;
+  flex: 0 0 auto; width: 2.1rem; height: 2.1rem; border-radius: 999px;
+  border: 1px solid var(--c-line-dark); color: inherit; text-decoration: none;
+  transition: border-color 0.2s, background 0.2s, color 0.2s; }
+.mapa-chip:hover, .mapa-chip:focus-visible { border-color: var(--c-accent-btn);
+  background: var(--c-accent-btn); color: var(--c-accent-ink); }
+.mapa-chip svg { display: block; }
 .hud.is-bump .hud__ring { animation: bump 0.5s ease; }
 @keyframes bump { 0% { transform: scale(1); } 40% { transform: scale(1.25); } 100% { transform: scale(1); } }
 
@@ -49,25 +63,30 @@
 .how__step h3 { font-family: var(--f-display); font-size: 1.2rem; margin: 0 0 0.4rem; }
 .how__step p { margin: 0; color: var(--c-text-soft); }
 
-/* ---------- Tarjetas de arte ---------- */
-@media (min-width: 40rem) { .grid--arts { grid-template-columns: repeat(auto-fit, minmax(15rem, 1fr)); } }
-@media (min-width: 60rem) { .grid--arts { grid-template-columns: repeat(auto-fit, minmax(14rem, 1fr)); } }
-.art-card { position: relative; display: flex; flex-direction: column; gap: 0.4rem; padding: 1rem; border-radius: var(--radius-lg); background: var(--c-ink-bg); color: var(--c-text-on-dark); text-decoration: none; overflow: hidden; min-height: 11.5rem; border: 1px solid var(--c-line-dark); transition: transform 0.2s, box-shadow 0.2s; }
-.art-card::before { content: ""; position: absolute; inset: auto -30% -45% auto; width: 70%; aspect-ratio: 1; border-radius: 50%; background: radial-gradient(circle, var(--art) 0%, transparent 65%); opacity: 0.45; pointer-events: none; }
-a.art-card:hover { transform: translateY(-4px); box-shadow: var(--shadow); }
-.art-card--soon { opacity: 0.72; filter: saturate(0.6); }
-.art-card__icon { font-size: 1.6rem; line-height: 1; text-align: center; }
-.art-card:has(.art-card__art) { text-align: center; }
-.art-card__art { display: block; width: 4.5rem; height: 4.5rem; object-fit: contain; margin: 0.2rem auto 0.4rem; }
-.art-card--soon .art-card__art { opacity: 0.9; }
-.art-card__status { font-family: var(--f-display); font-size: 0.64rem; font-weight: 700; letter-spacing: 0.12em; text-transform: uppercase; color: var(--c-text-on-dark-soft); }
-.art-card__status--active { color: var(--belt-green); }
-.art-card__name { font-family: var(--f-display); font-size: 1.5rem; font-weight: 800; letter-spacing: -0.01em; }
-.art-card__text { color: var(--c-text-on-dark-soft); font-size: 0.82rem; }
-/* el padding-right reserva la esquina de la flecha → en las tarjetas compactas */
-.art-card__belt { margin-top: auto; font-size: 0.78rem; font-weight: 600; display: inline-flex; align-items: center; gap: 0.4rem; padding-right: 2rem; }
-.art-card__belt:empty { display: none; }
-.art-card .card__more { color: var(--c-accent-soft); position: absolute; right: 0.9rem; bottom: 0.7rem; }
+/* ---------- El directorio de cursos (assets/js/directorio.js) ---------- */
+/* Sustituye a las tarjetas de arte (2026-09-04): filas de papel, compactas,
+   con el icono, el nombre y una frase. Sin rótulos de estado: si está aquí,
+   está disponible. */
+.directorio { display: grid; gap: 0.8rem; }
+.directorio__filtros { display: flex; flex-wrap: wrap; gap: 0.5rem; }
+.directorio__buscar { flex: 2 1 14rem; }
+.directorio__sel { flex: 1 1 10rem; }
+.directorio__buscar, .directorio__sel { font: 400 0.92rem/1.3 var(--f-body); padding: 0.5rem 0.7rem; border-radius: 0.5rem;
+  border: 1px solid var(--c-line-light); background: var(--c-white); color: var(--c-text); min-width: 0; }
+.directorio__buscar:focus-visible, .directorio__sel:focus-visible { outline: 2px solid var(--c-accent); outline-offset: 1px; }
+.directorio__lista { display: grid; gap: 0.6rem; grid-template-columns: repeat(auto-fill, minmax(17rem, 1fr)); }
+.directorio__item { display: flex; align-items: center; gap: 0.8rem; padding: 0.7rem 0.85rem; border-radius: var(--radius);
+  background: var(--c-white); border: 1px solid var(--c-line-light); color: inherit; text-decoration: none;
+  transition: border-color 0.15s, transform 0.15s; }
+.directorio__item:hover { border-color: var(--c-accent); transform: translateY(-2px); }
+.directorio__icono { flex: 0 0 auto; width: 3rem; height: 3rem; display: grid; place-items: center; font-size: 1.8rem; line-height: 1; }
+.directorio__icono img { width: 3rem; height: 3rem; object-fit: contain; }
+.directorio__texto { display: flex; flex-direction: column; gap: 0.15rem; min-width: 0; }
+.directorio__texto b { font-family: var(--f-display); font-size: 1.02rem; }
+.directorio__texto small { color: var(--c-text-soft); font-size: 0.82rem; line-height: 1.35; }
+.directorio__meta { font: 600 0.66rem/1.2 var(--f-display); letter-spacing: 0.08em; text-transform: uppercase; color: var(--c-text-soft); }
+.directorio__candado { font-size: 0.8rem; }
+.directorio__vacio { color: var(--c-text-soft); margin: 0; }
 .belt-pill { display: inline-flex; align-items: center; gap: 0.45rem; font-weight: 600; }
 .belt-pill__swatch { width: 1.4rem; height: 0.55rem; border-radius: 2px; background: var(--belt); box-shadow: inset 0 0 0 1px rgba(0,0,0,0.3); }
 
@@ -152,6 +171,17 @@ a.art-card:hover { transform: translateY(-4px); box-shadow: var(--shadow); }
   transition: background 0.2s, color 0.2s, border-color 0.2s; }
 .pmap-info:hover { background: var(--c-accent-btn); border-color: var(--c-accent-btn); color: var(--c-accent-ink); }
 .pmap-info svg { display: block; }
+/* El botón único de «Continuar» del mapa (titular 2026-09-04): mismo truco que
+   el de ayuda —vive en la caja y NO en el visor, así se queda clavado en la
+   esquina inferior derecha aunque el mapa se arrastre—. El aspecto es el botón
+   de la casa (.btn .btn--primary), aquí solo se coloca. La sombra es porque
+   detrás hay ilustración, no papel: sin ella el bermellón se pierde sobre la
+   ladera. */
+.pmap-cta { position: absolute; right: 0.7rem; bottom: 0.7rem; z-index: 2;
+  padding: 0.6rem 1.15rem; font-size: 0.95rem;
+  box-shadow: 0 4px 14px rgba(18, 19, 26, 0.35); }
+@media (max-width: 34rem) { .pmap-cta { right: 0.5rem; bottom: 0.5rem;
+  padding: 0.5rem 0.95rem; font-size: 0.875rem; } }
 /* Mosaico de accesorios del arte (decora la ayuda del mapa): una sola línea,
    TODOS a color y con el resplandor dorado del mapa encendido, escalonado para
    que recorra la fila como una ola (titular 2026-08-26). Los selectores llevan
@@ -191,7 +221,11 @@ a.art-card:hover { transform: translateY(-4px); box-shadow: var(--shadow); }
   animation: pmap-cielo-deriva 180s linear infinite; }
 @keyframes pmap-cielo-deriva {
   from { transform: translateX(0); }
-  to   { transform: translateX(-2048px); }
+  /* 2045 y no 2048: las copias van SOLAPADAS 3 unidades (build.py CIELO_PASO),
+     así que el ciclo es el paso entre copias, no el ancho de la lámina. Con
+     2048 la copia siguiente no caería donde estaba la anterior al reiniciar y
+     el salto sería visible — justo lo que la tira existe para evitar. */
+  to   { transform: translateX(-2045px); }
 }
 /* Quien pide menos movimiento no quiere un cielo desplazándose para siempre. */
 @media (prefers-reduced-motion: reduce) { .pmap__cielo-tira { animation: none; } }
@@ -363,6 +397,21 @@ a.art-card:hover { transform: translateY(-4px); box-shadow: var(--shadow); }
 /* ---------- Misión (pantalla de tarjetas) ---------- */
 .mission { max-width: 44rem; margin-inline: auto; }
 .mission__top { display: flex; align-items: center; gap: 1rem; margin-bottom: 1.25rem; }
+/* La MISMA barra, pero dentro del hero de la misión (titular 2026-09-04),
+   hermana de `.dojo-progress--hero`: el hero ya pone el fondo tinta, así que
+   aquí solo se encoge y se le quita la caja. Es un MODIFICADOR y no un
+   restilado de `.mission__bar`/`__fill`/`__count`: esas tres las reutilizan la
+   barra de lectura del reader y la del pergamino, que siguen sobre papel. */
+.mission__hueco:empty { display: none; }   /* nivel bloqueado: sin hueco muerto */
+.mission__top--hero { margin: 0.85rem 0 0; max-width: 26rem; gap: 0.8rem; }
+.mission__top--hero .mission__bar { height: 0.3rem; background: rgba(255, 255, 255, 0.16); }
+.mission__top--hero .mission__count { font-size: 0.72rem; color: var(--c-text-on-dark-soft); opacity: 0.85; }
+/* el reloj del examenFu y el aviso de intentos viajan pegados a la barra, así
+   que acaban sobre tinta con colores pensados para papel */
+.mission__top--hero .mission__reloj { color: var(--c-text-on-dark);
+  background: rgba(255, 255, 255, 0.16); }
+.mission__top--hero .mission__aviso { color: var(--c-text-on-dark-soft); }
+@media (max-width: 40rem) { .mission__top--hero { max-width: none; } }
 .mission__bar { flex: 1; height: 0.6rem; border-radius: 999px; background: var(--c-paper-2); overflow: hidden; }
 .mission__fill { height: 100%; width: 0; background: linear-gradient(90deg, var(--belt-yellow), var(--c-accent)); transition: width 0.35s ease; }
 .mission__count { font-family: var(--f-display); font-weight: 700; font-size: 0.85rem; color: var(--c-text-soft); white-space: nowrap; }
@@ -377,7 +426,6 @@ a.art-card:hover { transform: translateY(-4px); box-shadow: var(--shadow); }
 .mcard h3 { font-family: var(--f-display); font-size: 1.3rem; margin: 0 0 0.75rem; }
 .mcard p { margin: 0 0 1rem; }
 .mcard p:last-child { margin-bottom: 0; }
-.mcard__type { display: inline-block; font-family: var(--f-display); font-size: 0.72rem; font-weight: 700; letter-spacing: 0.14em; text-transform: uppercase; color: var(--c-text-soft); margin-bottom: 0.75rem; }
 @keyframes mcard-in { from { opacity: 0; transform: translateY(14px); } to { opacity: 1; transform: none; } }
 .options { list-style: none; margin: 0.75rem 0 0; padding: 0; display: grid; gap: 0.6rem; }
 .option { width: 100%; text-align: left; padding: 0.85rem 1rem; border-radius: var(--radius); border: 2px solid var(--c-line-light); background: var(--c-paper); cursor: pointer; font: inherit; font-size: 1rem; color: inherit; transition: border-color 0.15s, transform 0.15s, background 0.15s; display: flex; gap: 0.75rem; align-items: flex-start; }
@@ -517,6 +565,36 @@ a.art-card:hover { transform: translateY(-4px); box-shadow: var(--shadow); }
   justify-content: center; gap: 1.4rem; margin-top: 0.75rem;
   padding: 0.6rem 0.4rem 0.9rem; border-radius: var(--radius); overflow: hidden;
   background: linear-gradient(#efe6d4 0 72%, #e3d5bc 72% 100%); }
+/* El fondo ILUSTRADO va en su propia capa y no en el `background` de arriba
+   (titular 2026-09-04). Dos motivos: el degradado de dos tonos sigue debajo
+   como RESPALDO —si la lámina no carga, la escena se lee igual— y, sobre todo,
+   así la lámina se espeja SOLA, sin arrastrar consigo a la mascota, al objeto,
+   a la pista ni a las partículas.
+   `cover` y centrada: la banda pasa de 630 px en escritorio a 293 en móvil con
+   el mismo alto, así que el teléfono recorta más de la mitad del ancho por los
+   lados. Por eso las láminas se encargan con el motivo al centro y los bordes
+   despejados. */
+.fondo-sorteado { position: absolute; inset: 0; z-index: 0;
+  background-size: cover; background-repeat: no-repeat;
+  /* 72 % y no 50 %, y no es cosmético: las dos escenas que usan esta capa
+     tienen el mismo ancho pero distinto alto —10,1 rem la de revelar, 8,1 la de
+     elegir—, así que con la MISMA lámina de 4:1 `cover` se comporta distinto.
+     En la de revelar ajusta por alto y este valor da igual; en la de elegir
+     ajusta por ancho y sobran 28 px que hay que recortar por algún sitio: con
+     50 % la línea del suelo se iría al 76,7 % y con 72 % cae justo al 72 %, que
+     es donde la mascota apoya los pies. Un solo número sirve para las dos. */
+  background-position: 50% 72%; }
+.fondo-sorteado.is-espejo { scale: -1 1; }
+/* Todo lo demás queda POR ENCIMA de la lámina.
+   SOLO `z-index`, nunca `position`: este selector tiene más especificidad que
+   `.revela-puntos` y `.revela-reset`, así que un `position: relative` aquí les
+   pisaba su `absolute` y los metía en el flujo del flex — la píldora de puntos
+   y el botón de reiniciar aparecían en mitad de la escena y empujaban la
+   mascota y el objeto hacia la izquierda (lo vio el titular en pantalla).
+   Y no hace falta: un flex item con `z-index` distinto de `auto` crea contexto
+   de apilamiento aunque siga siendo `static`. */
+.revela-escena > :not(.fondo-sorteado),
+.apuesta-escena > :not(.fondo-sorteado) { z-index: 1; }
 /* la caja fija de la apuesta, un 30 % más grande (titular 2026-09-02): la
    pose más ancha (golpe 0.934 × 8.6rem ≈ 8.03) cabe y el swap no mueve nada */
 .revela-mascota { flex: 0 0 auto; position: relative; display: block;
@@ -540,6 +618,14 @@ a.art-card:hover { transform: translateY(-4px); box-shadow: var(--shadow); }
 .revela-maki__fig.is-inclina-2 { rotate: 17deg; }
 .revela-maki__fig.is-caido { rotate: 82deg;
   transition: rotate 0.5s cubic-bezier(0.55, 0, 0.85, 0.45); }
+/* FÍSICA REFLEJADA (2026-09-04, con el lado ya sorteado): el poste pivota en su
+   base —el punto MÁS LEJOS de la mascota— y se tumba huyendo de ella. Con la
+   mascota a la derecha hay que reflejar las dos cosas, el pivote y el sentido
+   del giro, o el makiwara le caería encima. */
+.revela-escena--der .revela-maki__fig { transform-origin: 22% 96%; }
+.revela-escena--der .revela-maki__fig.is-inclina-1 { rotate: -8deg; }
+.revela-escena--der .revela-maki__fig.is-inclina-2 { rotate: -17deg; }
+.revela-escena--der .revela-maki__fig.is-caido { rotate: -82deg; }
 /* el «¡Golpea!» flota SOBRE el poste (titular 2026-09-02): por eso el botón
    es positioned y la píldora se ancla a él, no a la escena */
 .revela-pista { position: absolute; bottom: calc(100% + 0.35rem); left: 50%;
@@ -618,13 +704,20 @@ a.art-card:hover { transform: translateY(-4px); box-shadow: var(--shadow); }
    2026-09-02: pegada arriba se ahogaba contra el borde): el botón se centra
    en el eje, el cordel se alarga hasta el techo y la pista baja BAJO el
    bronce, así el conjunto campana+etiqueta queda a la altura de la mascota */
-.revela-obj--campana { width: 6.2rem; height: 5.8rem; align-self: center; }
+/* La campana, un 30 % más pequeña y con la cuerda más corta (titular
+   2026-09-04). La CAJA encoge con ella y esa es la mitad del arreglo: la
+   píldora del «¡Toca!» cuelga de `top: 100%`, así que la ata el alto de la
+   caja, no el de la campana. La campana medía 5,56 rem —más que los 5,8 de
+   caja menos su margen de arriba, o sea que asomaba por debajo— y la píldora
+   caía a 6,2 rem del borde superior. Con la campana en 3,89 y la caja en 4,5,
+   la píldora queda justo debajo del bronce en vez de a un dedo de distancia. */
+.revela-obj--campana { width: 4.4rem; height: 4.5rem; align-self: center; }
 .revela-obj--campana .revela-pista { bottom: auto; top: calc(100% + 0.4rem); }
-.campana-cuerda { position: absolute; top: -2.3rem; left: calc(50% - 1px);
-  width: 3px; height: 3rem; background: #7a4a2a; border-radius: 2px;
+.campana-cuerda { position: absolute; top: -1.25rem; left: calc(50% - 1px);
+  width: 3px; height: 1.9rem; background: #7a4a2a; border-radius: 2px;
   transition: opacity 0.15s ease; }
-.campana-fig { position: absolute; top: 0.55rem; left: calc(50% - 2.2rem);
-  width: 4.4rem; transform-origin: 50% 0;
+.campana-fig { position: absolute; top: 0.55rem; left: calc(50% - 1.54rem);
+  width: 3.08rem; transform-origin: 50% 0;
   transition: translate 0.45s cubic-bezier(0.55, 0, 0.85, 0.5), rotate 0.45s cubic-bezier(0.55, 0, 0.85, 0.5); }
 .is-tane .campana-fig { animation: revela-mece 0.9s ease; }
 @keyframes revela-mece {
@@ -633,15 +726,27 @@ a.art-card:hover { transform: translateY(-4px); box-shadow: var(--shadow); }
   70% { rotate: 3deg; }
   100% { rotate: 0deg; } }
 .revela-obj--campana.is-caida .campana-cuerda { opacity: 0; }
-.revela-obj--campana.is-caida .campana-fig { translate: -8% 1.35rem; rotate: 24deg; }
+.revela-obj--campana.is-caida .campana-fig { translate: -8% 0.95rem; rotate: 24deg; }
+/* La campana cae apartándose de la mascota, que de serie está a su derecha.
+   Con la escena espejada la mascota pasa a la izquierda y la caída se refleja.
+   Las tejas y los faroles no necesitan nada: son simétricos. */
+.revela-escena--izq .revela-obj--campana.is-caida .campana-fig { translate: 8% 0.95rem; rotate: -24deg; }
 
 /* LAS TEJAS: la pila ES el contador — cada golpe parte la de arriba en dos
    mitades (clones recortados, el truco de las tablas de elegir) y la retira. */
 .revela-obj--tejas { width: 7rem; padding-bottom: 0.7rem; }
-.tejas-pila { position: relative; display: flex; flex-direction: column-reverse;
-  align-items: center; justify-content: flex-start; min-height: 4.6rem; }
-.teja { position: relative; width: 5.2rem; aspect-ratio: 501 / 512; }
-.teja + .teja { margin-bottom: -78%; }
+/* Las copias se superponen EXACTAS: todas en la misma celda de grid. Antes se
+   apilaban con `margin-bottom: -78%`, y un margen en porcentaje —también el
+   vertical— se resuelve contra el ANCHO del contenedor (112 px → −87,36),
+   mientras el alto de la teja sale de su propio aspect-ratio (85,0). Los 2,35 px
+   de diferencia dejaban a las tres escalonadas y se veía el canto blanco de cada
+   lámina asomando arriba, como un borde triple (lo vio el titular en pantalla).
+   Nadie eligió esos 2,35: eran el residuo de mezclar dos referencias, y cambiaban
+   solos con el ancho de la pantalla. La última del DOM se pinta encima, que es la
+   que el golpe rompe. */
+.tejas-pila { position: relative; display: grid; justify-items: center;
+  min-height: 4.6rem; }
+.teja { position: relative; grid-area: 1 / 1; width: 5.2rem; aspect-ratio: 501 / 512; }
 .teja > img { display: block; width: 100%; height: 100%; }
 .teja-mitad { position: absolute; top: 0; width: 50%; height: 100%; overflow: hidden; }
 .teja-mitad--izq { left: 0; animation: teja-cae-izq 0.5s ease-in forwards; }
@@ -821,9 +926,6 @@ a.art-card:hover { transform: translateY(-4px); box-shadow: var(--shadow); }
 .gate__art svg { width: 2.4rem; height: 2.4rem; }
 .gate__title { font-family: var(--f-display); font-size: var(--fs-h2); font-weight: 800; line-height: 1.1; margin: 0 0 0.75rem; }
 .gate__text { color: var(--c-text-on-dark-soft); margin: 0 0 1.25rem; }
-.gate__form .newsletter__row { justify-content: center; }
-.gate__form .input { background: var(--c-ink-panel); color: var(--c-text-on-dark); border-color: var(--c-line-dark); }
-.gate__form .form__note { color: var(--c-text-on-dark-soft); }
 .gated__body:empty { display: none; }
 .gated__loading { text-align: center; color: var(--c-text-soft); padding: 2rem; }
 
@@ -847,12 +949,6 @@ a.art-card:hover { transform: translateY(-4px); box-shadow: var(--shadow); }
 .profile__stat b { font-size: 1.5rem; color: var(--c-text-on-dark); letter-spacing: 0; }
 .profile__section { padding: 1.25rem 1.4rem; border-radius: var(--radius-lg); background: var(--c-white); border: 1px solid var(--c-line-light); }
 .profile__section h2 { font-family: var(--f-display); font-size: 1.25rem; margin: 0 0 0.9rem; }
-.profile__arts { display: grid; gap: 0.75rem; }
-.profile__art { display: flex; align-items: center; gap: 1rem; padding: 0.9rem 1rem; border-radius: var(--radius); background: var(--c-paper); border: 1px solid var(--c-line-light); text-decoration: none; color: inherit; }
-.profile__art:hover { border-color: var(--c-accent); }
-.profile__art b { font-family: var(--f-display); }
-.profile__art small { display: block; color: var(--c-text-soft); }
-.profile__art .belt-pill { margin-left: auto; }
 .badges { display: grid; grid-template-columns: repeat(auto-fit, minmax(7rem, 1fr)); gap: 0.75rem; list-style: none; margin: 0; padding: 0; }
 .badge { display: flex; flex-direction: column; align-items: center; text-align: center; gap: 0.35rem; padding: 0.9rem 0.5rem; border-radius: var(--radius); background: var(--c-paper); border: 1px solid var(--c-line-light); font-size: 0.78rem; line-height: 1.25; }
 .badge__icon { width: 3.2rem; height: 3.2rem; border-radius: 50%; display: grid; place-content: center; font-size: 1.6rem; background: var(--c-ink-bg); box-shadow: 0 0 0 3px var(--belt-yellow); }
@@ -891,20 +987,14 @@ a.art-card:hover { transform: translateY(-4px); box-shadow: var(--shadow); }
 /* solo la portada con estadísticas (arte activa) las pega al subnav (titular
    2026-08-26); las portadas «soon» empiezan con prosa y conservan su aire */
 .layout-art main > .container:has(.art-hero) { padding-top: clamp(1rem, 2.5vw, 1.6rem); }
-/* las tarjetas de arte no truncan el nombre y aprovechan el ancho */
-.art-card__name { font-size: clamp(1rem, 0.9rem + 0.5vw, 1.15rem); overflow-wrap: anywhere; }
-/* Con 12 artes, seis por línea en escritorio: tarjetas compactas (titular 2026-08-26) */
-.grid--arts { grid-template-columns: repeat(auto-fit, minmax(14rem, 1fr)); }
-@media (min-width: 40rem) { .grid--arts { grid-template-columns: repeat(auto-fit, minmax(11rem, 1fr)); gap: 0.9rem; } }
-@media (min-width: 64rem) { .grid--arts { grid-template-columns: repeat(6, 1fr); } }
 
 /* kickers dentro de cajas oscuras: usar el acento para fondo oscuro (contraste AA) */
-.dojo-progress .kicker, .gate .kicker, .art-card .kicker, .cert .kicker { color: var(--c-accent-soft); }
+.dojo-progress .kicker, .gate .kicker, .cert .kicker { color: var(--c-accent-soft); }
 
 /* ---------- Formularios: colores explícitos (nunca heredar del contenedor) ---------- */
 /* Los campos son claros en todos los contextos: texto tinta y placeholder gris AA,
    aunque el formulario viva dentro de una caja oscura (gate, perfil, misiones). */
-.input, .auth__form .input, .tool-step textarea, .quiz textarea, .mcard textarea, .newsletter .input {
+.input, .auth__form .input, .mcard textarea, .newsletter .input {
   color: var(--c-text); background: var(--c-white); border-color: rgba(26, 27, 34, 0.2);
 }
 .input::placeholder, textarea::placeholder { color: var(--c-text-soft); opacity: 1; }
@@ -971,8 +1061,6 @@ a.art-card:hover { transform: translateY(-4px); box-shadow: var(--shadow); }
 .hero:has(.hero__masters) .hero__inner > * { max-width: min(42rem, 64%); }
 
 /* los adornos geométricos antiguos sobran cuando hay ilustración */
-.hero:has(.hero__scene) .hero__glow,
-.hero:has(.hero__scene) .hero__enso { display: none; }
 
 @media (max-width: 60rem) {
   /* móvil y tableta: los maestros pasan detrás, a la derecha, sin robar el texto */
@@ -1023,13 +1111,11 @@ a.art-card:hover { transform: translateY(-4px); box-shadow: var(--shadow); }
 .badge__icon:has(.badge__art) { background: transparent; box-shadow: none; }
 .badge--locked .badge__icon:has(.badge__art) { box-shadow: none; }
 .belt-pill__art { width: 1.6rem; height: 1.6rem; object-fit: contain; flex: 0 0 auto; }
-.profile__art-icon { width: 2.4rem; height: 2.4rem; object-fit: contain; }
 
 /* ---------- Selector de avatar de estudiante ---------- */
 .avatars { list-style: none; margin: 1rem 0 0; padding: 0; display: grid; grid-template-columns: repeat(auto-fit, minmax(5.5rem, 1fr)); gap: 0.75rem; }
 .avatar { width: 100%; aspect-ratio: 1; padding: 0.35rem; border-radius: 50%; border: 3px solid var(--c-line-light); background: var(--c-paper); cursor: pointer; transition: border-color 0.15s, transform 0.15s; }
 .avatar:hover { transform: translateY(-2px); border-color: var(--c-accent); }
-.avatar.is-selected { border-color: var(--c-accent-btn); box-shadow: 0 0 0 3px rgba(230,59,46,0.2); }
 .avatar img { width: 100%; height: 100%; object-fit: contain; }
 /* avatar en el chip de la cabecera */
 .hud__avatar { position: absolute; inset: 4px; border-radius: 50%; overflow: hidden; z-index: 2; }
@@ -1294,8 +1380,12 @@ html[data-session="local"] [data-guest] { display: none; }
 .gate .auth__terms { color: var(--c-text-on-dark-soft); }
 
 /* --- misiones: navegación hacia atrás y deslizamiento --- */
-/* el botón «anterior» oculto conserva su sitio para que «siguiente» no salte */
-.mission__actions [data-prev][hidden] { display: inline-flex; visibility: hidden; }
+/* «Siguiente» va SIEMPRE a la derecha, haya o no botón «anterior». Reservarle el
+   sitio al oculto no servía: el reset trae `[hidden] { display: none !important }`
+   y ningún `display` sin !important puede ganarle. El margen auto se come el hueco
+   libre, así que en la primera tarjeta empuja a «Siguiente» al borde derecho y
+   cuando los dos están visibles no cambia nada (space-between ya los separaba). */
+.mission__actions [data-next] { margin-left: auto; }
 .mission__stage { touch-action: pan-y; }
 @keyframes mcard-left { from { transform: translateX(2.5rem); opacity: 0; } to { transform: none; opacity: 1; } }
 @keyframes mcard-right { from { transform: translateX(-2.5rem); opacity: 0; } to { transform: none; opacity: 1; } }
@@ -1354,8 +1444,6 @@ select.input option { color: var(--c-text); background: var(--c-white); }
 .belt.is-locked .belt__status::before { content: "🔒"; font-size: 0.85em; }
 .gate .gate__art { font-size: 1.8rem; }
 
-/* --- portada del arte: fila de botones Empezar/Continuar, centrados --- */
-.art-cta { display: flex; justify-content: center; align-items: center; gap: 0.85rem; flex-wrap: wrap; }
 
 /* ============================================================
    ÁRBOL CEREBRO — el avatar-planta del perfil (arbol.js)
@@ -1433,10 +1521,6 @@ select.input option { color: var(--c-text); background: var(--c-white); }
 .arbol__adorno { position: absolute; width: 13%; transform: translate(-50%, -50%); cursor: grab;
   filter: drop-shadow(0 3px 6px rgba(0,0,0,0.4)); user-select: none; touch-action: none; }
 .arbol__adorno--vuelo { cursor: grabbing; filter: drop-shadow(0 8px 16px rgba(0,0,0,0.55)); z-index: 4; }
-.arbol__lienzo--colocando { cursor: crosshair; outline: 2px dashed var(--c-accent-soft); outline-offset: -6px; }
-.arbol__aviso { position: absolute; left: 50%; bottom: 0.75rem; transform: translateX(-50%);
-  background: rgba(18,19,26,0.85); color: var(--c-text-on-dark); font-size: 0.8rem; padding: 0.35rem 0.9rem;
-  border-radius: 999px; pointer-events: none; white-space: nowrap; }
 
 /* --- cofre --- */
 .arbol__cofre-titulo { font-family: var(--f-display); font-weight: 800; margin: 0 0 0.75rem; }
@@ -1457,7 +1541,6 @@ select.input option { color: var(--c-text); background: var(--c-white); }
 .adorno--legendario { border-color: #d9a521; background: linear-gradient(160deg, #fffdf4, #fdf3d1); }
 .adorno__candado { position: absolute; right: 0.3rem; bottom: 0.25rem; font-size: 0.85rem; }
 .adorno__check { position: absolute; right: 0.3rem; top: 0.2rem; color: var(--belt-green); font-weight: 700; }
-.arbol__ayuda { font-size: 0.85rem; margin-top: 0.9rem; }
 
 /* --- tooltip RPG --- */
 /* display:none mientras está oculto: un tooltip invisible pero maquetado
@@ -1530,6 +1613,12 @@ html:not([data-admin-on]) [data-admin-link] { display: none; }
 .admin-table td { padding: 0.6rem 0.75rem; border-bottom: 1px solid var(--c-line-light); vertical-align: middle; }
 .admin-table__email { font-variant-ligatures: none; white-space: nowrap; }
 .admin-table td:nth-child(5), .admin-table td:nth-child(6) { white-space: nowrap; }   /* fechas de una pieza */
+/* El rol de cada cuenta en el panel de admin: una pastilla, y la de Maestro Fu
+   en el bermellón de la casa para verla de un vistazo. */
+.admin-rol { display: inline-block; font: 600 0.7rem/1 var(--f-display); letter-spacing: 0.05em; text-transform: uppercase;
+  padding: 0.3em 0.55em; border-radius: 999px; background: var(--c-ink-panel); color: var(--c-text-on-dark-soft); }
+.admin-rol--master { background: var(--c-accent); color: #fff; }
+.admin-rol--superadmin { background: var(--c-text-on-dark); color: var(--c-ink-bg); }
 .admin-table__actions { display: flex; flex-wrap: nowrap; gap: 0.3rem; }
 /* acciones como iconos con tooltip (decisión 2026-08-25) */
 .icon-btn { position: relative; width: 2.15rem; height: 2.15rem; border-radius: 50%; border: 1px solid var(--c-line-light); background: var(--c-paper); color: var(--c-text); display: grid; place-items: center; cursor: pointer; transition: border-color 0.15s ease, color 0.15s ease, background 0.15s ease; }
@@ -4488,7 +4577,6 @@ body.has-reto { overflow: hidden; }
    círculos de CSS al lado de cuatro láminas cantan justo lo que la regla del
    titular quiere evitar. La regla existe para que un JS que los monte no deje
    nodos sueltos por la escena. */
-.campana-farolillo { display: none; }
 
 /* ---------- Pantallas anchas ---------- */
 /* Solo cambia el alto de la escena: el ancho de la torre, el eje, la campana,
@@ -5107,7 +5195,7 @@ body.has-reto { overflow: hidden; }
      Clases de estado que escribe el JS: `.domino-mascota--lista`,
      `--empuja` y `--salta` sobre la caja de la mascota; `.domino-cae`,
      `.domino-tambalea` y `.domino-levanta` sobre la lámina de cada ficha (o
-     sobre su caja: el pivote viaja con la clase, ver abajo); `.domino-tane`
+     sobre su caja: el pivote viaja con la clase, ver abajo); `.domino-tañe`
      (se acepta también `.domino-tañe`) sobre la campanita; `.domino-gota`
      en el `<img>` de la gota; `.domino--sin-lamina` en la raíz cuando falte
      alguna lámina; `.domino-bandeja--una` si la rejilla no cabe a dos columnas.
@@ -5455,7 +5543,7 @@ body.has-reto { overflow: hidden; }
 /* ---------- La campanita ---------- */
 /* Caja a la proporción REAL de la lámina reutilizada (F6), así que `contain` no
    tiene nada que encajar y el tañido no cambia el tamaño aparente. El pivote va
-   en la caja Y en la figura: la clase `.domino-tane` puede caer en cualquiera de
+   en la caja Y en la figura: la clase `.domino-tañe` puede caer en cualquiera de
    las dos y la campana gira igual sobre su anilla. */
 .domino-campanita { position: relative; flex: 0 0 auto; z-index: 6;
   width: var(--dom-campana-w); height: var(--dom-campana-h);
@@ -5476,7 +5564,7 @@ body.has-reto { overflow: hidden; }
   68% { rotate: -2.5deg; }
   84% { rotate: 1deg; }
   100% { rotate: 0deg; } }
-.domino-tane, .domino-tañe { animation: domino-tane 700ms ease-out; }
+.domino-tañe { animation: domino-tane 700ms ease-out; }
 
 /* ---------- Las fichas ---------- */
 /* El nodo-pieza de MFDrag: sin fondo, sin borde y sin relleno propios (el dibujo
@@ -5520,6 +5608,32 @@ body.has-reto { overflow: hidden; }
    esconde a la manera de `.reto-vivo` para que la ficha conserve su nombre
    accesible (MFDrag la deja como `role="button"` y sin texto se quedaría muda). */
 .domino-ficha--puesta .domino-ficha__texto { position: absolute; width: 1px; height: 1px;
+  inset: auto auto 0 0; overflow: hidden; clip-path: inset(50%); }
+
+/* La ficha de la BANDEJA, mientras se arrastra o está elegida por toques, se
+   muestra YA DE PIE y con el tamaño que tendrá puesta (titular 2026-09-04): lo
+   que viaja bajo el dedo es lo que va a quedar, y apuntar al hueco deja de ser
+   a ciegas. La lámina la cambia el JS (`m.sprite`, es un `src`); aquí van el
+   tamaño y el rótulo.
+   El tamaño se le da a la LÁMINA, no al nodo ni a la caja, y esto es lo
+   importante: los dos siguen en el flujo de la bandeja y tocarlos movería de
+   sitio a las fichas vecinas justo mientras se arrastra. Sacar la CAJA del
+   flujo tampoco valía —probado: el nodo se quedaba sin contenido y su alto
+   caía de 101 px a 0—. Con la lámina en absoluto dentro de la caja, que ya es
+   `relative`, el hueco de la bandeja no se entera de nada.
+   Anclada abajo y al centro: el dibujo crece hacia ARRIBA desde el punto que
+   sigue al dedo, que pasa a ser la base de la ficha — justo donde se apoya en
+   el hueco, así que la puntería mejora en vez de empeorar. */
+.domino-ficha--bandeja.mfdrag-vuelo .domino-ficha__lamina,
+.domino-ficha--bandeja.mfdrag-elegida .domino-ficha__lamina {
+  position: absolute; left: 50%; bottom: 0; translate: -50% 0;
+  width: var(--dom-pie-w); height: var(--dom-pie-h); }
+/* El rótulo se esconde a la manera de la ficha puesta —no se borra— para que
+   MFDrag, que la deja como `role="button"`, no se quede sin nombre accesible
+   justo mientras el alumno la está moviendo. */
+.domino-ficha--bandeja.mfdrag-vuelo .domino-ficha__texto,
+.domino-ficha--bandeja.mfdrag-elegida .domino-ficha__texto {
+  position: absolute; width: 1px; height: 1px;
   inset: auto auto 0 0; overflow: hidden; clip-path: inset(50%); }
 
 /* ---------- La cadena: caída, tambaleo y levantarse ---------- */
@@ -5939,7 +6053,7 @@ body.has-reto { overflow: hidden; }
 
 /* ==========================================================================
    TU ESCUELA (docs/10, F1) — el panel creador en solo-lectura.
-   Superficie tinta con tarjetas de papel; las reglas fijas son SELLOS (印),
+   Superficie tinta con tarjetas de papel; las reglas fijas son SELLOS,
    nunca controles grises. Mobile-first: una columna; el río de miniaturas
    siempre en tira horizontal con su propio scroll.
    ========================================================================== */
@@ -5974,7 +6088,6 @@ body.has-reto { overflow: hidden; }
 .escuela-sello { display: inline-flex; align-items: center; gap: 0.35rem;
   border: 1px dashed rgba(230, 59, 46, 0.55); border-radius: 0.45rem;
   padding: 0.22rem 0.6rem; font-size: 0.76rem; color: var(--c-accent-soft); }
-.escuela-sello--camino { align-self: center; margin-top: 0.35rem; }
 
 .escuela-h2 { font-family: var(--f-display); font-size: 1.15rem; margin: 0.4rem 0 0; }
 
@@ -5987,9 +6100,6 @@ body.has-reto { overflow: hidden; }
 .escuela-curso__cat { font-size: 0.66rem; font-weight: 700; letter-spacing: 0.1em; color: var(--c-text-soft); }
 .escuela-curso__datos { font-size: 0.8rem; color: var(--c-text-soft); }
 .escuela-curso__estado { margin-top: auto; }
-.escuela-curso--fundar { background: transparent; border: 2px dashed var(--c-line-dark);
-  color: var(--c-text-on-dark-soft); align-items: center; justify-content: center; text-align: center; }
-.escuela-curso--fundar h3 { color: var(--c-text-on-dark); }
 .escuela-pill { display: inline-block; border-radius: 2rem; padding: 0.14rem 0.55rem;
   font-size: 0.66rem; font-weight: 700; letter-spacing: 0.06em; }
 .escuela-pill.is-pub { background: rgba(90, 158, 111, 0.18); color: #33684a; }
@@ -6032,6 +6142,14 @@ body.has-reto { overflow: hidden; }
   color: var(--c-text-on-dark); font-size: 0.9rem; }
 .escuela-sala.is-sola { color: var(--c-text-on-dark-soft); }
 .escuela-sala small { color: var(--c-text-on-dark-soft); }
+/* Eliminar el curso: la única salida sin vuelta atrás de esta fila, y se separa
+   de las demás —a la derecha y en el rojo de la casa— para que no se pulse por
+   inercia al ir a la papelera, que está justo al lado y NO es lo mismo.
+   Es un <button> entre <a>: hereda la tipografía del botón nativo si no se le
+   dice, y se veía más pequeño que sus vecinos. */
+.escuela-sala--rojo { margin-left: auto; cursor: pointer; font-family: inherit;
+  color: var(--c-accent-soft); border-color: color-mix(in srgb, var(--c-accent) 45%, transparent); }
+.escuela-sala--rojo:hover { background: color-mix(in srgb, var(--c-accent) 18%, var(--c-ink-panel)); }
 
 /* --- listas de misiones / pergaminos --- */
 .escuela-lista { display: flex; flex-direction: column; gap: 0.45rem; }
@@ -6137,7 +6255,6 @@ body.has-reto { overflow: hidden; }
 .escuela-fb > div { background: #fbf6e9; border-radius: 0.45rem;
   padding: 0.5rem 0.6rem; margin-top: 0.25rem; }
 .escuela-op__rotulo { font: 700 0.74rem/1 var(--f-body); color: var(--c-text-soft); }
-.escuela-sintesis { font-size: 0.86rem; }
 .escuela-frases { margin: 0.5rem 0 0; padding: 0; list-style: none; display: flex; flex-direction: column; gap: 0.35rem; font-size: 0.92rem; }
 
 .escuela-vinetas { display: grid; gap: 0.6rem; margin-top: 0.5rem;
@@ -6263,7 +6380,6 @@ body.has-reto { overflow: hidden; }
 .escuela-op select.escuela-campo__control { font-size: 0.82rem; width: 100%; }
 .escuela-guardado { font-size: 0.76rem; font-weight: 600; color: #7fbf95; }
 .escuela-guardado.is-error { color: var(--c-accent-soft); cursor: pointer; }
-.escuela-ok--vacio { background: transparent; border: 2px dashed #cabfa9; cursor: pointer; }
 .escuela-ok { border: none; cursor: pointer; }
 .escuela-quitar { flex: 0 0 auto; border: none; background: transparent; cursor: pointer;
   color: #a8352a; font-size: 0.8rem; padding: 0.1rem 0.3rem; }
@@ -6337,13 +6453,31 @@ body.has-reto { overflow: hidden; }
 /* --- F6d: el resumen del perfil gana acciones (Mi escuela · Maestros Fu)
    y cada dato se CENTRA respecto a su etiqueta (titular 2026-09-02). --- */
 .profile__stat { align-items: center; text-align: center; }
-.profile__stat--accion { cursor: pointer; border: none; background: transparent;
-  padding: 0; text-decoration: none; font: inherit;
-  font-family: var(--f-display); font-weight: 700; font-size: 0.75rem;
-  letter-spacing: 0.1em; text-transform: uppercase; color: var(--c-text-on-dark-soft); }
-.profile__stat--accion b { font-size: 1.5rem; letter-spacing: 0; color: var(--c-text-on-dark); }
-.profile__stat--accion:hover, .profile__stat--accion:focus-visible { color: var(--c-accent-soft); }
-.profile__stat--accion:hover b { transform: translateY(-1px); }
+/* La segunda caja del perfil: los cuatro accesos (Mi escuela, Maestros Fu, Mis
+   exámenes, Mis artes), separados del progreso (titular 2026-09-04). */
+.profile__accesos { display: grid; grid-template-columns: repeat(4, 1fr); gap: 0.5rem; margin-top: 0.8rem; padding: 0.9rem 1rem;
+  border-radius: var(--radius-lg); background: var(--c-ink-bg); border: 1px solid var(--c-line-dark); }
+.profile__acceso { display: flex; flex-direction: column; align-items: center; gap: 0.25rem; cursor: pointer; border: none;
+  background: transparent; padding: 0.3rem 0; text-decoration: none; font: 700 0.7rem/1.2 var(--f-display);
+  letter-spacing: 0.08em; text-transform: uppercase; color: var(--c-text-on-dark-soft); text-align: center; }
+.profile__acceso b { font-size: 1.5rem; line-height: 1; letter-spacing: 0; }
+/* el enlace (Mi escuela) hereda el color de los botones, no el rojo de los enlaces del perfil */
+.profile__accesos a.profile__acceso { color: var(--c-text-on-dark-soft); }
+.profile__accesos .profile__acceso:hover, .profile__accesos .profile__acceso:focus-visible { color: var(--c-accent-soft); }
+.profile__acceso:hover b { transform: translateY(-1px); }
+@media (max-width: 30rem) { .profile__accesos { grid-template-columns: repeat(2, 1fr); } }
+/* En móvil el lede del perfil sobra: la caja de resumen lo dice todo. */
+@media (max-width: 40rem) { .layout-profile .page-head__lead { display: none; } }
+/* El modal «Mis artes»: filas con icono, nombre y frase, y dos acciones. */
+.misartes__fila { display: flex; align-items: center; gap: 0.45rem; background: var(--c-ink-panel);
+  border: 1px solid var(--c-line-dark); border-radius: 0.55rem; padding: 0.45rem 0.65rem; }
+.misartes__cuerpo { flex: 1; display: flex; align-items: center; gap: 0.6rem; min-width: 0; color: var(--c-text-on-dark); text-decoration: none; }
+.misartes__cuerpo > span:last-child { display: flex; flex-direction: column; min-width: 0; }
+.misartes__cuerpo b { font-family: var(--f-display); font-size: 0.95rem; }
+.misartes__cuerpo small { color: var(--c-text-on-dark-soft); font-size: 0.78rem; line-height: 1.3; }
+.misartes__icono { flex: 0 0 auto; width: 2.4rem; height: 2.4rem; display: grid; place-items: center; font-size: 1.5rem; }
+.misartes__icono img { width: 2.4rem; height: 2.4rem; object-fit: contain; }
+.misartes__seguro { width: auto !important; padding: 0 0.5rem; font-size: 0.72rem !important; white-space: nowrap; }
 
 /* --- confirmación antes de destruir (titular 2026-09-02) ---
    La pregunta vive en el título de la barra; el cuerpo solo matiza y decide.
@@ -6417,6 +6551,36 @@ body.has-reto { overflow: hidden; }
   color: var(--c-text); border: 2px solid var(--c-line-dark); border-radius: 0.5rem;
   padding: 0.45rem 0.6rem; width: 100%; box-sizing: border-box; }
 .escuela-fundar textarea { resize: vertical; min-height: 6rem; line-height: 1.45; }
+/* «¿Quién puede entrar?»: el bloque que sustituyó al campo de dirección, ahora
+   que la dirección se sortea sola: un conmutador privado/público y UNA
+   contraseña visible, que aparece solo en privado —con `hidden`, que el reset
+   de la casa respeta. */
+.escuela-nuevo-acceso { display: flex; flex-direction: column; gap: 0.45rem; }
+.escuela-nuevo-acceso__t { font: 600 0.78rem/1.3 var(--f-display); color: var(--c-text-on-dark-soft); }
+/* El conmutador privado/público: una pista con bola, y el texto que dice qué
+   significa la posición. Fijo (sin poder cambiar) para quien no es Maestro Fu. */
+.escuela-switch, .escuela-fundar .escuela-switch { display: flex; flex-direction: row; align-items: center; gap: 0.6rem; flex-wrap: wrap; cursor: pointer; }
+.escuela-switch .escuela-nuevo-acceso__t { flex: 1 1 100%; }
+/* el checkbox real queda fuera de la vista pero enfocable; con especificidad
+   sobre `.escuela-fundar input`, que si no le impone ancho completo y borde */
+.escuela-switch__in, .escuela-fundar .escuela-switch__in { position: absolute; opacity: 0; width: 1px; height: 1px; padding: 0; border: 0; margin: 0;
+  clip-path: inset(50%); pointer-events: none; }
+/* en la portada del curso el conmutador va en línea con la contraseña */
+.escuela-switch--portada { gap: 0.5rem; }
+.escuela-acceso__clave { display: inline-flex; gap: 0.4rem; align-items: center; flex-wrap: wrap; }
+.escuela-switch__pista { flex: 0 0 auto; width: 2.6rem; height: 1.4rem; border-radius: 999px; background: var(--c-ink-panel);
+  border: 1px solid var(--c-line-dark); position: relative; transition: background 0.2s; }
+.escuela-switch__bola { position: absolute; top: 0.15rem; left: 0.15rem; width: 1rem; height: 1rem; border-radius: 50%;
+  background: var(--c-text-on-dark-soft); transition: transform 0.2s, background 0.2s; }
+.escuela-switch__in:checked ~ .escuela-switch__pista { background: var(--c-accent); border-color: var(--c-accent); }
+.escuela-switch__in:checked ~ .escuela-switch__pista .escuela-switch__bola { transform: translateX(1.2rem); background: #fff; }
+.escuela-switch__in:focus-visible ~ .escuela-switch__pista { outline: 2px solid var(--c-accent); outline-offset: 2px; }
+.escuela-switch__txt { font: 500 0.85rem/1.3 var(--f-body); color: var(--c-text-on-dark); text-transform: none; letter-spacing: 0; }
+.escuela-switch.is-fijo { cursor: default; opacity: 0.8; }
+/* Dos campos cortos en una fila (nombre + categoría, niveles + misiones,
+   intentos + tiempo): reparten el ancho a medias. */
+.escuela-fundar__fila { display: flex; gap: 0.6rem; }
+.escuela-fundar__fila > label { flex: 1 1 0; min-width: 0; }
 .escuela-fundar select {
   -webkit-appearance: none; appearance: none; cursor: pointer;
   padding-right: 2rem;
@@ -6429,14 +6593,59 @@ body.has-reto { overflow: hidden; }
 .escuela-fundar__url { font: 400 0.72rem/1.35 var(--f-body); color: var(--c-text-on-dark-soft);
   word-break: break-all; }
 .escuela-fundar__url b { color: var(--c-text-on-dark); font-weight: 700; }
-.escuela-senda { display: inline-flex; gap: 0.25rem; margin: 0.15rem 0; }
-.escuela-senda__cinta { width: 1.05rem; height: 0.4rem; border-radius: 0.2rem;
-  background: var(--belt, #888); opacity: 0.22; border: 1px solid rgba(0, 0, 0, 0.2); }
-.escuela-senda__cinta.is-ok { opacity: 1; }
 .escuela-acceso { display: flex; flex-wrap: wrap; gap: 0.4rem; align-items: center; }
 .escuela-acceso__codigo { width: min(12rem, 50vw); text-transform: none; letter-spacing: normal;
   font: 400 0.9rem/1.2 var(--f-body); }
-button.escuela-curso--fundar { cursor: pointer; font: inherit; }
+/* Los accesos de crear, en la barra: iconos ilustrados con tooltip (titular
+   2026-09-04). El tooltip lo pinta el ::after desde data-tip. */
+.escuela-acciones { margin-left: auto; display: flex; gap: 0.35rem; }
+.escuela-accion { position: relative; border: 0; background: transparent; padding: 0; cursor: pointer; border-radius: 0.6rem; }
+.escuela-accion .escuela-curso__emoji { font-size: 1.5rem; }
+.escuela-accion:hover .escuela-curso__lamina, .escuela-accion:focus-visible .escuela-curso__lamina { transform: translateY(-2px); }
+.escuela-accion:focus-visible { outline: 2px solid var(--c-accent); outline-offset: 2px; }
+.escuela-accion[aria-disabled="true"] { opacity: 0.4; cursor: not-allowed; }
+.escuela-accion::after { content: attr(data-tip); position: absolute; top: calc(100% + 0.35rem); right: 0; width: max-content; max-width: 14rem; white-space: normal; text-align: right;
+  background: var(--c-paper); color: var(--c-text); font: 600 0.72rem/1.2 var(--f-display); padding: 0.35rem 0.55rem;
+  border-radius: 0.4rem; box-shadow: 0 4px 12px rgba(0, 0, 0, 0.35); opacity: 0; pointer-events: none; transform: translateY(-4px);
+  transition: opacity 0.15s, transform 0.15s; z-index: 5; }
+.escuela-accion:hover::after, .escuela-accion:focus-visible::after { opacity: 1; transform: none; }
+/* La tarjeta mínima de un curso: una fila con icono, nombre y estado. */
+.escuela-cursos--breve { grid-template-columns: repeat(auto-fill, minmax(15rem, 1fr)); }
+.escuela-curso--breve { flex-direction: row; align-items: center; gap: 0.7rem; min-height: 0; padding: 0.6rem 0.8rem; text-decoration: none; }
+.escuela-curso--breve .escuela-curso__icono { display: grid; place-items: center; width: 2.4rem; height: 2.4rem; font-size: 1.5rem; }
+.escuela-curso--breve .escuela-curso__icono img { width: 2.4rem; height: 2.4rem; object-fit: contain; }
+.escuela-curso--breve h3 { flex: 1 1 auto; font-size: 0.98rem; min-width: 0; overflow-wrap: anywhere; }
+.escuela-curso--breve .escuela-curso__candado { font-size: 0.8rem; }
+.escuela-curso--breve .escuela-curso__estado { margin: 0 0 0 auto; }
+/* La descripción corta del curso, editable en su portada. */
+.escuela-desc { flex: 1 1 100%; display: flex; flex-direction: column; gap: 0.3rem; margin-top: 0.2rem; max-width: 40rem; }
+.escuela-desc > span { font: 600 0.72rem/1.3 var(--f-display); letter-spacing: 0.06em; text-transform: uppercase; color: var(--c-text-on-dark-soft); }
+.escuela-desc__campo { font: 400 0.92rem/1.4 var(--f-body); background: #fffdf8; color: var(--c-text); border: 2px solid var(--c-line-dark);
+  border-radius: 0.5rem; padding: 0.4rem 0.6rem; width: 100%; box-sizing: border-box; resize: vertical; }
+.escuela-desc__pie { font: 400 0.7rem/1 var(--f-body); color: var(--c-text-on-dark-soft); align-self: flex-end; }
+/* La lámina de los accesos ilustrados de la barra («Nuevo curso», «Nuevo
+   examen»): la lámina manda y el emoji es el respaldo hasta que exista (la
+   genera arte.py y solo la dispara el titular; el onerror del <img> conmuta). */
+.escuela-curso__lamina { display: grid; place-items: center; width: 2.7rem; height: 2.7rem; }
+.escuela-curso__lamina img { width: 100%; height: 100%; object-fit: contain; filter: drop-shadow(0 4px 8px rgba(0, 0, 0, 0.35)); }
+.escuela-curso__lamina .escuela-curso__emoji { display: none; font-size: 2.3rem; line-height: 1; }
+.escuela-curso__lamina.is-sin-lamina img { display: none; }
+.escuela-curso__lamina.is-sin-lamina .escuela-curso__emoji { display: block; }
+/* El conmutador «A mano / Con el asistente» de los formularios de crear: dos
+   pastillas que reparten el ancho, la encendida en el bermellón de la casa. */
+.escuela-modo { display: flex; gap: 0.3rem; background: var(--c-ink-panel); border: 1px solid var(--c-line-dark);
+  border-radius: 999px; padding: 0.25rem; }
+.escuela-modo__op { flex: 1 1 0; border: 0; border-radius: 999px; padding: 0.5rem 0.8rem; background: transparent;
+  color: var(--c-text-on-dark-soft); font: 600 0.85rem/1.2 var(--f-display); cursor: pointer; }
+.escuela-modo__op.is-on { background: var(--c-accent); color: #fff; }
+.escuela-modo__op[disabled] { opacity: 0.45; cursor: not-allowed; }
+/* La lista de invitados de un examenFu: el campo de correos y las filas con su
+   marcador. La fila «quieta» no es un enlace: no cambia al pasar el ratón. */
+.escuela-invitar { align-items: stretch; }
+.escuela-invitar__campo { flex: 1 1 14rem; resize: vertical; min-height: 2.6rem; font: inherit; }
+.escuela-fila--quieta { cursor: default; }
+.escuela-fila--quieta:hover { transform: none; }
+.escuela-fila--quieta .escuela-quitar { margin-left: auto; cursor: pointer; }
 .escuela-idioma:disabled { opacity: 0.4; cursor: default; }
 
 /* --- F6: player dinámico y directorio --- */
@@ -6476,10 +6685,6 @@ button.escuela-curso--fundar { cursor: pointer; font: inherit; }
 .escuela-chk__detalle { color: var(--c-text-on-dark-soft); font-size: 0.76rem; }
 .escuela-chk__ir { margin-left: auto; color: var(--c-text-on-dark-soft); font-size: 0.76rem;
   text-decoration: underline dotted; white-space: nowrap; }
-.escuela-estampar { display: flex; flex-direction: column; align-items: center; gap: 0.5rem;
-  margin: 1.2rem 0; }
-.escuela-estampar .escuela-probar { font-size: 1rem; padding: 0.7rem 1.4rem; }
-.escuela-estampar .escuela-probar:disabled { opacity: 0.45; cursor: default; }
 
 /* --- F3: viñetas, huellas, catálogos, estrella --- */
 .escuela-huella { position: absolute; transform: translateX(-50%); width: 1.5rem; height: 0.95rem;
@@ -6562,9 +6767,6 @@ button.escuela-curso--fundar { cursor: pointer; font: inherit; }
   color: var(--c-text-on-dark-soft); }
 .escuela-medallon.is-off { opacity: 0.34; filter: grayscale(1); cursor: help; }
 .escuela-medallon.is-on:hover { border-color: #7fbf95; }
-.escuela-medallon.is-fijado { border-color: var(--c-accent);
-  box-shadow: 0 0 0 3px rgba(230, 59, 46, 0.18); }
-.escuela-medallon.is-fijado .escuela-medallon__nombre { color: var(--c-accent-text); }
 /* El azar es un medallón más: misma caja, mismo hueco de icono. */
 .escuela-medallon__dado { width: 2.4rem; height: 2.4rem; display: grid;
   place-items: center; font-size: 1.5rem; line-height: 1; }

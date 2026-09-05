@@ -11,6 +11,7 @@
  */
 (function () {
   "use strict";
+  var el = MFDom.el, esc = MFDom.esc;   /* dom.js: una sola copia para todos */
   var cfg = window.MF_CONFIG || {};
   var ES = cfg.lang !== "en";
 
@@ -39,8 +40,7 @@
     codigoMal: "Ese código no abre esta puerta. Revísalo con el maestro.",
     error: "No se pudo abrir el curso.",
     reintentar: "Reintentar",
-    volver: "‹ Mapa del curso",
-    misiones: "misiones", tarjetas: "tarjetas", examen: "Examen",
+    volver: "‹ Mapa del curso", tarjetas: "tarjetas", examen: "Examen",
     pergaminos: "Pergaminos", demo: "DEMO — sin XP",
     hecho: "completada", cerrar: "Cerrar",
     palabras: "palabras", minutos: "min",
@@ -54,8 +54,7 @@
     codigoMal: "That code does not open this door. Check it with the master.",
     error: "The course could not be opened.",
     reintentar: "Retry",
-    volver: "‹ Course map",
-    misiones: "missions", tarjetas: "cards", examen: "Exam",
+    volver: "‹ Course map", tarjetas: "cards", examen: "Exam",
     pergaminos: "Scrolls", demo: "DEMO — no XP",
     hecho: "completed", cerrar: "Close",
     palabras: "words", minutos: "min",
@@ -71,15 +70,6 @@
   var esLocal = !(cfg.gate && window.SB && SB.enabled());
   var urlAMision = {};        /* url → id, para interceptar los enlaces */
 
-  function esc(t) {
-    return String(t == null ? "" : t).replace(/&/g, "&amp;").replace(/</g, "&lt;")
-      .replace(/>/g, "&gt;").replace(/"/g, "&quot;");
-  }
-  function el(html) {
-    var d = document.createElement("div");
-    d.innerHTML = html;
-    return d.firstElementChild;
-  }
 
   function ruta() {
     var p = (location.hash || "#/").replace(/^#\/?/, "").split("/").filter(Boolean);
@@ -94,7 +84,7 @@
 
   function cargarLocal() {
     if (fuenteLocal) return Promise.resolve(fuenteLocal);
-    return fetch(cfg.prefix + "escuela-fuente.json").then(function (r) {
+    return fetch((cfg.assets || cfg.prefix) + "escuela-fuente.json").then(function (r) {
       if (!r.ok) throw new Error("fuente " + r.status);
       return r.json();
     }).then(function (f) {
@@ -167,7 +157,7 @@
   }
 
   function vCandado(clave, mal) {
-    pintar('<div class="escuela-pronto"><span class="escuela-sello">印 🔒</span>' +
+    pintar('<div class="escuela-pronto"><span class="escuela-sello">🔒</span>' +
       "<h2>" + esc(T.candado) + "</h2><p>" + esc(T.candadoNota) + "</p>" +
       (mal ? '<p class="escuela-avisos">⚠ ' + esc(T.codigoMal) + "</p>" : "") +
       '<div class="curso-candado"><input class="curso-candado__campo" type="text" maxlength="40" autocomplete="off">' +
@@ -239,7 +229,7 @@
     MFreal = window.MF;
     window.MF = {
       track: function () {}, reflect: function () {}, confetti: function () {},
-      scrollRead: function () {}, toolUsed: function () {},
+      scrollRead: function () {},
       art: function () { return { missions: {}, scrolls: {}, tools: {}, belts: {}, exams: {} }; },
       state: function () { return { reflections: {} }; },
       completeMission: function () { return []; },

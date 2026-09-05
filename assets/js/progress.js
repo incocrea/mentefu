@@ -7,7 +7,7 @@
   if (!window.MFStore) return;
   var cfg = window.MF_CONFIG || {};
   var ES = cfg.lang === "es";
-  var XP = cfg.xp || { mission: 20, quiz_first_try: 5, scroll: 10, exam: 50, tool: 15, exam_pass: 0.75 };
+  var XP = cfg.xp || { mission: 20, quiz_first_try: 5, scroll: 10, exam: 50, exam_pass: 0.75 };
   var RANKS = cfg.ranks || [[0, "Novato"]];
   var BELTS = cfg.belts || [];
   var ACH_XP = 10;
@@ -232,15 +232,6 @@
     track("scroll_read", { art: artKey, item: id, xp: xp || XP.scroll });
     /* label: «Pergamino escuchado» cuando se completa en audio (mission.js) */
     return afterAward(xp || XP.scroll, label || (ES ? "Pergamino leído" : "Scroll read"));
-  }
-
-  function toolUsed(artKey, id, xp, label) {
-    var a = art(artKey);
-    if (a.tools[id]) return [];
-    a.tools[id] = { at: now(), xp: xp || XP.tool };
-    bumpStreak();
-    track("tool_used", { art: artKey, item: id, xp: xp || XP.tool });
-    return afterAward(xp || XP.tool, label || (ES ? "Herramienta usada" : "Tool used"));
   }
 
   /* ---------- Repaso en la sala de retos ----------
@@ -477,6 +468,17 @@
   function merge(remote) {
     if (!remote || remote.v !== 1) return state;
     var m = fresh();
+    /* Lápidas: «Mis artes» (reiniciar/salir) deja flags["borrado:<arte>"] con
+       la fecha. Se toma la más nueva de los dos lados y todo recibo, cinturón
+       o repaso de ese arte anterior a ella se descarta: sin esto la unión por
+       claves resucitaba el curso desde cualquier pestaña o dispositivo viejo. */
+    var lapidas = {};
+    [state, remote].forEach(function (s) {
+      for (var fk in (s.flags || {})) {
+        if (fk.indexOf("borrado:") === 0 && (s.flags[fk] || "") > (lapidas[fk.slice(8)] || "")) lapidas[fk.slice(8)] = s.flags[fk];
+      }
+    });
+    function vivo(k, at) { return !lapidas[k] || (at || "") > lapidas[k]; }
     [state, remote].forEach(function (s) {
       for (var k in (s.arts || {})) {
         var a = art.call(null, k); /* asegura estructura en state */
@@ -490,16 +492,27 @@
         XP_BOLSAS.forEach(function (kind) {
           for (var id in (src[kind] || {})) {
             var r = src[kind][id], cur = dst[kind][id];
+            if (!vivo(k, r && r.at)) continue;
             if (!cur || (r.xp || 0) > (cur.xp || 0) || (r.score || 0) > (cur.score || 0)) dst[kind][id] = Object.assign({}, cur || {}, r, { xp: Math.max((cur && cur.xp) || 0, r.xp || 0) });
           }
         });
-        for (var n in (src.belts || {})) if (!dst.belts[n]) dst.belts[n] = src.belts[n];
+        for (var n in (src.belts || {})) if (!dst.belts[n] && vivo(k, src.belts[n])) dst.belts[n] = src.belts[n];
         void a;
       }
       for (var ak in (s.achievements || {})) if (!m.achievements[ak]) m.achievements[ak] = s.achievements[ak];
-      for (var rk in (s.reflections || {})) if (!m.reflections[rk] || (s.reflections[rk] || "").length > m.reflections[rk].length) m.reflections[rk] = s.reflections[rk];
-      for (var fk in (s.flags || {})) m.flags[fk] = m.flags[fk] || s.flags[fk];
-      for (var lk in (s.last || {})) m.last[lk] = s.last[lk] || m.last[lk];
+      for (var rk in (s.reflections || {})) {
+        /* la clave es `<arte>-N-K:<i>`; con lápida del arte, fuera (no llevan fecha) */
+        var arteR = rk.replace(/-\d+-\d+:\d+$/, "");
+        if (arteR !== rk && lapidas[arteR]) continue;
+        if (!m.reflections[rk] || (s.reflections[rk] || "").length > m.reflections[rk].length) m.reflections[rk] = s.reflections[rk];
+      }
+      for (var fk2 in (s.flags || {})) {
+        /* las banderas fechadas de «Mis artes» (borrado:, empezado:) se quedan
+           con la más nueva; el resto, con cualquiera que esté puesta */
+        if (fk2.indexOf("borrado:") === 0 || fk2.indexOf("empezado:") === 0) { if ((s.flags[fk2] || "") > (m.flags[fk2] || "")) m.flags[fk2] = s.flags[fk2]; }
+        else m.flags[fk2] = m.flags[fk2] || s.flags[fk2];
+      }
+      for (var lk in (s.last || {})) if (!lapidas[lk]) m.last[lk] = s.last[lk] || m.last[lk];
       if ((s.streak || {}).last > (m.streak.last || "") || ((s.streak || {}).last === m.streak.last && (s.streak || {}).days > m.streak.days)) m.streak = Object.assign({}, s.streak);
       if (s.name && !m.name) m.name = s.name;
       /* Árbol Cerebro: la decoración es intención del alumno, no suma — gana la
@@ -790,43 +803,46 @@
       var text = box.querySelector(".dojo-progress__text");
       if (text) text.textContent = T.levelsDone.replace("{k}", k) + (k >= 8 ? " · " + T.allDone : " · " + T.nextLevel.replace("{n}", k + 1));
     });
-    /* Portada del arte: el botón principal lleva SIEMPRE al siguiente cinturón
-       desbloqueable (nunca a un nivel cerrado), y «Continuar» —solo si ya hay
-       misiones hechas— salta al primer paso pendiente de la secuencia. */
+    /* Portada del arte: UN SOLO botón, flotando en la esquina del mapa
+       (titular 2026-09-04; antes eran dos en una fila bajo el mapa).
+       El destino es siempre el primer paso PENDIENTE de la secuencia —jamás un
+       nivel cerrado—, y el texto arranca en «Empezar», que es lo que pone el
+       generador y lo que vale sin JS y sin sesión, y pasa a «Continuar» en
+       cuanto hay algo hecho. El texto viaja como texto, no dibujado, para que
+       se traduzca. */
     var flujo = cfg.artFlow;
-    document.querySelectorAll("[data-belt-cta]").forEach(function (a) {
+    document.querySelectorAll("[data-pmap-cta]").forEach(function (a) {
       if (!dentro || !flujo) return;
-      var key = a.getAttribute("data-belt-cta");
-      var tengo = beltOf(key), sig = tengo + 1;
-      if (sig > 8) {
+      var key = a.getAttribute("data-pmap-cta");
+      var st = art(key), tengo = beltOf(key);
+      /* Con los ocho cinturones ya no queda paso pendiente: el botón deja de
+         empujar hacia delante y pasa a ser una puerta al último nivel. */
+      if (tengo >= 8) {
         a.setAttribute("href", flujo.levels[8] || a.getAttribute("href"));
         a.textContent = T.keepTraining;
-      } else if (tengo > 0 && flujo.levels[sig]) {
-        a.setAttribute("href", flujo.levels[sig]);
-        var b = beltInfo(sig);
-        a.textContent = T.continueBelt.replace("{b}", ES ? b.name.toLowerCase() : b.name.toLowerCase());
+        return;
       }
-      /* sin cinturones se queda el texto y el destino de serie: nivel 1 */
-    });
-    document.querySelectorAll("[data-resume-cta]").forEach(function (a) {
-      a.hidden = true;
-      if (!dentro || !flujo) return;
-      var key = a.getAttribute("data-resume-cta");
-      var st = art(key);
-      if (!Object.keys(st.missions).length) return;   /* sin misiones hechas, no aparece */
-      var tope = beltOf(key) + 1;
+      /* El primer paso sin hacer, sin salirse del cinturón desbloqueado: es la
+         misma regla que tenía el botón «Continuar» de antes, y por eso puede
+         sustituir a los dos. */
+      var tope = tengo + 1, destino = null;
       for (var i = 0; i < flujo.seq.length; i++) {
-        var s = flujo.seq[i];
-        if (s.level > tope) break;
-        var hecho = s.exam ? !!(st.exams[s.level] && st.exams[s.level].passed) : !!st.missions[s.id];
-        if (!hecho) { a.setAttribute("href", s.url); a.hidden = false; return; }
+        var p = flujo.seq[i];
+        if (p.level > tope) break;
+        var hecho = p.exam ? !!(st.exams[p.level] && st.exams[p.level].passed) : !!st.missions[p.id];
+        if (!hecho) { destino = p.url; break; }
       }
+      if (destino) a.setAttribute("href", destino);
+      else if (flujo.levels[tope]) a.setAttribute("href", flujo.levels[tope]);
+      /* «Empezar» solo mientras no se ha tocado nada; en cuanto hay una misión
+         hecha el botón está reanudando, no empezando. */
+      if (Object.keys(st.missions).length || tengo > 0) a.textContent = T.resumeBtn;
     });
   }
 
   window.MF = {
     state: function () { return state; }, save: save, art: art, totalXP: totalXP, artXP: artXP, rank: rank, beltOf: beltOf, beltInfo: beltInfo, topBelt: topBelt,
-    completeMission: completeMission, completeExam: completeExam, scrollRead: scrollRead, toolUsed: toolUsed, reflect: reflect, remember: remember,
+    completeMission: completeMission, completeExam: completeExam, scrollRead: scrollRead, reflect: reflect, remember: remember,
     replayKey: replayKey, replayXP: replayXP, replayPaid: replayPaid, replayWon: replayWon,
     track: track, flushEvents: flushEvents, merge: merge, toast: toast, confetti: confetti, beltPill: beltPill, paint: paint,
     examenFuAprobado: examenFuAprobado,
@@ -855,7 +871,7 @@
        niveles, misiones) no pinta nada: ahí se navega con los enlaces del
        propio flujo. Un ancla rancia en sessionStorage tampoco debe asomar. */
     var capa = cfg.page && cfg.page.layout;
-    if (capa !== "article" && capa !== "story" && capa !== "tool") return;
+    if (capa !== "article" && capa !== "story") return;
     var o = null;
     try { o = JSON.parse(sessionStorage.getItem("mf.origen") || "null"); } catch (e) { /* nada */ }
     if (o && o.url === window.location.pathname && (o.tipo === "nivel" || o.tipo === "biblioteca")) {

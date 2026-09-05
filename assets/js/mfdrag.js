@@ -13,7 +13,12 @@
      · Los gestos del juego no pueden llegar al swipe de misión ni a sus flechas
        (mission.js:245-268): se paran aquí, aunque el modal ya viva en <body>.
      · Presupuesto de rendimiento: en el pointermove solo se escribe transform;
-       ni una lectura de layout ni un nodo nuevo dentro del bucle del dedo. */
+       ni una lectura de layout ni un nodo nuevo dentro del bucle del dedo.
+     · La pieza se CENTRA EN EL DEDO al empezar el arrastre (titular
+       2026-09-04): lo que se agarra salta a quedar centro-centro bajo el
+       puntero en cuanto el gesto deja de ser un tap. Vale para todos los
+       juegos, y lo que se centra es el rectángulo de lo que se VE
+       (`envolvente`), que no siempre es el del nodo. */
 (function () {
   "use strict";
 
@@ -80,6 +85,44 @@
     return (z > 0.05 && z < 20) ? z : 1;
   }
 
+  /* EL RECTÁNGULO DE LO QUE SE VE, no el del nodo. Casi siempre son el mismo,
+     y entonces basta con el rect de la pieza más el de sus hijos por si alguno
+     sobresale. Pero hay piezas cuyo nodo es un marco vacío: la ficha del dominó
+     en vuelo mide 173×101 y no pinta nada —ni fondo, ni borde, ni sombra:
+     medido—, mientras su dibujo es una lámina de 42×69 pegada al fondo de esa
+     caja, 17 px por debajo de su centro. Centrar la caja dejaba la ficha baja
+     respecto al dedo, que es justo lo que se veía raro.
+     Por eso el juego puede declarar `cuerpo`: el selector de su dibujo. No hay
+     heurística que adivine qué pinta y qué no —los pseudo-elementos y las
+     sombras no salen en ningún rect—, así que lo dice quien lo sabe.
+     Se llama UNA vez por gesto, en el pointerdown, donde ya se lee layout. */
+  function envolvente(p, cuerpo) {
+    var nodos = null, base = p, i, q, l, t, d, b, r;
+    if (cuerpo) {
+      try { nodos = p.querySelectorAll(cuerpo); } catch (e) { nodos = null; }
+      /* Si el selector no casa —una pieza de otra forma, un estado sin lámina—
+         se mide la pieza entera: nunca dejar el gesto sin rectángulo. */
+      if (nodos && nodos.length) base = nodos[0];
+    }
+    r = base.getBoundingClientRect();
+    l = r.left; t = r.top; d = r.right; b = r.bottom;
+    /* Sin `cuerpo` se barren los descendientes (el caso del hijo que sobresale);
+       con `cuerpo`, los demás nodos que casen. */
+    var lista = (nodos && nodos.length) ? nodos : p.querySelectorAll("*");
+    for (i = 0; i < lista.length; i++) {
+      q = lista[i].getBoundingClientRect();
+      /* Los de área nula no cuentan: son los rótulos que MFDrag deja de 1×1 px
+         para no dejar sin nombre accesible a la pieza mientras vuela, y los
+         nodos ocultos. Sumarlos correría el centro hacia una esquina. */
+      if (q.width <= 1 || q.height <= 1) continue;
+      if (q.left < l) l = q.left;
+      if (q.top < t) t = q.top;
+      if (q.right > d) d = q.right;
+      if (q.bottom > b) b = q.bottom;
+    }
+    return { left: l, top: t, right: d, bottom: b, width: d - l, height: b - t };
+  }
+
   function tope(v, min, max) {
     /* Si la pieza es más grande que la zona el intervalo se invierte: en ese
        caso no hay tope posible y se deja pasar el valor tal cual. */
@@ -87,7 +130,7 @@
     return Math.max(min, Math.min(max, v));
   }
 
-  /* cfg: { zona, piezas, destinos, umbral, iman, limites, toques,
+  /* cfg: { zona, piezas, destinos, cuerpo, centrar, umbral, iman, limites, toques,
             alAgarrar, alMover, alSoltar, alTocar, alEncajado }   → devuelve `control`
 
      alEncajado(pieza, destino) es OPCIONAL y se avisa cuando el viaje de encaje
@@ -107,6 +150,13 @@
 
     var selPiezas = cfg.piezas || "";
     var selDestinos = cfg.destinos || "";
+    /* `cuerpo`: el selector del DIBUJO dentro de la pieza, cuando el nodo que se
+       arrastra es un marco que no pinta nada (ver `envolvente`). Opcional. */
+    var selCuerpo = cfg.cuerpo || "";
+    /* El centrado en el dedo viene ENCENDIDO: es la regla de la casa. Solo se
+       apaga donde el gesto no es «colocar» sino «tirar» y la pieza casi llena
+       su zona, que es el andamio (ver su ficha). */
+    var centrar = cfg.centrar !== false;
     var umbral = typeof cfg.umbral === "number" ? cfg.umbral : UMBRAL;
     var iman = typeof cfg.iman === "number" ? cfg.iman : IMAN;
     var limites = cfg.limites !== false;   /* default true */
@@ -374,8 +424,17 @@
       prepararPieza(pieza);
       /* Guarda `&&` calcada de arbol.js:292: hay navegadores sin captura. */
       pieza.setPointerCapture && pieza.setPointerCapture(e.pointerId);
+      /* EL SPRITE CAMBIA PRIMERO, SE MIDE DESPUÉS. `.mfdrag-vuelo` y `alAgarrar`
+         pueden dejar otra pieza de la que había en reposo —el dominó levanta la
+         ficha y le da el tamaño que tendrá puesta—, así que medir antes daba los
+         topes y el centro del sprite viejo. El rect fuerza el reflow, de modo
+         que lo que se lee ya es la pieza nueva (el cambio de tamaño no lleva
+         transición: se comprobó en la hoja). */
+      pieza.style.willChange = "transform";
+      pieza.classList.add("mfdrag-vuelo");
+      if (typeof cfg.alAgarrar === "function") { try { cfg.alAgarrar(pieza); } catch (err) { /* nada */ } }
       var rz = zona.getBoundingClientRect();
-      var rp = pieza.getBoundingClientRect();
+      var rp = envolvente(pieza, selCuerpo);
       /* La pasada de layout del gesto ya está hecha, así que medir el zoom aquí
          sale gratis: es el cambio de moneda de TODO lo que viene después. */
       var k = medirZoom(pieza);
@@ -384,6 +443,17 @@
       d = {
         pieza: pieza, id: e.pointerId, movido: false, k: k,
         x0: e.clientX, y0: e.clientY,
+        /* LA PIEZA SE CENTRA EN EL DEDO (titular 2026-09-04). Lo que se agarra
+           salta a quedar centro-centro bajo el puntero en cuanto el gesto pasa
+           de tap a arrastre. Antes el arrastre era puramente relativo —la pieza
+           conservaba el punto por donde se la cogió—, que es lo correcto cuando
+           la pieza no cambia; pero el dominó cambia de sprite al levantarla y el
+           punto de agarre dejaba de señalar nada, así que la ficha viajaba
+           descolocada respecto al dedo. Se calcula aquí, con la pieza aún en
+           reposo, y se aplica en el primer movimiento de verdad: en un tap la
+           pieza no se mueve ni un píxel. */
+        cx: centrar ? (e.clientX - (rp.left + rp.width / 2)) / k : 0,
+        cy: centrar ? (e.clientY - (rp.top + rp.height / 2)) / k : 0,
         origen: { x: o.x, y: o.y },
         rz: rz,
         /* Topes precalculados: cuánto puede desplazarse la pieza sin salirse de
@@ -398,9 +468,6 @@
         /* dos muestras bastan para la velocidad media del final del gesto */
         tA: t, xA: e.clientX / k, tB: t, xB: e.clientX / k
       };
-      pieza.style.willChange = "transform";
-      pieza.classList.add("mfdrag-vuelo");
-      if (typeof cfg.alAgarrar === "function") { try { cfg.alAgarrar(pieza); } catch (err) { /* nada */ } }
     }
 
     function alArrastrar(e) {
@@ -413,9 +480,13 @@
       /* Por debajo del umbral esto todavía es un tap: ni se mueve ni se marca. */
       if (!d.movido && Math.abs(dx) < umbral && Math.abs(dy) < umbral) return;
       d.movido = true;
+      /* `dx/dy` es el viaje del DEDO y así se le entrega al juego; el traslado
+         que se pinta lleva además el salto de centrado, y el tope se aplica
+         sobre la suma, que es lo que de verdad se desplaza la pieza. */
       d.dx = dx; d.dy = dy;
-      d.ax = d.origen.x + (limites ? tope(dx, d.minx, d.maxx) : dx);
-      d.ay = d.origen.y + (limites ? tope(dy, d.miny, d.maxy) : dy);
+      var tx = d.cx + dx, ty = d.cy + dy;
+      d.ax = d.origen.x + (limites ? tope(tx, d.minx, d.maxx) : tx);
+      d.ay = d.origen.y + (limites ? tope(ty, d.miny, d.maxy) : ty);
       pintar(d.pieza, d.ax, d.ay);        /* solo transform: nada de left/top */
       /* La pareja de muestras solo rota cuando el reloj ha avanzado de verdad:
          con eventos coalescidos dos muestras pueden caer en el mismo
@@ -453,7 +524,11 @@
       var o = desfase(pieza);
       o.x = g.ax; o.y = g.ay;
       armarClicSordo();
-      var rp = pieza.getBoundingClientRect();
+      /* El imán mide desde el centro de lo que se VE, la misma vara con la que
+         se centró la pieza en el dedo: con dos definiciones distintas de «dónde
+         está la pieza», la que atrae y la que se ve, el imán tiraría desde un
+         punto que el alumno no tiene delante. */
+      var rp = envolvente(pieza, selCuerpo);
       var destino = resolverDestino(e.clientX, e.clientY,
         rp.left + rp.width / 2, rp.top + rp.height / 2, zoomPieza(pieza));
       var info = { movido: true, vx: velocidad(g), dx: g.dx, dy: g.dy };

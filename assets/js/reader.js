@@ -1,15 +1,15 @@
 /* MenteFu / MindFu — lector de pergaminos y herramientas gated (docs/04 §2).
    Recibe mf:content con {html, kind, xp, art, id}. Los pergaminos (article,
    story) se paginan por apartado (H2) con barra de progreso y dan XP al
-   terminar; las herramientas (tool) se inyectan y se inicializan (tools.js). */
+   terminar. */
 (function () {
   "use strict";
+  var el = MFDom.el;   /* dom.js: una sola copia para todos */
   var cfg = window.MF_CONFIG || {};
   var ES = cfg.lang === "es";
   var T = ES ? { page: "Parte {i} de {n}", prev: "Anterior", next: "Siguiente", done: "Marcar como leído (+{n} XP)", read: "Pergamino leído: +{n} XP", already: "Ya leíste este pergamino.", seal: "Leído" }
              : { page: "Part {i} of {n}", prev: "Previous", next: "Next", done: "Mark as read (+{n} XP)", read: "Scroll read: +{n} XP", already: "You already read this scroll.", seal: "Read" };
 
-  function el(html) { var d = document.createElement("div"); d.innerHTML = html.trim(); return d.firstChild; }
 
   function paginate(html) {
     var tmp = document.createElement("div"); tmp.innerHTML = html;
@@ -79,19 +79,6 @@
     show();
   }
 
-  function tool(host, data) {
-    var body = host.querySelector("[data-gated-body]");
-    var box = el('<div class="prose"></div>');
-    box.innerHTML = data.html || "";
-    body.appendChild(box);
-    if (window.MFTools) MFTools.init(box);
-    var used = false;
-    function first() { if (used) return; used = true; if (window.MF) MF.toolUsed(data.art, data.id, data.xp); }
-    box.addEventListener("input", first);
-    box.addEventListener("submit", first);
-    box.addEventListener("click", function (e) { if (e.target.closest("[data-step-next]")) first(); });
-  }
-
   /* Cuerpo de una página de la zona de alumnos (sala, nivel): no es un
      pergamino paginado ni una herramienta, es HTML tal cual. Llega por red, así
      que hay que devolverle la vida a lo que el generador dejó preparado:
@@ -123,7 +110,7 @@
   /* Lista blanca explícita. Antes el reparto era «tool o, si no, pergamino», así
      que cualquier kind nuevo caía en scroll() y se paginaba por sus H2 con un
      botón «Marcar como leído (+undefined XP)». */
-  var PINTORES = { scroll: scroll, article: scroll, story: scroll, tool: tool, page: pagina };
+  var PINTORES = { scroll: scroll, article: scroll, story: scroll, page: pagina };
 
   document.querySelectorAll("[data-gate]").forEach(function (host) {
     var pintor = PINTORES[host.getAttribute("data-kind")];

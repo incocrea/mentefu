@@ -864,6 +864,15 @@
          umbral de tirón de 60, y se despegaría del dedo. El recorte lo pone el
          `overflow: hidden` de la zona. */
       limites: false,
+      /* ÚNICO JUEGO SIN CENTRADO EN EL DEDO, por la misma razón que no tiene
+         límites. La regla de la casa es que la pieza salte a quedar centrada
+         bajo el puntero al empezar el arrastre, y sirve donde el gesto es
+         COLOCAR: te enseña qué llevas y dónde va a caer. Aquí el gesto es TIRAR
+         y no hay destino al que apuntar, así que el salto no informa de nada; y
+         con un puntal de 190 px en una zona de 200, agarrarlo por un extremo lo
+         movería ~95 px de golpe y el `overflow: hidden` se comería media pieza
+         antes de que empezara el tirón. */
+      centrar: false,
       /* APAGADO A PROPÓSITO (regla 2 del titular). El modo por toques de MFDrag
          ALTERNA una selección en el pointerup (`alternar`, mfdrag.js:371-375):
          es la mitad del patrón «toca la pieza, toca el destino», y aquí no hay

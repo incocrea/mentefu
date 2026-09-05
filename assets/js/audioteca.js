@@ -11,6 +11,7 @@
    contador, los filtros y el orden del entrenamiento. */
 (function () {
   "use strict";
+  var el = MFDom.el, esc = MFDom.esc;   /* dom.js: una sola copia para todos */
   var cfg = window.MF_CONFIG || {};
   var ES = cfg.lang === "es";
   var T = ES ? {
@@ -27,8 +28,6 @@
     conAudio: "read or listen", sinAudio: "reading only",
   };
 
-  function el(html) { var d = document.createElement("div"); d.innerHTML = html.trim(); return d.firstChild; }
-  function esc(s) { return String(s == null ? "" : s).replace(/[&<>"]/g, function (c) { return { "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;" }[c]; }); }
 
   function start(host, data) {
     var body = host.querySelector("[data-gated-body]");

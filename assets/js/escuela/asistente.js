@@ -19,6 +19,7 @@
  */
 (function () {
   "use strict";
+  var esc = MFDom.esc;   /* dom.js: una sola copia para todos */
   var cfg = window.MF_CONFIG || {};
   var ES = cfg.lang === "es";
 
@@ -56,31 +57,24 @@
     aviso: "Whatever the assistant writes is your draft: review it before sharing.",
   };
 
-  function esc(t) {
-    return String(t == null ? "" : t)
-      .split("&").join("&amp;").split("<").join("&lt;")
-      .split(">").join("&gt;").split('"').join("&quot;");
-  }
 
-  /* Los prompts viven en tools/prompts/*.md y se copian al bundle de la función
-     al desplegar; aquí solo viaja el ENCARGO (qué claves y con qué contexto),
-     porque el sistema ya lo pone la función. Se manda igualmente el sistema
-     corto para que la función no dependa de un archivo si se despliega suelta. */
+  /* LOS PROMPTS DE SISTEMA TIENEN UNA FUENTE: la sección «## Sistema» de
+     tools/prompts/generar-examen.md y generar-curso.md. build.py la inyecta en
+     MF_CONFIG.prompts para el panel y de aquí viaja a la Edge Function, que no
+     lleva prompt propio. El {IDIOMA} se rellena en el momento. Antes este
+     archivo llevaba una copia recortada y el .md era solo documentación: dos
+     prompts y ninguno mandaba del todo (radiografía 2026-09-04). El mínimo de
+     abajo solo evita que el asistente salga sin instrucciones si un build viejo
+     no trajo los prompts. */
+  var PROMPTS = cfg.prompts || {};
+  function idiomaDe(lang) { return lang === "en" ? "inglés" : "español"; }
   function sistemaExamen(lang) {
-    return "Eres el redactor de exámenes de MenteFu. Escribes en " + (lang === "en" ? "inglés" : "español") +
-      ". Devuelves SOLO los textos de las claves pedidas. Cada pregunta: enunciado de una idea (≤220), " +
-      "tres opciones donde la 0 es la CORRECTA y la 1 y la 2 son señuelos plausibles (un error común, " +
-      "una verdad a medias), una respuesta corta por opción (≤24, es la etiqueta que se dibuja sobre la " +
-      "pieza del juego) y un feedback que ENSEÑA en cada opción. Sin citas de autores. Sin inventar datos. " +
-      "Tono cercano, de tú.";
+    return (PROMPTS.examen || "Eres el redactor de exámenes de MenteFu. Escribes en {IDIOMA}. Devuelves SOLO los textos de las claves pedidas.")
+      .replace("{IDIOMA}", idiomaDe(lang));
   }
   function sistemaCurso(lang) {
-    return "Eres el redactor de cursos de MenteFu, donde se aprende jugando. Escribes en " +
-      (lang === "en" ? "inglés" : "español") + ". Devuelves SOLO los textos de las claves pedidas. " +
-      "Las claves `vineta` son las viñetas de una escena en cómic: frases cortas de una situación cotidiana. " +
-      "Las claves `frase` de un revela son tres ideas que se descubren una a una. Las `quiz` son preguntas " +
-      "que se juegan: tres opciones, la 0 correcta, señuelos plausibles, respuesta corta ≤24 y feedback que " +
-      "enseña. Los `cuerpo` son prosa breve, una idea por tarjeta, ≤60 palabras. Sin citas de autores.";
+    return (PROMPTS.curso || "Eres el redactor de cursos de MenteFu. Escribes en {IDIOMA}. Devuelves SOLO los textos de las claves pedidas.")
+      .replace("{IDIOMA}", idiomaDe(lang));
   }
 
   function fallo(err) {

@@ -2,36 +2,32 @@
    logros, certificados y cuenta. Requiere progress.js, auth.js. */
 (function () {
   "use strict";
+  var esc = MFDom.esc;   /* dom.js: una sola copia para todos */
   var host = document.querySelector("[data-profile]");
   if (!host || !window.MF) return;
   var cfg = window.MF_CONFIG || {};
   var ES = cfg.lang === "es";
   var T = ES ? {
     student: "Alumno", xp: "XP", streak: "Racha", belts: "Cinturones", missions: "Misiones", toNext: "{n} XP para {rank}", max: "Rango máximo alcanzado",
-    arts: "Tus artes", achievements: "Logros", certs: "Certificados de cinturón", certNote: "Reconocimiento de progreso personal. No es una certificación profesional.",
+    achievements: "Logros", certs: "Certificados de cinturón", certNote: "Reconocimiento de progreso personal. No es una certificación profesional.",
     account: "Cuenta", arbolTitulo: "Árbol de progreso", arbolLema: "Tu mente crece con cada logro: ¡decórala con los accesorios que desbloqueas! Puedes ponerlos, quitarlos y moverlos para personalizar tu árbol de progreso.", avatarTitle: "Tu avatar de estudiante", avatarHelp: "Elige la cara con la que entrenas. Puedes cambiarla cuando quieras.", local: "Modo local: tu progreso vive solo en este navegador. Cuando la escuela conecte las cuentas, podrás registrarte para guardarlo en todos tus dispositivos.",
     signedAs: "Conectado como", signOut: "Cerrar sesión", name: "Tu nombre (para los certificados)", save: "Guardar", saved: "Guardado.",
-    login: "Crea tu cuenta o inicia sesión para guardar tu progreso en todos tus dispositivos.",
     phone: "Teléfono (opcional)", newPass: "Nueva contraseña (mínimo 8 caracteres)", changePass: "Cambiar contraseña", passChanged: "Contraseña actualizada.",
-    noBelts: "Todavía no tienes cinturones. Aprueba el examen de un nivel para conseguir el primero.", belt: "Cinturón", art: "Arte", date: "Fecha", none: "Sin cinturón",
-    checking: "Comprobando tu sesión…", outKicker: "Tu entrenamiento",
+    noBelts: "Todavía no tienes cinturones. Aprueba el examen de un nivel para conseguir el primero.", belt: "Cinturón", art: "Arte", date: "Fecha", none: "Sin cinturón", outKicker: "Tu entrenamiento",
     outText: "Aquí viven tu rango, tus cinturones, tus logros y tus certificados. Crea tu cuenta gratis o entra para verlos.",
     outLocal: "Ya llevas {n} XP entrenando en este navegador: al entrar se suman a tu cuenta.",
   } : {
     student: "Student", xp: "XP", streak: "Streak", belts: "Belts", missions: "Missions", toNext: "{n} XP to {rank}", max: "Top rank reached",
-    arts: "Your arts", achievements: "Achievements", certs: "Belt certificates", certNote: "Recognition of personal progress. Not a professional certification.",
+    achievements: "Achievements", certs: "Belt certificates", certNote: "Recognition of personal progress. Not a professional certification.",
     account: "Account", arbolTitulo: "Progress tree", arbolLema: "Your mind grows with every achievement: decorate it with the accessories you unlock! You can place them, remove them and move them to personalize your progress tree.", avatarTitle: "Your student avatar", avatarHelp: "Pick the face you train with. You can change it whenever you want.", local: "Local mode: your progress lives only in this browser. Once the school connects accounts you will be able to sign up to keep it on all your devices.",
     signedAs: "Signed in as", signOut: "Sign out", name: "Your name (for certificates)", save: "Save", saved: "Saved.",
-    login: "Create your account or sign in to keep your progress on all your devices.",
     phone: "Phone (optional)", newPass: "New password (at least 8 characters)", changePass: "Change password", passChanged: "Password updated.",
-    noBelts: "No belts yet. Pass a level exam to earn your first one.", belt: "Belt", art: "Art", date: "Date", none: "No belt",
-    checking: "Checking your session…", outKicker: "Your training",
+    noBelts: "No belts yet. Pass a level exam to earn your first one.", belt: "Belt", art: "Art", date: "Date", none: "No belt", outKicker: "Your training",
     outText: "Your rank, belts, achievements and certificates live here. Create your free account or sign in to see them.",
     outLocal: "You already have {n} XP from training in this browser: signing in adds them to your account.",
   };
   var ARTS = cfg.arts || [];
 
-  function esc(s) { return String(s).replace(/[&<>"]/g, function (c) { return { "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;" }[c]; }); }
   function fmtDate(iso) { try { return new Date(iso).toLocaleDateString(ES ? "es" : "en", { year: "numeric", month: "long", day: "numeric" }); } catch (e) { return iso; } }
 
   /* Una vista O la otra, nunca las dos: con sesión, el perfil completo; sin
@@ -77,12 +73,16 @@
     var html = '<section class="profile__hero profile__hero--filas"><div class="profile__ring" style="--pct:' + r.pct + '"><span>' + r.pct + '%</span></div>'
       + '<div class="profile__id"><p class="kicker" style="color:var(--c-accent-soft)">' + T.student + (s.name ? " · " + esc(s.name) : "") + '</p><h2 class="profile__rank">' + esc(r.name) + '</h2><p class="profile__sub">' + (r.next ? T.toNext.replace("{n}", r.nextAt - xp).replace("{rank}", r.next) : T.max) + "</p></div>"
       + '<div class="profile__stats"><span class="profile__stat"><b>' + xp + "</b>" + T.xp + '</span><span class="profile__stat"><b>' + (s.streak.days || 0) + "🔥</b>" + T.streak + '</span><span class="profile__stat"><b>' + beltsTotal + "</b>" + T.belts + '</span><span class="profile__stat"><b>' + missionsTotal + "</b>" + T.missions + "</span>"
-      /* Tu Escuela (F6): el acceso directo al taller y la puerta de los
-         maestros mentores viven en el mismo resumen, como un dato más. */
-      + '<a class="profile__stat profile__stat--accion" href="' + (cfg.prefix || "") + (ES ? "escuela/" : "school/") + '"><b>🎓</b>' + (ES ? "Mi escuela" : "My school") + "</a>"
-      + '<button type="button" class="profile__stat profile__stat--accion" data-maestros><b>🥋</b>' + (ES ? "Maestros Fu" : "Fu masters") + "</button>"
-      + '<button type="button" class="profile__stat profile__stat--accion" data-examenes><b>🏮</b>' + (ES ? "Mis exámenes" : "My exams") + "</button>"
-      + "</div></section>";
+      + "</div></section>"
+      /* Los accesos van en SU caja, aparte del progreso (titular 2026-09-04):
+         cuatro y cuatro, que mezclados en una sola fila se leían confusos. «Mis
+         artes» abre el modal con los cursos empezados (misartes.js). */
+      + '<section class="profile__accesos">'
+      + '<a class="profile__acceso" href="' + (cfg.prefix || "") + (ES ? "escuela/" : "school/") + '"><b>🎓</b>' + (ES ? "Mi escuela" : "My school") + "</a>"
+      + '<button type="button" class="profile__acceso" data-maestros><b>🥋</b>' + (ES ? "Maestros Fu" : "Fu masters") + "</button>"
+      + '<button type="button" class="profile__acceso" data-examenes><b>🏮</b>' + (ES ? "Mis exámenes" : "My exams") + "</button>"
+      + '<button type="button" class="profile__acceso" data-misartes><b>🗺️</b>' + (ES ? "Mis artes" : "My arts") + "</button>"
+      + "</section>";
 
     /* Árbol Cerebro: el avatar-planta que crece con el rango y se decora con
        los trofeos de los entrenamientos (arbol.js) */
@@ -90,14 +90,8 @@
           + '<p class="arbol__leyenda">' + T.arbolLema + '</p>'
           + '<div class="arbol"><div class="arbol__lienzo" data-arbol></div><div class="arbol__cofre" data-arbol-cofre></div></div></section>';
 
-    /* artes */
-    html += '<section class="profile__section"><h2>' + T.arts + '</h2><div class="profile__arts">';
-    ARTS.forEach(function (a) {
-      var n = MF.beltOf(a.key), st = MF.art(a.key);
-      var artIcon = MF.artImg("art", a.key, "profile__art-icon");
-      html += '<a class="profile__art" href="' + a.url + '" style="--art:' + a.color + '"><span style="font-size:1.6rem" aria-hidden="true">' + (artIcon || a.icon || "🥋") + '</span><span><b>' + esc(a.name) + "</b><small>" + Object.keys(st.missions).length + " " + T.missions.toLowerCase() + " · " + MF.artXP(a.key) + " XP</small></span>" + MF.beltPill(n, true) + "</a>";
-    });
-    html += "</div></section>";
+    /* La sección «Tus artes» salió del perfil (titular 2026-09-04): los cursos
+       empezados viven en el modal «Mis artes», y su avance se ve al entrar. */
 
     /* logros */
     html += '<section class="profile__section"><h2>' + T.achievements + " (" + Object.keys(s.achievements).length + "/" + MF.achievements.length + ')</h2><ul class="badges">';
@@ -189,4 +183,8 @@
   /* auth.js confirma la sesión contra el servidor después del primer pintado:
      si el veredicto cambia, se cambia de vista (y sólo entonces). */
   MF.onChange(function () { if (MF.session() !== pintado) render(); });
+  /* «Mis artes» (reiniciar o salir de un curso) cambia el expediente que el
+     hero y los certificados enseñan: se repinta entero. No se repinta en cada
+     save() porque el árbol guarda al mover adornos y perdería su lienzo. */
+  document.addEventListener("mf:expediente", function () { if (MF.session() === pintado) render(); });
 })();

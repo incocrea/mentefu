@@ -1003,7 +1003,20 @@
        vive en `alEncajado`, que es el único instante en que la pieza ya está en
        su sitio, y por eso el par tocar-pieza + tocar-destino cambia de lámina y
        suena igual que el dedo. */
+    /* El veredicto envuelto: cuando el gesto NO coloca la ficha, MFDrag la
+       devuelve a su sitio pero no avisa por `alEncajado`, así que es aquí donde
+       hay que volver a tumbar la que se levantó al tomarla. Sin esto, una ficha
+       soltada en el vacío se quedaría de pie en la bandeja. */
     function veredicto(pieza, destino) {
+      var r = veredictoDe(pieza, destino);
+      if (r === "vuelve") {
+        var q = piezaDe(pieza);
+        if (q && !q.slot && m.sprite) m.sprite(q.caja, "tumbada");
+      }
+      return r;
+    }
+
+    function veredictoDe(pieza, destino) {
       if (ocupado || !destino) return "vuelve";
       if (est !== "plan") return "vuelve";
       var p = piezaDe(pieza);
@@ -1048,6 +1061,12 @@
     control = window.MFDrag ? MFDrag.crear({
       zona: zona,
       piezas: ".domino-ficha",
+      /* El nodo-pieza es un marco que no pinta nada: en vuelo mide 173×101 y no
+         tiene fondo, ni borde, ni sombra (medido en pantalla), mientras el
+         dibujo es la lámina, pegada al fondo de la caja y 17 px por debajo de su
+         centro. Sin decirlo, MFDrag centraría en el dedo un rectángulo vacío y
+         la ficha quedaría baja. */
+      cuerpo: ".domino-ficha__lamina",
       /* El SLOT (70×130), no el hueco (48×76): MFDrag resuelve el destino con el
          rect del propio elemento-destino (solape mfdrag.js:230-240), así que con
          `.domino-hueco` la diana real sería la mitad de la prometida. */
@@ -1065,6 +1084,14 @@
            del kit es un `transform` y ahí escribe MFDrag en línea. */
         var p = piezaDe(pieza);
         if (p && window.MFJuice && MFJuice.respuesta) MFJuice.respuesta(p.caja);
+        /* LA FICHA SE LEVANTA AL TOMARLA (titular 2026-09-04): la lámina pasa
+           de tumbada a en pie y la caja adopta el tamaño que tendrá puesta, de
+           modo que lo que se arrastra ya es lo que va a quedar y apuntar al
+           hueco deja de ser a ciegas. El tamaño y el rótulo los cambia el CSS
+           con `.mfdrag-vuelo`/`.mfdrag-elegida`; aquí solo la lámina, que es un
+           `src` y el CSS no alcanza.
+           Solo las de la BANDEJA: una ya puesta ya está de pie. */
+        if (p && !p.slot && m.sprite) m.sprite(p.caja, "pie");
       },
       alSoltar: veredicto,
       alTocar: veredicto,

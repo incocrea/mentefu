@@ -10,6 +10,7 @@
      · nunca suenan dos audios a la vez, ni sigue sonando al salir. */
 (function () {
   "use strict";
+  var el = MFDom.el;   /* dom.js: una sola copia para todos */
   var cfg = window.MF_CONFIG || {};
   var ES = cfg.lang === "es";
   var T = ES ? {
@@ -23,7 +24,6 @@
   };
   var VELOCIDADES = [1, 1.25, 1.5];
 
-  function el(html) { var d = document.createElement("div"); d.innerHTML = html.trim(); return d.firstChild; }
   function mmss(s) { s = Math.max(0, Math.round(s || 0)); return Math.floor(s / 60) + ":" + ("0" + (s % 60)).slice(-2); }
 
   /* ---- preferencias de la visita (no ensucian el progreso del alumno) ---- */
@@ -134,10 +134,7 @@
           fill.style.width = "100%";
           guardarPos(clave, 0);
           if (window.MF && opts.item && !yaHecho()) {
-            /* cada destino a su colección: si no, escuchar una herramienta la
-               apuntaría en pergaminos y usarla después pagaría XP doble */
-            if (opts.kind === "tool") MF.toolUsed(opts.art, opts.item, xp, T.listened);
-            else MF.scrollRead(opts.art, opts.item, xp, T.listened);
+            MF.scrollRead(opts.art, opts.item, xp, T.listened);
             MF.track("audio_done", { item: opts.item, art: opts.art });
           }
           if (opts.alTerminar) opts.alTerminar();

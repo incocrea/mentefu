@@ -98,6 +98,7 @@
    TRAJE». */
 (function () {
   "use strict";
+  var esc = MFDom.esc;   /* dom.js: una sola copia para todos */
 
   /* Sin infraestructura no hay reto: mission.js cae solo a su quiz clásico. */
   if (!window.MFRetos || !MFRetos.registrar) return;
@@ -351,10 +352,6 @@
     return t ? t.split(/\s+/).length : 0;
   }
 
-  function esc(s) {
-    return String(s == null ? "" : s)
-      .replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;").replace(/"/g, "&quot;");
-  }
 
   function reducido() {
     return !!(window.MFJuice && MFJuice.reducido && MFJuice.reducido());

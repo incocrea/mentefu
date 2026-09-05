@@ -26,10 +26,17 @@
      `content` de un curso vivo — y el reproductor seguía saliendo en el modal
      con un minipodcast de dos minutos sobre una cápsula de cinco líneas (lo vio
      el titular en producción). Poner los DOS en true vuelve a conectarlo. */
-  var AUDIO_PERGAMINOS = false;
+  /* LAS CONSTANTES DE LA CASA TIENEN UNA FUENTE: build.py. En el navegador
+     llegan en MF_CONFIG (xp, escuela.*, examen.*) y aquí solo se leen; los
+     valores de abajo son el respaldo para Node (escuela_textos.mjs), donde no
+     hay MF_CONFIG. Espejarlas a mano ya mordió una vez con el audio (2026-09-04:
+     apagado en build.py y encendido aquí, y el reproductor siguió en el modal). */
+  var CFG = (typeof window !== "undefined" && window.MF_CONFIG) || {};
+  var ESC_CFG = CFG.escuela || {};
+  var AUDIO_PERGAMINOS = typeof ESC_CFG.audioPergaminos === "boolean" ? ESC_CFG.audioPergaminos : false;
 
   /* Economía y escalera FIJAS de plataforma (espejo de build.py:100-125). */
-  var XP = { mission: 20, exam: 50, scroll: 10, tool: 15 };
+  var XP = CFG.xp ? { mission: CFG.xp.mission, exam: CFG.xp.exam, scroll: CFG.xp.scroll } : { mission: 20, exam: 50, scroll: 10 };
   var BELTS = ["white", "yellow", "orange", "green", "blue", "purple", "brown", "black"];
 
   /* ------------------------------------------------------------ utilidades */
@@ -199,7 +206,7 @@
 
   function xpPergamino(ent, capa) {
     if (capa.xp) return capa.xp;
-    return ent.layout === "tool" ? XP.tool : XP.scroll;
+    return XP.scroll;
   }
 
   /* La tarjeta scroll gana item/itemArt/itemXp/itemKind/audio si su destino es
@@ -212,7 +219,7 @@
     c.item = ent.id;
     c.itemArt = ctx.artDir;
     c.itemXp = xpPergamino(ent, capa);
-    c.itemKind = ent.layout === "tool" ? "tool" : "scroll";
+    c.itemKind = "scroll";
     if (AUDIO_PERGAMINOS && ctx.audio.indexOf(ent.id) >= 0) {
       c.audio = aprefix + "assets/audio/" + ctx.lang + "/" + ent.id + ".mp3";
     }
@@ -307,8 +314,13 @@
       var ex = ctx.curso.examen || {};
       data.examenFu = true;
       data.clave = ctx.artDir;
-      data.rondas = ex.n || cards.filter(function (c) { return c.type === "quiz"; }).length;
-      data.aprobar_min = ex.aprobar_min || Math.max(1, Math.ceil(data.rondas * 0.75));
+      /* Las rondas son las preguntas que HAY, no un número guardado: desde
+         2026-09-04 el maestro las añade y quita a voluntad y `examen.n` dejó
+         de ser la verdad. Y `aprobar_min` se recorta a lo alcanzable, por si
+         quedó por encima al borrar preguntas. */
+      data.rondas = cards.filter(function (c) { return c.type === "quiz"; }).length;
+      data.aprobar_min = Math.max(1, Math.min(Math.max(1, data.rondas),
+        ex.aprobar_min || Math.ceil(data.rondas * 0.75)));
       data.intentos = ex.intentos == null ? null : ex.intentos;
       data.tiempo_min = ex.tiempo_min == null ? null : ex.tiempo_min;
       delete data.nextLevel;             /* no hay nivel siguiente que ofrecer */
@@ -354,7 +366,7 @@
           audio: (AUDIO_PERGAMINOS && ctx.audio.indexOf(ent.id) >= 0)
             ? pr.aprefix + "assets/audio/" + ctx.lang + "/" + ent.id + ".mp3" : null,
           xp: xpPergamino(ent, pc),
-          kind: ent.layout === "tool" ? "tool" : "scroll",
+          kind: "scroll",
           level: m.nivel, levelTitle: nivelCapa ? nivelCapa.title : "",
           belt: m.nivel >= 1 && m.nivel <= 8 ? BELTS[m.nivel - 1] : null,
           mission: capa.title, minutes: Math.max(1, Math.round(pc.words / 200)),
@@ -569,7 +581,7 @@
 
   /* Guardarraíl editorial del brief (espejo de FORBIDDEN_PHRASES, build.py:107;
      por ahora es la barandilla de la categoría Bienestar). */
-  var FRASES_PROHIBIDAS = {
+  var FRASES_PROHIBIDAS = ESC_CFG.frasesProhibidas || {
     es: ["no debes sentir culpa", "los demás te manipulan", "haz lo que quieras",
          "ignora tus errores", "toda culpa es manipulación", "tu familia te controla",
          "la religión es culpable", "la sociedad quiere controlarte"],
@@ -1184,8 +1196,10 @@
     var curso = {
       categoria: "examen", tipo: "examen", visibilidad: "enlace",
       idioma_base: lang, idiomas: [],
+      /* `n` NO se guarda: es el parámetro con el que nace la baraja, no una
+         propiedad del examen. Quien quiera saber cuántas preguntas tiene,
+         que las cuente (`contarPreguntas`). */
       examen: {
-        n: n,
         aprobar_min: opts.aprobar_min || aprobarPorDefecto(n),
         intentos: opts.intentos == null ? null : opts.intentos,
         tiempo_min: opts.tiempo_min == null ? null : opts.tiempo_min,
@@ -1343,28 +1357,33 @@
     return curso;
   }
 
-  /* Añade o quita preguntas hasta dejar exactamente N (el maestro cambia el
-     número en los ajustes y las preguntas se ajustan solas; quitar va por el
-     final y nunca toca la portada). */
-  function ajustarPreguntas(capa, n) {
-    var quizzes = capa.cards.filter(function (c) { return c.tipo === "quiz"; }).length;
-    while (quizzes < n) { capa.cards.push(quizVacia()); quizzes++; }
-    while (quizzes > n) {
-      for (var i = capa.cards.length - 1; i >= 0; i--) {
-        if (capa.cards[i].tipo === "quiz") { capa.cards.splice(i, 1); break; }
-      }
-      quizzes--;
+  /* CUÁNTAS PREGUNTAS TIENE UN EXAMEN: se cuentan sus tarjetas, no se lee un
+     número guardado. Hasta el 2026-09-04 la cifra vivía en `curso.examen.n` y
+     la baraja se ajustaba sola a ella, así que el maestro quedaba amarrado al
+     molde con el que fundó el examen. Ahora añade y quita preguntas con
+     libertad (decisión del titular), y el número se deriva. Guardar además la
+     cifra sería tener dos verdades que se separan en cuanto alguien borra una
+     tarjeta: `n` solo sigue existiendo como PARÁMETRO DE GENERACIÓN, para
+     decirle a la IA —o a la plantilla— cuántas crear de partida. */
+  function contarPreguntas(curso) {
+    var mis = (curso && curso.misiones) || [];
+    var i, capa;
+    for (i = 0; i < mis.length; i++) {
+      if (mis[i].kind !== "exam") continue;
+      capa = mis[i][baseDe(curso)];
+      if (!capa || !capa.cards) return 0;
+      return capa.cards.filter(function (c) { return c.tipo === "quiz"; }).length;
     }
-    return capa;
+    return 0;
   }
 
   var API = {
     XP: XP, BELTS: BELTS, FRASES_PROHIBIDAS: FRASES_PROHIBIDAS,
-    resolver: resolver, textoPlano: textoPlano, desescapar: desescapar,
+    resolver: resolver, textoPlano: textoPlano,
     compilarCard: compilarCard, armarCurso: armarCurso, armarMisionDemo: armarMisionDemo,
-    armarIndiceCurso: armarIndiceCurso, armarVisible: armarVisible, idiomasServibles: idiomasServibles,
+    armarIndiceCurso: armarIndiceCurso, armarVisible: armarVisible,
     mdInline: mdInline, mdBloque: mdBloque, contarPalabras: contarPalabras,
-    IDIOMAS: IDIOMAS, PREFIJO_NIVEL: PREFIJO_NIVEL,
+    IDIOMAS: IDIOMAS,
     baseDe: baseDe, idiomasDe: idiomasDe,
     dominioDeNivel: dominioDeNivel, tituloDeNivel: tituloDeNivel,
     huellaBase: huellaBase, recorrerTextos: recorrerTextos,
@@ -1375,14 +1394,14 @@
     avanceIdioma: avanceIdioma,
     deshidratarEntidad: deshidratarEntidad, hidratarEntidad: hidratarEntidad,
     esDeshidratada: esDeshidratada,
-    plantillaExamen: plantillaExamen, quizVacia: quizVacia, plantillaCurso: plantillaCurso,
-    ajustarPreguntas: ajustarPreguntas, aprobarPorDefecto: aprobarPorDefecto,
+    plantillaExamen: plantillaExamen, plantillaCurso: plantillaCurso,
+    aprobarPorDefecto: aprobarPorDefecto, contarPreguntas: contarPreguntas,
     clavesDeTextos: clavesDeTextos, materializarTextos: materializarTextos,
     /* Un pergamino es una CÁPSULA (titular 2026-09-04): una lectura corta que
        se abre en modal desde UNA tarjeta de su misión, opcional y de un
        vistazo. Vale para todos los cursos, no solo para el fundador. Espejo de
        SCROLL_MAX_CHARS / SCROLL_MAX_POR_MISION en build.py. */
-    SCROLL_MAX_CHARS: 600, SCROLL_MAX_POR_MISION: 1,
+    SCROLL_MAX_CHARS: ESC_CFG.scrollMaxChars || 600, SCROLL_MAX_POR_MISION: ESC_CFG.scrollMaxPorMision || 1,
     AUDIO_PERGAMINOS: AUDIO_PERGAMINOS,
   };
   if (typeof module !== "undefined" && module.exports) module.exports = API;

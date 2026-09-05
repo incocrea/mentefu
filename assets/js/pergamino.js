@@ -10,6 +10,7 @@
    puede traer, el enlace navega a la página del pergamino como toda la vida. */
 (function () {
   "use strict";
+  var el = MFDom.el, esc = MFDom.esc;   /* dom.js: una sola copia para todos */
   var cfg = window.MF_CONFIG || {};
   var ES = cfg.lang === "es";
   var T = ES ? {
@@ -29,11 +30,9 @@
      es la misma, así que no puede escribirse a mano. */
   var SELLOS = (cfg.assets || "") + "assets/img/ui/";
 
-  function el(html) { var d = document.createElement("div"); d.innerHTML = html.trim(); return d.firstChild; }
   /* El título entra en un atributo (aria-label) y hay títulos con comillas
      —«The "should"»—: sin escapar, la comilla cierra el atributo antes de
      tiempo y el resto del título se cuela como atributo suelto del diálogo. */
-  function esc(s) { return String(s == null ? "" : s).replace(/[&<>"]/g, function (c) { return { "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;" }[c]; }); }
 
   /* una parte por apartado (H2), igual que la página del pergamino */
   function paginar(html) {
@@ -224,6 +223,24 @@
         next.disabled = true; next.textContent = T.read.replace("{n}", xp);
         vista.classList.add("is-read");
         if (opts.alCompletar) opts.alCompletar();
+        autocerrar();
+      }
+
+      /* Marcado como leído, el modal se aparta SOLO a los 3 s (titular
+         2026-09-04). Vale para las dos formas de marcarlo —el botón y el
+         arrastre— sin escribirlo dos veces, porque las dos desembocan en
+         `terminar()`; y solo cuando se marca DE VERDAD: releer algo que ya
+         estaba leído sale por la rama de arriba y no cierra nada.
+         `sigueSiendoElMio()` es la guarda que importa: en esos 3 s el alumno
+         puede haber cerrado la nota o abierto otra, y sin esto el temporizador
+         cerraría un modal que ya no es este.
+         Si la nota trajera minipodcast no se cierra: sería cortarlo a la mitad.
+         Hoy no puede darse —el audio de pergaminos está deshabilitado, ver
+         AUDIO_PERGAMINOS en build.py y compilar.js— pero el día que vuelva a
+         encenderse, esta línea ya está puesta. */
+      function autocerrar() {
+        if (abierto && abierto.audioPropio) return;
+        setTimeout(function () { if (sigueSiendoElMio()) cerrar(); }, 3000);
       }
       prev.addEventListener("click", function () { ir(-1); });
       next.addEventListener("click", function () { ir(1); });

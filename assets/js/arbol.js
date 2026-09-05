@@ -6,6 +6,7 @@
    Requiere progress.js. Expone window.MFArbol. */
 (function () {
   "use strict";
+  var el = MFDom.el, esc = MFDom.esc;   /* dom.js: una sola copia para todos */
   if (!window.MF) return;
   var cfg = window.MF_CONFIG || {};
   var ES = cfg.lang === "es";
@@ -95,8 +96,6 @@
   }
 
   /* ---------- render ---------- */
-  function el(html) { var d = document.createElement("div"); d.innerHTML = html.trim(); return d.firstChild; }
-  function esc(s) { return String(s).replace(/[&<>"]/g, function (c) { return { "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;" }[c]; }); }
 
   function tooltipHTML(a, abierto) {
     return '<span class="adorno-tip' + (a.trofeo ? " adorno-tip--legendario" : "") + '" role="tooltip">' +

@@ -22,6 +22,7 @@
    siquiera ve los gestos del juego. */
 (function () {
   "use strict";
+  var el = MFDom.el, esc = MFDom.esc;   /* dom.js: una sola copia para todos */
 
   var cfg = window.MF_CONFIG || {};
   var ES = cfg.lang === "es";
@@ -36,8 +37,9 @@
     reto: "Challenge", cerrar: "Close", sonido: "Sound",
   };
 
-  /* Rondas de un examen (0.9): tres miniretos seguidos. */
-  var RONDAS = 3;
+  /* Rondas de un examen (0.9): tres miniretos seguidos. El número lo dicta
+     build.py (MF_CONFIG.examen); el 3 es solo el respaldo. */
+  var RONDAS = (cfg.examen && cfg.examen.rondas) || 3;
 
   /* ------------------- LOS DOS SEGUNDOS DEL SELLO (titular 2026-08-28) ------
      «Una vez logrado aprobar, agrega un delay de 2 segundos antes de cerrar el
@@ -77,12 +79,7 @@
     return Math.max(0, Math.min(ESTAMPA_TOPE, ms));
   }
 
-  function el(html) { var d = document.createElement("div"); d.innerHTML = html.trim(); return d.firstChild; }
 
-  function esc(s) {
-    return String(s == null ? "" : s)
-      .replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;").replace(/"/g, "&quot;");
-  }
 
   /* El texto plano de un feedback en HTML: la región aria-live lee palabras,
      no etiquetas. */

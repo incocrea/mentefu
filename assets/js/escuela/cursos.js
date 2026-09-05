@@ -6,6 +6,7 @@
  */
 (function () {
   "use strict";
+  var esc = MFDom.esc;   /* dom.js: una sola copia para todos */
   var cfg = window.MF_CONFIG || {};
   var ES = cfg.lang !== "en";
 
@@ -30,10 +31,6 @@
   var esLocal = !(cfg.gate && window.SB && SB.enabled());
   var raiz = null;
 
-  function esc(t) {
-    return String(t == null ? "" : t).replace(/&/g, "&amp;").replace(/</g, "&lt;")
-      .replace(/>/g, "&gt;").replace(/"/g, "&quot;");
-  }
 
   function cardCurso(c) {
     var titulo = ES ? (c.titulo_es || c.titulo_en) : (c.titulo_en || c.titulo_es);
@@ -66,7 +63,7 @@
       '<div class="curso-candado curso-candado--buscar">' +
       '<input class="curso-candado__campo" type="text" maxlength="12" autocomplete="off" placeholder="' + esc(T.placeholder) + '" aria-label="' + esc(T.buscar) + '">' +
       '<button type="button" class="btn btn--primary" data-buscar>' + esc(T.buscar) + "</button>" +
-      (esLocal ? ' <span class="escuela-sello">印 ' + esc(T.local) + "</span>" : "") + "</div>" +
+      (esLocal ? ' <span class="escuela-sello">' + esc(T.local) + "</span>" : "") + "</div>" +
       '<div class="escuela-cursos" data-resultado>' + (resultado || "") + "</div>" +
       "<h2 class='escuela-h2'>" + esc(T.publicos) + "</h2>" +
       '<div class="escuela-cursos">' + clasico + (publicos || "") + "</div>";
@@ -89,7 +86,7 @@
 
   function cargarPublicos() {
     if (esLocal) {
-      fetch(cfg.prefix + "escuela-fuente.json").then(function (r) { return r.json(); }).then(function (f) {
+      fetch((cfg.assets || cfg.prefix) + "escuela-fuente.json").then(function (r) { return r.json(); }).then(function (f) {
         publicosHtml = Object.keys(f.cursos).map(function (clave) {
           var capa = f.cursos[clave][cfg.lang] || f.cursos[clave].es;
           return cardCurso({ clave: clave, titulo_es: capa.title, titulo_en: capa.title,
